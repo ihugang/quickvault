@@ -208,35 +208,49 @@ let context = controller.viewContext
 ```
 QuickVault/
 ├── Sources/
-│   ├── QuickVaultApp.swift          # App entry point, menu bar setup
-│   ├── Models/                      # CoreData models
-│   │   ├── QuickVault.xcdatamodeld/ # CoreData schema
-│   │   ├── Card+CoreDataClass.swift
-│   │   ├── CardField+CoreDataClass.swift
-│   │   ├── CardAttachment+CoreDataClass.swift
-│   │   └── PersistenceController.swift
-│   ├── Services/                    # Business logic layer
-│   │   ├── CryptoService.swift      # Encryption/decryption
-│   │   ├── KeychainService.swift    # Keychain access
-│   │   ├── AuthenticationService.swift # Touch ID + password auth
-│   │   └── CardService.swift        # Card CRUD operations
-│   └── Utilities/                   # Helper classes
-│       └── IconProvider.swift
-├── Tests/                           # Test files
+│   ├── Core/                        # 核心业务逻辑层
+│   │   ├── Models/                  # 数据模型
+│   │   │   ├── QuickVault.xcdatamodeld/  # CoreData schema
+│   │   │   ├── Card+CoreDataClass.swift
+│   │   │   ├── Card+CoreDataProperties.swift
+│   │   │   ├── CardField+CoreDataClass.swift
+│   │   │   ├── CardField+CoreDataProperties.swift
+│   │   │   ├── CardAttachment+CoreDataClass.swift
+│   │   │   ├── CardAttachment+CoreDataProperties.swift
+│   │   │   ├── CardTemplate.swift   # 卡片模板定义
+│   │   │   └── PersistenceController.swift
+│   │   ├── Services/                # 业务服务层
+│   │   │   ├── AuthenticationService.swift  # Touch ID + password auth
+│   │   │   ├── CardService.swift            # Card CRUD operations
+│   │   │   ├── CryptoService.swift          # AES-256-GCM encryption
+│   │   │   └── KeychainService.swift        # Keychain access
+│   │   └── Utilities/               # 工具类
+│   │       ├── ValidationService.swift      # 数据验证
+│   │       └── IconProvider.swift           # 图标提供者
+│   ├── Features/                    # 功能模块
+│   │   └── App/
+│   │       └── QuickVaultApp.swift          # App entry point
+│   ├── Views/                       # UI视图层
+│   │   └── Components/              # 可复用组件 (待实现)
+│   └── README.md                    # 目录结构说明
+├── Tests/                           # 测试文件
 │   ├── QuickVaultTests.swift
 │   ├── KeychainServiceTests.swift
 │   ├── CryptoServiceTests.swift
 │   ├── CardServiceTests.swift
+│   ├── CardTemplateTests.swift
+│   ├── ValidationServiceTests.swift
 │   └── AuthenticationServiceTests.swift
 ├── Resources/
 │   ├── Info.plist
 │   ├── QuickVault.entitlements      # Keychain access, file access
 │   └── Assets.xcassets/             # Icons (menu bar, locked/unlocked)
-├── .kiro/specs/quick-vault-macos/   # Design documents
+├── .kiro/specs/quick-vault-macos/   # 设计文档
 │   ├── requirements.md              # 23 requirements (中英双语)
 │   ├── design.md                    # Architecture, 44 properties
-│   └── tasks.md
+│   └── tasks.md                     # 开发任务跟踪
 ├── Package.swift                    # SPM manifest
+├── CLAUDE.md                        # 本文件
 └── README.md
 ```
 
