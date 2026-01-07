@@ -25,7 +25,7 @@ This implementation plan breaks down the QuickVault macOS application into discr
         -   Handle Keychain errors gracefully / 优雅地处理钥匙串错误
         -   _Requirements: 10.2_
 
-    -   [ ]\* 2.2 Write unit tests for Keychain operations / 编写钥匙串操作的单元测试
+    -   [x]\* 2.2 Write unit tests for Keychain operations / 编写钥匙串操作的单元测试
         -   Test saving and loading data / 测试保存和加载数据
         -   Test error handling / 测试错误处理
         -   _Requirements: 10.2_
@@ -40,17 +40,17 @@ This implementation plan breaks down the QuickVault macOS application into discr
         -   Add file encryption methods for attachments / 添加附件的文件加密方法
         -   _Requirements: 10.1, 10.4, 10.5_
 
-    -   [ ]\* 3.2 Write property test for encryption round trip / 编写加密往返的属性测试
+    -   [x]\* 3.2 Write property test for encryption round trip / 编写加密往返的属性测试
 
         -   **Property 21: Field Encryption Round Trip** / **属性 21：字段加密往返**
         -   **Validates: Requirements 10.1, 10.5** / **验证：需求 10.1, 10.5**
 
-    -   [ ]\* 3.3 Write property test for key derivation determinism / 编写密钥派生确定性的属性测试
+    -   [x]\* 3.3 Write property test for key derivation determinism / 编写密钥派生确定性的属性测试
 
         -   **Property 22: Key Derivation Determinism** / **属性 22：密钥派生确定性**
         -   **Validates: Requirements 10.4** / **验证：需求 10.4**
 
-    -   [ ]\* 3.4 Write property test for attachment file encryption / 编写附件文件加密的属性测试
+    -   [x]\* 3.4 Write property test for attachment file encryption / 编写附件文件加密的属性测试
         -   **Property 41: Attachment File Encryption** / **属性 41：附件文件加密**
         -   **Validates: Requirements 5.2** / **验证：需求 5.2**
 
@@ -119,31 +119,31 @@ This implementation plan breaks down the QuickVault macOS application into discr
         -   **Property 14: Search Matches Title and Fields** / **属性 14：搜索匹配标题和字段**
         -   **Validates: Requirements 6.2** / **验证：需求 6.2**
 
--   [ ] 7. Implement Card Templates / 实现卡片模板
+-   [x] 7. Implement Card Templates / 实现卡片模板
 
-    -   [ ] 7.1 Create template definitions for Address, Invoice, General Text / 创建地址、发票、通用文本的模板定义
+    -   [x] 7.1 Create template definitions for Address, Invoice, General Text / 创建地址、发票、通用文本的模板定义
 
         -   Define field structures for each template / 为每个模板定义字段结构
         -   Implement format functions for copy operations / 实现复制操作的格式化函数
         -   _Requirements: 2.1, 3.1, 4.1_
 
-    -   [ ]\* 7.2 Write property test for address format / 编写地址格式的属性测试
+    -   [x]\* 7.2 Write property test for address format / 编写地址格式的属性测试
 
         -   **Property 7: Address Format Contains Labels** / **属性 7：地址格式包含标签**
         -   **Validates: Requirements 2.3** / **验证：需求 2.3**
 
-    -   [ ]\* 7.3 Write property test for invoice format / 编写发票格式的属性测试
+    -   [x]\* 7.3 Write property test for invoice format / 编写发票格式的属性测试
 
         -   **Property 10: Invoice Format Contains Labels** / **属性 10：发票格式包含标签**
         -   **Validates: Requirements 3.3** / **验证：需求 3.3**
 
-    -   [ ]\* 7.4 Write property test for general text copy / 编写通用文本复制的属性测试
+    -   [x]\* 7.4 Write property test for general text copy / 编写通用文本复制的属性测试
         -   **Property 13: General Text Copy Direct** / **属性 13：通用文本直接复制**
         -   **Validates: Requirements 4.3** / **验证：需求 4.3**
 
--   [ ] 8. Implement Data Validation / 实现数据验证
+-   [x] 8. Implement Data Validation / 实现数据验证
 
-    -   [ ] 8.1 Create validation functions / 创建验证函数
+    -   [x] 8.1 Create validation functions / 创建验证函数
 
         -   Implement phone number validation (Chinese mobile/landline) / 实现电话号码验证（中国手机/座机）
         -   Implement tax ID validation (18-char unified social credit code) / 实现税号验证（18 位统一社会信用代码）
@@ -151,22 +151,22 @@ This implementation plan breaks down the QuickVault macOS application into discr
         -   Implement password length validation / 实现密码长度验证
         -   _Requirements: 2.4, 3.4, 21.1, 21.2, 21.3, 22.3_
 
-    -   [ ]\* 8.2 Write property test for phone number validation / 编写电话号码验证的属性测试
+    -   [x]\* 8.2 Write property test for phone number validation / 编写电话号码验证的属性测试
 
         -   **Property 8: Phone Number Validation** / **属性 8：电话号码验证**
         -   **Validates: Requirements 2.4** / **验证：需求 2.4**
 
-    -   [ ]\* 8.3 Write property test for tax ID validation / 编写税号验证的属性测试
+    -   [x]\* 8.3 Write property test for tax ID validation / 编写税号验证的属性测试
 
         -   **Property 11: Tax ID Validation** / **属性 11：税号验证**
         -   **Validates: Requirements 3.4** / **验证：需求 3.4**
 
-    -   [ ]\* 8.4 Write property test for required field validation / 编写必填字段验证的属性测试
+    -   [x]\* 8.4 Write property test for required field validation / 编写必填字段验证的属性测试
 
         -   **Property 39: Required Field Validation** / **属性 39：必填字段验证**
         -   **Validates: Requirements 21.1** / **验证：需求 21.1**
 
-    -   [ ]\* 8.5 Write property test for password minimum length / 编写密码最小长度的属性测试
+    -   [x]\* 8.5 Write property test for password minimum length / 编写密码最小长度的属性测试
         -   **Property 40: Password Minimum Length** / **属性 40：密码最小长度**
         -   **Validates: Requirements 22.3** / **验证：需求 22.3**
 
@@ -240,16 +240,16 @@ This implementation plan breaks down the QuickVault macOS application into discr
         -   **Property 26: Settings Persistence** / **属性 26：设置持久化**
         -   **Validates: Requirements 13.2, 13.3, 13.5** / **验证：需求 13.2, 13.3, 13.5**
 
--   [ ] 12. Implement Menu Bar Manager / 实现菜单栏管理器
+-   [x] 12. Implement Menu Bar Manager / 实现菜单栏管理器
 
-    -   [ ] 12.1 Create MenuBarManager / 创建 MenuBarManager
+    -   [x] 12.1 Create MenuBarManager / 创建 MenuBarManager
 
         -   Set up NSStatusItem in menu bar / 在菜单栏设置 NSStatusItem
         -   Implement icon updates for lock state / 实现锁定状态的图标更新
         -   Implement global keyboard shortcut / 实现全局键盘快捷键
         -   _Requirements: 8.1, 8.7, 8.8_
 
-    -   [ ] 12.2 Implement hierarchical menu building / 实现层级菜单构建
+    -   [x] 12.2 Implement hierarchical menu building / 实现层级菜单构建
 
         -   Build group submenus (Personal, Company) / 构建分组子菜单（个人、公司）
         -   Build card submenus with copy options / 构建带复制选项的卡片子菜单
@@ -492,20 +492,20 @@ This implementation plan breaks down the QuickVault macOS application into discr
         -   **Property 33: Search Matches Tags** / **属性 33：搜索匹配标签**
         -   **Validates: Requirements 15.4** / **验证：需求 15.4**
 
--   [ ] 25. Implement Optional Field Support / 实现可选字段支持
+-   [x] 25. Implement Optional Field Support / 实现可选字段支持
 
-    -   [ ] 25.1 Update templates to mark optional fields / 更新模板以标记可选字段
+    -   [x] 25.1 Update templates to mark optional fields / 更新模板以标记可选字段
 
         -   Mark postal code and notes as optional in Address template / 在地址模板中将邮编和备注标记为可选
         -   Mark notes as optional in Invoice template / 在发票模板中将备注标记为可选
         -   _Requirements: 2.2, 3.2_
 
-    -   [ ]\* 25.2 Write property test for optional fields in address / 编写地址中可选字段的属性测试
+    -   [x]\* 25.2 Write property test for optional fields in address / 编写地址中可选字段的属性测试
 
         -   **Property 6: Optional Fields in Address Template** / **属性 6：地址模板中的可选字段**
         -   **Validates: Requirements 2.2** / **验证：需求 2.2**
 
-    -   [ ]\* 25.3 Write property test for optional notes in invoice / 编写发票中可选备注的属性测试
+    -   [x]\* 25.3 Write property test for optional notes in invoice / 编写发票中可选备注的属性测试
         -   **Property 9: Optional Notes in Invoice Template** / **属性 9：发票模板中的可选备注**
         -   **Validates: Requirements 3.2** / **验证：需求 3.2**
 
@@ -516,7 +516,7 @@ This implementation plan breaks down the QuickVault macOS application into discr
         -   Use TextEditor for multi-line content / 使用 TextEditor 处理多行内容
         -   _Requirements: 4.2_
 
-    -   [ ]\* 26.2 Write property test for multi-line text / 编写多行文本的属性测试
+    -   [x]\* 26.2 Write property test for multi-line text / 编写多行文本的属性测试
         -   **Property 12: Multi-line Text Support** / **属性 12：多行文本支持**
         -   **Validates: Requirements 4.2** / **验证：需求 4.2**
 

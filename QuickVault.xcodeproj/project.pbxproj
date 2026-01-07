@@ -14,35 +14,27 @@
 			remoteGlobalIDString = 145613A12F0E4AA000A640B2;
 			remoteInfo = QuickVault;
 		};
-		145613BF2F0E4AA200A640B2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1456139A2F0E4AA000A640B2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 145613A12F0E4AA000A640B2;
-			remoteInfo = QuickVault;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		145613A22F0E4AA000A640B2 /* QuickVault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickVault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		145613B42F0E4AA200A640B2 /* QuickVaultTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickVaultTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		145613BE2F0E4AA200A640B2 /* QuickVaultUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickVaultUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		145613A42F0E4AA000A640B2 /* QuickVault */ = {
+		145613A42F0E4AA000A640B2 /* QuickVault/Sources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = QuickVault;
+			path = QuickVault/Sources;
 			sourceTree = "<group>";
 		};
-		145613B72F0E4AA200A640B2 /* QuickVaultTests */ = {
+		145613B72F0E4AA200A640B2 /* QuickVault/Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = QuickVaultTests;
+			path = QuickVault/Tests;
 			sourceTree = "<group>";
 		};
-		145613C12F0E4AA200A640B2 /* QuickVaultUITests */ = {
+		145613D12F0E4AA200A640B2 /* QuickVault/Resources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = QuickVaultUITests;
+			path = QuickVault/Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -62,22 +54,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		145613BB2F0E4AA200A640B2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		145613992F0E4AA000A640B2 = {
 			isa = PBXGroup;
 			children = (
-				145613A42F0E4AA000A640B2 /* QuickVault */,
-				145613B72F0E4AA200A640B2 /* QuickVaultTests */,
-				145613C12F0E4AA200A640B2 /* QuickVaultUITests */,
+				145613A42F0E4AA000A640B2 /* QuickVault/Sources */,
+				145613D12F0E4AA200A640B2 /* QuickVault/Resources */,
+				145613B72F0E4AA200A640B2 /* QuickVault/Tests */,
 				145613A32F0E4AA000A640B2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,7 +72,6 @@
 			children = (
 				145613A22F0E4AA000A640B2 /* QuickVault.app */,
 				145613B42F0E4AA200A640B2 /* QuickVaultTests.xctest */,
-				145613BE2F0E4AA200A640B2 /* QuickVaultUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,7 +92,8 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				145613A42F0E4AA000A640B2 /* QuickVault */,
+				145613A42F0E4AA000A640B2 /* QuickVault/Sources */,
+				145613D12F0E4AA200A640B2 /* QuickVault/Resources */,
 			);
 			name = QuickVault;
 			packageProductDependencies = (
@@ -131,7 +116,7 @@
 				145613B62F0E4AA200A640B2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				145613B72F0E4AA200A640B2 /* QuickVaultTests */,
+				145613B72F0E4AA200A640B2 /* QuickVault/Tests */,
 			);
 			name = QuickVaultTests;
 			packageProductDependencies = (
@@ -139,29 +124,6 @@
 			productName = QuickVaultTests;
 			productReference = 145613B42F0E4AA200A640B2 /* QuickVaultTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		145613BD2F0E4AA200A640B2 /* QuickVaultUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 145613CE2F0E4AA200A640B2 /* Build configuration list for PBXNativeTarget "QuickVaultUITests" */;
-			buildPhases = (
-				145613BA2F0E4AA200A640B2 /* Sources */,
-				145613BB2F0E4AA200A640B2 /* Frameworks */,
-				145613BC2F0E4AA200A640B2 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				145613C02F0E4AA200A640B2 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				145613C12F0E4AA200A640B2 /* QuickVaultUITests */,
-			);
-			name = QuickVaultUITests;
-			packageProductDependencies = (
-			);
-			productName = QuickVaultUITests;
-			productReference = 145613BE2F0E4AA200A640B2 /* QuickVaultUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -177,10 +139,6 @@
 						CreatedOnToolsVersion = 26.0.1;
 					};
 					145613B32F0E4AA200A640B2 = {
-						CreatedOnToolsVersion = 26.0.1;
-						TestTargetID = 145613A12F0E4AA000A640B2;
-					};
-					145613BD2F0E4AA200A640B2 = {
 						CreatedOnToolsVersion = 26.0.1;
 						TestTargetID = 145613A12F0E4AA000A640B2;
 					};
@@ -202,7 +160,6 @@
 			targets = (
 				145613A12F0E4AA000A640B2 /* QuickVault */,
 				145613B32F0E4AA200A640B2 /* QuickVaultTests */,
-				145613BD2F0E4AA200A640B2 /* QuickVaultUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -216,13 +173,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		145613B22F0E4AA200A640B2 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		145613BC2F0E4AA200A640B2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -246,13 +196,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		145613BA2F0E4AA200A640B2 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -260,11 +203,6 @@
 			isa = PBXTargetDependency;
 			target = 145613A12F0E4AA000A640B2 /* QuickVault */;
 			targetProxy = 145613B52F0E4AA200A640B2 /* PBXContainerItemProxy */;
-		};
-		145613C02F0E4AA200A640B2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 145613A12F0E4AA000A640B2 /* QuickVault */;
-			targetProxy = 145613BF2F0E4AA200A640B2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -403,6 +341,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -435,6 +374,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -495,44 +435,6 @@
 			};
 			name = Release;
 		};
-		145613CF2F0E4AA200A640B2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6X2HSWDZCR;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.codans.QuickVaultUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = QuickVault;
-			};
-			name = Debug;
-		};
-		145613D02F0E4AA200A640B2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6X2HSWDZCR;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.codans.QuickVaultUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = QuickVault;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -559,15 +461,6 @@
 			buildConfigurations = (
 				145613CC2F0E4AA200A640B2 /* Debug */,
 				145613CD2F0E4AA200A640B2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		145613CE2F0E4AA200A640B2 /* Build configuration list for PBXNativeTarget "QuickVaultUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				145613CF2F0E4AA200A640B2 /* Debug */,
-				145613D02F0E4AA200A640B2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

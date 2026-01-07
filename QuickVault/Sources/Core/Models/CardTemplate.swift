@@ -28,12 +28,16 @@ enum CardType: String, CaseIterable {
   case general
   case address
   case invoice
+  case businessLicense
+  case idCard
 
   var displayName: String {
     switch self {
     case .general: return "通用文本"
     case .address: return "地址"
     case .invoice: return "发票"
+    case .businessLicense: return "营业执照"
+    case .idCard: return "身份证"
     }
   }
 }
@@ -160,6 +164,93 @@ struct GeneralTextTemplate {
   }
 }
 
+// MARK: - Business License Template
+
+struct BusinessLicenseTemplate {
+  static let type: CardType = .businessLicense
+
+  static let fields: [FieldDefinition] = [
+    FieldDefinition(key: "companyName", label: "企业名称", required: true),
+    FieldDefinition(key: "creditCode", label: "统一社会信用代码", required: true),
+    FieldDefinition(key: "legalRepresentative", label: "法定代表人", required: true),
+    FieldDefinition(key: "registeredCapital", label: "注册资本", required: true),
+    FieldDefinition(key: "address", label: "住所", required: true),
+    FieldDefinition(key: "establishedDate", label: "成立日期", required: true),
+    FieldDefinition(key: "businessScope", label: "经营范围", required: false, multiline: true),
+  ]
+
+  static func formatForCopy(fieldValues: [String: String]) -> String {
+    let companyName = fieldValues["companyName"] ?? ""
+    let creditCode = fieldValues["creditCode"] ?? ""
+    let legalRepresentative = fieldValues["legalRepresentative"] ?? ""
+    let registeredCapital = fieldValues["registeredCapital"] ?? ""
+    let address = fieldValues["address"] ?? ""
+    let establishedDate = fieldValues["establishedDate"] ?? ""
+    let businessScope = fieldValues["businessScope"] ?? ""
+
+    var result = """
+      企业名称：\(companyName)
+      统一社会信用代码：\(creditCode)
+      法定代表人：\(legalRepresentative)
+      注册资本：\(registeredCapital)
+      住所：\(address)
+      成立日期：\(establishedDate)
+      """
+
+    if !businessScope.isEmpty {
+      result += "\n经营范围：\(businessScope)"
+    }
+
+    return result
+  }
+}
+
+// MARK: - ID Card Template
+
+struct IdCardTemplate {
+  static let type: CardType = .idCard
+
+  static let fields: [FieldDefinition] = [
+    FieldDefinition(key: "name", label: "姓名", required: true),
+    FieldDefinition(key: "gender", label: "性别", required: true),
+    FieldDefinition(key: "nationality", label: "民族", required: true),
+    FieldDefinition(key: "birthDate", label: "出生日期", required: true),
+    FieldDefinition(key: "idNumber", label: "身份证号", required: true),
+    FieldDefinition(key: "address", label: "住址", required: true),
+    FieldDefinition(key: "issuingAuthority", label: "签发机关", required: false),
+    FieldDefinition(key: "validPeriod", label: "有效期", required: false),
+  ]
+
+  static func formatForCopy(fieldValues: [String: String]) -> String {
+    let name = fieldValues["name"] ?? ""
+    let gender = fieldValues["gender"] ?? ""
+    let nationality = fieldValues["nationality"] ?? ""
+    let birthDate = fieldValues["birthDate"] ?? ""
+    let idNumber = fieldValues["idNumber"] ?? ""
+    let address = fieldValues["address"] ?? ""
+    let issuingAuthority = fieldValues["issuingAuthority"] ?? ""
+    let validPeriod = fieldValues["validPeriod"] ?? ""
+
+    var result = """
+      姓名：\(name)
+      性别：\(gender)
+      民族：\(nationality)
+      出生日期：\(birthDate)
+      身份证号：\(idNumber)
+      住址：\(address)
+      """
+
+    if !issuingAuthority.isEmpty {
+      result += "\n签发机关：\(issuingAuthority)"
+    }
+    if !validPeriod.isEmpty {
+      result += "\n有效期：\(validPeriod)"
+    }
+
+    return result
+  }
+}
+
 // MARK: - Template Helper
 
 struct CardTemplateHelper {
@@ -172,6 +263,10 @@ struct CardTemplateHelper {
       return AddressTemplate.fields
     case .invoice:
       return InvoiceTemplate.fields
+    case .businessLicense:
+      return BusinessLicenseTemplate.fields
+    case .idCard:
+      return IdCardTemplate.fields
     }
   }
 
@@ -184,6 +279,10 @@ struct CardTemplateHelper {
       return AddressTemplate.formatForCopy(fieldValues: fieldValues)
     case .invoice:
       return InvoiceTemplate.formatForCopy(fieldValues: fieldValues)
+    case .businessLicense:
+      return BusinessLicenseTemplate.formatForCopy(fieldValues: fieldValues)
+    case .idCard:
+      return IdCardTemplate.formatForCopy(fieldValues: fieldValues)
     }
   }
 }

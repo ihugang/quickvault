@@ -5,6 +5,7 @@
 //  Created on 2026-01-07.
 //
 
+import AppKit
 import SwiftUI
 
 @main
@@ -19,8 +20,23 @@ struct QuickVaultApp: App {
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
+  private var menuBarManager: MenuBarManager?
+
   func applicationDidFinishLaunching(_ notification: Notification) {
+    print("QuickVault did finish launching")
     // Hide dock icon - menu bar app only
     NSApp.setActivationPolicy(.accessory)
+    let keychainService = KeychainServiceImpl()
+    let cryptoService = CryptoServiceImpl(keychainService: keychainService)
+    let authService = AuthenticationServiceImpl(
+      keychainService: keychainService,
+      cryptoService: cryptoService
+    )
+    let cardService = CardServiceImpl(
+      persistenceController: PersistenceController.shared,
+      cryptoService: cryptoService
+    )
+
+    menuBarManager = MenuBarManager(authService: authService, cardService: cardService)
   }
 }

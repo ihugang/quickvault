@@ -74,6 +74,10 @@ enum IconProvider {
       symbolName = "doc.text.fill"
     case "general":
       symbolName = "note.text"
+    case "businesslicense":
+      symbolName = "doc.text"
+    case "idcard":
+      symbolName = "person.text.rectangle"
     default:
       symbolName = "doc"
     }
