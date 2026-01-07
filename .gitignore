@@ -1,0 +1,37 @@
+# Xcode
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+*.xcuserstate
+*.xcuserdatad
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Build products
+DerivedData/
+*.app
+*.dSYM.zip
+*.dSYM
+
+# Sparkle
+appcast.xml
+*.zip
+dsa_priv.pem
+
+# Sensitive data
+*.keychain
+*.p12
