@@ -96,7 +96,7 @@ class AuthenticationServiceImpl: AuthenticationService {
     self.cryptoService = cryptoService
 
     // Check if master password exists
-    if keychainService.exists(forKey: masterPasswordKey) {
+    if keychainService.exists(key: masterPasswordKey) {
       stateSubject.send(.locked)
     } else {
       stateSubject.send(.setupRequired)
@@ -112,9 +112,12 @@ class AuthenticationServiceImpl: AuthenticationService {
 
     // Hash the password before storing
     let passwordHash = cryptoService.hashPassword(password)
+    guard let passwordData = passwordHash.data(using: .utf8) else {
+      throw AuthenticationError.keychainError("Failed to encode password hash")
+    }
 
     do {
-      try keychainService.save(passwordHash, forKey: masterPasswordKey)
+      try keychainService.save(key: masterPasswordKey, data: passwordData)
       stateSubject.send(.unlocked)
     } catch {
       throw AuthenticationError.keychainError(error.localizedDescription)
@@ -127,12 +130,16 @@ class AuthenticationServiceImpl: AuthenticationService {
     // Check rate limiting
     try checkRateLimit()
 
-    guard keychainService.exists(forKey: masterPasswordKey) else {
+    guard keychainService.exists(key: masterPasswordKey) else {
       throw AuthenticationError.noPasswordSet
     }
 
     do {
-      let storedHash = try keychainService.load(forKey: masterPasswordKey)
+      let storedHashData = try keychainService.load(key: masterPasswordKey)
+      guard let storedHash = String(data: storedHashData, encoding: .utf8) else {
+        throw AuthenticationError.keychainError("Failed to decode stored password hash")
+      }
+
       let passwordHash = cryptoService.hashPassword(password)
 
       if passwordHash == storedHash {
@@ -182,11 +189,15 @@ class AuthenticationServiceImpl: AuthenticationService {
 
   func changePassword(oldPassword: String, newPassword: String) async throws {
     // Verify old password first
-    guard keychainService.exists(forKey: masterPasswordKey) else {
+    guard keychainService.exists(key: masterPasswordKey) else {
       throw AuthenticationError.noPasswordSet
     }
 
-    let storedHash = try keychainService.load(forKey: masterPasswordKey)
+    let storedHashData = try keychainService.load(key: masterPasswordKey)
+    guard let storedHash = String(data: storedHashData, encoding: .utf8) else {
+      throw AuthenticationError.keychainError("Failed to decode stored password hash")
+    }
+
     let oldPasswordHash = cryptoService.hashPassword(oldPassword)
 
     guard oldPasswordHash == storedHash else {
@@ -200,7 +211,10 @@ class AuthenticationServiceImpl: AuthenticationService {
 
     // Save new password
     let newPasswordHash = cryptoService.hashPassword(newPassword)
-    try keychainService.save(newPasswordHash, forKey: masterPasswordKey)
+    guard let newPasswordData = newPasswordHash.data(using: .utf8) else {
+      throw AuthenticationError.keychainError("Failed to encode new password hash")
+    }
+    try keychainService.save(key: masterPasswordKey, data: newPasswordData)
   }
 
   // MARK: - Lock Management

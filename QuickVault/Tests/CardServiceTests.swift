@@ -19,7 +19,7 @@ final class CardServiceTests: XCTestCase {
     // Setup crypto service
     keychainService = KeychainServiceImpl()
     cryptoService = CryptoServiceImpl(keychainService: keychainService)
-    try cryptoService.initializeKey(password: "testPassword123")
+    try cryptoService.initializeKey(password: "testPassword123", salt: nil)
 
     // Create card service
     cardService = CardServiceImpl(
@@ -29,7 +29,7 @@ final class CardServiceTests: XCTestCase {
   }
 
   override func tearDown() async throws {
-    try? keychainService.delete(forKey: "crypto.salt")
+    try? keychainService.delete(key: "crypto.salt")
     try await super.tearDown()
   }
 
@@ -38,38 +38,38 @@ final class CardServiceTests: XCTestCase {
   func testCreateCard() async throws {
     // Create a card
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0),
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0),
       CardFieldDTO(
-        id: UUID(), label: "Phone", value: "13800138000", isRequired: true, displayOrder: 1),
+        id: UUID(), label: "Phone", value: "13800138000", isCopyable: true, order: 1),
     ]
 
     let card = try await cardService.createCard(
       title: "Test Card",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: ["test", "personal"]
     )
 
     XCTAssertEqual(card.title, "Test Card")
     XCTAssertEqual(card.group, "Personal")
-    XCTAssertEqual(card.cardType, "Address")
+    XCTAssertEqual(card.type, "Address")
     XCTAssertEqual(card.fields.count, 2)
     XCTAssertEqual(card.tags, ["test", "personal"])
     XCTAssertFalse(card.isPinned)
     XCTAssertNotNil(card.createdAt)
-    XCTAssertNotNil(card.modifiedAt)
+    XCTAssertNotNil(card.updatedAt)
   }
 
   func testCreateCardWithEmptyTags() async throws {
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     let card = try await cardService.createCard(
       title: "Test Card",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: []
     )
@@ -82,18 +82,18 @@ final class CardServiceTests: XCTestCase {
   func testUpdateCardTitle() async throws {
     // Create a card
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     let card = try await cardService.createCard(
       title: "Original Title",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: []
     )
 
-    let originalModifiedAt = card.modifiedAt
+    let originalUpdatedAt = card.updatedAt
 
     // Wait a bit to ensure timestamp changes
     try await Task.sleep(nanoseconds: 100_000_000)  // 0.1 seconds
@@ -109,19 +109,19 @@ final class CardServiceTests: XCTestCase {
 
     XCTAssertEqual(updatedCard.title, "Updated Title")
     XCTAssertEqual(updatedCard.group, "Personal")
-    XCTAssertGreaterThan(updatedCard.modifiedAt, originalModifiedAt)
+    XCTAssertGreaterThan(updatedCard.updatedAt, originalUpdatedAt)
   }
 
   func testUpdateCardFields() async throws {
     // Create a card
     let originalFields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     let card = try await cardService.createCard(
       title: "Test Card",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: originalFields,
       tags: []
     )
@@ -129,9 +129,9 @@ final class CardServiceTests: XCTestCase {
     // Update fields
     let newFields = [
       CardFieldDTO(
-        id: UUID(), label: "Name", value: "Jane Smith", isRequired: true, displayOrder: 0),
+        id: UUID(), label: "Name", value: "Jane Smith", isCopyable: true, order: 0),
       CardFieldDTO(
-        id: UUID(), label: "Email", value: "jane@example.com", isRequired: false, displayOrder: 1),
+        id: UUID(), label: "Email", value: "jane@example.com", isCopyable: false, order: 1),
     ]
 
     let updatedCard = try await cardService.updateCard(
@@ -150,13 +150,13 @@ final class CardServiceTests: XCTestCase {
   func testUpdateCardTags() async throws {
     // Create a card
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     let card = try await cardService.createCard(
       title: "Test Card",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: ["old"]
     )
@@ -178,13 +178,13 @@ final class CardServiceTests: XCTestCase {
   func testDeleteCard() async throws {
     // Create a card
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     let card = try await cardService.createCard(
       title: "Test Card",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: []
     )
@@ -221,13 +221,13 @@ final class CardServiceTests: XCTestCase {
   func testFetchAllCards() async throws {
     // Create multiple cards
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     _ = try await cardService.createCard(
       title: "Card 1",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: []
     )
@@ -235,7 +235,7 @@ final class CardServiceTests: XCTestCase {
     _ = try await cardService.createCard(
       title: "Card 2",
       group: "Company",
-      cardType: "Invoice",
+      type: "Invoice",
       fields: fields,
       tags: []
     )
@@ -249,13 +249,13 @@ final class CardServiceTests: XCTestCase {
   func testFetchCardById() async throws {
     // Create a card
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     let createdCard = try await cardService.createCard(
       title: "Test Card",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: []
     )
@@ -272,13 +272,13 @@ final class CardServiceTests: XCTestCase {
   func testSearchCardsByTitle() async throws {
     // Create cards
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     _ = try await cardService.createCard(
       title: "Home Address",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: []
     )
@@ -286,7 +286,7 @@ final class CardServiceTests: XCTestCase {
     _ = try await cardService.createCard(
       title: "Work Invoice",
       group: "Company",
-      cardType: "Invoice",
+      type: "Invoice",
       fields: fields,
       tags: []
     )
@@ -302,18 +302,18 @@ final class CardServiceTests: XCTestCase {
     // Create cards with different field values
     let fields1 = [
       CardFieldDTO(
-        id: UUID(), label: "Name", value: "Alice Smith", isRequired: true, displayOrder: 0)
+        id: UUID(), label: "Name", value: "Alice Smith", isCopyable: true, order: 0)
     ]
 
     let fields2 = [
       CardFieldDTO(
-        id: UUID(), label: "Name", value: "Bob Johnson", isRequired: true, displayOrder: 0)
+        id: UUID(), label: "Name", value: "Bob Johnson", isCopyable: true, order: 0)
     ]
 
     _ = try await cardService.createCard(
       title: "Card 1",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields1,
       tags: []
     )
@@ -321,7 +321,7 @@ final class CardServiceTests: XCTestCase {
     _ = try await cardService.createCard(
       title: "Card 2",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields2,
       tags: []
     )
@@ -336,13 +336,13 @@ final class CardServiceTests: XCTestCase {
   func testSearchCardsByTags() async throws {
     // Create cards with tags
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     _ = try await cardService.createCard(
       title: "Card 1",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: ["important", "work"]
     )
@@ -350,7 +350,7 @@ final class CardServiceTests: XCTestCase {
     _ = try await cardService.createCard(
       title: "Card 2",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: ["personal", "home"]
     )
@@ -367,13 +367,13 @@ final class CardServiceTests: XCTestCase {
   func testTogglePin() async throws {
     // Create a card
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     let card = try await cardService.createCard(
       title: "Test Card",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: []
     )
@@ -392,13 +392,13 @@ final class CardServiceTests: XCTestCase {
   func testPinnedCardsSortFirst() async throws {
     // Create multiple cards
     let fields = [
-      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isRequired: true, displayOrder: 0)
+      CardFieldDTO(id: UUID(), label: "Name", value: "John Doe", isCopyable: true, order: 0)
     ]
 
     let card1 = try await cardService.createCard(
       title: "Card 1",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: []
     )
@@ -406,7 +406,7 @@ final class CardServiceTests: XCTestCase {
     let card2 = try await cardService.createCard(
       title: "Card 2",
       group: "Personal",
-      cardType: "Address",
+      type: "Address",
       fields: fields,
       tags: []
     )

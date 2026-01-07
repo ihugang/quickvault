@@ -33,20 +33,20 @@ struct CardDTO {
   let id: UUID
   let title: String
   let group: String
-  let cardType: String
+  let type: String
   let fields: [CardFieldDTO]
   let isPinned: Bool
   let tags: [String]
   let createdAt: Date
-  let modifiedAt: Date
+  let updatedAt: Date
 }
 
 struct CardFieldDTO {
   let id: UUID
   let label: String
   let value: String
-  let isRequired: Bool
-  let displayOrder: Int16
+  let isCopyable: Bool
+  let order: Int16
 }
 
 // MARK: - Card Service Protocol / 卡片服务协议
@@ -55,7 +55,7 @@ protocol CardService {
   func createCard(
     title: String,
     group: String,
-    cardType: String,
+    type: String,
     fields: [CardFieldDTO],
     tags: [String]
   ) async throws -> CardDTO
@@ -98,7 +98,7 @@ class CardServiceImpl: CardService {
   func createCard(
     title: String,
     group: String,
-    cardType: String,
+    type: String,
     fields: [CardFieldDTO],
     tags: [String]
   ) async throws -> CardDTO {
@@ -107,14 +107,15 @@ class CardServiceImpl: CardService {
       card.id = UUID()
       card.title = title
       card.group = group
-      card.cardType = cardType
+      card.type = type
       card.isPinned = false
       card.createdAt = Date()
-      card.modifiedAt = Date()
+      card.updatedAt = Date()
 
-      // Store tags as JSON
-      if let tagsData = try? JSONEncoder().encode(tags) {
-        card.tags = tagsData
+      // Store tags as JSON string
+      if let tagsData = try? JSONEncoder().encode(tags),
+         let tagsString = String(data: tagsData, encoding: .utf8) {
+        card.tagsJSON = tagsString
       }
 
       // Create and encrypt fields
@@ -122,8 +123,8 @@ class CardServiceImpl: CardService {
         let field = CardField(context: self.context)
         field.id = UUID()
         field.label = fieldDTO.label
-        field.isRequired = fieldDTO.isRequired
-        field.displayOrder = fieldDTO.displayOrder
+        field.isCopyable = fieldDTO.isCopyable
+        field.order = fieldDTO.order
         field.card = card
 
         // Encrypt field value
@@ -170,8 +171,9 @@ class CardServiceImpl: CardService {
       }
 
       if let tags = tags {
-        if let tagsData = try? JSONEncoder().encode(tags) {
-          card.tags = tagsData
+        if let tagsData = try? JSONEncoder().encode(tags),
+           let tagsString = String(data: tagsData, encoding: .utf8) {
+          card.tagsJSON = tagsString
         }
       }
 
@@ -189,8 +191,8 @@ class CardServiceImpl: CardService {
           let field = CardField(context: self.context)
           field.id = UUID()
           field.label = fieldDTO.label
-          field.isRequired = fieldDTO.isRequired
-          field.displayOrder = fieldDTO.displayOrder
+          field.isCopyable = fieldDTO.isCopyable
+          field.order = fieldDTO.order
           field.card = card
 
           // Encrypt field value
@@ -204,7 +206,7 @@ class CardServiceImpl: CardService {
       }
 
       // Update modification timestamp
-      card.modifiedAt = Date()
+      card.updatedAt = Date()
 
       // Save context
       do {
@@ -243,7 +245,7 @@ class CardServiceImpl: CardService {
       let fetchRequest: NSFetchRequest<Card> = Card.fetchRequest()
       fetchRequest.sortDescriptors = [
         NSSortDescriptor(key: "isPinned", ascending: false),
-        NSSortDescriptor(key: "modifiedAt", ascending: false),
+        NSSortDescriptor(key: "updatedAt", ascending: false),
       ]
 
       do {
@@ -277,7 +279,7 @@ class CardServiceImpl: CardService {
       fetchRequest.predicate = titlePredicate
       fetchRequest.sortDescriptors = [
         NSSortDescriptor(key: "isPinned", ascending: false),
-        NSSortDescriptor(key: "modifiedAt", ascending: false),
+        NSSortDescriptor(key: "updatedAt", ascending: false),
       ]
 
       do {
@@ -286,13 +288,14 @@ class CardServiceImpl: CardService {
         // Also search in decrypted field values and tags
         let filteredCards = try cards.filter { card in
           // Check title (already matched by predicate)
-          if card.title?.localizedCaseInsensitiveContains(query) == true {
+          if card.title.localizedCaseInsensitiveContains(query) {
             return true
           }
 
           // Check tags
-          if let tagsData = card.tags,
-            let tags = try? JSONDecoder().decode([String].self, from: tagsData)
+          if let tagsString = card.tagsJSON,
+             let tagsData = tagsString.data(using: .utf8),
+             let tags = try? JSONDecoder().decode([String].self, from: tagsData)
           {
             if tags.contains(where: { $0.localizedCaseInsensitiveContains(query) }) {
               return true
@@ -302,11 +305,10 @@ class CardServiceImpl: CardService {
           // Check field values (need to decrypt)
           if let fields = card.fields as? Set<CardField> {
             for field in fields {
-              if let encryptedValue = field.encryptedValue {
-                if let decryptedValue = try? self.cryptoService.decrypt(encryptedValue) {
-                  if decryptedValue.localizedCaseInsensitiveContains(query) {
-                    return true
-                  }
+              let encryptedValue = field.encryptedValue
+              if let decryptedValue = try? self.cryptoService.decrypt(encryptedValue) {
+                if decryptedValue.localizedCaseInsensitiveContains(query) {
+                  return true
                 }
               }
             }
@@ -331,7 +333,7 @@ class CardServiceImpl: CardService {
       }
 
       card.isPinned.toggle()
-      card.modifiedAt = Date()
+      card.updatedAt = Date()
 
       do {
         try self.context.save()
@@ -354,28 +356,23 @@ class CardServiceImpl: CardService {
   }
 
   private func convertToDTO(_ card: Card) throws -> CardDTO {
-    guard let id = card.id,
-      let title = card.title,
-      let group = card.group,
-      let cardType = card.cardType,
-      let createdAt = card.createdAt,
-      let modifiedAt = card.modifiedAt
-    else {
-      throw CardServiceError.invalidData
-    }
+    // Card properties are not optional in the data model
+    let id = card.id
+    let title = card.title
+    let group = card.group
+    let type = card.type
+    let createdAt = card.createdAt
+    let updatedAt = card.updatedAt
 
     // Decrypt fields
     var fieldDTOs: [CardFieldDTO] = []
     if let fields = card.fields as? Set<CardField> {
-      let sortedFields = fields.sorted { $0.displayOrder < $1.displayOrder }
+      let sortedFields = fields.sorted { $0.order < $1.order }
 
       for field in sortedFields {
-        guard let fieldId = field.id,
-          let label = field.label,
-          let encryptedValue = field.encryptedValue
-        else {
-          continue
-        }
+        let fieldId = field.id
+        let label = field.label
+        let encryptedValue = field.encryptedValue
 
         do {
           let decryptedValue = try cryptoService.decrypt(encryptedValue)
@@ -383,8 +380,8 @@ class CardServiceImpl: CardService {
             id: fieldId,
             label: label,
             value: decryptedValue,
-            isRequired: field.isRequired,
-            displayOrder: field.displayOrder
+            isCopyable: field.isCopyable,
+            order: field.order
           )
           fieldDTOs.append(fieldDTO)
         } catch {
@@ -393,9 +390,10 @@ class CardServiceImpl: CardService {
       }
     }
 
-    // Decode tags
+    // Decode tags from JSON string
     var tags: [String] = []
-    if let tagsData = card.tags {
+    if let tagsString = card.tagsJSON,
+       let tagsData = tagsString.data(using: .utf8) {
       tags = (try? JSONDecoder().decode([String].self, from: tagsData)) ?? []
     }
 
@@ -403,12 +401,12 @@ class CardServiceImpl: CardService {
       id: id,
       title: title,
       group: group,
-      cardType: cardType,
+      type: type,
       fields: fieldDTOs,
       isPinned: card.isPinned,
       tags: tags,
       createdAt: createdAt,
-      modifiedAt: modifiedAt
+      updatedAt: updatedAt
     )
   }
 }
