@@ -420,20 +420,34 @@ class CardEditorViewModel: ObservableObject {
     
     /// 保存证件照片作为附件
     private func saveDocumentPhotos(for cardId: UUID) async {
+        print("[CardEditor] saveDocumentPhotos called, frontPhoto: \(frontPhoto != nil), backPhoto: \(backPhoto != nil)")
+        
+        // 获取现有附件，用于删除同名旧附件
+        let existingAttachments = (try? await attachmentService.fetchAttachments(for: cardId)) ?? []
+        
         // 保存正面照片
         if let frontImage = frontPhoto,
            let imageData = frontImage.jpegData(compressionQuality: 0.8) {
             let fileName = selectedType.frontPhotoFileName
+            print("[CardEditor] Saving front photo: \(fileName), size: \(imageData.count)")
+            
+            // 删除同名旧附件
+            if let oldAttachment = existingAttachments.first(where: { $0.fileName == fileName }) {
+                try? await attachmentService.deleteAttachment(id: oldAttachment.id)
+                print("[CardEditor] Deleted old front photo: \(oldAttachment.id)")
+            }
+            
             do {
-                _ = try await attachmentService.addAttachment(
+                let attachment = try await attachmentService.addAttachment(
                     to: cardId,
                     fileData: imageData,
                     fileName: fileName,
                     mimeType: "image/jpeg",
                     watermarkText: nil
                 )
+                print("[CardEditor] Front photo saved successfully: \(attachment.id)")
             } catch {
-                print("Failed to save front photo: \(error)")
+                print("[CardEditor] Failed to save front photo: \(error)")
             }
         }
         
@@ -441,16 +455,25 @@ class CardEditorViewModel: ObservableObject {
         if let backImage = backPhoto,
            let imageData = backImage.jpegData(compressionQuality: 0.8) {
             let fileName = selectedType.backPhotoFileName
+            print("[CardEditor] Saving back photo: \(fileName), size: \(imageData.count)")
+            
+            // 删除同名旧附件
+            if let oldAttachment = existingAttachments.first(where: { $0.fileName == fileName }) {
+                try? await attachmentService.deleteAttachment(id: oldAttachment.id)
+                print("[CardEditor] Deleted old back photo: \(oldAttachment.id)")
+            }
+            
             do {
-                _ = try await attachmentService.addAttachment(
+                let attachment = try await attachmentService.addAttachment(
                     to: cardId,
                     fileData: imageData,
                     fileName: fileName,
                     mimeType: "image/jpeg",
                     watermarkText: nil
                 )
+                print("[CardEditor] Back photo saved successfully: \(attachment.id)")
             } catch {
-                print("Failed to save back photo: \(error)")
+                print("[CardEditor] Failed to save back photo: \(error)")
             }
         }
     }
