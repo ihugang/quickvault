@@ -18,69 +18,66 @@ struct AttachmentListView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("附件 / Attachments")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                
-                Spacer()
-                
-                Button {
-                    showImagePicker = true
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundStyle(.blue)
-                }
-            }
-            
+        Group {
             if viewModel.isLoading {
                 ProgressView()
                     .frame(maxWidth: .infinity)
-            } else if viewModel.attachments.isEmpty {
-                Text("暂无附件 / No attachments")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity)
                     .padding()
-            } else {
+            } else if !viewModel.attachments.isEmpty {
+                VStack(alignment: .leading, spacing: 12) {
+                    HStack {
+                        Text("附件 / Attachments")
+                            .font(.headline)
+                            .foregroundStyle(.secondary)
+                        
+                        Spacer()
+                        
+                        Button {
+                            showImagePicker = true
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundStyle(.blue)
+                        }
+                    }
+                    
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 12) {
-                    ForEach(viewModel.attachments) { attachment in
-                        AttachmentThumbnailView(attachment: attachment)
-                            .onTapGesture {
-                                selectedAttachment = attachment
-                            }
-                            .contextMenu {
-                                Button {
+                        ForEach(viewModel.attachments) { attachment in
+                            AttachmentThumbnailView(attachment: attachment)
+                                .onTapGesture {
                                     selectedAttachment = attachment
-                                    showWatermarkSheet = true
-                                } label: {
-                                    Label("水印 / Watermark", systemImage: "textformat")
                                 }
-                                
-                                Button {
-                                    attachmentToExport = attachment
-                                    showExportSheet = true
-                                } label: {
-                                    Label("导出 / Export", systemImage: "square.and.arrow.up")
-                                }
-                                
-                                Button(role: .destructive) {
-                                    Task {
-                                        await viewModel.deleteAttachment(attachment.id)
+                                .contextMenu {
+                                    Button {
+                                        selectedAttachment = attachment
+                                        showWatermarkSheet = true
+                                    } label: {
+                                        Label("水印 / Watermark", systemImage: "textformat")
                                     }
-                                } label: {
-                                    Label("删除 / Delete", systemImage: "trash")
+                                    
+                                    Button {
+                                        attachmentToExport = attachment
+                                        showExportSheet = true
+                                    } label: {
+                                        Label("导出 / Export", systemImage: "square.and.arrow.up")
+                                    }
+                                    
+                                    Button(role: .destructive) {
+                                        Task {
+                                            await viewModel.deleteAttachment(attachment.id)
+                                        }
+                                    } label: {
+                                        Label("删除 / Delete", systemImage: "trash")
+                                    }
                                 }
-                            }
+                        }
                     }
                 }
+                .padding()
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .shadow(color: .black.opacity(0.05), radius: 5, y: 2)
             }
         }
-        .padding()
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(color: .black.opacity(0.05), radius: 5, y: 2)
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(cardId: cardId, viewModel: viewModel)
         }
