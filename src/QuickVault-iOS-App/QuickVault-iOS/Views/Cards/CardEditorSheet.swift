@@ -24,20 +24,30 @@ struct CardEditorSheet: View {
     var body: some View {
         NavigationStack {
             Form {
+                // Card Type Selection - Tag Style at Top
+                if !viewModel.isEditing {
+                    Section {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 10) {
+                                ForEach(CardEditorViewModel.CardType.allCases) { type in
+                                    CardTypeTag(
+                                        title: type.displayName,
+                                        isSelected: viewModel.selectedType == type
+                                    ) {
+                                        viewModel.setupFieldsForType(type)
+                                    }
+                                }
+                            }
+                            .padding(.vertical, 4)
+                        }
+                    } header: {
+                        Text("cards.type.select".localized)
+                    }
+                }
+                
                 // Basic Info Section
                 Section {
                     TextField("cards.title.placeholder".localized, text: $viewModel.title)
-                    
-                    if !viewModel.isEditing {
-                        Picker("cards.type.general".localized, selection: $viewModel.selectedType) {
-                            ForEach(CardEditorViewModel.CardType.allCases) { type in
-                                Text(type.displayName).tag(type)
-                            }
-                        }
-                        .onChange(of: viewModel.selectedType) { _, newType in
-                            viewModel.setupFieldsForType(newType)
-                        }
-                    }
                     
                     Picker("cards.group.placeholder".localized, selection: $viewModel.selectedGroup) {
                         ForEach(Array(zip(viewModel.groupOptions, viewModel.groupDisplayNames)), id: \.0) { option, displayName in
@@ -205,6 +215,28 @@ struct CardEditorSheet: View {
                 }
             }
         }
+    }
+}
+
+// MARK: - Card Type Tag Component
+
+struct CardTypeTag: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.subheadline)
+                .fontWeight(isSelected ? .semibold : .regular)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(isSelected ? Color.accentColor : Color(.systemGray5))
+                .foregroundStyle(isSelected ? .white : .primary)
+                .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
     }
 }
 

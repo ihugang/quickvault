@@ -106,6 +106,7 @@
 "field.content" = "Content";
 
 // MARK: - Card Types
+"cards.type.select" = "Select Type";
 "cards.type.idcard" = "ID Card";
 "cards.type.passport" = "Passport";
 "cards.type.businesslicense" = "Business License";

@@ -106,6 +106,7 @@
 "field.content" = "内容";
 
 // MARK: - Card Types
+"cards.type.select" = "选择类型";
 "cards.type.idcard" = "身份证";
 "cards.type.passport" = "护照";
 "cards.type.businesslicense" = "营业执照";
