@@ -443,8 +443,8 @@ struct DocumentPhotoCard: View {
             if let attachment = attachment, let thumbnail = attachment.thumbnailImage {
                 Image(uiImage: thumbnail)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 100)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 200)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .onTapGesture {
                         onTap(attachment)
@@ -453,7 +453,7 @@ struct DocumentPhotoCard: View {
                 // 占位符
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color(.systemGray5))
-                    .frame(height: 100)
+                    .frame(height: 120)
                     .overlay {
                         VStack(spacing: 4) {
                             Image(systemName: "photo")

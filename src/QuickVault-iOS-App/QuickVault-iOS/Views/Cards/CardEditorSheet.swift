@@ -143,11 +143,13 @@ struct CardEditorSheet: View {
                                 }
                             }
                             
-                            if field.label.contains("备注") || field.label.contains("Notes") || 
-                               field.label.contains("内容") || field.label.contains("Content") ||
-                               field.label.contains("详细地址") || field.label.contains("Address") {
+                            if field.isMultiline {
                                 TextEditor(text: $field.value)
                                     .frame(minHeight: 80)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color(.systemGray4), lineWidth: 1)
+                                    )
                             } else {
                                 TextField(field.label, text: $field.value)
                                     .textFieldStyle(.roundedBorder)

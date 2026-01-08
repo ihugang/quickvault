@@ -331,6 +331,7 @@ final class OCRServiceImpl: OCRService {
             // 企业名称 - OCR 可能把"名"和"称"分开识别
             // 格式1: "名称 XXX公司" 或 "企业名称 XXX公司"
             // 格式2: "名" 在一行，"称 XXX公司" 在下一行
+            // 格式3: 直接包含公司名称的行（以"公司"、"有限"等结尾）
             if result.companyName == nil {
                 if trimmed.contains("名称") || trimmed.contains("企业名称") {
                     result.companyName = extractValueAfterLabel(trimmed, label: "名称")
@@ -339,11 +340,23 @@ final class OCRServiceImpl: OCRService {
                     // "名" 单独一行，下一行是 "称 XXX公司"
                     let nextLine = texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines)
                     if nextLine.hasPrefix("称") {
-                        result.companyName = String(nextLine.dropFirst()).trimmingCharacters(in: .whitespaces)
+                        let name = String(nextLine.dropFirst()).trimmingCharacters(in: .whitespaces)
+                        if !name.isEmpty {
+                            result.companyName = name
+                        }
                     }
-                } else if trimmed.hasPrefix("称 ") || trimmed.hasPrefix("称") {
-                    // "称 XXX公司" 格式
-                    result.companyName = String(trimmed.dropFirst()).trimmingCharacters(in: .whitespaces)
+                } else if trimmed.hasPrefix("称 ") {
+                    // "称 XXX公司" 格式（带空格）
+                    let name = String(trimmed.dropFirst(2)).trimmingCharacters(in: .whitespaces)
+                    if !name.isEmpty && (name.contains("公司") || name.contains("企业") || name.contains("有限")) {
+                        result.companyName = name
+                    }
+                } else if trimmed.hasPrefix("称") && trimmed.count > 1 {
+                    // "称XXX公司" 格式（不带空格）
+                    let name = String(trimmed.dropFirst()).trimmingCharacters(in: .whitespaces)
+                    if !name.isEmpty && (name.contains("公司") || name.contains("企业") || name.contains("有限")) {
+                        result.companyName = name
+                    }
                 }
             }
             

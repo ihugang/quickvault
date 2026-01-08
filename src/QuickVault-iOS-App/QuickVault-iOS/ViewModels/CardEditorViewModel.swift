@@ -83,7 +83,18 @@ class CardEditorViewModel: ObservableObject {
         var value: String
         var isRequired: Bool
         var isCopyable: Bool
+        var isMultiline: Bool
         var order: Int16
+        
+        init(id: UUID, label: String, value: String, isRequired: Bool, isCopyable: Bool, order: Int16, isMultiline: Bool = false) {
+            self.id = id
+            self.label = label
+            self.value = value
+            self.isRequired = isRequired
+            self.isCopyable = isCopyable
+            self.isMultiline = isMultiline
+            self.order = order
+        }
     }
     
     // MARK: - Group Options
@@ -215,10 +226,10 @@ class CardEditorViewModel: ObservableObject {
                 EditableField(id: UUID(), label: "field.license.creditcode".localized, value: "", isRequired: true, isCopyable: true, order: 2),
                 EditableField(id: UUID(), label: "field.license.legalrep".localized, value: "", isRequired: true, isCopyable: true, order: 3),
                 EditableField(id: UUID(), label: "field.license.capital".localized, value: "", isRequired: false, isCopyable: true, order: 4),
-                EditableField(id: UUID(), label: "field.license.address".localized, value: "", isRequired: false, isCopyable: true, order: 5),
+                EditableField(id: UUID(), label: "field.license.address".localized, value: "", isRequired: false, isCopyable: true, order: 5, isMultiline: true),
                 EditableField(id: UUID(), label: "field.license.establishdate".localized, value: "", isRequired: false, isCopyable: true, order: 6),
                 EditableField(id: UUID(), label: "field.license.businessterm".localized, value: "", isRequired: false, isCopyable: true, order: 7),
-                EditableField(id: UUID(), label: "field.license.scope".localized, value: "", isRequired: false, isCopyable: true, order: 8),
+                EditableField(id: UUID(), label: "field.license.scope".localized, value: "", isRequired: false, isCopyable: true, order: 8, isMultiline: true),
             ]
         }
     }
