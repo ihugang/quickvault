@@ -68,6 +68,7 @@ public class AuthenticationServiceImpl: AuthenticationService {
   private let cryptoService: CryptoService
 
   private let masterPasswordKey = "com.quickvault.masterPassword"
+  private let biometricPasswordKey = "com.quickvault.biometricPassword"
   private let biometricEnabledKey = "com.quickvault.biometricEnabled"
   private let failedAttemptsKey = "com.quickvault.failedAttempts"
   private let lastFailedAttemptKey = "com.quickvault.lastFailedAttempt"
@@ -122,6 +123,9 @@ public class AuthenticationServiceImpl: AuthenticationService {
       // Initialize encryption key with the password
       try cryptoService.initializeKey(password: password, salt: nil)
       
+      // Store password for biometric authentication (if enabled later)
+      storeBiometricPassword(password)
+      
       stateSubject.send(.unlocked)
     } catch {
       throw AuthenticationError.keychainError(error.localizedDescription)
@@ -150,6 +154,8 @@ public class AuthenticationServiceImpl: AuthenticationService {
         // Success - initialize encryption key and reset failed attempts
         try cryptoService.initializeKey(password: password, salt: nil)
         resetFailedAttempts()
+        // Store password for biometric authentication
+        storeBiometricPassword(password)
         stateSubject.send(.unlocked)
       } else {
         // Failed - increment failed attempts
@@ -181,6 +187,11 @@ public class AuthenticationServiceImpl: AuthenticationService {
         .deviceOwnerAuthenticationWithBiometrics, localizedReason: reason)
 
       if success {
+        // Load the stored password and initialize encryption key
+        if let passwordData = try? keychainService.load(key: biometricPasswordKey),
+           let password = String(data: passwordData, encoding: .utf8) {
+          try cryptoService.initializeKey(password: password, salt: nil)
+        }
         stateSubject.send(.unlocked)
       } else {
         throw AuthenticationError.biometricFailed
@@ -220,6 +231,9 @@ public class AuthenticationServiceImpl: AuthenticationService {
       throw AuthenticationError.keychainError("Failed to encode new password hash")
     }
     try keychainService.save(key: masterPasswordKey, data: newPasswordData)
+    
+    // Update stored password for biometric authentication
+    storeBiometricPassword(newPassword)
   }
 
   // MARK: - Lock Management
@@ -238,6 +252,19 @@ public class AuthenticationServiceImpl: AuthenticationService {
 
   public func enableBiometric(_ enabled: Bool) throws {
     UserDefaults.standard.set(enabled, forKey: biometricEnabledKey)
+    
+    // If disabling biometric, remove the stored password
+    if !enabled {
+      try? keychainService.delete(key: biometricPasswordKey)
+    }
+  }
+  
+  /// Store password for biometric authentication (called after successful password auth)
+  private func storeBiometricPassword(_ password: String) {
+    guard isBiometricEnabled(), let passwordData = password.data(using: .utf8) else {
+      return
+    }
+    try? keychainService.save(key: biometricPasswordKey, data: passwordData)
   }
 
   public func isBiometricEnabled() -> Bool {
