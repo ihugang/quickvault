@@ -20,9 +20,15 @@ class CardEditorViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var validationErrors: [String: String] = [:]
     
+    // MARK: - Document Photos (for OCR and attachment)
+    
+    @Published var frontPhoto: UIImage?
+    @Published var backPhoto: UIImage?
+    
     // MARK: - OCR Service
     
     private let ocrService: OCRService = OCRServiceImpl.shared
+    private let attachmentService: AttachmentService
     
     // MARK: - Card Type
     
@@ -104,8 +110,9 @@ class CardEditorViewModel: ObservableObject {
     
     // MARK: - Initialization
     
-    init(cardService: CardService) {
+    init(cardService: CardService, attachmentService: AttachmentService? = nil) {
         self.cardService = cardService
+        self.attachmentService = attachmentService ?? AttachmentServiceImpl.shared
         setupFieldsForType(.address)
     }
     
@@ -341,6 +348,9 @@ class CardEditorViewModel: ObservableObject {
                     fields: fieldDTOs,
                     tags: tags
                 )
+                
+                // Save document photos as attachments
+                await saveDocumentPhotos(for: savedCard.id)
             }
             
             isLoading = false
@@ -403,6 +413,43 @@ class CardEditorViewModel: ObservableObject {
             fields[i].value = ""
         }
         title = ""
+    }
+    
+    /// 保存证件照片作为附件
+    private func saveDocumentPhotos(for cardId: UUID) async {
+        // 保存正面照片
+        if let frontImage = frontPhoto,
+           let imageData = frontImage.jpegData(compressionQuality: 0.8) {
+            let fileName = selectedType.frontPhotoFileName
+            do {
+                _ = try await attachmentService.addAttachment(
+                    to: cardId,
+                    fileData: imageData,
+                    fileName: fileName,
+                    mimeType: "image/jpeg",
+                    watermarkText: nil
+                )
+            } catch {
+                print("Failed to save front photo: \(error)")
+            }
+        }
+        
+        // 保存背面照片（如果有）
+        if let backImage = backPhoto,
+           let imageData = backImage.jpegData(compressionQuality: 0.8) {
+            let fileName = selectedType.backPhotoFileName
+            do {
+                _ = try await attachmentService.addAttachment(
+                    to: cardId,
+                    fileData: imageData,
+                    fileName: fileName,
+                    mimeType: "image/jpeg",
+                    watermarkText: nil
+                )
+            } catch {
+                print("Failed to save back photo: \(error)")
+            }
+        }
     }
     
     private func fillIDCardFields(from result: IDCardOCRResult, isFrontSide: Bool = true) {

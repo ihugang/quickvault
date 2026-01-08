@@ -69,6 +69,14 @@ protocol AttachmentService {
 
 final class AttachmentServiceImpl: AttachmentService, @unchecked Sendable {
     
+    // MARK: - Shared Instance
+    
+    static let shared = AttachmentServiceImpl(
+        persistenceController: PersistenceController.shared,
+        cryptoService: CryptoServiceImpl.shared,
+        watermarkService: WatermarkServiceImpl()
+    )
+    
     // MARK: - Constants
     
     private let maxFileSize: Int64 = 10 * 1024 * 1024  // 10MB

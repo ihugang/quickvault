@@ -78,6 +78,7 @@ struct CardEditorSheet: View {
                                    let data = try? await newItem.loadTransferable(type: Data.self),
                                    let image = UIImage(data: data) {
                                     frontImage = image
+                                    viewModel.frontPhoto = image  // 保存到 ViewModel
                                     // 正面照片：清空并重新识别
                                     await viewModel.recognizeAndFillFromImage(image, isFrontSide: true)
                                 }
@@ -100,6 +101,7 @@ struct CardEditorSheet: View {
                                        let data = try? await newItem.loadTransferable(type: Data.self),
                                        let image = UIImage(data: data) {
                                         backImage = image
+                                        viewModel.backPhoto = image  // 保存到 ViewModel
                                         // 背面照片：只更新背面字段，不清空正面
                                         await viewModel.recognizeAndFillFromImage(image, isFrontSide: false)
                                     }
@@ -378,6 +380,30 @@ extension CardEditorViewModel.CardType {
             return "ocr.hint.license".localized
         default:
             return ""
+        }
+    }
+    
+    /// 正面照片文件名
+    var frontPhotoFileName: String {
+        switch self {
+        case .idCard:
+            return "idcard_front.jpg"
+        case .passport:
+            return "passport_datapage.jpg"
+        case .businessLicense:
+            return "business_license.jpg"
+        default:
+            return "document_front.jpg"
+        }
+    }
+    
+    /// 背面照片文件名
+    var backPhotoFileName: String {
+        switch self {
+        case .idCard:
+            return "idcard_back.jpg"
+        default:
+            return "document_back.jpg"
         }
     }
 }

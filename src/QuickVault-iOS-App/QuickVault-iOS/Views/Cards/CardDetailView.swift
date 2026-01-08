@@ -27,6 +27,9 @@ struct CardDetailView: View {
                         // Card Header
                         CardHeaderView(card: card)
                         
+                        // Attachments (Document Photos)
+                        AttachmentListView(cardId: card.id)
+                        
                         // Fields
                         FieldsSection(
                             fields: card.fields,

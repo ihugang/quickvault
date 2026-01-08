@@ -135,39 +135,34 @@ final class OCRServiceImpl: OCRService {
                 result.idNumber = String(trimmed[idMatch]).uppercased()
             }
             
-            // 住址 - 需要更精确的匹配，避免误识别
+            // 住址 - 收集"住址"后的 1-3 行内容
             if trimmed.contains("住址") && result.address == nil {
-                // 先尝试从同一行提取
+                var addressParts: [String] = []
+                
+                // 先尝试从同一行提取"住址"后面的内容
                 if let addressValue = extractValueAfterLabel(trimmed, label: "住址"), !addressValue.isEmpty {
-                    // 过滤掉明显不是地址的内容（如性别、民族等）
-                    if !addressValue.contains("性别") && !addressValue.contains("民族") && addressValue.count > 5 {
-                        result.address = addressValue
-                    }
+                    addressParts.append(addressValue)
                 }
                 
-                // 如果同一行没有有效地址，从后续行收集
-                if result.address == nil || result.address?.isEmpty == true {
-                    var addressParts: [String] = []
-                    for i in (index + 1)..<min(index + 5, texts.count) {
-                        let part = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
-                        // 排除非地址内容
-                        if part.contains("公民身份") || part.contains("身份证") || 
-                           part.contains("性别") || part.contains("民族") ||
-                           part.contains("出生") || part.isEmpty ||
-                           part.range(of: #"^\d{17}[\dXx]$"#, options: .regularExpression) != nil {
-                            break
-                        }
-                        // 地址通常包含省市区街道等
-                        if part.contains("省") || part.contains("市") || part.contains("区") || 
-                           part.contains("县") || part.contains("镇") || part.contains("村") ||
-                           part.contains("路") || part.contains("街") || part.contains("号") ||
-                           addressParts.count > 0 {
-                            addressParts.append(part)
-                        }
+                // 继续收集后续 1-3 行作为地址
+                for i in (index + 1)..<min(index + 4, texts.count) {
+                    let part = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    // 遇到这些内容时停止收集
+                    if part.isEmpty ||
+                       part.contains("公民身份") || 
+                       part.contains("身份证") ||
+                       part.range(of: #"\d{17}[\dXx]"#, options: .regularExpression) != nil ||
+                       part.range(of: #"\d{4}年\d{1,2}月\d{1,2}日"#, options: .regularExpression) != nil {
+                        break
                     }
-                    if !addressParts.isEmpty {
-                        result.address = addressParts.joined()
-                    }
+                    
+                    // 收集地址行
+                    addressParts.append(part)
+                }
+                
+                if !addressParts.isEmpty {
+                    result.address = addressParts.joined()
                 }
             }
             
