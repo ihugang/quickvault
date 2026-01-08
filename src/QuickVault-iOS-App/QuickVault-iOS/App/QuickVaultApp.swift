@@ -80,5 +80,14 @@ struct RootView: View {
             }
         }
         .animation(.easeInOut(duration: 0.3), value: authViewModel.authState)
+        .preferredColorScheme(colorScheme)
+    }
+    
+    private var colorScheme: ColorScheme? {
+        switch settingsViewModel.appearanceMode {
+        case .system: return nil
+        case .light: return .light
+        case .dark: return .dark
+        }
     }
 }

@@ -114,6 +114,11 @@
 "settings.security.autolock.15min" = "After 15 minutes";
 "settings.security.autolock.never" = "Never";
 "settings.security.changepassword" = "Change Password";
+"settings.appearance" = "Appearance";
+"settings.appearance.title" = "Display";
+"settings.appearance.auto" = "Auto";
+"settings.appearance.light" = "Light";
+"settings.appearance.dark" = "Dark";
 "settings.language" = "Language";
 "settings.language.title" = "App Language";
 "settings.language.system" = "System Default";

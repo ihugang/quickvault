@@ -47,6 +47,20 @@ struct SettingsView: View {
                     Text(localizationManager.localizedString("settings.security"))
                 }
                 
+                // Appearance Section
+                Section {
+                    Picker(localizationManager.localizedString("settings.appearance"), selection: $viewModel.appearanceMode) {
+                        ForEach(AppearanceMode.allCases) { mode in
+                            Text(localizationManager.localizedString(mode.localizationKey)).tag(mode)
+                        }
+                    }
+                    .onChange(of: viewModel.appearanceMode) { _, newValue in
+                        viewModel.saveAppearanceMode(newValue)
+                    }
+                } header: {
+                    Text(localizationManager.localizedString("settings.appearance.title"))
+                }
+                
                 // Language Section
                 Section {
                     Button {

@@ -114,6 +114,11 @@
 "settings.security.autolock.15min" = "15分钟后";
 "settings.security.autolock.never" = "从不";
 "settings.security.changepassword" = "更改密码";
+"settings.appearance" = "外观";
+"settings.appearance.title" = "显示";
+"settings.appearance.auto" = "自动";
+"settings.appearance.light" = "浅色";
+"settings.appearance.dark" = "深色";
 "settings.language" = "语言";
 "settings.language.title" = "应用语言";
 "settings.language.system" = "跟随系统";

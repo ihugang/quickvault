@@ -2,6 +2,23 @@ import Combine
 import Foundation
 import QuickVaultCore
 
+/// App appearance mode / 外观模式
+enum AppearanceMode: Int, CaseIterable, Identifiable {
+    case system = 0
+    case light = 1
+    case dark = 2
+    
+    var id: Int { rawValue }
+    
+    var localizationKey: String {
+        switch self {
+        case .system: return "settings.appearance.auto"
+        case .light: return "settings.appearance.light"
+        case .dark: return "settings.appearance.dark"
+        }
+    }
+}
+
 /// Auto-lock timeout options / 自动锁定超时选项
 enum AutoLockTimeout: Int, CaseIterable, Identifiable {
     case immediately = 0
@@ -43,6 +60,7 @@ class SettingsViewModel: ObservableObject {
     // MARK: - Published Properties
     
     @Published var autoLockTimeout: AutoLockTimeout = .fiveMinutes
+    @Published var appearanceMode: AppearanceMode = .system
     @Published var isBiometricEnabled: Bool = false
     @Published var isBiometricAvailable: Bool = false
     @Published var isLoading: Bool = false
@@ -62,6 +80,7 @@ class SettingsViewModel: ObservableObject {
     // MARK: - Keys
     
     private let autoLockTimeoutKey = "com.quickvault.autoLockTimeout"
+    private let appearanceModeKey = "com.quickvault.appearanceMode"
     
     // MARK: - Initialization
     
@@ -77,6 +96,10 @@ class SettingsViewModel: ObservableObject {
         let savedTimeout = userDefaults.integer(forKey: autoLockTimeoutKey)
         autoLockTimeout = AutoLockTimeout(rawValue: savedTimeout) ?? .fiveMinutes
         
+        // Load appearance mode
+        let savedAppearance = userDefaults.integer(forKey: appearanceModeKey)
+        appearanceMode = AppearanceMode(rawValue: savedAppearance) ?? .system
+        
         // Load biometric settings
         isBiometricAvailable = authService.isBiometricAvailable()
         isBiometricEnabled = authService.isBiometricEnabled()
@@ -87,6 +110,13 @@ class SettingsViewModel: ObservableObject {
     func saveAutoLockTimeout(_ timeout: AutoLockTimeout) {
         autoLockTimeout = timeout
         userDefaults.set(timeout.rawValue, forKey: autoLockTimeoutKey)
+    }
+    
+    // MARK: - Save Appearance Mode
+    
+    func saveAppearanceMode(_ mode: AppearanceMode) {
+        appearanceMode = mode
+        userDefaults.set(mode.rawValue, forKey: appearanceModeKey)
     }
     
     // MARK: - Toggle Biometric
