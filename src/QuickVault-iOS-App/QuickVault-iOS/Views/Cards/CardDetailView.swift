@@ -417,6 +417,9 @@ struct DocumentPhotosSection: View {
         .sheet(item: $selectedAttachment) { attachment in
             AttachmentPreviewView(attachment: attachment)
         }
+        .task {
+            await viewModel.loadAttachments()
+        }
     }
     
     private func findAttachment(fileName: String) -> AttachmentDTO? {
