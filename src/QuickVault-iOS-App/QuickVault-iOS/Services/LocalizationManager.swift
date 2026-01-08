@@ -142,11 +142,17 @@ class LocalizationManager: ObservableObject {
 
 extension String {
   var localized: String {
-    LocalizationManager.shared.localizedString(self)
+    // Use direct bundle lookup to avoid MainActor isolation issues
+    let languageCode = UserDefaults.standard.string(forKey: "app_language") ?? "en"
+    if let path = Bundle.main.path(forResource: languageCode, ofType: "lproj"),
+       let bundle = Bundle(path: path) {
+      return bundle.localizedString(forKey: self, value: nil, table: nil)
+    }
+    return Bundle.main.localizedString(forKey: self, value: nil, table: nil)
   }
   
   func localized(_ arguments: CVarArg...) -> String {
-    let format = LocalizationManager.shared.localizedString(self)
+    let format = self.localized
     return String(format: format, arguments: arguments)
   }
 }

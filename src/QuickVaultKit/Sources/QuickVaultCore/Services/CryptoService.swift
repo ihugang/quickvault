@@ -42,7 +42,7 @@ public protocol CryptoService {
   func hashPassword(_ password: String) -> String
 }
 
-public class CryptoServiceImpl: CryptoService {
+public final class CryptoServiceImpl: CryptoService, @unchecked Sendable {
   /// Shared singleton instance / 共享单例实例
   public static let shared = CryptoServiceImpl()
   

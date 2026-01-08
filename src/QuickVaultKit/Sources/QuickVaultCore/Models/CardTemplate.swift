@@ -8,7 +8,7 @@ import Foundation
 // MARK: - Field Definition
 
 /// Defines a single field in a card template
-public struct FieldDefinition {
+public struct FieldDefinition: Sendable {
   public let key: String
   public let label: String
   public let required: Bool
@@ -24,7 +24,7 @@ public struct FieldDefinition {
 
 // MARK: - Card Type
 
-public enum CardType: String, CaseIterable {
+public enum CardType: String, CaseIterable, Sendable {
   case general
   case address
   case invoice

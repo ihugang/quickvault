@@ -67,7 +67,7 @@ protocol AttachmentService {
 
 // MARK: - Attachment Service Implementation / 附件服务实现
 
-class AttachmentServiceImpl: AttachmentService {
+final class AttachmentServiceImpl: AttachmentService, @unchecked Sendable {
     
     // MARK: - Constants
     

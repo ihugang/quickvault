@@ -8,7 +8,7 @@
 
 import CoreData
 
-public struct PersistenceController {
+public struct PersistenceController: Sendable {
   public static let shared = PersistenceController()
 
   /// CloudKit container identifier - must match in both macOS and iOS apps
@@ -16,6 +16,30 @@ public struct PersistenceController {
   public static let cloudKitContainerIdentifier = "iCloud.com.quickvault.app"
   
   public let container: NSPersistentCloudKitContainer
+  
+  // nonisolated(unsafe) to suppress Swift 6 concurrency warnings
+  nonisolated(unsafe) public static var preview: PersistenceController = {
+    let controller = PersistenceController(inMemory: true, enableCloudKit: false)
+    let context = controller.viewContext
+
+    // Create sample data for previews
+    let card = Card(context: context)
+    card.id = UUID()
+    card.title = "Sample Card"
+    card.type = "general"
+    card.group = "personal"
+    card.isPinned = false
+    card.createdAt = Date()
+    card.updatedAt = Date()
+
+    do {
+      try context.save()
+    } catch {
+      fatalError("Failed to save preview data: \(error)")
+    }
+
+    return controller
+  }()
 
   public init(inMemory: Bool = false, enableCloudKit: Bool = true) {
     // Load model from the package bundle
@@ -62,28 +86,4 @@ public struct PersistenceController {
   public var viewContext: NSManagedObjectContext {
     container.viewContext
   }
-
-  // For testing (without CloudKit)
-  public static var preview: PersistenceController = {
-    let controller = PersistenceController(inMemory: true, enableCloudKit: false)
-    let context = controller.viewContext
-
-    // Create sample data for previews
-    let card = Card(context: context)
-    card.id = UUID()
-    card.title = "Sample Card"
-    card.type = "general"
-    card.group = "personal"
-    card.isPinned = false
-    card.createdAt = Date()
-    card.updatedAt = Date()
-
-    do {
-      try context.save()
-    } catch {
-      fatalError("Failed to save preview data: \(error)")
-    }
-
-    return controller
-  }()
 }
