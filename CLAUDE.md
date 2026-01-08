@@ -4,47 +4,99 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-QuickVault (随取) 是一个安全的 macOS 菜单栏应用程序,用于快速访问和管理个人及企业信息(地址、发票、密码等)。应用采用本地优先架构,所有敏感数据使用 AES-256-GCM 加密,支持 Touch ID 和主密码认证。
+QuickVault (随取) 是一个跨平台的安全信息管理应用，支持 **macOS** 和 **iOS**。应用采用本地优先架构，所有敏感数据使用 AES-256-GCM 加密，支持 Touch ID/Face ID 和主密码认证。
 
-QuickVault is a secure macOS menu bar application for quick access to personal and business information (addresses, invoices, credentials, etc.). It uses a local-first architecture with AES-256-GCM encryption for all sensitive data, supporting Touch ID and master password authentication.
+QuickVault is a cross-platform secure information management application supporting **macOS** and **iOS**. It uses a local-first architecture with AES-256-GCM encryption for all sensitive data, supporting Touch ID/Face ID and master password authentication.
+
+### Platform Features / 平台特性
+
+- **macOS**: 菜单栏应用，快速访问，全局热键 (Command+Shift+V)
+- **iOS**: Tab Bar 导航，图片水印功能，Face ID/Touch ID 认证
+
+### Code Sharing Strategy / 代码共享策略
+
+- **Shared/Core**: 核心业务逻辑和数据层（Services, Models, Utilities）- 100% 共享
+- **macOS/**: macOS 特定 UI 和功能（AppKit, 菜单栏管理）
+- **iOS/**: iOS 特定 UI 和功能（SwiftUI, 水印服务）
 
 ## Build & Development Commands
 
-### Building
+### 在 Xcode 中开发（推荐）/ Development in Xcode (Recommended)
+
+Xcode 原生支持 Swift Package Manager 项目，可以直接打开 `Package.swift` 进行开发：
+
 ```bash
-# Build the project
-swift build
+# 用 Xcode 打开项目 / Open project in Xcode
+open -a Xcode Package.swift
 
-# Build in release mode
-swift build -c release
+# 或双击 Package.swift 文件 / Or double-click Package.swift
+```
 
-# Clean build artifacts
+#### Xcode 中的操作 / Working in Xcode
+
+1. **选择运行目标 / Select Target**:
+   - 点击 Xcode 顶部的 Scheme 选择器
+   - macOS: 选择 `QuickVault-macOS` → `My Mac`
+   - iOS: 选择 `QuickVault-iOS` → iPhone/iPad 模拟器或真机
+
+2. **设置项目属性 / Project Settings**:
+   - 在左侧导航栏点击 **QuickVault** 项目（蓝色图标）
+   - 选择对应的 **Target**（QuickVault-macOS 或 QuickVault-iOS）
+   - **General** 标签页:
+     - Deployment Info → 最低 iOS/macOS 版本
+     - App Icons and Launch Screen
+     - Bundle Identifier, Version, Build
+   - **Signing & Capabilities** 标签页:
+     - Automatically manage signing（自动管理签名）
+     - Team（开发者账号）
+     - Capabilities（如 Keychain Sharing、AutoFill）
+
+3. **构建和运行 / Build & Run**:
+   - `⌘R`: 运行当前 Scheme
+   - `⌘B`: 仅构建
+   - `⌘U`: 运行测试
+   - `⌘.`: 停止运行
+
+4. **查看和编辑资源文件 / View & Edit Resources**:
+   - App Icon: `iOS/Resources/Assets.xcassets/AppIcon.appiconset`
+   - Entitlements: `iOS/Resources/QuickVault.entitlements`
+   - Info.plist: `iOS/Resources/Info.plist`
+
+### 命令行构建（可选）/ Command Line Build (Optional)
+
+```bash
+# Build macOS version / 构建 macOS 版本
+swift build -c release --product QuickVault-macOS
+
+# Build for iOS (requires Xcode with iOS SDK) / 构建 iOS 版本（需要 Xcode 和 iOS SDK）
+# iOS 版本建议在 Xcode 中编译以获得完整的工具链支持
+
+# Clean build artifacts / 清理构建产物
 swift package clean
 ```
 
 ### Testing
 ```bash
-# Run all tests
-swift test
+# Run all shared core tests / 运行所有共享核心测试
+swift test --filter QuickVaultCoreTests
 
-# Run specific test suite
-swift test --filter QuickVaultTests
+# Run specific test suite / 运行特定测试套件
 swift test --filter KeychainServiceTests
 swift test --filter CryptoServiceTests
 swift test --filter CardServiceTests
 swift test --filter AuthenticationServiceTests
 
-# Generate code coverage
+# Generate code coverage / 生成代码覆盖率
 swift test --enable-code-coverage
 ```
 
 ### Running
 ```bash
-# Run the application
-swift run
+# Run macOS application / 运行 macOS 应用
+swift run QuickVault-macOS
 
-# Or open in Xcode
-open Package.swift
+# Or open in Xcode for both platforms / 或在 Xcode 中打开以支持两个平台
+open -a Xcode Package.swift
 ```
 
 ## Architecture Overview
@@ -207,62 +259,103 @@ let context = controller.viewContext
 
 ```
 QuickVault/
-├── Sources/
-│   ├── Core/                        # 核心业务逻辑层
-│   │   ├── Models/                  # 数据模型
-│   │   │   ├── QuickVault.xcdatamodeld/  # CoreData schema
-│   │   │   ├── Card+CoreDataClass.swift
-│   │   │   ├── Card+CoreDataProperties.swift
-│   │   │   ├── CardField+CoreDataClass.swift
-│   │   │   ├── CardField+CoreDataProperties.swift
-│   │   │   ├── CardAttachment+CoreDataClass.swift
-│   │   │   ├── CardAttachment+CoreDataProperties.swift
-│   │   │   ├── CardTemplate.swift   # 卡片模板定义
-│   │   │   └── PersistenceController.swift
-│   │   ├── Services/                # 业务服务层
-│   │   │   ├── AuthenticationService.swift  # Touch ID + password auth
-│   │   │   ├── CardService.swift            # Card CRUD operations
-│   │   │   ├── CryptoService.swift          # AES-256-GCM encryption
-│   │   │   └── KeychainService.swift        # Keychain access
-│   │   └── Utilities/               # 工具类
-│   │       ├── ValidationService.swift      # 数据验证
-│   │       └── IconProvider.swift           # 图标提供者
-│   ├── Features/                    # 功能模块
-│   │   └── App/
-│   │       └── QuickVaultApp.swift          # App entry point
-│   ├── Views/                       # UI视图层
-│   │   └── Components/              # 可复用组件 (待实现)
-│   └── README.md                    # 目录结构说明
+├── Shared/                          # 共享代码（macOS + iOS）
+│   └── Core/
+│       ├── Models/                  # 数据模型（100% 共享）
+│       │   ├── QuickVault.xcdatamodeld/  # CoreData schema
+│       │   ├── Card+CoreDataClass.swift
+│       │   ├── Card+CoreDataProperties.swift
+│       │   ├── CardField+CoreDataClass.swift
+│       │   ├── CardField+CoreDataProperties.swift
+│       │   ├── CardAttachment+CoreDataClass.swift
+│       │   ├── CardAttachment+CoreDataProperties.swift
+│       │   ├── CardTemplate.swift   # 卡片模板定义
+│       │   └── PersistenceController.swift
+│       ├── Services/                # 核心业务服务（100% 共享）
+│       │   ├── AuthenticationService.swift  # Touch ID/Face ID + password
+│       │   ├── CardService.swift            # Card CRUD operations
+│       │   ├── CryptoService.swift          # AES-256-GCM encryption
+│       │   └── KeychainService.swift        # Keychain access
+│       └── Utilities/               # 工具类（共享）
+│           └── ValidationService.swift      # 数据验证
+│
+├── macOS/                           # macOS 特定代码
+│   ├── Sources/
+│   │   ├── App/
+│   │   │   ├── QuickVaultApp.swift          # macOS App entry point
+│   │   │   ├── MenuBarManager.swift         # 菜单栏管理
+│   │   │   ├── CardEditorView.swift         # 卡片编辑视图
+│   │   │   ├── CardEditorWindowController.swift  # NSWindow 控制器
+│   │   │   └── IconProvider.swift           # macOS 图标提供者
+│   │   └── Views/                   # macOS UI 视图
+│   │       ├── SetupView.swift
+│   │       ├── MenuBarIconView.swift
+│   │       └── Components/          # 可复用 UI 组件
+│   │           ├── CardTypePickerView.swift
+│   │           ├── TagInputView.swift
+│   │           └── StyledTextField.swift
+│   └── Resources/
+│       ├── Info.plist
+│       ├── QuickVault.entitlements  # Keychain, file access
+│       └── Assets.xcassets/         # macOS 图标资源
+│
+├── iOS/                             # iOS 特定代码
+│   ├── Sources/
+│   │   ├── App/
+│   │   │   └── QuickVaultApp.swift          # iOS App entry point
+│   │   ├── Views/                   # iOS UI 视图（待实现）
+│   │   │   ├── Screens/             # 主要屏幕
+│   │   │   └── Components/          # 可复用组件
+│   │   ├── ViewModels/              # MVVM ViewModels（待实现）
+│   │   └── Services/
+│   │       └── WatermarkService.swift       # 图片水印（iOS 特有）
+│   └── Resources/
+│       ├── Info.plist
+│       ├── QuickVault.entitlements
+│       └── Assets.xcassets/         # iOS 图标资源
+│
 ├── Tests/                           # 测试文件
-│   ├── QuickVaultTests.swift
-│   ├── KeychainServiceTests.swift
-│   ├── CryptoServiceTests.swift
-│   ├── CardServiceTests.swift
-│   ├── CardTemplateTests.swift
-│   ├── ValidationServiceTests.swift
-│   └── AuthenticationServiceTests.swift
-├── Resources/
-│   ├── Info.plist
-│   ├── QuickVault.entitlements      # Keychain access, file access
-│   └── Assets.xcassets/             # Icons (menu bar, locked/unlocked)
-├── .kiro/specs/quick-vault-macos/   # 设计文档
-│   ├── requirements.md              # 23 requirements (中英双语)
-│   ├── design.md                    # Architecture, 44 properties
-│   └── tasks.md                     # 开发任务跟踪
-├── Package.swift                    # SPM manifest
+│   ├── Shared/                      # 共享代码测试
+│   │   ├── QuickVaultTests.swift
+│   │   ├── KeychainServiceTests.swift
+│   │   ├── CryptoServiceTests.swift
+│   │   ├── CardServiceTests.swift
+│   │   ├── CardTemplateTests.swift
+│   │   ├── ValidationServiceTests.swift
+│   │   └── AuthenticationServiceTests.swift
+│   ├── macOS/                       # macOS 特定测试（待添加）
+│   └── iOS/                         # iOS 特定测试（待添加）
+│
+├── .kiro/specs/                     # 设计文档
+│   ├── quick-vault-macos/           # macOS 版本需求和设计
+│   │   ├── requirements.md          # 23 requirements
+│   │   ├── design.md                # Architecture, 44 properties
+│   │   └── tasks.md                 # 开发任务跟踪
+│   └── quick-vault-ios/             # iOS 版本需求和设计
+│       ├── requirements.md          # 23 requirements
+│       ├── design.md                # Architecture, 39 properties
+│       └── tasks.md                 # 开发任务跟踪
+│
+├── Package.swift                    # SPM manifest（多 target 配置）
 ├── CLAUDE.md                        # 本文件
 └── README.md
 ```
 
 ## Design Documents Location
 
-完整的需求和设计文档位于 `.kiro/specs/quick-vault-macos/`:
+完整的需求和设计文档位于 `.kiro/specs/` 目录：
 
-- **requirements.md**: 23 个用户需求(中英双语),包含验收标准
+### macOS 版本设计文档
+- **requirements.md**: 23 个用户需求（中英双语），包含验收标准
 - **design.md**: 架构设计、44 个正确性属性、测试策略、错误处理
 - **tasks.md**: 开发任务跟踪
 
-实现新功能时,应参考这些文档确保符合原始需求和架构设计。
+### iOS 版本设计文档
+- **requirements.md**: 23 个用户需求（中英双语），包含验收标准
+- **design.md**: 架构设计、39 个正确性属性、水印功能设计
+- **tasks.md**: 开发任务跟踪
+
+实现新功能时，应参考这些文档确保符合原始需求和架构设计。
 
 ## Important Notes
 
@@ -281,8 +374,12 @@ QuickVault/
 - 用户切换(`NSWorkspace.sessionDidResignActiveNotification`)
 
 ### Dependencies (Package.swift)
-- **SwiftCheck** (≥0.12.0): Property-based testing
-- **Sparkle** (≥2.5.0): Automatic updates (future)
+- **SwiftCheck** (≥0.12.0): Property-based testing（共享测试）
+- **Sparkle** (≥2.5.0): Automatic updates（仅 macOS）
+
+### Platforms / 平台
+- **macOS**: 14.0+ (Sonoma)
+- **iOS**: 17.0+
 
 ## Localization
 

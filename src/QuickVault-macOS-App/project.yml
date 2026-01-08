@@ -1,0 +1,67 @@
+name: QuickVault-macOS
+options:
+  bundleIdPrefix: com.quickvault
+  deploymentTarget:
+    macOS: "14.0"
+  developmentLanguage: zh-Hans
+
+packages:
+  QuickVaultKit:
+    path: ../QuickVaultKit
+
+targets:
+  QuickVault-macOS:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+
+    sources:
+      - path: QuickVault-macOS
+        excludes:
+          - "*.md"
+
+    settings:
+      base:
+        PRODUCT_NAME: QuickVault
+        PRODUCT_BUNDLE_IDENTIFIER: com.quickvault.macos
+        INFOPLIST_FILE: QuickVault-macOS/Resources/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "-"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        SWIFT_VERSION: "5.9"
+        ENABLE_HARDENED_RUNTIME: YES
+        COMBINE_HIDPI_IMAGES: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        DEVELOPMENT_TEAM: ""
+
+    dependencies:
+      - package: QuickVaultKit
+        product: QuickVaultCore
+      - sdk: AppKit.framework
+      - sdk: Security.framework
+      - sdk: LocalAuthentication.framework
+
+    scheme:
+      testTargets:
+        - QuickVault-macOSTests
+      gatherCoverageData: true
+
+    prebuildScripts:
+      - script: |
+          echo "Building QuickVault macOS App"
+        name: "Pre-build Info"
+        basedOnDependencyAnalysis: false
+
+  QuickVault-macOSTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - QuickVault-macOSTests
+    dependencies:
+      - target: QuickVault-macOS
+      - package: QuickVaultKit
+        product: QuickVaultCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.quickvault.macos.tests
+        MACOSX_DEPLOYMENT_TARGET: "14.0"

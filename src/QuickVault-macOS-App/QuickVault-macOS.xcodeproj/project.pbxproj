@@ -1,0 +1,583 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00B06FDDB3AEC9C322FDDEE1 /* QuickVaultApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522BFF8AB320ECA0DA4E7291 /* QuickVaultApp.swift */; };
+		22F7D764012BAAD78C188B7C /* MenuBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED424B04A05DA09E47C6BE4 /* MenuBarManager.swift */; };
+		2B2D52D3572898FD011CA040 /* StyledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4130DCD7C1BA537A7B54EC78 /* StyledTextField.swift */; };
+		2E6C9E8AD728BB6910AFE4C6 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C590BE0979268623CFB26801 /* SetupView.swift */; };
+		554DB32C976E80226F6DEE56 /* CardEditorWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6AA3D5E35DF56526DAFA95 /* CardEditorWindowController.swift */; };
+		75FF3C77908305D6DB637E04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FB02E06C0E259883BC8DF04 /* Assets.xcassets */; };
+		80CFB86835851631116568D9 /* CardTypePickerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E702EE8E9723FA21322F9AB /* CardTypePickerPreview.swift */; };
+		94C909D196B508BCA4216E8B /* TagInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B615649B7AEBA8A309EC58D /* TagInputView.swift */; };
+		9EB786CF8780110A494E56C1 /* QuickVaultCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1097B890545790332FC24A0C /* QuickVaultCore */; };
+		AFD1D4FC0A9BC8A346B90D06 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22440E376AC8EEF1376B4DA6 /* Security.framework */; };
+		B39BA1379FA94845A2A383A6 /* QuickVaultCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8FE7AA71BF710B5D1404ACD8 /* QuickVaultCore */; };
+		BA30555BA93FA1A2D6FFE477 /* IconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A859684A079D977BAC62EAB /* IconProvider.swift */; };
+		C67206AC8071A89BE9D0FA6E /* CardEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0B331C5E1E310AA4FEC095 /* CardEditorView.swift */; };
+		CAA26B32A3A5B98C1CA7A6FA /* MenuBarIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93262CF759408DC7AC97474D /* MenuBarIconView.swift */; };
+		CC837E17AAE44D9E478F02D6 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5810BC19BA4604EC55F072 /* LocalAuthentication.framework */; };
+		D22E1C5154CDD153D17B0F63 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D488269A14F9D6C639E632FC /* AppKit.framework */; };
+		FA9BC248E522904BBA9BEB0C /* CardTypePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEA43288B711D7CEAE57B78 /* CardTypePickerView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DB3E6EFE40BA1678425A4443 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 18A0FFA3DF9E5F5B2ED6E685 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 76A857848C0C58317D799D19;
+			remoteInfo = "QuickVault-macOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		22440E376AC8EEF1376B4DA6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		3DEA43288B711D7CEAE57B78 /* CardTypePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTypePickerView.swift; sourceTree = "<group>"; };
+		3E702EE8E9723FA21322F9AB /* CardTypePickerPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTypePickerPreview.swift; sourceTree = "<group>"; };
+		4130DCD7C1BA537A7B54EC78 /* StyledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyledTextField.swift; sourceTree = "<group>"; };
+		4807C4988D69BEC606D79C6C /* QuickVault-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QuickVault-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A859684A079D977BAC62EAB /* IconProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconProvider.swift; sourceTree = "<group>"; };
+		4B18E3217F81DE554F5C8290 /* QuickVault-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuickVault-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		522BFF8AB320ECA0DA4E7291 /* QuickVaultApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickVaultApp.swift; sourceTree = "<group>"; };
+		6B5810BC19BA4604EC55F072 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		7B615649B7AEBA8A309EC58D /* TagInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagInputView.swift; sourceTree = "<group>"; };
+		8ED424B04A05DA09E47C6BE4 /* MenuBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarManager.swift; sourceTree = "<group>"; };
+		93262CF759408DC7AC97474D /* MenuBarIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarIconView.swift; sourceTree = "<group>"; };
+		9FB02E06C0E259883BC8DF04 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AB6AA3D5E35DF56526DAFA95 /* CardEditorWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEditorWindowController.swift; sourceTree = "<group>"; };
+		AC0B331C5E1E310AA4FEC095 /* CardEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEditorView.swift; sourceTree = "<group>"; };
+		C0D617F1E89ADD863C3247A9 /* QuickVaultKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = QuickVaultKit; path = ../QuickVaultKit; sourceTree = SOURCE_ROOT; };
+		C590BE0979268623CFB26801 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
+		CBEBBF2C92E743274DF2D4F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D488269A14F9D6C639E632FC /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		F1BC75FC168091BE2ABA67C8 /* QuickVault.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuickVault.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6BEECDC2ADDA71E79B358434 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9EB786CF8780110A494E56C1 /* QuickVaultCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAD2462219DE43F865D5D6BC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B39BA1379FA94845A2A383A6 /* QuickVaultCore in Frameworks */,
+				D22E1C5154CDD153D17B0F63 /* AppKit.framework in Frameworks */,
+				AFD1D4FC0A9BC8A346B90D06 /* Security.framework in Frameworks */,
+				CC837E17AAE44D9E478F02D6 /* LocalAuthentication.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		01F28E415606210F1D499B8B /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				3E702EE8E9723FA21322F9AB /* CardTypePickerPreview.swift */,
+				3DEA43288B711D7CEAE57B78 /* CardTypePickerView.swift */,
+				4130DCD7C1BA537A7B54EC78 /* StyledTextField.swift */,
+				7B615649B7AEBA8A309EC58D /* TagInputView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		0499F9EA804C4B9AE4C98E91 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				AC0B331C5E1E310AA4FEC095 /* CardEditorView.swift */,
+				AB6AA3D5E35DF56526DAFA95 /* CardEditorWindowController.swift */,
+				4A859684A079D977BAC62EAB /* IconProvider.swift */,
+				8ED424B04A05DA09E47C6BE4 /* MenuBarManager.swift */,
+				522BFF8AB320ECA0DA4E7291 /* QuickVaultApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		45DE32C5B0E998D16349F985 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D488269A14F9D6C639E632FC /* AppKit.framework */,
+				6B5810BC19BA4604EC55F072 /* LocalAuthentication.framework */,
+				22440E376AC8EEF1376B4DA6 /* Security.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		544A41D30026FA15AE373A68 /* QuickVault-macOSTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "QuickVault-macOSTests";
+			sourceTree = "<group>";
+		};
+		65D41C7CCB9ABE53CD5FF7E9 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				C0D617F1E89ADD863C3247A9 /* QuickVaultKit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		6661D06442E6457DB37B6825 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4B18E3217F81DE554F5C8290 /* QuickVault-macOS.app */,
+				4807C4988D69BEC606D79C6C /* QuickVault-macOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8D8E9718BF143290BE42CA0A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9FB02E06C0E259883BC8DF04 /* Assets.xcassets */,
+				CBEBBF2C92E743274DF2D4F7 /* Info.plist */,
+				F1BC75FC168091BE2ABA67C8 /* QuickVault.entitlements */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		951B2AD99FC4868E23EA43F3 = {
+			isa = PBXGroup;
+			children = (
+				65D41C7CCB9ABE53CD5FF7E9 /* Packages */,
+				FA0ADB5B43C6DB5003E27C60 /* QuickVault-macOS */,
+				544A41D30026FA15AE373A68 /* QuickVault-macOSTests */,
+				45DE32C5B0E998D16349F985 /* Frameworks */,
+				6661D06442E6457DB37B6825 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EB2B13BBF2D861C40BB0E262 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				93262CF759408DC7AC97474D /* MenuBarIconView.swift */,
+				C590BE0979268623CFB26801 /* SetupView.swift */,
+				01F28E415606210F1D499B8B /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FA0ADB5B43C6DB5003E27C60 /* QuickVault-macOS */ = {
+			isa = PBXGroup;
+			children = (
+				0499F9EA804C4B9AE4C98E91 /* App */,
+				8D8E9718BF143290BE42CA0A /* Resources */,
+				EB2B13BBF2D861C40BB0E262 /* Views */,
+			);
+			path = "QuickVault-macOS";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		364AE015483A45E1F3482C55 /* QuickVault-macOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7AAD94A6C212B4EC4EBEDF84 /* Build configuration list for PBXNativeTarget "QuickVault-macOSTests" */;
+			buildPhases = (
+				83D9C0FFB8E4B49EAB0AD1D4 /* Sources */,
+				6BEECDC2ADDA71E79B358434 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B78E2EA899BA8E4259EBA980 /* PBXTargetDependency */,
+			);
+			name = "QuickVault-macOSTests";
+			packageProductDependencies = (
+				1097B890545790332FC24A0C /* QuickVaultCore */,
+			);
+			productName = "QuickVault-macOSTests";
+			productReference = 4807C4988D69BEC606D79C6C /* QuickVault-macOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		76A857848C0C58317D799D19 /* QuickVault-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D24EB9557DF7EE201D4B6A4C /* Build configuration list for PBXNativeTarget "QuickVault-macOS" */;
+			buildPhases = (
+				50424046E01E1776DD83EFBE /* Pre-build Info */,
+				F87B7D63E202DA74D02F91D2 /* Sources */,
+				CC85FC1D405D1300E5B28068 /* Resources */,
+				BAD2462219DE43F865D5D6BC /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "QuickVault-macOS";
+			packageProductDependencies = (
+				8FE7AA71BF710B5D1404ACD8 /* QuickVaultCore */,
+			);
+			productName = "QuickVault-macOS";
+			productReference = 4B18E3217F81DE554F5C8290 /* QuickVault-macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		18A0FFA3DF9E5F5B2ED6E685 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					76A857848C0C58317D799D19 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D8A8B79AE2A7C92EE7408D1A /* Build configuration list for PBXProject "QuickVault-macOS" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = 951B2AD99FC4868E23EA43F3;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C08872305AB32879251CAA17 /* XCLocalSwiftPackageReference "../QuickVaultKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				76A857848C0C58317D799D19 /* QuickVault-macOS */,
+				364AE015483A45E1F3482C55 /* QuickVault-macOSTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CC85FC1D405D1300E5B28068 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75FF3C77908305D6DB637E04 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		50424046E01E1776DD83EFBE /* Pre-build Info */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Pre-build Info";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Building QuickVault macOS App\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		83D9C0FFB8E4B49EAB0AD1D4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F87B7D63E202DA74D02F91D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C67206AC8071A89BE9D0FA6E /* CardEditorView.swift in Sources */,
+				554DB32C976E80226F6DEE56 /* CardEditorWindowController.swift in Sources */,
+				80CFB86835851631116568D9 /* CardTypePickerPreview.swift in Sources */,
+				FA9BC248E522904BBA9BEB0C /* CardTypePickerView.swift in Sources */,
+				BA30555BA93FA1A2D6FFE477 /* IconProvider.swift in Sources */,
+				CAA26B32A3A5B98C1CA7A6FA /* MenuBarIconView.swift in Sources */,
+				22F7D764012BAAD78C188B7C /* MenuBarManager.swift in Sources */,
+				00B06FDDB3AEC9C322FDDEE1 /* QuickVaultApp.swift in Sources */,
+				2E6C9E8AD728BB6910AFE4C6 /* SetupView.swift in Sources */,
+				2B2D52D3572898FD011CA040 /* StyledTextField.swift in Sources */,
+				94C909D196B508BCA4216E8B /* TagInputView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B78E2EA899BA8E4259EBA980 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 76A857848C0C58317D799D19 /* QuickVault-macOS */;
+			targetProxy = DB3E6EFE40BA1678425A4443 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		16A953DFD7924B294C805DB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.quickvault.macos.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QuickVault-macOS.app/Contents/MacOS/QuickVault-macOS";
+			};
+			name = Debug;
+		};
+		7BD8390EF0ECEBEA7A85B51E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A464511D293A9847ECFD4421 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "QuickVault-macOS/Resources/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.quickvault.macos;
+				PRODUCT_NAME = QuickVault;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		D6A3445C8FEC17A4081EEE10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.quickvault.macos.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QuickVault-macOS.app/Contents/MacOS/QuickVault-macOS";
+			};
+			name = Release;
+		};
+		F2ABD53F36014A11CCA73304 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F99AD8811AECC338D7180593 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "QuickVault-macOS/Resources/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.quickvault.macos;
+				PRODUCT_NAME = QuickVault;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7AAD94A6C212B4EC4EBEDF84 /* Build configuration list for PBXNativeTarget "QuickVault-macOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16A953DFD7924B294C805DB0 /* Debug */,
+				D6A3445C8FEC17A4081EEE10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D24EB9557DF7EE201D4B6A4C /* Build configuration list for PBXNativeTarget "QuickVault-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F99AD8811AECC338D7180593 /* Debug */,
+				A464511D293A9847ECFD4421 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D8A8B79AE2A7C92EE7408D1A /* Build configuration list for PBXProject "QuickVault-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2ABD53F36014A11CCA73304 /* Debug */,
+				7BD8390EF0ECEBEA7A85B51E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		C08872305AB32879251CAA17 /* XCLocalSwiftPackageReference "../QuickVaultKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../QuickVaultKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1097B890545790332FC24A0C /* QuickVaultCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QuickVaultCore;
+		};
+		8FE7AA71BF710B5D1404ACD8 /* QuickVaultCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QuickVaultCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 18A0FFA3DF9E5F5B2ED6E685 /* Project object */;
+}

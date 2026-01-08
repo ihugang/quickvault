@@ -5,10 +5,13 @@
 !*.xcworkspace/contents.xcworkspacedata
 *.xcuserstate
 *.xcuserdatad
+*.xcworkspace/xcuserdata/
+xcuserdata/
 
 # Swift Package Manager
 .build/
 .swiftpm/
+Package.resolved
 
 # CocoaPods
 Pods/
