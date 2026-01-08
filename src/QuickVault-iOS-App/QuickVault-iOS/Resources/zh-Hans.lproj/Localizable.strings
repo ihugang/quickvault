@@ -47,6 +47,16 @@
 "auth.change.success" = "密码修改成功";
 "auth.change.failed" = "密码修改失败";
 
+// MARK: - Authentication Errors
+"auth.error.biometric.unavailable" = "触控 ID 不可用";
+"auth.error.biometric.failed" = "触控 ID 认证失败";
+"auth.error.biometric.password.not.stored" = "请先使用密码登录以启用触控 ID";
+"auth.error.password.incorrect" = "密码错误";
+"auth.error.password.too.short" = "密码必须至少 8 个字符";
+"auth.error.no.password" = "未设置主密码";
+"auth.error.rate.limited" = "失败次数过多，请等待 %d 秒";
+"auth.error.keychain" = "钥匙串错误：%@";
+
 // MARK: - Cards
 "cards.title" = "卡片";
 "cards.empty" = "暂无卡片";

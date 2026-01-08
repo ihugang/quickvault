@@ -47,6 +47,16 @@
 "auth.change.success" = "Password changed successfully";
 "auth.change.failed" = "Failed to change password";
 
+// MARK: - Authentication Errors
+"auth.error.biometric.unavailable" = "Touch ID is not available";
+"auth.error.biometric.failed" = "Touch ID authentication failed";
+"auth.error.biometric.password.not.stored" = "Please login with password first to enable Touch ID";
+"auth.error.password.incorrect" = "Incorrect password";
+"auth.error.password.too.short" = "Password must be at least 8 characters";
+"auth.error.no.password" = "No master password set";
+"auth.error.rate.limited" = "Too many failed attempts. Please wait %d seconds";
+"auth.error.keychain" = "Keychain error: %@";
+
 // MARK: - Cards
 "cards.title" = "Cards";
 "cards.empty" = "No cards yet";

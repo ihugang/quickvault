@@ -17,24 +17,60 @@ public enum AuthenticationError: LocalizedError {
   case rateLimited(remainingSeconds: Int)  // 速率限制
   case keychainError(String)  // 钥匙串错误
 
-  public var errorDescription: String? {
+  public var localizationKey: String {
     switch self {
     case .biometricNotAvailable:
-      return "Touch ID is not available / 触控 ID 不可用"
+      return "auth.error.biometric.unavailable"
     case .biometricFailed:
-      return "Touch ID authentication failed / 触控 ID 认证失败"
+      return "auth.error.biometric.failed"
     case .biometricPasswordNotStored:
-      return "Please login with password first to enable Touch ID / 请先使用密码登录以启用触控 ID"
+      return "auth.error.biometric.password.not.stored"
     case .passwordIncorrect:
-      return "Incorrect password / 密码错误"
+      return "auth.error.password.incorrect"
     case .passwordTooShort:
-      return "Password must be at least 8 characters / 密码必须至少 8 个字符"
+      return "auth.error.password.too.short"
     case .noPasswordSet:
-      return "No master password set / 未设置主密码"
+      return "auth.error.no.password"
+    case .rateLimited:
+      return "auth.error.rate.limited"
+    case .keychainError:
+      return "auth.error.keychain"
+    }
+  }
+  
+  public var errorDescription: String? {
+    let languageCode = UserDefaults.standard.string(forKey: "app_language") ?? "en"
+    if let path = Bundle.main.path(forResource: languageCode, ofType: "lproj"),
+       let bundle = Bundle(path: path) {
+      switch self {
+      case .rateLimited(let seconds):
+        let format = bundle.localizedString(forKey: localizationKey, value: nil, table: nil)
+        return String(format: format, seconds)
+      case .keychainError(let message):
+        let format = bundle.localizedString(forKey: localizationKey, value: nil, table: nil)
+        return String(format: format, message)
+      default:
+        return bundle.localizedString(forKey: localizationKey, value: nil, table: nil)
+      }
+    }
+    // Fallback to English
+    switch self {
+    case .biometricNotAvailable:
+      return "Touch ID is not available"
+    case .biometricFailed:
+      return "Touch ID authentication failed"
+    case .biometricPasswordNotStored:
+      return "Please login with password first to enable Touch ID"
+    case .passwordIncorrect:
+      return "Incorrect password"
+    case .passwordTooShort:
+      return "Password must be at least 8 characters"
+    case .noPasswordSet:
+      return "No master password set"
     case .rateLimited(let seconds):
-      return "Too many failed attempts. Please wait \(seconds) seconds / 失败次数过多，请等待 \(seconds) 秒"
+      return "Too many failed attempts. Please wait \(seconds) seconds"
     case .keychainError(let message):
-      return "Keychain error: \(message) / 钥匙串错误：\(message)"
+      return "Keychain error: \(message)"
     }
   }
 }
