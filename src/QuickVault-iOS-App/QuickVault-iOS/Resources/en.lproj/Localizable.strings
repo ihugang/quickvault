@@ -77,6 +77,29 @@
 "cards.updated" = "Updated: %@";
 "cards.tags" = "Tags";
 "cards.tags.add" = "Add Tag";
+"cards.type.address" = "Address";
+"cards.type.invoice" = "Invoice";
+
+// MARK: - Fields
+"field.name" = "Name";
+"field.phone" = "Phone";
+"field.province" = "Province";
+"field.city" = "City";
+"field.district" = "District";
+"field.address" = "Address";
+"field.postalcode" = "Postal Code";
+"field.notes" = "Notes";
+"field.companyname" = "Company Name";
+"field.taxid" = "Tax ID";
+"field.bankname" = "Bank Name";
+"field.bankaccount" = "Bank Account";
+"field.content" = "Content";
+
+// MARK: - Validation
+"validation.title.required" = "Title is required";
+"validation.field.required" = "This field is required";
+"validation.phone.invalid" = "Invalid phone format";
+"validation.taxid.invalid" = "Tax ID must be 18 characters";
 
 // MARK: - Attachments
 "attachments.title" = "Attachments";

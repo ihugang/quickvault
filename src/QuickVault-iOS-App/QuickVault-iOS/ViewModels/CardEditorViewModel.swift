@@ -29,9 +29,9 @@ class CardEditorViewModel: ObservableObject {
         
         var displayName: String {
             switch self {
-            case .address: return "地址 / Address"
-            case .invoice: return "发票 / Invoice"
-            case .generalText: return "通用文本 / General Text"
+            case .address: return "cards.type.address".localized
+            case .invoice: return "cards.type.invoice".localized
+            case .generalText: return "cards.type.general".localized
             }
         }
     }
@@ -50,7 +50,9 @@ class CardEditorViewModel: ObservableObject {
     // MARK: - Group Options
     
     let groupOptions = ["Personal", "Company"]
-    let groupDisplayNames = ["个人 / Personal", "公司 / Company"]
+    var groupDisplayNames: [String] {
+        ["cards.group.personal".localized, "cards.group.company".localized]
+    }
     
     // MARK: - Dependencies
     
@@ -116,36 +118,36 @@ class CardEditorViewModel: ObservableObject {
         switch type {
         case .address:
             fields = [
-                EditableField(id: UUID(), label: "姓名 / Name", value: "", isRequired: true, isCopyable: true, order: 0),
-                EditableField(id: UUID(), label: "电话 / Phone", value: "", isRequired: true, isCopyable: true, order: 1),
-                EditableField(id: UUID(), label: "省份 / Province", value: "", isRequired: true, isCopyable: true, order: 2),
-                EditableField(id: UUID(), label: "城市 / City", value: "", isRequired: true, isCopyable: true, order: 3),
-                EditableField(id: UUID(), label: "区县 / District", value: "", isRequired: true, isCopyable: true, order: 4),
-                EditableField(id: UUID(), label: "详细地址 / Address", value: "", isRequired: true, isCopyable: true, order: 5),
-                EditableField(id: UUID(), label: "邮编 / Postal Code", value: "", isRequired: false, isCopyable: true, order: 6),
-                EditableField(id: UUID(), label: "备注 / Notes", value: "", isRequired: false, isCopyable: false, order: 7),
+                EditableField(id: UUID(), label: "field.name".localized, value: "", isRequired: true, isCopyable: true, order: 0),
+                EditableField(id: UUID(), label: "field.phone".localized, value: "", isRequired: true, isCopyable: true, order: 1),
+                EditableField(id: UUID(), label: "field.province".localized, value: "", isRequired: true, isCopyable: true, order: 2),
+                EditableField(id: UUID(), label: "field.city".localized, value: "", isRequired: true, isCopyable: true, order: 3),
+                EditableField(id: UUID(), label: "field.district".localized, value: "", isRequired: true, isCopyable: true, order: 4),
+                EditableField(id: UUID(), label: "field.address".localized, value: "", isRequired: true, isCopyable: true, order: 5),
+                EditableField(id: UUID(), label: "field.postalcode".localized, value: "", isRequired: false, isCopyable: true, order: 6),
+                EditableField(id: UUID(), label: "field.notes".localized, value: "", isRequired: false, isCopyable: false, order: 7),
             ]
             
         case .invoice:
             fields = [
-                EditableField(id: UUID(), label: "公司名称 / Company Name", value: "", isRequired: true, isCopyable: true, order: 0),
-                EditableField(id: UUID(), label: "税号 / Tax ID", value: "", isRequired: true, isCopyable: true, order: 1),
-                EditableField(id: UUID(), label: "地址 / Address", value: "", isRequired: true, isCopyable: true, order: 2),
-                EditableField(id: UUID(), label: "电话 / Phone", value: "", isRequired: true, isCopyable: true, order: 3),
-                EditableField(id: UUID(), label: "开户银行 / Bank Name", value: "", isRequired: true, isCopyable: true, order: 4),
-                EditableField(id: UUID(), label: "银行账号 / Bank Account", value: "", isRequired: true, isCopyable: true, order: 5),
-                EditableField(id: UUID(), label: "备注 / Notes", value: "", isRequired: false, isCopyable: false, order: 6),
+                EditableField(id: UUID(), label: "field.companyname".localized, value: "", isRequired: true, isCopyable: true, order: 0),
+                EditableField(id: UUID(), label: "field.taxid".localized, value: "", isRequired: true, isCopyable: true, order: 1),
+                EditableField(id: UUID(), label: "field.address".localized, value: "", isRequired: true, isCopyable: true, order: 2),
+                EditableField(id: UUID(), label: "field.phone".localized, value: "", isRequired: true, isCopyable: true, order: 3),
+                EditableField(id: UUID(), label: "field.bankname".localized, value: "", isRequired: true, isCopyable: true, order: 4),
+                EditableField(id: UUID(), label: "field.bankaccount".localized, value: "", isRequired: true, isCopyable: true, order: 5),
+                EditableField(id: UUID(), label: "field.notes".localized, value: "", isRequired: false, isCopyable: false, order: 6),
             ]
             
         case .generalText:
             fields = [
-                EditableField(id: UUID(), label: "内容 / Content", value: "", isRequired: true, isCopyable: true, order: 0),
+                EditableField(id: UUID(), label: "field.content".localized, value: "", isRequired: true, isCopyable: true, order: 0),
             ]
         }
     }
     
     private func isFieldRequired(label: String, type: CardType) -> Bool {
-        let optionalLabels = ["邮编 / Postal Code", "备注 / Notes"]
+        let optionalLabels = ["field.postalcode".localized, "field.notes".localized]
         return !optionalLabels.contains(label)
     }
     
@@ -157,23 +159,23 @@ class CardEditorViewModel: ObservableObject {
         
         // Validate title
         if title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            validationErrors["title"] = "标题不能为空 / Title is required"
+            validationErrors["title"] = "validation.title.required".localized
             isValid = false
         }
         
         // Validate required fields
         for field in fields where field.isRequired {
             if field.value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                validationErrors[field.id.uuidString] = "\(field.label) 不能为空 / \(field.label) is required"
+                validationErrors[field.id.uuidString] = "validation.field.required".localized
                 isValid = false
             }
         }
         
         // Validate phone number for address cards
         if selectedType == .address {
-            if let phoneField = fields.first(where: { $0.label.contains("电话") || $0.label.contains("Phone") }) {
+            if let phoneField = fields.first(where: { $0.label == "field.phone".localized }) {
                 if !phoneField.value.isEmpty && !isValidPhoneNumber(phoneField.value) {
-                    validationErrors[phoneField.id.uuidString] = "电话格式无效 / Invalid phone format"
+                    validationErrors[phoneField.id.uuidString] = "validation.phone.invalid".localized
                     isValid = false
                 }
             }
@@ -181,9 +183,9 @@ class CardEditorViewModel: ObservableObject {
         
         // Validate tax ID for invoice cards
         if selectedType == .invoice {
-            if let taxIdField = fields.first(where: { $0.label.contains("税号") || $0.label.contains("Tax ID") }) {
+            if let taxIdField = fields.first(where: { $0.label == "field.taxid".localized }) {
                 if !taxIdField.value.isEmpty && !isValidTaxId(taxIdField.value) {
-                    validationErrors[taxIdField.id.uuidString] = "税号必须为18位 / Tax ID must be 18 characters"
+                    validationErrors[taxIdField.id.uuidString] = "validation.taxid.invalid".localized
                     isValid = false
                 }
             }
