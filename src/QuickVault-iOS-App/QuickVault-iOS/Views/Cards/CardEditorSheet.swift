@@ -1,3 +1,4 @@
+import PhotosUI
 import SwiftUI
 import QuickVaultCore
 
@@ -5,6 +6,8 @@ import QuickVaultCore
 struct CardEditorSheet: View {
     @StateObject private var viewModel: CardEditorViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var showImagePicker = false
+    @State private var selectedPhotoItem: PhotosPickerItem?
     
     let editingCard: CardDTO?
     let onSave: () -> Void
@@ -43,6 +46,39 @@ struct CardEditorSheet: View {
                     }
                 } header: {
                     Text("cards.field.label".localized)
+                }
+                
+                // OCR Section - 支持从照片识别信息
+                if viewModel.supportsOCR && !viewModel.isEditing {
+                    Section {
+                        PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
+                            HStack {
+                                Image(systemName: "doc.text.viewfinder")
+                                    .foregroundStyle(.blue)
+                                Text("ocr.scan.photo".localized)
+                                Spacer()
+                                if viewModel.isOCRProcessing {
+                                    ProgressView()
+                                }
+                            }
+                        }
+                        .disabled(viewModel.isOCRProcessing)
+                        .onChange(of: selectedPhotoItem) { _, newItem in
+                            Task {
+                                if let newItem = newItem,
+                                   let data = try? await newItem.loadTransferable(type: Data.self),
+                                   let image = UIImage(data: data) {
+                                    await viewModel.recognizeAndFillFromImage(image)
+                                }
+                                selectedPhotoItem = nil
+                            }
+                        }
+                    } header: {
+                        Text("ocr.section.title".localized)
+                    } footer: {
+                        Text("ocr.section.footer".localized)
+                            .font(.caption)
+                    }
                 }
                 
                 if let error = viewModel.validationErrors["title"] {

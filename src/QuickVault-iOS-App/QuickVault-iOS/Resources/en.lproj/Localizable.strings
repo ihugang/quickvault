@@ -145,6 +145,12 @@
 "attachment.passport.datapage" = "Upload passport data page (photo page)";
 "attachment.license.photo" = "Upload business license photo";
 
+// MARK: - OCR
+"ocr.section.title" = "Smart Recognition";
+"ocr.scan.photo" = "Scan from Photo";
+"ocr.section.footer" = "Select a photo of your document to automatically extract information";
+"ocr.processing" = "Recognizing...";
+
 // MARK: - Validation
 "validation.title.required" = "Title is required";
 "validation.field.required" = "This field is required";

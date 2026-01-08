@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import QuickVaultCore
+import UIKit
 
 /// Card editor view model for creating and editing cards / 卡片编辑器视图模型
 @MainActor
@@ -15,8 +16,13 @@ class CardEditorViewModel: ObservableObject {
     @Published var tags: [String] = []
     @Published var newTag: String = ""
     @Published var isLoading: Bool = false
+    @Published var isOCRProcessing: Bool = false
     @Published var errorMessage: String?
     @Published var validationErrors: [String: String] = [:]
+    
+    // MARK: - OCR Service
+    
+    private let ocrService: OCRService = OCRServiceImpl.shared
     
     // MARK: - Card Type
     
@@ -350,5 +356,131 @@ class CardEditorViewModel: ObservableObject {
     
     func clearError() {
         errorMessage = nil
+    }
+    
+    // MARK: - OCR Recognition
+    
+    /// 从图片中识别信息并自动填充表单
+    func recognizeAndFillFromImage(_ image: UIImage) async {
+        isOCRProcessing = true
+        errorMessage = nil
+        
+        do {
+            switch selectedType {
+            case .idCard:
+                let result = try await ocrService.recognizeIDCard(image: image)
+                fillIDCardFields(from: result)
+                
+            case .passport:
+                let result = try await ocrService.recognizePassport(image: image)
+                fillPassportFields(from: result)
+                
+            case .businessLicense:
+                let result = try await ocrService.recognizeBusinessLicense(image: image)
+                fillBusinessLicenseFields(from: result)
+                
+            default:
+                break
+            }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        
+        isOCRProcessing = false
+    }
+    
+    private func fillIDCardFields(from result: IDCardOCRResult) {
+        for i in 0..<fields.count {
+            let label = fields[i].label
+            
+            if label == "field.idcard.name".localized, let value = result.name {
+                fields[i].value = value
+            } else if label == "field.idcard.gender".localized, let value = result.gender {
+                fields[i].value = value
+            } else if label == "field.idcard.nationality".localized, let value = result.nationality {
+                fields[i].value = value
+            } else if label == "field.idcard.birthdate".localized, let value = result.birthDate {
+                fields[i].value = value
+            } else if label == "field.idcard.number".localized, let value = result.idNumber {
+                fields[i].value = value
+            } else if label == "field.idcard.address".localized, let value = result.address {
+                fields[i].value = value
+            } else if label == "field.idcard.issuer".localized, let value = result.issuer {
+                fields[i].value = value
+            } else if label == "field.idcard.validperiod".localized, let value = result.validPeriod {
+                fields[i].value = value
+            }
+        }
+        
+        // 如果标题为空，使用姓名作为标题
+        if title.isEmpty, let name = result.name {
+            title = name
+        }
+    }
+    
+    private func fillPassportFields(from result: PassportOCRResult) {
+        for i in 0..<fields.count {
+            let label = fields[i].label
+            
+            if label == "field.passport.name".localized, let value = result.name {
+                fields[i].value = value
+            } else if label == "field.passport.nationality".localized, let value = result.nationality {
+                fields[i].value = value
+            } else if label == "field.passport.birthdate".localized, let value = result.birthDate {
+                fields[i].value = value
+            } else if label == "field.passport.gender".localized, let value = result.gender {
+                fields[i].value = value
+            } else if label == "field.passport.number".localized, let value = result.passportNumber {
+                fields[i].value = value
+            } else if label == "field.passport.issuedate".localized, let value = result.issueDate {
+                fields[i].value = value
+            } else if label == "field.passport.expirydate".localized, let value = result.expiryDate {
+                fields[i].value = value
+            } else if label == "field.passport.issuer".localized, let value = result.issuer {
+                fields[i].value = value
+            }
+        }
+        
+        // 如果标题为空，使用姓名作为标题
+        if title.isEmpty, let name = result.name {
+            title = name
+        }
+    }
+    
+    private func fillBusinessLicenseFields(from result: BusinessLicenseOCRResult) {
+        for i in 0..<fields.count {
+            let label = fields[i].label
+            
+            if label == "field.license.companyname".localized, let value = result.companyName {
+                fields[i].value = value
+            } else if label == "field.license.creditcode".localized, let value = result.creditCode {
+                fields[i].value = value
+            } else if label == "field.license.legalrep".localized, let value = result.legalRepresentative {
+                fields[i].value = value
+            } else if label == "field.license.capital".localized, let value = result.registeredCapital {
+                fields[i].value = value
+            } else if label == "field.license.address".localized, let value = result.address {
+                fields[i].value = value
+            } else if label == "field.license.establishdate".localized, let value = result.establishedDate {
+                fields[i].value = value
+            } else if label == "field.license.scope".localized, let value = result.businessScope {
+                fields[i].value = value
+            }
+        }
+        
+        // 如果标题为空，使用公司名称作为标题
+        if title.isEmpty, let companyName = result.companyName {
+            title = companyName
+        }
+    }
+    
+    /// 当前卡片类型是否支持 OCR
+    var supportsOCR: Bool {
+        switch selectedType {
+        case .idCard, .passport, .businessLicense:
+            return true
+        default:
+            return false
+        }
     }
 }

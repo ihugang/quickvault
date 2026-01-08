@@ -36,6 +36,7 @@
 		E2D911A3267197815F0152A4 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7BB269C92210D268B29CA4 /* SettingsViewModel.swift */; };
 		E5ED2247045E53F85379D740 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E579867A3A20856CBD302D8D /* AuthViewModel.swift */; };
 		EE29D888CDD5525843053A29 /* AttachmentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7DC778EA1AC3B79534F91B /* AttachmentService.swift */; };
+		OCR12345678901234567890AB /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OCR12345678901234567890CD /* OCRService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		81354BE88E35456AF0FD74D2 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
 		887DFB043CF17C83E8CE5CF4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		8A7DC778EA1AC3B79534F91B /* AttachmentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentService.swift; sourceTree = "<group>"; };
+		OCR12345678901234567890CD /* OCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRService.swift; sourceTree = "<group>"; };
 		9085751016C97674D4B981AD /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		911A33BF8A5E7CF480E43FAB /* CardEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEditorSheet.swift; sourceTree = "<group>"; };
 		9E5D7A4A4B1C60475DFBCEF1 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				8A7DC778EA1AC3B79534F91B /* AttachmentService.swift */,
 				F30E6359AFF9F1BF32530737 /* AutoLockManager.swift */,
 				C6B35E855E6CE70709D93082 /* LocalizationManager.swift */,
+				OCR12345678901234567890CD /* OCRService.swift */,
 				084A3087336F42612C1C2D14 /* WatermarkService.swift */,
 			);
 			path = Services;
@@ -443,6 +446,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE29D888CDD5525843053A29 /* AttachmentService.swift in Sources */,
+				OCR12345678901234567890AB /* OCRService.swift in Sources */,
 				13A6E1143B488B1ADACDB7B4 /* AttachmentView.swift in Sources */,
 				E5ED2247045E53F85379D740 /* AuthViewModel.swift in Sources */,
 				5CFAA7F4802FDDA7041B618B /* AutoLockManager.swift in Sources */,

@@ -145,6 +145,12 @@
 "attachment.passport.datapage" = "上传护照信息页（含照片页）";
 "attachment.license.photo" = "上传营业执照照片";
 
+// MARK: - OCR
+"ocr.section.title" = "智能识别";
+"ocr.scan.photo" = "从照片识别";
+"ocr.section.footer" = "选择证件照片，自动提取信息填写表单";
+"ocr.processing" = "识别中...";
+
 // MARK: - Validation
 "validation.title.required" = "标题不能为空";
 "validation.field.required" = "此字段不能为空";
