@@ -1,6 +1,9 @@
 import Combine
 import Foundation
 import LocalAuthentication
+import os.log
+
+private let authLogger = Logger(subsystem: "com.quickvault", category: "AuthService")
 
 // MARK: - Authentication Errors / 认证错误
 
@@ -108,7 +111,9 @@ public class AuthenticationServiceImpl: AuthenticationService {
   // MARK: - Setup
 
   public func setupMasterPassword(_ password: String) async throws {
+    authLogger.info("[AuthService] setupMasterPassword called")
     guard password.count >= 8 else {
+      authLogger.warning("[AuthService] Password too short")
       throw AuthenticationError.passwordTooShort
     }
 
@@ -120,15 +125,19 @@ public class AuthenticationServiceImpl: AuthenticationService {
 
     do {
       try keychainService.save(key: masterPasswordKey, data: passwordData)
+      authLogger.info("[AuthService] Master password saved to keychain")
       
       // Initialize encryption key with the password
       try cryptoService.initializeKey(password: password, salt: nil)
+      authLogger.info("[AuthService] Encryption key initialized")
       
       // Store password for biometric authentication (if enabled later)
       storeBiometricPassword(password)
+      authLogger.info("[AuthService] Biometric password stored")
       
       stateSubject.send(.unlocked)
     } catch {
+      authLogger.error("[AuthService] Setup failed: \(error.localizedDescription)")
       throw AuthenticationError.keychainError(error.localizedDescription)
     }
   }
@@ -136,6 +145,7 @@ public class AuthenticationServiceImpl: AuthenticationService {
   // MARK: - Authentication
 
   public func authenticateWithPassword(_ password: String) async throws {
+    authLogger.info("[AuthService] authenticateWithPassword called")
     // Check rate limiting
     try checkRateLimit()
 
@@ -171,7 +181,11 @@ public class AuthenticationServiceImpl: AuthenticationService {
   }
 
   public func authenticateWithBiometric() async throws {
+    authLogger.info("[AuthService] authenticateWithBiometric called")
+    authLogger.debug("[AuthService] isBiometricEnabled: \(self.isBiometricEnabled())")
+    
     guard isBiometricEnabled() else {
+      authLogger.warning("[AuthService] Biometric not enabled")
       throw AuthenticationError.biometricNotAvailable
     }
 
@@ -179,6 +193,7 @@ public class AuthenticationServiceImpl: AuthenticationService {
     var error: NSError?
 
     guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+      authLogger.error("[AuthService] Cannot evaluate biometric policy: \(error?.localizedDescription ?? "unknown")")
       throw AuthenticationError.biometricNotAvailable
     }
 
@@ -188,17 +203,29 @@ public class AuthenticationServiceImpl: AuthenticationService {
         .deviceOwnerAuthenticationWithBiometrics, localizedReason: reason)
 
       if success {
+        authLogger.info("[AuthService] Biometric authentication succeeded")
         // Load the stored password and initialize encryption key
+        let biometricKeyExists = keychainService.exists(key: biometricPasswordKey)
+        authLogger.debug("[AuthService] Biometric password key exists: \(biometricKeyExists)")
+        
         guard let passwordData = try? keychainService.load(key: biometricPasswordKey),
               let password = String(data: passwordData, encoding: .utf8) else {
+          authLogger.error("[AuthService] Failed to load biometric password from keychain")
           throw AuthenticationError.keychainError("Failed to load biometric password")
         }
+        authLogger.debug("[AuthService] Biometric password loaded, initializing key...")
         try cryptoService.initializeKey(password: password, salt: nil)
+        authLogger.info("[AuthService] Encryption key initialized via biometric")
         stateSubject.send(.unlocked)
       } else {
+        authLogger.warning("[AuthService] Biometric authentication returned false")
         throw AuthenticationError.biometricFailed
       }
+    } catch let authError as AuthenticationError {
+      authLogger.error("[AuthService] Auth error: \(authError.localizedDescription ?? "unknown")")
+      throw authError
     } catch {
+      authLogger.error("[AuthService] Biometric failed with error: \(error.localizedDescription)")
       throw AuthenticationError.biometricFailed
     }
   }
@@ -262,11 +289,19 @@ public class AuthenticationServiceImpl: AuthenticationService {
   }
   
   /// Store password for biometric authentication (called after successful password auth)
+  /// Always store the password so it's available when biometric is enabled later
   private func storeBiometricPassword(_ password: String) {
-    guard isBiometricEnabled(), let passwordData = password.data(using: .utf8) else {
+    authLogger.debug("[AuthService] storeBiometricPassword called")
+    guard let passwordData = password.data(using: .utf8) else {
+      authLogger.error("[AuthService] Failed to encode password for biometric storage")
       return
     }
-    try? keychainService.save(key: biometricPasswordKey, data: passwordData)
+    do {
+      try keychainService.save(key: biometricPasswordKey, data: passwordData)
+      authLogger.info("[AuthService] Biometric password stored successfully")
+    } catch {
+      authLogger.error("[AuthService] Failed to store biometric password: \(error.localizedDescription)")
+    }
   }
 
   public func isBiometricEnabled() -> Bool {

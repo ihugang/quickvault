@@ -7,6 +7,10 @@
 import CommonCrypto
 import CryptoKit
 import Foundation
+import os.log
+import Security
+
+private let cryptoLogger = Logger(subsystem: "com.quickvault", category: "CryptoService")
 
 public enum CryptoError: LocalizedError {
   case encryptionFailed
@@ -59,18 +63,23 @@ public final class CryptoServiceImpl: CryptoService, @unchecked Sendable {
   // MARK: - Key Management
 
   public func initializeKey(password: String, salt: Data? = nil) throws {
+    cryptoLogger.info("[CryptoService] initializeKey called")
     let saltData: Data
 
     if let existingSalt = salt {
+      cryptoLogger.debug("[CryptoService] Using provided salt")
       saltData = existingSalt
     } else if keychainService.exists(key: saltKey) {
+      cryptoLogger.debug("[CryptoService] Loading salt from keychain")
       saltData = try keychainService.load(key: saltKey)
     } else {
+      cryptoLogger.debug("[CryptoService] Generating new salt")
       saltData = generateSalt()
       try keychainService.save(key: saltKey, data: saltData)
     }
 
     encryptionKey = try deriveKey(from: password, salt: saltData)
+    cryptoLogger.info("[CryptoService] Encryption key initialized successfully")
   }
 
   public func deriveKey(from password: String, salt: Data) throws -> SymmetricKey {
@@ -101,8 +110,10 @@ public final class CryptoServiceImpl: CryptoService, @unchecked Sendable {
 
   public func encrypt(_ data: String) throws -> Data {
     guard let key = encryptionKey else {
+      cryptoLogger.error("[CryptoService] encrypt failed: encryptionKey is nil")
       throw CryptoError.keyNotAvailable
     }
+    cryptoLogger.debug("[CryptoService] Encrypting data")
 
     guard let dataToEncrypt = data.data(using: .utf8) else {
       throw CryptoError.encryptionFailed
