@@ -13,6 +13,10 @@ struct CardEditorSheet: View {
     @State private var frontImage: UIImage?
     @State private var backImage: UIImage?
     
+    // Paste text for invoice parsing
+    @State private var pasteText: String = ""
+    @State private var showPasteSheet: Bool = false
+    
     let editingCard: CardDTO?
     let onSave: () -> Void
     
@@ -125,6 +129,25 @@ struct CardEditorSheet: View {
                     Text(error)
                         .font(.caption)
                         .foregroundStyle(.red)
+                }
+                
+                // Paste to Parse Section for Invoice type
+                if viewModel.selectedType == .invoice {
+                    Section {
+                        Button {
+                            showPasteSheet = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "doc.on.clipboard")
+                                Text("invoice.paste.parse".localized)
+                            }
+                        }
+                    } header: {
+                        Text("invoice.paste.title".localized)
+                    } footer: {
+                        Text("invoice.paste.hint".localized)
+                            .font(.caption)
+                    }
                 }
                 
                 // Fields Section
@@ -247,6 +270,16 @@ struct CardEditorSheet: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(Color.black.opacity(0.1))
                 }
+            }
+            .sheet(isPresented: $showPasteSheet) {
+                InvoicePasteSheet(
+                    text: $pasteText,
+                    onParse: { text in
+                        viewModel.parseInvoiceText(text)
+                        showPasteSheet = false
+                        pasteText = ""
+                    }
+                )
             }
         }
     }
@@ -440,6 +473,64 @@ extension CardEditorViewModel.CardType {
             return "idcard_back.jpg"
         default:
             return "document_back.jpg"
+        }
+    }
+}
+
+// MARK: - Invoice Paste Sheet
+
+struct InvoicePasteSheet: View {
+    @Binding var text: String
+    let onParse: (String) -> Void
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 16) {
+                Text("invoice.paste.instruction".localized)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal)
+                
+                TextEditor(text: $text)
+                    .frame(minHeight: 200)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color(.systemGray4), lineWidth: 1)
+                    )
+                    .padding(.horizontal)
+                
+                Button {
+                    if let clipboardText = UIPasteboard.general.string {
+                        text = clipboardText
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "doc.on.clipboard")
+                        Text("invoice.paste.fromclipboard".localized)
+                    }
+                }
+                .buttonStyle(.bordered)
+                
+                Spacer()
+            }
+            .padding(.top)
+            .navigationTitle("invoice.paste.title".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("common.cancel".localized) {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("invoice.parse.button".localized) {
+                        onParse(text)
+                    }
+                    .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+            }
         }
     }
 }

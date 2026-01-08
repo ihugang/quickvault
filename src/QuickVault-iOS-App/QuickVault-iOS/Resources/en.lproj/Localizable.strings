@@ -88,7 +88,15 @@
 "cards.tags" = "Tags";
 "cards.tags.add" = "Add Tag";
 "cards.type.address" = "Address";
-"cards.type.invoice" = "Invoice";
+"cards.type.invoice" = "Invoice Info";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Paste & Parse";
+"invoice.paste.parse" = "Paste to Auto-fill";
+"invoice.paste.hint" = "Paste invoice or payment info to auto-fill the form";
+"invoice.paste.instruction" = "Paste invoice or payment information, the system will automatically recognize and fill in the fields";
+"invoice.paste.fromclipboard" = "Paste from Clipboard";
+"invoice.parse.button" = "Parse & Fill";
 
 // MARK: - Fields
 "field.name" = "Name";

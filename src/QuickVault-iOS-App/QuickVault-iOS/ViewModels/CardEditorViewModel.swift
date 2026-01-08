@@ -644,4 +644,171 @@ class CardEditorViewModel: ObservableObject {
             return false
         }
     }
+    
+    // MARK: - Invoice Text Parsing
+    
+    /// 解析粘贴的开票信息文本
+    func parseInvoiceText(_ text: String) {
+        let lines = text.components(separatedBy: .newlines)
+        
+        var companyName: String?
+        var taxId: String?
+        var address: String?
+        var phone: String?
+        var bankName: String?
+        var bankAccount: String?
+        
+        // 合并所有行为一个字符串用于正则匹配
+        let fullText = text
+        
+        for line in lines {
+            let trimmed = line.trimmingCharacters(in: .whitespaces)
+            if trimmed.isEmpty { continue }
+            
+            // 公司名称：包含"公司"、"有限"、"集团"等关键词
+            if companyName == nil {
+                if trimmed.contains("公司") || trimmed.contains("有限") || trimmed.contains("集团") || trimmed.contains("企业") {
+                    // 提取公司名称（去除前缀标签）
+                    let name = extractValue(from: trimmed, labels: ["名称", "公司名称", "企业名称", "单位名称", "开票名称"])
+                    if !name.isEmpty {
+                        companyName = name
+                    } else if !trimmed.hasPrefix("地址") && !trimmed.hasPrefix("开户") {
+                        companyName = trimmed
+                    }
+                }
+            }
+            
+            // 税号/纳税人识别号：18位数字字母组合
+            if taxId == nil {
+                if let match = trimmed.range(of: "[0-9A-Z]{15,20}", options: .regularExpression) {
+                    let code = String(trimmed[match])
+                    // 验证是否是有效的税号格式
+                    if code.count >= 15 && code.count <= 20 {
+                        taxId = code
+                    }
+                } else {
+                    let extracted = extractValue(from: trimmed, labels: ["税号", "纳税人识别号", "识别号", "统一社会信用代码"])
+                    if !extracted.isEmpty, let match = extracted.range(of: "[0-9A-Z]{15,20}", options: .regularExpression) {
+                        taxId = String(extracted[match])
+                    }
+                }
+            }
+            
+            // 地址
+            if address == nil {
+                let extracted = extractValue(from: trimmed, labels: ["地址", "住所", "经营地址", "注册地址", "地址电话"])
+                if !extracted.isEmpty {
+                    // 如果地址后面跟着电话，分离出来
+                    if let phoneRange = extracted.range(of: "\\d{3,4}[-]?\\d{7,8}", options: .regularExpression) {
+                        let phoneInAddress = String(extracted[phoneRange])
+                        address = extracted.replacingOccurrences(of: phoneInAddress, with: "").trimmingCharacters(in: .whitespaces)
+                        if phone == nil {
+                            phone = phoneInAddress
+                        }
+                    } else {
+                        address = extracted
+                    }
+                }
+            }
+            
+            // 电话
+            if phone == nil {
+                let extracted = extractValue(from: trimmed, labels: ["电话", "联系电话", "手机", "Tel", "TEL"])
+                if !extracted.isEmpty {
+                    phone = extracted.replacingOccurrences(of: "：", with: "").replacingOccurrences(of: ":", with: "").trimmingCharacters(in: .whitespaces)
+                } else if let match = trimmed.range(of: "\\d{3,4}[-]?\\d{7,8}|1[3-9]\\d{9}", options: .regularExpression) {
+                    // 直接匹配电话号码格式
+                    let potentialPhone = String(trimmed[match])
+                    if potentialPhone.count >= 7 {
+                        phone = potentialPhone
+                    }
+                }
+            }
+            
+            // 开户行
+            if bankName == nil {
+                let extracted = extractValue(from: trimmed, labels: ["开户行", "开户银行", "银行"])
+                if !extracted.isEmpty {
+                    bankName = extracted
+                } else if trimmed.contains("银行") && !trimmed.contains("账号") && !trimmed.contains("帐号") {
+                    bankName = trimmed
+                }
+            }
+            
+            // 银行账号
+            if bankAccount == nil {
+                let extracted = extractValue(from: trimmed, labels: ["账号", "帐号", "银行账号", "银行帐号", "账户"])
+                if !extracted.isEmpty {
+                    // 提取纯数字账号
+                    let digits = extracted.filter { $0.isNumber }
+                    if digits.count >= 10 {
+                        bankAccount = digits
+                    }
+                } else if let match = trimmed.range(of: "\\d{10,25}", options: .regularExpression) {
+                    // 直接匹配银行账号格式（10-25位数字）
+                    let potentialAccount = String(trimmed[match])
+                    if potentialAccount.count >= 10 && bankAccount == nil {
+                        bankAccount = potentialAccount
+                    }
+                }
+            }
+        }
+        
+        // 填充字段
+        let companyNameLabel = "field.companyname".localized
+        let taxIdLabel = "field.taxid".localized
+        let addressLabel = "field.address".localized
+        let phoneLabel = "field.phone".localized
+        let bankNameLabel = "field.bankname".localized
+        let bankAccountLabel = "field.bankaccount".localized
+        
+        for i in 0..<fields.count {
+            let label = fields[i].label
+            
+            if label == companyNameLabel, let value = companyName, !value.isEmpty {
+                fields[i].value = value
+            }
+            if label == taxIdLabel, let value = taxId, !value.isEmpty {
+                fields[i].value = value
+            }
+            if label == addressLabel, let value = address, !value.isEmpty {
+                fields[i].value = value
+            }
+            if label == phoneLabel, let value = phone, !value.isEmpty {
+                fields[i].value = value
+            }
+            if label == bankNameLabel, let value = bankName, !value.isEmpty {
+                fields[i].value = value
+            }
+            if label == bankAccountLabel, let value = bankAccount, !value.isEmpty {
+                fields[i].value = value
+            }
+        }
+        
+        // 如果标题为空，使用公司名称作为标题
+        if title.isEmpty, let name = companyName, !name.isEmpty {
+            title = name
+        }
+    }
+    
+    /// 从文本中提取标签后的值
+    private func extractValue(from text: String, labels: [String]) -> String {
+        for label in labels {
+            // 尝试匹配 "标签：值" 或 "标签:值" 或 "标签 值" 格式
+            if text.contains(label) {
+                var value = text
+                // 移除标签
+                if let range = text.range(of: label) {
+                    value = String(text[range.upperBound...])
+                }
+                // 移除冒号和空格
+                value = value.trimmingCharacters(in: .whitespaces)
+                if value.hasPrefix("：") || value.hasPrefix(":") {
+                    value = String(value.dropFirst())
+                }
+                return value.trimmingCharacters(in: .whitespaces)
+            }
+        }
+        return ""
+    }
 }

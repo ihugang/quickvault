@@ -88,7 +88,15 @@
 "cards.tags" = "标签";
 "cards.tags.add" = "添加标签";
 "cards.type.address" = "地址";
-"cards.type.invoice" = "发票";
+"cards.type.invoice" = "开票信息";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "粘贴解析";
+"invoice.paste.parse" = "粘贴信息自动填写";
+"invoice.paste.hint" = "粘贴开票信息或收款信息，自动解析填写表单";
+"invoice.paste.instruction" = "请粘贴开票信息或收款信息，系统将自动识别并填写相应字段";
+"invoice.paste.fromclipboard" = "从剪贴板粘贴";
+"invoice.parse.button" = "解析填写";
 
 // MARK: - Fields
 "field.name" = "姓名";
