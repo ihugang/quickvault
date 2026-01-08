@@ -66,6 +66,8 @@
 "cards.copied" = "Copied to clipboard";
 "cards.title.placeholder" = "Card Title";
 "cards.group.placeholder" = "Group";
+"cards.group.personal" = "Personal";
+"cards.group.company" = "Company";
 "cards.type.general" = "General";
 "cards.type.login" = "Login";
 "cards.type.card" = "Credit Card";

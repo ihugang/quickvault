@@ -93,7 +93,7 @@ struct GroupFilterView: View {
             HStack(spacing: 12) {
                 ForEach(CardGroup.allCases, id: \.self) { group in
                     FilterChip(
-                        title: group.rawValue,
+                        title: group.localizedName,
                         isSelected: selectedGroup == group
                     ) {
                         selectedGroup = group

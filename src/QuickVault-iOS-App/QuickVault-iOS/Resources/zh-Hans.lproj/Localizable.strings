@@ -66,6 +66,8 @@
 "cards.copied" = "已复制到剪贴板";
 "cards.title.placeholder" = "卡片标题";
 "cards.group.placeholder" = "分组";
+"cards.group.personal" = "个人";
+"cards.group.company" = "公司";
 "cards.type.general" = "通用";
 "cards.type.login" = "登录信息";
 "cards.type.card" = "信用卡";

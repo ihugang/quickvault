@@ -4,15 +4,23 @@ import QuickVaultCore
 
 /// Card group filter / 卡片分组过滤
 enum CardGroup: String, CaseIterable {
-    case all = "全部 / All"
-    case personal = "个人 / Personal"
-    case company = "公司 / Company"
+    case all = "all"
+    case personal = "personal"
+    case company = "company"
     
     var rawGroupValue: String? {
         switch self {
         case .all: return nil
         case .personal: return "Personal"
         case .company: return "Company"
+        }
+    }
+    
+    var localizedName: String {
+        switch self {
+        case .all: return "cards.all".localized
+        case .personal: return "cards.group.personal".localized
+        case .company: return "cards.group.company".localized
         }
     }
 }
