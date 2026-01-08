@@ -4,7 +4,9 @@ import QuickVaultCore
 /// Settings view / 设置视图
 struct SettingsView: View {
     @ObservedObject var viewModel: SettingsViewModel
+    @ObservedObject var localizationManager = LocalizationManager.shared
     @State private var showChangePassword = false
+    @State private var showLanguagePicker = false
     
     var body: some View {
         NavigationStack {
@@ -12,9 +14,9 @@ struct SettingsView: View {
                 // Security Section
                 Section {
                     // Auto-Lock Timeout
-                    Picker("自动锁定 / Auto-Lock", selection: $viewModel.autoLockTimeout) {
+                    Picker("settings.security.autolock".localized, selection: $viewModel.autoLockTimeout) {
                         ForEach(AutoLockTimeout.allCases) { timeout in
-                            Text(timeout.displayName).tag(timeout)
+                            Text(timeout.localizationKey.localized).tag(timeout)
                         }
                     }
                     .onChange(of: viewModel.autoLockTimeout) { _, newValue in
@@ -23,7 +25,7 @@ struct SettingsView: View {
                     
                     // Biometric Toggle
                     if viewModel.isBiometricAvailable {
-                        Toggle("Face ID / Touch ID", isOn: Binding(
+                        Toggle("settings.security.biometric".localized, isOn: Binding(
                             get: { viewModel.isBiometricEnabled },
                             set: { viewModel.toggleBiometric($0) }
                         ))
@@ -34,7 +36,7 @@ struct SettingsView: View {
                         showChangePassword = true
                     } label: {
                         HStack {
-                            Text("更改密码 / Change Password")
+                            Text("settings.security.changepassword".localized)
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .foregroundStyle(.secondary)
@@ -42,24 +44,47 @@ struct SettingsView: View {
                     }
                     .foregroundStyle(.primary)
                 } header: {
-                    Text("安全 / Security")
+                    Text("settings.security".localized)
+                }
+                
+                // Language Section
+                Section {
+                    Button {
+                        showLanguagePicker = true
+                    } label: {
+                        HStack {
+                            Text("settings.language".localized)
+                            Spacer()
+                            Text(localizationManager.currentLanguage.displayName)
+                                .foregroundStyle(.secondary)
+                            Image(systemName: "chevron.right")
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
+                } header: {
+                    Text("settings.language.title".localized)
                 }
                 
                 // About Section
                 Section {
                     HStack {
-                        Text("版本 / Version")
+                        Text("settings.about.version".localized)
                         Spacer()
                         Text(viewModel.appVersion)
                             .foregroundStyle(.secondary)
                     }
                 } header: {
-                    Text("关于 / About")
+                    Text("settings.about".localized)
                 }
             }
-            .navigationTitle("设置 / Settings")
+            .navigationTitle("settings.title".localized)
+            .environment(\.layoutDirection, localizationManager.layoutDirection)
             .sheet(isPresented: $showChangePassword) {
                 ChangePasswordSheet(viewModel: viewModel)
+            }
+            .sheet(isPresented: $showLanguagePicker) {
+                LanguagePickerSheet()
             }
             .overlay {
                 if let success = viewModel.successMessage {
@@ -84,6 +109,44 @@ struct SettingsView: View {
     }
 }
 
+/// Language picker sheet / 语言选择表单
+struct LanguagePickerSheet: View {
+    @ObservedObject var localizationManager = LocalizationManager.shared
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            List {
+                ForEach(AppLanguage.allCases) { language in
+                    Button {
+                        localizationManager.setLanguage(language)
+                        dismiss()
+                    } label: {
+                        HStack {
+                            Text(language.displayName)
+                                .foregroundStyle(.primary)
+                            Spacer()
+                            if localizationManager.currentLanguage == language {
+                                Image(systemName: "checkmark")
+                                    .foregroundStyle(.blue)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("settings.language.title".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("common.close".localized) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
 /// Change password sheet / 更改密码表单
 struct ChangePasswordSheet: View {
     @ObservedObject var viewModel: SettingsViewModel
@@ -93,22 +156,18 @@ struct ChangePasswordSheet: View {
         NavigationStack {
             Form {
                 Section {
-                    SecureField("当前密码 / Current Password", text: $viewModel.oldPassword)
+                    SecureField("auth.change.current".localized, text: $viewModel.oldPassword)
                         .textContentType(.password)
-                } header: {
-                    Text("验证 / Verification")
                 }
                 
                 Section {
-                    SecureField("新密码 / New Password", text: $viewModel.newPassword)
+                    SecureField("auth.change.new".localized, text: $viewModel.newPassword)
                         .textContentType(.newPassword)
                     
-                    SecureField("确认新密码 / Confirm New Password", text: $viewModel.confirmNewPassword)
+                    SecureField("auth.change.confirm".localized, text: $viewModel.confirmNewPassword)
                         .textContentType(.newPassword)
-                } header: {
-                    Text("新密码 / New Password")
                 } footer: {
-                    Text("密码至少需要 8 个字符\nPassword must be at least 8 characters")
+                    Text("auth.password.hint".localized)
                 }
                 
                 if let error = viewModel.errorMessage {
@@ -118,11 +177,11 @@ struct ChangePasswordSheet: View {
                     }
                 }
             }
-            .navigationTitle("更改密码 / Change Password")
+            .navigationTitle("auth.change.title".localized)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("取消 / Cancel") {
+                    Button("common.cancel".localized) {
                         viewModel.clearPasswordFields()
                         viewModel.clearError()
                         dismiss()
@@ -130,7 +189,7 @@ struct ChangePasswordSheet: View {
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("保存 / Save") {
+                    Button("common.save".localized) {
                         Task {
                             if await viewModel.changePassword() {
                                 dismiss()

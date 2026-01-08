@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (日本語)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "キャンセル";
+"common.save" = "保存";
+"common.delete" = "削除";
+"common.edit" = "編集";
+"common.done" = "完了";
+"common.add" = "追加";
+"common.close" = "閉じる";
+"common.confirm" = "確認";
+"common.error" = "エラー";
+"common.success" = "成功";
+"common.loading" = "読み込み中...";
+"common.retry" = "再試行";
+"common.copy" = "コピー";
+"common.share" = "共有";
+"common.search" = "検索";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "デジタルライフを守る";
+
+// MARK: - Authentication
+"auth.welcome.title" = "QuickVaultへようこそ";
+"auth.welcome.subtitle" = "マスターパスワードを設定して始めましょう";
+"auth.password.placeholder" = "パスワードを入力";
+"auth.password.confirm" = "パスワードを確認";
+"auth.password.hint" = "パスワードは8文字以上必要です";
+"auth.password.mismatch" = "パスワードが一致しません";
+"auth.password.weak" = "パスワードが弱すぎます";
+"auth.setup.button" = "パスワードを設定";
+"auth.unlock.title" = "QuickVaultのロック解除";
+"auth.unlock.button" = "ロック解除";
+"auth.unlock.biometric" = "Face ID / Touch IDを使用";
+"auth.unlock.failed" = "認証に失敗しました";
+"auth.unlock.attempts" = "残り%d回";
+"auth.unlock.locked" = "試行回数が多すぎます。%d秒後に再試行してください";
+"auth.change.title" = "パスワードを変更";
+"auth.change.current" = "現在のパスワード";
+"auth.change.new" = "新しいパスワード";
+"auth.change.confirm" = "新しいパスワードを確認";
+"auth.change.success" = "パスワードが変更されました";
+"auth.change.failed" = "パスワードの変更に失敗しました";
+
+// MARK: - Cards
+"cards.title" = "カード";
+"cards.empty" = "カードがありません";
+"cards.empty.subtitle" = "+をタップして最初のカードを追加";
+"cards.add" = "カードを追加";
+"cards.edit" = "カードを編集";
+"cards.delete" = "カードを削除";
+"cards.delete.confirm" = "このカードを削除してもよろしいですか？";
+"cards.pin" = "ピン留め";
+"cards.unpin" = "ピン留め解除";
+"cards.pinned" = "ピン留め済み";
+"cards.all" = "すべて";
+"cards.field.add" = "フィールドを追加";
+"cards.field.label" = "ラベル";
+"cards.field.value" = "値";
+"cards.field.copyable" = "コピー可能";
+"cards.copied" = "クリップボードにコピーしました";
+"cards.title.placeholder" = "カードタイトル";
+"cards.group.placeholder" = "グループ";
+"cards.type.general" = "一般";
+"cards.type.login" = "ログイン";
+"cards.type.card" = "クレジットカード";
+"cards.type.identity" = "ID";
+"cards.type.note" = "セキュアメモ";
+"cards.created" = "作成日: %@";
+"cards.updated" = "更新日: %@";
+"cards.tags" = "タグ";
+"cards.tags.add" = "タグを追加";
+
+// MARK: - Attachments
+"attachments.title" = "添付ファイル";
+"attachments.add" = "添付ファイルを追加";
+"attachments.delete" = "添付ファイルを削除";
+"attachments.delete.confirm" = "この添付ファイルを削除してもよろしいですか？";
+"attachments.watermark" = "透かし";
+"attachments.watermark.add" = "透かしを追加";
+"attachments.watermark.remove" = "透かしを削除";
+"attachments.watermark.text" = "透かしテキスト";
+"attachments.share" = "共有";
+"attachments.preview" = "プレビュー";
+"attachments.size" = "サイズ: %@";
+"attachments.empty" = "添付ファイルがありません";
+"attachments.photo.library" = "フォトライブラリ";
+"attachments.photo.camera" = "カメラ";
+
+// MARK: - Search
+"search.title" = "検索";
+"search.placeholder" = "カードを検索...";
+"search.empty" = "結果が見つかりません";
+"search.recent" = "最近の検索";
+
+// MARK: - Settings
+"settings.title" = "設定";
+"settings.security" = "セキュリティ";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "生体認証を有効にする";
+"settings.security.autolock" = "自動ロック";
+"settings.security.autolock.immediately" = "即時";
+"settings.security.autolock.1min" = "1分後";
+"settings.security.autolock.5min" = "5分後";
+"settings.security.autolock.15min" = "15分後";
+"settings.security.autolock.never" = "なし";
+"settings.security.changepassword" = "パスワードを変更";
+"settings.language" = "言語";
+"settings.language.title" = "アプリの言語";
+"settings.language.system" = "システムのデフォルト";
+"settings.about" = "このアプリについて";
+"settings.about.version" = "バージョン";
+"settings.about.privacy" = "プライバシーポリシー";
+"settings.about.terms" = "利用規約";
+"settings.data" = "データ";
+"settings.data.export" = "データをエクスポート";
+"settings.data.import" = "データをインポート";
+"settings.data.reset" = "すべてのデータをリセット";
+"settings.data.reset.confirm" = "すべてのカードと設定が削除されます。この操作は元に戻せません。";
+
+// MARK: - Errors
+"error.generic" = "エラーが発生しました";
+"error.network" = "ネットワークエラー";
+"error.encryption" = "暗号化エラー";
+"error.decryption" = "復号化エラー";
+"error.storage" = "ストレージエラー";
+"error.biometric.unavailable" = "生体認証は利用できません";
+"error.biometric.notEnrolled" = "生体認証データが登録されていません";

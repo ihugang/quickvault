@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (Română)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Anulează";
+"common.save" = "Salvează";
+"common.delete" = "Șterge";
+"common.edit" = "Editează";
+"common.done" = "Gata";
+"common.add" = "Adaugă";
+"common.close" = "Închide";
+"common.confirm" = "Confirmă";
+"common.error" = "Eroare";
+"common.success" = "Succes";
+"common.loading" = "Se încarcă...";
+"common.retry" = "Reîncearcă";
+"common.copy" = "Copiază";
+"common.share" = "Partajează";
+"common.search" = "Caută";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "Protejează-ți viața digitală";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Bine ați venit la QuickVault";
+"auth.welcome.subtitle" = "Setați parola principală pentru a începe";
+"auth.password.placeholder" = "Introduceți parola";
+"auth.password.confirm" = "Confirmați parola";
+"auth.password.hint" = "Parola trebuie să aibă cel puțin 8 caractere";
+"auth.password.mismatch" = "Parolele nu se potrivesc";
+"auth.password.weak" = "Parola este prea slabă";
+"auth.setup.button" = "Setează Parola";
+"auth.unlock.title" = "Deblochează QuickVault";
+"auth.unlock.button" = "Deblochează";
+"auth.unlock.biometric" = "Folosește Face ID / Touch ID";
+"auth.unlock.failed" = "Autentificare eșuată";
+"auth.unlock.attempts" = "%d încercări rămase";
+"auth.unlock.locked" = "Prea multe încercări. Încercați din nou în %d secunde";
+"auth.change.title" = "Schimbă Parola";
+"auth.change.current" = "Parola curentă";
+"auth.change.new" = "Parola nouă";
+"auth.change.confirm" = "Confirmă parola nouă";
+"auth.change.success" = "Parola a fost schimbată";
+"auth.change.failed" = "Schimbarea parolei a eșuat";
+
+// MARK: - Cards
+"cards.title" = "Carduri";
+"cards.empty" = "Niciun card";
+"cards.empty.subtitle" = "Apăsați + pentru a adăuga primul card";
+"cards.add" = "Adaugă Card";
+"cards.edit" = "Editează Card";
+"cards.delete" = "Șterge Card";
+"cards.delete.confirm" = "Sigur doriți să ștergeți acest card?";
+"cards.pin" = "Fixează";
+"cards.unpin" = "Anulează fixarea";
+"cards.pinned" = "Fixate";
+"cards.all" = "Toate";
+"cards.field.add" = "Adaugă Câmp";
+"cards.field.label" = "Etichetă";
+"cards.field.value" = "Valoare";
+"cards.field.copyable" = "Copiabil";
+"cards.copied" = "Copiat în clipboard";
+"cards.title.placeholder" = "Titlu Card";
+"cards.group.placeholder" = "Grup";
+"cards.type.general" = "General";
+"cards.type.login" = "Autentificare";
+"cards.type.card" = "Card de Credit";
+"cards.type.identity" = "Identitate";
+"cards.type.note" = "Notă Securizată";
+"cards.created" = "Creat: %@";
+"cards.updated" = "Actualizat: %@";
+"cards.tags" = "Etichete";
+"cards.tags.add" = "Adaugă Etichetă";
+
+// MARK: - Attachments
+"attachments.title" = "Atașamente";
+"attachments.add" = "Adaugă Atașament";
+"attachments.delete" = "Șterge Atașament";
+"attachments.delete.confirm" = "Sigur doriți să ștergeți acest atașament?";
+"attachments.watermark" = "Filigran";
+"attachments.watermark.add" = "Adaugă Filigran";
+"attachments.watermark.remove" = "Elimină Filigran";
+"attachments.watermark.text" = "Text Filigran";
+"attachments.share" = "Partajează";
+"attachments.preview" = "Previzualizare";
+"attachments.size" = "Dimensiune: %@";
+"attachments.empty" = "Niciun atașament";
+"attachments.photo.library" = "Biblioteca Foto";
+"attachments.photo.camera" = "Cameră";
+
+// MARK: - Search
+"search.title" = "Caută";
+"search.placeholder" = "Caută carduri...";
+"search.empty" = "Niciun rezultat găsit";
+"search.recent" = "Căutări Recente";
+
+// MARK: - Settings
+"settings.title" = "Setări";
+"settings.security" = "Securitate";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Activează autentificarea biometrică";
+"settings.security.autolock" = "Blocare Automată";
+"settings.security.autolock.immediately" = "Imediat";
+"settings.security.autolock.1min" = "După 1 minut";
+"settings.security.autolock.5min" = "După 5 minute";
+"settings.security.autolock.15min" = "După 15 minute";
+"settings.security.autolock.never" = "Niciodată";
+"settings.security.changepassword" = "Schimbă Parola";
+"settings.language" = "Limbă";
+"settings.language.title" = "Limba Aplicației";
+"settings.language.system" = "Implicit Sistem";
+"settings.about" = "Despre";
+"settings.about.version" = "Versiune";
+"settings.about.privacy" = "Politica de Confidențialitate";
+"settings.about.terms" = "Termeni și Condiții";
+"settings.data" = "Date";
+"settings.data.export" = "Exportă Date";
+"settings.data.import" = "Importă Date";
+"settings.data.reset" = "Resetează Toate Datele";
+"settings.data.reset.confirm" = "Aceasta va șterge toate cardurile și setările. Această acțiune nu poate fi anulată.";
+
+// MARK: - Errors
+"error.generic" = "Ceva nu a funcționat";
+"error.network" = "Eroare de rețea";
+"error.encryption" = "Eroare de criptare";
+"error.decryption" = "Eroare de decriptare";
+"error.storage" = "Eroare de stocare";
+"error.biometric.unavailable" = "Autentificarea biometrică nu este disponibilă";
+"error.biometric.notEnrolled" = "Nu există date biometrice înregistrate";

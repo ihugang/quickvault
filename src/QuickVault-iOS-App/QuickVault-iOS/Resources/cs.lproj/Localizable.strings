@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (Čeština)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Zrušit";
+"common.save" = "Uložit";
+"common.delete" = "Smazat";
+"common.edit" = "Upravit";
+"common.done" = "Hotovo";
+"common.add" = "Přidat";
+"common.close" = "Zavřít";
+"common.confirm" = "Potvrdit";
+"common.error" = "Chyba";
+"common.success" = "Úspěch";
+"common.loading" = "Načítání...";
+"common.retry" = "Zkusit znovu";
+"common.copy" = "Kopírovat";
+"common.share" = "Sdílet";
+"common.search" = "Hledat";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "Zabezpečte svůj digitální život";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Vítejte v QuickVault";
+"auth.welcome.subtitle" = "Nastavte si hlavní heslo pro začátek";
+"auth.password.placeholder" = "Zadejte heslo";
+"auth.password.confirm" = "Potvrďte heslo";
+"auth.password.hint" = "Heslo musí mít alespoň 8 znaků";
+"auth.password.mismatch" = "Hesla se neshodují";
+"auth.password.weak" = "Heslo je příliš slabé";
+"auth.setup.button" = "Nastavit Heslo";
+"auth.unlock.title" = "Odemknout QuickVault";
+"auth.unlock.button" = "Odemknout";
+"auth.unlock.biometric" = "Použít Face ID / Touch ID";
+"auth.unlock.failed" = "Ověření selhalo";
+"auth.unlock.attempts" = "Zbývá %d pokusů";
+"auth.unlock.locked" = "Příliš mnoho pokusů. Zkuste to znovu za %d sekund";
+"auth.change.title" = "Změnit Heslo";
+"auth.change.current" = "Současné heslo";
+"auth.change.new" = "Nové heslo";
+"auth.change.confirm" = "Potvrďte nové heslo";
+"auth.change.success" = "Heslo bylo změněno";
+"auth.change.failed" = "Změna hesla selhala";
+
+// MARK: - Cards
+"cards.title" = "Karty";
+"cards.empty" = "Žádné karty";
+"cards.empty.subtitle" = "Klepněte na + pro přidání první karty";
+"cards.add" = "Přidat Kartu";
+"cards.edit" = "Upravit Kartu";
+"cards.delete" = "Smazat Kartu";
+"cards.delete.confirm" = "Opravdu chcete smazat tuto kartu?";
+"cards.pin" = "Připnout";
+"cards.unpin" = "Odepnout";
+"cards.pinned" = "Připnuté";
+"cards.all" = "Všechny";
+"cards.field.add" = "Přidat Pole";
+"cards.field.label" = "Popisek";
+"cards.field.value" = "Hodnota";
+"cards.field.copyable" = "Kopírovatelné";
+"cards.copied" = "Zkopírováno do schránky";
+"cards.title.placeholder" = "Název Karty";
+"cards.group.placeholder" = "Skupina";
+"cards.type.general" = "Obecné";
+"cards.type.login" = "Přihlášení";
+"cards.type.card" = "Kreditní Karta";
+"cards.type.identity" = "Identita";
+"cards.type.note" = "Zabezpečená Poznámka";
+"cards.created" = "Vytvořeno: %@";
+"cards.updated" = "Aktualizováno: %@";
+"cards.tags" = "Štítky";
+"cards.tags.add" = "Přidat Štítek";
+
+// MARK: - Attachments
+"attachments.title" = "Přílohy";
+"attachments.add" = "Přidat Přílohu";
+"attachments.delete" = "Smazat Přílohu";
+"attachments.delete.confirm" = "Opravdu chcete smazat tuto přílohu?";
+"attachments.watermark" = "Vodoznak";
+"attachments.watermark.add" = "Přidat Vodoznak";
+"attachments.watermark.remove" = "Odstranit Vodoznak";
+"attachments.watermark.text" = "Text Vodoznaku";
+"attachments.share" = "Sdílet";
+"attachments.preview" = "Náhled";
+"attachments.size" = "Velikost: %@";
+"attachments.empty" = "Žádné přílohy";
+"attachments.photo.library" = "Knihovna Fotek";
+"attachments.photo.camera" = "Fotoaparát";
+
+// MARK: - Search
+"search.title" = "Hledat";
+"search.placeholder" = "Hledat karty...";
+"search.empty" = "Žádné výsledky";
+"search.recent" = "Nedávná Hledání";
+
+// MARK: - Settings
+"settings.title" = "Nastavení";
+"settings.security" = "Zabezpečení";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Povolit biometrické ověření";
+"settings.security.autolock" = "Automatický Zámek";
+"settings.security.autolock.immediately" = "Okamžitě";
+"settings.security.autolock.1min" = "Po 1 minutě";
+"settings.security.autolock.5min" = "Po 5 minutách";
+"settings.security.autolock.15min" = "Po 15 minutách";
+"settings.security.autolock.never" = "Nikdy";
+"settings.security.changepassword" = "Změnit Heslo";
+"settings.language" = "Jazyk";
+"settings.language.title" = "Jazyk Aplikace";
+"settings.language.system" = "Výchozí Systémový";
+"settings.about" = "O Aplikaci";
+"settings.about.version" = "Verze";
+"settings.about.privacy" = "Zásady Ochrany Soukromí";
+"settings.about.terms" = "Podmínky Služby";
+"settings.data" = "Data";
+"settings.data.export" = "Exportovat Data";
+"settings.data.import" = "Importovat Data";
+"settings.data.reset" = "Resetovat Všechna Data";
+"settings.data.reset.confirm" = "Tím smažete všechny karty a nastavení. Tuto akci nelze vrátit zpět.";
+
+// MARK: - Errors
+"error.generic" = "Něco se pokazilo";
+"error.network" = "Chyba sítě";
+"error.encryption" = "Chyba šifrování";
+"error.decryption" = "Chyba dešifrování";
+"error.storage" = "Chyba úložiště";
+"error.biometric.unavailable" = "Biometrické ověření není dostupné";
+"error.biometric.notEnrolled" = "Žádná biometrická data nejsou zaregistrována";

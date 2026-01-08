@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (简体中文)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "确定";
+"common.cancel" = "取消";
+"common.save" = "保存";
+"common.delete" = "删除";
+"common.edit" = "编辑";
+"common.done" = "完成";
+"common.add" = "添加";
+"common.close" = "关闭";
+"common.confirm" = "确认";
+"common.error" = "错误";
+"common.success" = "成功";
+"common.loading" = "加载中...";
+"common.retry" = "重试";
+"common.copy" = "复制";
+"common.share" = "分享";
+"common.search" = "搜索";
+
+// MARK: - App
+"app.name" = "随取";
+"app.tagline" = "守护您的数字生活";
+
+// MARK: - Authentication
+"auth.welcome.title" = "欢迎使用随取";
+"auth.welcome.subtitle" = "设置主密码以开始使用";
+"auth.password.placeholder" = "输入密码";
+"auth.password.confirm" = "确认密码";
+"auth.password.hint" = "密码至少需要8个字符";
+"auth.password.mismatch" = "两次输入的密码不一致";
+"auth.password.weak" = "密码强度太弱";
+"auth.setup.button" = "设置密码";
+"auth.unlock.title" = "解锁随取";
+"auth.unlock.button" = "解锁";
+"auth.unlock.biometric" = "使用面容ID / 触控ID";
+"auth.unlock.failed" = "认证失败";
+"auth.unlock.attempts" = "剩余 %d 次尝试机会";
+"auth.unlock.locked" = "尝试次数过多，请在 %d 秒后重试";
+"auth.change.title" = "更改密码";
+"auth.change.current" = "当前密码";
+"auth.change.new" = "新密码";
+"auth.change.confirm" = "确认新密码";
+"auth.change.success" = "密码修改成功";
+"auth.change.failed" = "密码修改失败";
+
+// MARK: - Cards
+"cards.title" = "卡片";
+"cards.empty" = "暂无卡片";
+"cards.empty.subtitle" = "点击 + 添加您的第一张卡片";
+"cards.add" = "添加卡片";
+"cards.edit" = "编辑卡片";
+"cards.delete" = "删除卡片";
+"cards.delete.confirm" = "确定要删除这张卡片吗？";
+"cards.pin" = "置顶";
+"cards.unpin" = "取消置顶";
+"cards.pinned" = "已置顶";
+"cards.all" = "全部";
+"cards.field.add" = "添加字段";
+"cards.field.label" = "标签";
+"cards.field.value" = "值";
+"cards.field.copyable" = "可复制";
+"cards.copied" = "已复制到剪贴板";
+"cards.title.placeholder" = "卡片标题";
+"cards.group.placeholder" = "分组";
+"cards.type.general" = "通用";
+"cards.type.login" = "登录信息";
+"cards.type.card" = "信用卡";
+"cards.type.identity" = "身份信息";
+"cards.type.note" = "安全笔记";
+"cards.created" = "创建时间：%@";
+"cards.updated" = "更新时间：%@";
+"cards.tags" = "标签";
+"cards.tags.add" = "添加标签";
+
+// MARK: - Attachments
+"attachments.title" = "附件";
+"attachments.add" = "添加附件";
+"attachments.delete" = "删除附件";
+"attachments.delete.confirm" = "确定要删除这个附件吗？";
+"attachments.watermark" = "水印";
+"attachments.watermark.add" = "添加水印";
+"attachments.watermark.remove" = "移除水印";
+"attachments.watermark.text" = "水印文字";
+"attachments.share" = "分享";
+"attachments.preview" = "预览";
+"attachments.size" = "大小：%@";
+"attachments.empty" = "暂无附件";
+"attachments.photo.library" = "照片图库";
+"attachments.photo.camera" = "相机";
+
+// MARK: - Search
+"search.title" = "搜索";
+"search.placeholder" = "搜索卡片...";
+"search.empty" = "未找到结果";
+"search.recent" = "最近搜索";
+
+// MARK: - Settings
+"settings.title" = "设置";
+"settings.security" = "安全";
+"settings.security.biometric" = "面容ID / 触控ID";
+"settings.security.biometric.enable" = "启用生物识别认证";
+"settings.security.autolock" = "自动锁定";
+"settings.security.autolock.immediately" = "立即";
+"settings.security.autolock.1min" = "1分钟后";
+"settings.security.autolock.5min" = "5分钟后";
+"settings.security.autolock.15min" = "15分钟后";
+"settings.security.autolock.never" = "从不";
+"settings.security.changepassword" = "更改密码";
+"settings.language" = "语言";
+"settings.language.title" = "应用语言";
+"settings.language.system" = "跟随系统";
+"settings.about" = "关于";
+"settings.about.version" = "版本";
+"settings.about.privacy" = "隐私政策";
+"settings.about.terms" = "服务条款";
+"settings.data" = "数据";
+"settings.data.export" = "导出数据";
+"settings.data.import" = "导入数据";
+"settings.data.reset" = "重置所有数据";
+"settings.data.reset.confirm" = "这将删除您的所有卡片和设置。此操作无法撤销。";
+
+// MARK: - Errors
+"error.generic" = "出现错误";
+"error.network" = "网络错误";
+"error.encryption" = "加密错误";
+"error.decryption" = "解密错误";
+"error.storage" = "存储错误";
+"error.biometric.unavailable" = "生物识别认证不可用";
+"error.biometric.notEnrolled" = "未设置生物识别数据";

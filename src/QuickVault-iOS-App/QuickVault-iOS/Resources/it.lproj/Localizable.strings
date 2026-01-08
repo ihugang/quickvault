@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (Italiano)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Annulla";
+"common.save" = "Salva";
+"common.delete" = "Elimina";
+"common.edit" = "Modifica";
+"common.done" = "Fatto";
+"common.add" = "Aggiungi";
+"common.close" = "Chiudi";
+"common.confirm" = "Conferma";
+"common.error" = "Errore";
+"common.success" = "Successo";
+"common.loading" = "Caricamento...";
+"common.retry" = "Riprova";
+"common.copy" = "Copia";
+"common.share" = "Condividi";
+"common.search" = "Cerca";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "Proteggi la tua vita digitale";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Benvenuto in QuickVault";
+"auth.welcome.subtitle" = "Imposta la tua password principale per iniziare";
+"auth.password.placeholder" = "Inserisci password";
+"auth.password.confirm" = "Conferma password";
+"auth.password.hint" = "La password deve contenere almeno 8 caratteri";
+"auth.password.mismatch" = "Le password non corrispondono";
+"auth.password.weak" = "La password è troppo debole";
+"auth.setup.button" = "Imposta Password";
+"auth.unlock.title" = "Sblocca QuickVault";
+"auth.unlock.button" = "Sblocca";
+"auth.unlock.biometric" = "Usa Face ID / Touch ID";
+"auth.unlock.failed" = "Autenticazione fallita";
+"auth.unlock.attempts" = "%d tentativi rimanenti";
+"auth.unlock.locked" = "Troppi tentativi. Riprova tra %d secondi";
+"auth.change.title" = "Cambia Password";
+"auth.change.current" = "Password attuale";
+"auth.change.new" = "Nuova password";
+"auth.change.confirm" = "Conferma nuova password";
+"auth.change.success" = "Password cambiata con successo";
+"auth.change.failed" = "Cambio password fallito";
+
+// MARK: - Cards
+"cards.title" = "Schede";
+"cards.empty" = "Nessuna scheda";
+"cards.empty.subtitle" = "Tocca + per aggiungere la tua prima scheda";
+"cards.add" = "Aggiungi Scheda";
+"cards.edit" = "Modifica Scheda";
+"cards.delete" = "Elimina Scheda";
+"cards.delete.confirm" = "Sei sicuro di voler eliminare questa scheda?";
+"cards.pin" = "Fissa";
+"cards.unpin" = "Rimuovi";
+"cards.pinned" = "Fissate";
+"cards.all" = "Tutte";
+"cards.field.add" = "Aggiungi Campo";
+"cards.field.label" = "Etichetta";
+"cards.field.value" = "Valore";
+"cards.field.copyable" = "Copiabile";
+"cards.copied" = "Copiato negli appunti";
+"cards.title.placeholder" = "Titolo Scheda";
+"cards.group.placeholder" = "Gruppo";
+"cards.type.general" = "Generale";
+"cards.type.login" = "Accesso";
+"cards.type.card" = "Carta di Credito";
+"cards.type.identity" = "Identità";
+"cards.type.note" = "Nota Sicura";
+"cards.created" = "Creato: %@";
+"cards.updated" = "Aggiornato: %@";
+"cards.tags" = "Tag";
+"cards.tags.add" = "Aggiungi Tag";
+
+// MARK: - Attachments
+"attachments.title" = "Allegati";
+"attachments.add" = "Aggiungi Allegato";
+"attachments.delete" = "Elimina Allegato";
+"attachments.delete.confirm" = "Sei sicuro di voler eliminare questo allegato?";
+"attachments.watermark" = "Filigrana";
+"attachments.watermark.add" = "Aggiungi Filigrana";
+"attachments.watermark.remove" = "Rimuovi Filigrana";
+"attachments.watermark.text" = "Testo Filigrana";
+"attachments.share" = "Condividi";
+"attachments.preview" = "Anteprima";
+"attachments.size" = "Dimensione: %@";
+"attachments.empty" = "Nessun allegato";
+"attachments.photo.library" = "Libreria Foto";
+"attachments.photo.camera" = "Fotocamera";
+
+// MARK: - Search
+"search.title" = "Cerca";
+"search.placeholder" = "Cerca schede...";
+"search.empty" = "Nessun risultato trovato";
+"search.recent" = "Ricerche Recenti";
+
+// MARK: - Settings
+"settings.title" = "Impostazioni";
+"settings.security" = "Sicurezza";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Abilita autenticazione biometrica";
+"settings.security.autolock" = "Blocco Automatico";
+"settings.security.autolock.immediately" = "Immediatamente";
+"settings.security.autolock.1min" = "Dopo 1 minuto";
+"settings.security.autolock.5min" = "Dopo 5 minuti";
+"settings.security.autolock.15min" = "Dopo 15 minuti";
+"settings.security.autolock.never" = "Mai";
+"settings.security.changepassword" = "Cambia Password";
+"settings.language" = "Lingua";
+"settings.language.title" = "Lingua App";
+"settings.language.system" = "Predefinito di Sistema";
+"settings.about" = "Informazioni";
+"settings.about.version" = "Versione";
+"settings.about.privacy" = "Informativa sulla Privacy";
+"settings.about.terms" = "Termini di Servizio";
+"settings.data" = "Dati";
+"settings.data.export" = "Esporta Dati";
+"settings.data.import" = "Importa Dati";
+"settings.data.reset" = "Ripristina Tutti i Dati";
+"settings.data.reset.confirm" = "Questo eliminerà tutte le tue schede e impostazioni. Questa azione non può essere annullata.";
+
+// MARK: - Errors
+"error.generic" = "Qualcosa è andato storto";
+"error.network" = "Errore di rete";
+"error.encryption" = "Errore di crittografia";
+"error.decryption" = "Errore di decrittografia";
+"error.storage" = "Errore di archiviazione";
+"error.biometric.unavailable" = "L'autenticazione biometrica non è disponibile";
+"error.biometric.notEnrolled" = "Nessun dato biometrico registrato";

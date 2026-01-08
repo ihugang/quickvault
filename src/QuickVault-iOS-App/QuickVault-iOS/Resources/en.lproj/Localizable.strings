@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (English)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Cancel";
+"common.save" = "Save";
+"common.delete" = "Delete";
+"common.edit" = "Edit";
+"common.done" = "Done";
+"common.add" = "Add";
+"common.close" = "Close";
+"common.confirm" = "Confirm";
+"common.error" = "Error";
+"common.success" = "Success";
+"common.loading" = "Loading...";
+"common.retry" = "Retry";
+"common.copy" = "Copy";
+"common.share" = "Share";
+"common.search" = "Search";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "Secure your digital life";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Welcome to QuickVault";
+"auth.welcome.subtitle" = "Set up your master password to get started";
+"auth.password.placeholder" = "Enter password";
+"auth.password.confirm" = "Confirm password";
+"auth.password.hint" = "Password must be at least 8 characters";
+"auth.password.mismatch" = "Passwords do not match";
+"auth.password.weak" = "Password is too weak";
+"auth.setup.button" = "Set Up Password";
+"auth.unlock.title" = "Unlock QuickVault";
+"auth.unlock.button" = "Unlock";
+"auth.unlock.biometric" = "Use Face ID / Touch ID";
+"auth.unlock.failed" = "Authentication failed";
+"auth.unlock.attempts" = "%d attempts remaining";
+"auth.unlock.locked" = "Too many attempts. Try again in %d seconds";
+"auth.change.title" = "Change Password";
+"auth.change.current" = "Current password";
+"auth.change.new" = "New password";
+"auth.change.confirm" = "Confirm new password";
+"auth.change.success" = "Password changed successfully";
+"auth.change.failed" = "Failed to change password";
+
+// MARK: - Cards
+"cards.title" = "Cards";
+"cards.empty" = "No cards yet";
+"cards.empty.subtitle" = "Tap + to add your first card";
+"cards.add" = "Add Card";
+"cards.edit" = "Edit Card";
+"cards.delete" = "Delete Card";
+"cards.delete.confirm" = "Are you sure you want to delete this card?";
+"cards.pin" = "Pin";
+"cards.unpin" = "Unpin";
+"cards.pinned" = "Pinned";
+"cards.all" = "All";
+"cards.field.add" = "Add Field";
+"cards.field.label" = "Label";
+"cards.field.value" = "Value";
+"cards.field.copyable" = "Copyable";
+"cards.copied" = "Copied to clipboard";
+"cards.title.placeholder" = "Card Title";
+"cards.group.placeholder" = "Group";
+"cards.type.general" = "General";
+"cards.type.login" = "Login";
+"cards.type.card" = "Credit Card";
+"cards.type.identity" = "Identity";
+"cards.type.note" = "Secure Note";
+"cards.created" = "Created: %@";
+"cards.updated" = "Updated: %@";
+"cards.tags" = "Tags";
+"cards.tags.add" = "Add Tag";
+
+// MARK: - Attachments
+"attachments.title" = "Attachments";
+"attachments.add" = "Add Attachment";
+"attachments.delete" = "Delete Attachment";
+"attachments.delete.confirm" = "Are you sure you want to delete this attachment?";
+"attachments.watermark" = "Watermark";
+"attachments.watermark.add" = "Add Watermark";
+"attachments.watermark.remove" = "Remove Watermark";
+"attachments.watermark.text" = "Watermark Text";
+"attachments.share" = "Share";
+"attachments.preview" = "Preview";
+"attachments.size" = "Size: %@";
+"attachments.empty" = "No attachments";
+"attachments.photo.library" = "Photo Library";
+"attachments.photo.camera" = "Camera";
+
+// MARK: - Search
+"search.title" = "Search";
+"search.placeholder" = "Search cards...";
+"search.empty" = "No results found";
+"search.recent" = "Recent Searches";
+
+// MARK: - Settings
+"settings.title" = "Settings";
+"settings.security" = "Security";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Enable biometric authentication";
+"settings.security.autolock" = "Auto-Lock";
+"settings.security.autolock.immediately" = "Immediately";
+"settings.security.autolock.1min" = "After 1 minute";
+"settings.security.autolock.5min" = "After 5 minutes";
+"settings.security.autolock.15min" = "After 15 minutes";
+"settings.security.autolock.never" = "Never";
+"settings.security.changepassword" = "Change Password";
+"settings.language" = "Language";
+"settings.language.title" = "App Language";
+"settings.language.system" = "System Default";
+"settings.about" = "About";
+"settings.about.version" = "Version";
+"settings.about.privacy" = "Privacy Policy";
+"settings.about.terms" = "Terms of Service";
+"settings.data" = "Data";
+"settings.data.export" = "Export Data";
+"settings.data.import" = "Import Data";
+"settings.data.reset" = "Reset All Data";
+"settings.data.reset.confirm" = "This will delete all your cards and settings. This action cannot be undone.";
+
+// MARK: - Errors
+"error.generic" = "Something went wrong";
+"error.network" = "Network error";
+"error.encryption" = "Encryption error";
+"error.decryption" = "Decryption error";
+"error.storage" = "Storage error";
+"error.biometric.unavailable" = "Biometric authentication is not available";
+"error.biometric.notEnrolled" = "No biometric data enrolled";

@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (Svenska)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Avbryt";
+"common.save" = "Spara";
+"common.delete" = "Radera";
+"common.edit" = "Redigera";
+"common.done" = "Klar";
+"common.add" = "Lägg till";
+"common.close" = "Stäng";
+"common.confirm" = "Bekräfta";
+"common.error" = "Fel";
+"common.success" = "Lyckades";
+"common.loading" = "Laddar...";
+"common.retry" = "Försök igen";
+"common.copy" = "Kopiera";
+"common.share" = "Dela";
+"common.search" = "Sök";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "Skydda ditt digitala liv";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Välkommen till QuickVault";
+"auth.welcome.subtitle" = "Ställ in ditt huvudlösenord för att börja";
+"auth.password.placeholder" = "Ange lösenord";
+"auth.password.confirm" = "Bekräfta lösenord";
+"auth.password.hint" = "Lösenordet måste vara minst 8 tecken";
+"auth.password.mismatch" = "Lösenorden matchar inte";
+"auth.password.weak" = "Lösenordet är för svagt";
+"auth.setup.button" = "Ställ in Lösenord";
+"auth.unlock.title" = "Lås upp QuickVault";
+"auth.unlock.button" = "Lås upp";
+"auth.unlock.biometric" = "Använd Face ID / Touch ID";
+"auth.unlock.failed" = "Autentisering misslyckades";
+"auth.unlock.attempts" = "%d försök kvar";
+"auth.unlock.locked" = "För många försök. Försök igen om %d sekunder";
+"auth.change.title" = "Ändra Lösenord";
+"auth.change.current" = "Nuvarande lösenord";
+"auth.change.new" = "Nytt lösenord";
+"auth.change.confirm" = "Bekräfta nytt lösenord";
+"auth.change.success" = "Lösenordet har ändrats";
+"auth.change.failed" = "Kunde inte ändra lösenord";
+
+// MARK: - Cards
+"cards.title" = "Kort";
+"cards.empty" = "Inga kort";
+"cards.empty.subtitle" = "Tryck på + för att lägga till ditt första kort";
+"cards.add" = "Lägg till Kort";
+"cards.edit" = "Redigera Kort";
+"cards.delete" = "Radera Kort";
+"cards.delete.confirm" = "Är du säker på att du vill radera detta kort?";
+"cards.pin" = "Fäst";
+"cards.unpin" = "Lossa";
+"cards.pinned" = "Fästa";
+"cards.all" = "Alla";
+"cards.field.add" = "Lägg till Fält";
+"cards.field.label" = "Etikett";
+"cards.field.value" = "Värde";
+"cards.field.copyable" = "Kopierbar";
+"cards.copied" = "Kopierat till urklipp";
+"cards.title.placeholder" = "Korttitel";
+"cards.group.placeholder" = "Grupp";
+"cards.type.general" = "Allmänt";
+"cards.type.login" = "Inloggning";
+"cards.type.card" = "Kreditkort";
+"cards.type.identity" = "Identitet";
+"cards.type.note" = "Säker Anteckning";
+"cards.created" = "Skapad: %@";
+"cards.updated" = "Uppdaterad: %@";
+"cards.tags" = "Taggar";
+"cards.tags.add" = "Lägg till Tagg";
+
+// MARK: - Attachments
+"attachments.title" = "Bilagor";
+"attachments.add" = "Lägg till Bilaga";
+"attachments.delete" = "Radera Bilaga";
+"attachments.delete.confirm" = "Är du säker på att du vill radera denna bilaga?";
+"attachments.watermark" = "Vattenstämpel";
+"attachments.watermark.add" = "Lägg till Vattenstämpel";
+"attachments.watermark.remove" = "Ta bort Vattenstämpel";
+"attachments.watermark.text" = "Vattenstämpeltext";
+"attachments.share" = "Dela";
+"attachments.preview" = "Förhandsgranska";
+"attachments.size" = "Storlek: %@";
+"attachments.empty" = "Inga bilagor";
+"attachments.photo.library" = "Fotobibliotek";
+"attachments.photo.camera" = "Kamera";
+
+// MARK: - Search
+"search.title" = "Sök";
+"search.placeholder" = "Sök kort...";
+"search.empty" = "Inga resultat hittades";
+"search.recent" = "Senaste Sökningar";
+
+// MARK: - Settings
+"settings.title" = "Inställningar";
+"settings.security" = "Säkerhet";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Aktivera biometrisk autentisering";
+"settings.security.autolock" = "Autolås";
+"settings.security.autolock.immediately" = "Omedelbart";
+"settings.security.autolock.1min" = "Efter 1 minut";
+"settings.security.autolock.5min" = "Efter 5 minuter";
+"settings.security.autolock.15min" = "Efter 15 minuter";
+"settings.security.autolock.never" = "Aldrig";
+"settings.security.changepassword" = "Ändra Lösenord";
+"settings.language" = "Språk";
+"settings.language.title" = "Appspråk";
+"settings.language.system" = "Systemstandard";
+"settings.about" = "Om";
+"settings.about.version" = "Version";
+"settings.about.privacy" = "Integritetspolicy";
+"settings.about.terms" = "Användarvillkor";
+"settings.data" = "Data";
+"settings.data.export" = "Exportera Data";
+"settings.data.import" = "Importera Data";
+"settings.data.reset" = "Återställ All Data";
+"settings.data.reset.confirm" = "Detta raderar alla dina kort och inställningar. Denna åtgärd kan inte ångras.";
+
+// MARK: - Errors
+"error.generic" = "Något gick fel";
+"error.network" = "Nätverksfel";
+"error.encryption" = "Krypteringsfel";
+"error.decryption" = "Dekrypteringsfel";
+"error.storage" = "Lagringsfel";
+"error.biometric.unavailable" = "Biometrisk autentisering är inte tillgänglig";
+"error.biometric.notEnrolled" = "Ingen biometrisk data registrerad";

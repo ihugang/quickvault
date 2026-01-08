@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (Polski)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Anuluj";
+"common.save" = "Zapisz";
+"common.delete" = "Usuń";
+"common.edit" = "Edytuj";
+"common.done" = "Gotowe";
+"common.add" = "Dodaj";
+"common.close" = "Zamknij";
+"common.confirm" = "Potwierdź";
+"common.error" = "Błąd";
+"common.success" = "Sukces";
+"common.loading" = "Ładowanie...";
+"common.retry" = "Ponów";
+"common.copy" = "Kopiuj";
+"common.share" = "Udostępnij";
+"common.search" = "Szukaj";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "Zabezpiecz swoje cyfrowe życie";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Witamy w QuickVault";
+"auth.welcome.subtitle" = "Ustaw hasło główne, aby rozpocząć";
+"auth.password.placeholder" = "Wprowadź hasło";
+"auth.password.confirm" = "Potwierdź hasło";
+"auth.password.hint" = "Hasło musi mieć co najmniej 8 znaków";
+"auth.password.mismatch" = "Hasła nie są zgodne";
+"auth.password.weak" = "Hasło jest zbyt słabe";
+"auth.setup.button" = "Ustaw Hasło";
+"auth.unlock.title" = "Odblokuj QuickVault";
+"auth.unlock.button" = "Odblokuj";
+"auth.unlock.biometric" = "Użyj Face ID / Touch ID";
+"auth.unlock.failed" = "Uwierzytelnianie nie powiodło się";
+"auth.unlock.attempts" = "Pozostało %d prób";
+"auth.unlock.locked" = "Zbyt wiele prób. Spróbuj ponownie za %d sekund";
+"auth.change.title" = "Zmień Hasło";
+"auth.change.current" = "Aktualne hasło";
+"auth.change.new" = "Nowe hasło";
+"auth.change.confirm" = "Potwierdź nowe hasło";
+"auth.change.success" = "Hasło zostało zmienione";
+"auth.change.failed" = "Zmiana hasła nie powiodła się";
+
+// MARK: - Cards
+"cards.title" = "Karty";
+"cards.empty" = "Brak kart";
+"cards.empty.subtitle" = "Dotknij +, aby dodać pierwszą kartę";
+"cards.add" = "Dodaj Kartę";
+"cards.edit" = "Edytuj Kartę";
+"cards.delete" = "Usuń Kartę";
+"cards.delete.confirm" = "Czy na pewno chcesz usunąć tę kartę?";
+"cards.pin" = "Przypnij";
+"cards.unpin" = "Odepnij";
+"cards.pinned" = "Przypięte";
+"cards.all" = "Wszystkie";
+"cards.field.add" = "Dodaj Pole";
+"cards.field.label" = "Etykieta";
+"cards.field.value" = "Wartość";
+"cards.field.copyable" = "Możliwe do skopiowania";
+"cards.copied" = "Skopiowano do schowka";
+"cards.title.placeholder" = "Tytuł Karty";
+"cards.group.placeholder" = "Grupa";
+"cards.type.general" = "Ogólne";
+"cards.type.login" = "Logowanie";
+"cards.type.card" = "Karta Kredytowa";
+"cards.type.identity" = "Tożsamość";
+"cards.type.note" = "Bezpieczna Notatka";
+"cards.created" = "Utworzono: %@";
+"cards.updated" = "Zaktualizowano: %@";
+"cards.tags" = "Tagi";
+"cards.tags.add" = "Dodaj Tag";
+
+// MARK: - Attachments
+"attachments.title" = "Załączniki";
+"attachments.add" = "Dodaj Załącznik";
+"attachments.delete" = "Usuń Załącznik";
+"attachments.delete.confirm" = "Czy na pewno chcesz usunąć ten załącznik?";
+"attachments.watermark" = "Znak wodny";
+"attachments.watermark.add" = "Dodaj Znak Wodny";
+"attachments.watermark.remove" = "Usuń Znak Wodny";
+"attachments.watermark.text" = "Tekst Znaku Wodnego";
+"attachments.share" = "Udostępnij";
+"attachments.preview" = "Podgląd";
+"attachments.size" = "Rozmiar: %@";
+"attachments.empty" = "Brak załączników";
+"attachments.photo.library" = "Biblioteka Zdjęć";
+"attachments.photo.camera" = "Aparat";
+
+// MARK: - Search
+"search.title" = "Szukaj";
+"search.placeholder" = "Szukaj kart...";
+"search.empty" = "Nie znaleziono wyników";
+"search.recent" = "Ostatnie Wyszukiwania";
+
+// MARK: - Settings
+"settings.title" = "Ustawienia";
+"settings.security" = "Bezpieczeństwo";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Włącz uwierzytelnianie biometryczne";
+"settings.security.autolock" = "Automatyczna Blokada";
+"settings.security.autolock.immediately" = "Natychmiast";
+"settings.security.autolock.1min" = "Po 1 minucie";
+"settings.security.autolock.5min" = "Po 5 minutach";
+"settings.security.autolock.15min" = "Po 15 minutach";
+"settings.security.autolock.never" = "Nigdy";
+"settings.security.changepassword" = "Zmień Hasło";
+"settings.language" = "Język";
+"settings.language.title" = "Język Aplikacji";
+"settings.language.system" = "Domyślny Systemowy";
+"settings.about" = "O Aplikacji";
+"settings.about.version" = "Wersja";
+"settings.about.privacy" = "Polityka Prywatności";
+"settings.about.terms" = "Warunki Usługi";
+"settings.data" = "Dane";
+"settings.data.export" = "Eksportuj Dane";
+"settings.data.import" = "Importuj Dane";
+"settings.data.reset" = "Zresetuj Wszystkie Dane";
+"settings.data.reset.confirm" = "Spowoduje to usunięcie wszystkich kart i ustawień. Tej czynności nie można cofnąć.";
+
+// MARK: - Errors
+"error.generic" = "Coś poszło nie tak";
+"error.network" = "Błąd sieci";
+"error.encryption" = "Błąd szyfrowania";
+"error.decryption" = "Błąd deszyfrowania";
+"error.storage" = "Błąd przechowywania";
+"error.biometric.unavailable" = "Uwierzytelnianie biometryczne nie jest dostępne";
+"error.biometric.notEnrolled" = "Brak zarejestrowanych danych biometrycznych";

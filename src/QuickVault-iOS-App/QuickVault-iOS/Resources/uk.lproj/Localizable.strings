@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (Українська)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Скасувати";
+"common.save" = "Зберегти";
+"common.delete" = "Видалити";
+"common.edit" = "Редагувати";
+"common.done" = "Готово";
+"common.add" = "Додати";
+"common.close" = "Закрити";
+"common.confirm" = "Підтвердити";
+"common.error" = "Помилка";
+"common.success" = "Успішно";
+"common.loading" = "Завантаження...";
+"common.retry" = "Повторити";
+"common.copy" = "Копіювати";
+"common.share" = "Поділитися";
+"common.search" = "Пошук";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "Захистіть своє цифрове життя";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Ласкаво просимо до QuickVault";
+"auth.welcome.subtitle" = "Встановіть головний пароль, щоб почати";
+"auth.password.placeholder" = "Введіть пароль";
+"auth.password.confirm" = "Підтвердіть пароль";
+"auth.password.hint" = "Пароль повинен містити щонайменше 8 символів";
+"auth.password.mismatch" = "Паролі не збігаються";
+"auth.password.weak" = "Пароль занадто слабкий";
+"auth.setup.button" = "Встановити Пароль";
+"auth.unlock.title" = "Розблокувати QuickVault";
+"auth.unlock.button" = "Розблокувати";
+"auth.unlock.biometric" = "Використати Face ID / Touch ID";
+"auth.unlock.failed" = "Помилка автентифікації";
+"auth.unlock.attempts" = "Залишилось спроб: %d";
+"auth.unlock.locked" = "Забагато спроб. Спробуйте через %d секунд";
+"auth.change.title" = "Змінити Пароль";
+"auth.change.current" = "Поточний пароль";
+"auth.change.new" = "Новий пароль";
+"auth.change.confirm" = "Підтвердіть новий пароль";
+"auth.change.success" = "Пароль успішно змінено";
+"auth.change.failed" = "Не вдалося змінити пароль";
+
+// MARK: - Cards
+"cards.title" = "Картки";
+"cards.empty" = "Немає карток";
+"cards.empty.subtitle" = "Натисніть +, щоб додати першу картку";
+"cards.add" = "Додати Картку";
+"cards.edit" = "Редагувати Картку";
+"cards.delete" = "Видалити Картку";
+"cards.delete.confirm" = "Ви впевнені, що хочете видалити цю картку?";
+"cards.pin" = "Закріпити";
+"cards.unpin" = "Відкріпити";
+"cards.pinned" = "Закріплені";
+"cards.all" = "Усі";
+"cards.field.add" = "Додати Поле";
+"cards.field.label" = "Мітка";
+"cards.field.value" = "Значення";
+"cards.field.copyable" = "Можна копіювати";
+"cards.copied" = "Скопійовано до буфера обміну";
+"cards.title.placeholder" = "Назва Картки";
+"cards.group.placeholder" = "Група";
+"cards.type.general" = "Загальне";
+"cards.type.login" = "Вхід";
+"cards.type.card" = "Кредитна Картка";
+"cards.type.identity" = "Особистість";
+"cards.type.note" = "Захищена Нотатка";
+"cards.created" = "Створено: %@";
+"cards.updated" = "Оновлено: %@";
+"cards.tags" = "Теги";
+"cards.tags.add" = "Додати Тег";
+
+// MARK: - Attachments
+"attachments.title" = "Вкладення";
+"attachments.add" = "Додати Вкладення";
+"attachments.delete" = "Видалити Вкладення";
+"attachments.delete.confirm" = "Ви впевнені, що хочете видалити це вкладення?";
+"attachments.watermark" = "Водяний знак";
+"attachments.watermark.add" = "Додати Водяний Знак";
+"attachments.watermark.remove" = "Видалити Водяний Знак";
+"attachments.watermark.text" = "Текст Водяного Знаку";
+"attachments.share" = "Поділитися";
+"attachments.preview" = "Попередній перегляд";
+"attachments.size" = "Розмір: %@";
+"attachments.empty" = "Немає вкладень";
+"attachments.photo.library" = "Фотобібліотека";
+"attachments.photo.camera" = "Камера";
+
+// MARK: - Search
+"search.title" = "Пошук";
+"search.placeholder" = "Шукати картки...";
+"search.empty" = "Результатів не знайдено";
+"search.recent" = "Останні Пошуки";
+
+// MARK: - Settings
+"settings.title" = "Налаштування";
+"settings.security" = "Безпека";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Увімкнути біометричну автентифікацію";
+"settings.security.autolock" = "Автоблокування";
+"settings.security.autolock.immediately" = "Негайно";
+"settings.security.autolock.1min" = "Через 1 хвилину";
+"settings.security.autolock.5min" = "Через 5 хвилин";
+"settings.security.autolock.15min" = "Через 15 хвилин";
+"settings.security.autolock.never" = "Ніколи";
+"settings.security.changepassword" = "Змінити Пароль";
+"settings.language" = "Мова";
+"settings.language.title" = "Мова Додатку";
+"settings.language.system" = "Системна за замовчуванням";
+"settings.about" = "Про Додаток";
+"settings.about.version" = "Версія";
+"settings.about.privacy" = "Політика Конфіденційності";
+"settings.about.terms" = "Умови Використання";
+"settings.data" = "Дані";
+"settings.data.export" = "Експорт Даних";
+"settings.data.import" = "Імпорт Даних";
+"settings.data.reset" = "Скинути Всі Дані";
+"settings.data.reset.confirm" = "Це видалить усі ваші картки та налаштування. Цю дію неможливо скасувати.";
+
+// MARK: - Errors
+"error.generic" = "Щось пішло не так";
+"error.network" = "Помилка мережі";
+"error.encryption" = "Помилка шифрування";
+"error.decryption" = "Помилка розшифрування";
+"error.storage" = "Помилка сховища";
+"error.biometric.unavailable" = "Біометрична автентифікація недоступна";
+"error.biometric.notEnrolled" = "Біометричні дані не зареєстровані";

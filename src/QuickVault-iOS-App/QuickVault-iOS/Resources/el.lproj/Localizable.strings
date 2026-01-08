@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (Ελληνικά)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Ακύρωση";
+"common.save" = "Αποθήκευση";
+"common.delete" = "Διαγραφή";
+"common.edit" = "Επεξεργασία";
+"common.done" = "Τέλος";
+"common.add" = "Προσθήκη";
+"common.close" = "Κλείσιμο";
+"common.confirm" = "Επιβεβαίωση";
+"common.error" = "Σφάλμα";
+"common.success" = "Επιτυχία";
+"common.loading" = "Φόρτωση...";
+"common.retry" = "Επανάληψη";
+"common.copy" = "Αντιγραφή";
+"common.share" = "Κοινοποίηση";
+"common.search" = "Αναζήτηση";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "Προστατέψτε την ψηφιακή σας ζωή";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Καλώς ήρθατε στο QuickVault";
+"auth.welcome.subtitle" = "Ορίστε τον κύριο κωδικό σας για να ξεκινήσετε";
+"auth.password.placeholder" = "Εισάγετε κωδικό";
+"auth.password.confirm" = "Επιβεβαίωση κωδικού";
+"auth.password.hint" = "Ο κωδικός πρέπει να έχει τουλάχιστον 8 χαρακτήρες";
+"auth.password.mismatch" = "Οι κωδικοί δεν ταιριάζουν";
+"auth.password.weak" = "Ο κωδικός είναι πολύ αδύναμος";
+"auth.setup.button" = "Ορισμός Κωδικού";
+"auth.unlock.title" = "Ξεκλείδωμα QuickVault";
+"auth.unlock.button" = "Ξεκλείδωμα";
+"auth.unlock.biometric" = "Χρήση Face ID / Touch ID";
+"auth.unlock.failed" = "Η ταυτοποίηση απέτυχε";
+"auth.unlock.attempts" = "Απομένουν %d προσπάθειες";
+"auth.unlock.locked" = "Πολλές προσπάθειες. Δοκιμάστε ξανά σε %d δευτερόλεπτα";
+"auth.change.title" = "Αλλαγή Κωδικού";
+"auth.change.current" = "Τρέχων κωδικός";
+"auth.change.new" = "Νέος κωδικός";
+"auth.change.confirm" = "Επιβεβαίωση νέου κωδικού";
+"auth.change.success" = "Ο κωδικός άλλαξε επιτυχώς";
+"auth.change.failed" = "Αποτυχία αλλαγής κωδικού";
+
+// MARK: - Cards
+"cards.title" = "Κάρτες";
+"cards.empty" = "Δεν υπάρχουν κάρτες";
+"cards.empty.subtitle" = "Πατήστε + για να προσθέσετε την πρώτη κάρτα";
+"cards.add" = "Προσθήκη Κάρτας";
+"cards.edit" = "Επεξεργασία Κάρτας";
+"cards.delete" = "Διαγραφή Κάρτας";
+"cards.delete.confirm" = "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή την κάρτα;";
+"cards.pin" = "Καρφίτσωμα";
+"cards.unpin" = "Ξεκαρφίτσωμα";
+"cards.pinned" = "Καρφιτσωμένες";
+"cards.all" = "Όλες";
+"cards.field.add" = "Προσθήκη Πεδίου";
+"cards.field.label" = "Ετικέτα";
+"cards.field.value" = "Τιμή";
+"cards.field.copyable" = "Αντιγράψιμο";
+"cards.copied" = "Αντιγράφηκε στο πρόχειρο";
+"cards.title.placeholder" = "Τίτλος Κάρτας";
+"cards.group.placeholder" = "Ομάδα";
+"cards.type.general" = "Γενικό";
+"cards.type.login" = "Σύνδεση";
+"cards.type.card" = "Πιστωτική Κάρτα";
+"cards.type.identity" = "Ταυτότητα";
+"cards.type.note" = "Ασφαλής Σημείωση";
+"cards.created" = "Δημιουργήθηκε: %@";
+"cards.updated" = "Ενημερώθηκε: %@";
+"cards.tags" = "Ετικέτες";
+"cards.tags.add" = "Προσθήκη Ετικέτας";
+
+// MARK: - Attachments
+"attachments.title" = "Συνημμένα";
+"attachments.add" = "Προσθήκη Συνημμένου";
+"attachments.delete" = "Διαγραφή Συνημμένου";
+"attachments.delete.confirm" = "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το συνημμένο;";
+"attachments.watermark" = "Υδατογράφημα";
+"attachments.watermark.add" = "Προσθήκη Υδατογραφήματος";
+"attachments.watermark.remove" = "Αφαίρεση Υδατογραφήματος";
+"attachments.watermark.text" = "Κείμενο Υδατογραφήματος";
+"attachments.share" = "Κοινοποίηση";
+"attachments.preview" = "Προεπισκόπηση";
+"attachments.size" = "Μέγεθος: %@";
+"attachments.empty" = "Δεν υπάρχουν συνημμένα";
+"attachments.photo.library" = "Βιβλιοθήκη Φωτογραφιών";
+"attachments.photo.camera" = "Κάμερα";
+
+// MARK: - Search
+"search.title" = "Αναζήτηση";
+"search.placeholder" = "Αναζήτηση καρτών...";
+"search.empty" = "Δεν βρέθηκαν αποτελέσματα";
+"search.recent" = "Πρόσφατες Αναζητήσεις";
+
+// MARK: - Settings
+"settings.title" = "Ρυθμίσεις";
+"settings.security" = "Ασφάλεια";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Ενεργοποίηση βιομετρικής ταυτοποίησης";
+"settings.security.autolock" = "Αυτόματο Κλείδωμα";
+"settings.security.autolock.immediately" = "Αμέσως";
+"settings.security.autolock.1min" = "Μετά από 1 λεπτό";
+"settings.security.autolock.5min" = "Μετά από 5 λεπτά";
+"settings.security.autolock.15min" = "Μετά από 15 λεπτά";
+"settings.security.autolock.never" = "Ποτέ";
+"settings.security.changepassword" = "Αλλαγή Κωδικού";
+"settings.language" = "Γλώσσα";
+"settings.language.title" = "Γλώσσα Εφαρμογής";
+"settings.language.system" = "Προεπιλογή Συστήματος";
+"settings.about" = "Σχετικά";
+"settings.about.version" = "Έκδοση";
+"settings.about.privacy" = "Πολιτική Απορρήτου";
+"settings.about.terms" = "Όροι Χρήσης";
+"settings.data" = "Δεδομένα";
+"settings.data.export" = "Εξαγωγή Δεδομένων";
+"settings.data.import" = "Εισαγωγή Δεδομένων";
+"settings.data.reset" = "Επαναφορά Όλων των Δεδομένων";
+"settings.data.reset.confirm" = "Αυτό θα διαγράψει όλες τις κάρτες και τις ρυθμίσεις σας. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.";
+
+// MARK: - Errors
+"error.generic" = "Κάτι πήγε στραβά";
+"error.network" = "Σφάλμα δικτύου";
+"error.encryption" = "Σφάλμα κρυπτογράφησης";
+"error.decryption" = "Σφάλμα αποκρυπτογράφησης";
+"error.storage" = "Σφάλμα αποθήκευσης";
+"error.biometric.unavailable" = "Η βιομετρική ταυτοποίηση δεν είναι διαθέσιμη";
+"error.biometric.notEnrolled" = "Δεν έχουν καταχωρηθεί βιομετρικά δεδομένα";

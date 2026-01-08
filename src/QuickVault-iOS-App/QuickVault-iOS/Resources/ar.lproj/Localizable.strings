@@ -1,0 +1,134 @@
+/* 
+  Localizable.strings (العربية)
+  QuickVault
+  RTL Language
+*/
+
+// MARK: - Common
+"common.ok" = "موافق";
+"common.cancel" = "إلغاء";
+"common.save" = "حفظ";
+"common.delete" = "حذف";
+"common.edit" = "تعديل";
+"common.done" = "تم";
+"common.add" = "إضافة";
+"common.close" = "إغلاق";
+"common.confirm" = "تأكيد";
+"common.error" = "خطأ";
+"common.success" = "نجاح";
+"common.loading" = "جاري التحميل...";
+"common.retry" = "إعادة المحاولة";
+"common.copy" = "نسخ";
+"common.share" = "مشاركة";
+"common.search" = "بحث";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "احمِ حياتك الرقمية";
+
+// MARK: - Authentication
+"auth.welcome.title" = "مرحباً بك في QuickVault";
+"auth.welcome.subtitle" = "قم بإعداد كلمة المرور الرئيسية للبدء";
+"auth.password.placeholder" = "أدخل كلمة المرور";
+"auth.password.confirm" = "تأكيد كلمة المرور";
+"auth.password.hint" = "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل";
+"auth.password.mismatch" = "كلمات المرور غير متطابقة";
+"auth.password.weak" = "كلمة المرور ضعيفة جداً";
+"auth.setup.button" = "إعداد كلمة المرور";
+"auth.unlock.title" = "فتح QuickVault";
+"auth.unlock.button" = "فتح";
+"auth.unlock.biometric" = "استخدام Face ID / Touch ID";
+"auth.unlock.failed" = "فشل المصادقة";
+"auth.unlock.attempts" = "المحاولات المتبقية: %d";
+"auth.unlock.locked" = "محاولات كثيرة جداً. حاول مرة أخرى بعد %d ثانية";
+"auth.change.title" = "تغيير كلمة المرور";
+"auth.change.current" = "كلمة المرور الحالية";
+"auth.change.new" = "كلمة المرور الجديدة";
+"auth.change.confirm" = "تأكيد كلمة المرور الجديدة";
+"auth.change.success" = "تم تغيير كلمة المرور بنجاح";
+"auth.change.failed" = "فشل تغيير كلمة المرور";
+
+// MARK: - Cards
+"cards.title" = "البطاقات";
+"cards.empty" = "لا توجد بطاقات";
+"cards.empty.subtitle" = "اضغط على + لإضافة أول بطاقة";
+"cards.add" = "إضافة بطاقة";
+"cards.edit" = "تعديل البطاقة";
+"cards.delete" = "حذف البطاقة";
+"cards.delete.confirm" = "هل أنت متأكد من حذف هذه البطاقة؟";
+"cards.pin" = "تثبيت";
+"cards.unpin" = "إلغاء التثبيت";
+"cards.pinned" = "مثبتة";
+"cards.all" = "الكل";
+"cards.field.add" = "إضافة حقل";
+"cards.field.label" = "التسمية";
+"cards.field.value" = "القيمة";
+"cards.field.copyable" = "قابل للنسخ";
+"cards.copied" = "تم النسخ إلى الحافظة";
+"cards.title.placeholder" = "عنوان البطاقة";
+"cards.group.placeholder" = "المجموعة";
+"cards.type.general" = "عام";
+"cards.type.login" = "تسجيل الدخول";
+"cards.type.card" = "بطاقة ائتمان";
+"cards.type.identity" = "الهوية";
+"cards.type.note" = "ملاحظة آمنة";
+"cards.created" = "تاريخ الإنشاء: %@";
+"cards.updated" = "تاريخ التحديث: %@";
+"cards.tags" = "الوسوم";
+"cards.tags.add" = "إضافة وسم";
+
+// MARK: - Attachments
+"attachments.title" = "المرفقات";
+"attachments.add" = "إضافة مرفق";
+"attachments.delete" = "حذف المرفق";
+"attachments.delete.confirm" = "هل أنت متأكد من حذف هذا المرفق؟";
+"attachments.watermark" = "علامة مائية";
+"attachments.watermark.add" = "إضافة علامة مائية";
+"attachments.watermark.remove" = "إزالة العلامة المائية";
+"attachments.watermark.text" = "نص العلامة المائية";
+"attachments.share" = "مشاركة";
+"attachments.preview" = "معاينة";
+"attachments.size" = "الحجم: %@";
+"attachments.empty" = "لا توجد مرفقات";
+"attachments.photo.library" = "مكتبة الصور";
+"attachments.photo.camera" = "الكاميرا";
+
+// MARK: - Search
+"search.title" = "بحث";
+"search.placeholder" = "البحث في البطاقات...";
+"search.empty" = "لم يتم العثور على نتائج";
+"search.recent" = "عمليات البحث الأخيرة";
+
+// MARK: - Settings
+"settings.title" = "الإعدادات";
+"settings.security" = "الأمان";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "تفعيل المصادقة البيومترية";
+"settings.security.autolock" = "القفل التلقائي";
+"settings.security.autolock.immediately" = "فوراً";
+"settings.security.autolock.1min" = "بعد دقيقة واحدة";
+"settings.security.autolock.5min" = "بعد 5 دقائق";
+"settings.security.autolock.15min" = "بعد 15 دقيقة";
+"settings.security.autolock.never" = "أبداً";
+"settings.security.changepassword" = "تغيير كلمة المرور";
+"settings.language" = "اللغة";
+"settings.language.title" = "لغة التطبيق";
+"settings.language.system" = "الافتراضي للنظام";
+"settings.about" = "حول";
+"settings.about.version" = "الإصدار";
+"settings.about.privacy" = "سياسة الخصوصية";
+"settings.about.terms" = "شروط الخدمة";
+"settings.data" = "البيانات";
+"settings.data.export" = "تصدير البيانات";
+"settings.data.import" = "استيراد البيانات";
+"settings.data.reset" = "إعادة تعيين جميع البيانات";
+"settings.data.reset.confirm" = "سيؤدي هذا إلى حذف جميع بطاقاتك وإعداداتك. لا يمكن التراجع عن هذا الإجراء.";
+
+// MARK: - Errors
+"error.generic" = "حدث خطأ ما";
+"error.network" = "خطأ في الشبكة";
+"error.encryption" = "خطأ في التشفير";
+"error.decryption" = "خطأ في فك التشفير";
+"error.storage" = "خطأ في التخزين";
+"error.biometric.unavailable" = "المصادقة البيومترية غير متاحة";
+"error.biometric.notEnrolled" = "لم يتم تسجيل بيانات بيومترية";

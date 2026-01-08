@@ -23,6 +23,17 @@ enum AutoLockTimeout: Int, CaseIterable, Identifiable {
         case .never: return "从不 / Never"
         }
     }
+    
+    var localizationKey: String {
+        switch self {
+        case .immediately: return "settings.security.autolock.immediately"
+        case .oneMinute: return "settings.security.autolock.1min"
+        case .fiveMinutes: return "settings.security.autolock.5min"
+        case .fifteenMinutes: return "settings.security.autolock.15min"
+        case .thirtyMinutes: return "settings.security.autolock.15min"
+        case .never: return "settings.security.autolock.never"
+        }
+    }
 }
 
 /// Settings view model / 设置视图模型

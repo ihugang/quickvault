@@ -1,0 +1,133 @@
+/* 
+  Localizable.strings (Suomi)
+  QuickVault
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Peruuta";
+"common.save" = "Tallenna";
+"common.delete" = "Poista";
+"common.edit" = "Muokkaa";
+"common.done" = "Valmis";
+"common.add" = "Lisää";
+"common.close" = "Sulje";
+"common.confirm" = "Vahvista";
+"common.error" = "Virhe";
+"common.success" = "Onnistui";
+"common.loading" = "Ladataan...";
+"common.retry" = "Yritä uudelleen";
+"common.copy" = "Kopioi";
+"common.share" = "Jaa";
+"common.search" = "Hae";
+
+// MARK: - App
+"app.name" = "QuickVault";
+"app.tagline" = "Suojaa digitaalinen elämäsi";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Tervetuloa QuickVaultiin";
+"auth.welcome.subtitle" = "Aseta pääsalasanasi aloittaaksesi";
+"auth.password.placeholder" = "Syötä salasana";
+"auth.password.confirm" = "Vahvista salasana";
+"auth.password.hint" = "Salasanan on oltava vähintään 8 merkkiä";
+"auth.password.mismatch" = "Salasanat eivät täsmää";
+"auth.password.weak" = "Salasana on liian heikko";
+"auth.setup.button" = "Aseta Salasana";
+"auth.unlock.title" = "Avaa QuickVault";
+"auth.unlock.button" = "Avaa";
+"auth.unlock.biometric" = "Käytä Face ID / Touch ID";
+"auth.unlock.failed" = "Todennus epäonnistui";
+"auth.unlock.attempts" = "%d yritystä jäljellä";
+"auth.unlock.locked" = "Liian monta yritystä. Yritä uudelleen %d sekunnin kuluttua";
+"auth.change.title" = "Vaihda Salasana";
+"auth.change.current" = "Nykyinen salasana";
+"auth.change.new" = "Uusi salasana";
+"auth.change.confirm" = "Vahvista uusi salasana";
+"auth.change.success" = "Salasana vaihdettu";
+"auth.change.failed" = "Salasanan vaihto epäonnistui";
+
+// MARK: - Cards
+"cards.title" = "Kortit";
+"cards.empty" = "Ei kortteja";
+"cards.empty.subtitle" = "Napauta + lisätäksesi ensimmäisen kortin";
+"cards.add" = "Lisää Kortti";
+"cards.edit" = "Muokkaa Korttia";
+"cards.delete" = "Poista Kortti";
+"cards.delete.confirm" = "Haluatko varmasti poistaa tämän kortin?";
+"cards.pin" = "Kiinnitä";
+"cards.unpin" = "Irrota";
+"cards.pinned" = "Kiinnitetyt";
+"cards.all" = "Kaikki";
+"cards.field.add" = "Lisää Kenttä";
+"cards.field.label" = "Otsikko";
+"cards.field.value" = "Arvo";
+"cards.field.copyable" = "Kopioitavissa";
+"cards.copied" = "Kopioitu leikepöydälle";
+"cards.title.placeholder" = "Kortin Otsikko";
+"cards.group.placeholder" = "Ryhmä";
+"cards.type.general" = "Yleinen";
+"cards.type.login" = "Kirjautuminen";
+"cards.type.card" = "Luottokortti";
+"cards.type.identity" = "Henkilöllisyys";
+"cards.type.note" = "Suojattu Muistiinpano";
+"cards.created" = "Luotu: %@";
+"cards.updated" = "Päivitetty: %@";
+"cards.tags" = "Tunnisteet";
+"cards.tags.add" = "Lisää Tunniste";
+
+// MARK: - Attachments
+"attachments.title" = "Liitteet";
+"attachments.add" = "Lisää Liite";
+"attachments.delete" = "Poista Liite";
+"attachments.delete.confirm" = "Haluatko varmasti poistaa tämän liitteen?";
+"attachments.watermark" = "Vesileima";
+"attachments.watermark.add" = "Lisää Vesileima";
+"attachments.watermark.remove" = "Poista Vesileima";
+"attachments.watermark.text" = "Vesileiman Teksti";
+"attachments.share" = "Jaa";
+"attachments.preview" = "Esikatselu";
+"attachments.size" = "Koko: %@";
+"attachments.empty" = "Ei liitteitä";
+"attachments.photo.library" = "Kuvakirjasto";
+"attachments.photo.camera" = "Kamera";
+
+// MARK: - Search
+"search.title" = "Haku";
+"search.placeholder" = "Hae kortteja...";
+"search.empty" = "Tuloksia ei löytynyt";
+"search.recent" = "Viimeisimmät Haut";
+
+// MARK: - Settings
+"settings.title" = "Asetukset";
+"settings.security" = "Turvallisuus";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Ota biometrinen todennus käyttöön";
+"settings.security.autolock" = "Automaattinen Lukitus";
+"settings.security.autolock.immediately" = "Heti";
+"settings.security.autolock.1min" = "1 minuutin jälkeen";
+"settings.security.autolock.5min" = "5 minuutin jälkeen";
+"settings.security.autolock.15min" = "15 minuutin jälkeen";
+"settings.security.autolock.never" = "Ei koskaan";
+"settings.security.changepassword" = "Vaihda Salasana";
+"settings.language" = "Kieli";
+"settings.language.title" = "Sovelluksen Kieli";
+"settings.language.system" = "Järjestelmän Oletus";
+"settings.about" = "Tietoja";
+"settings.about.version" = "Versio";
+"settings.about.privacy" = "Tietosuojakäytäntö";
+"settings.about.terms" = "Käyttöehdot";
+"settings.data" = "Tiedot";
+"settings.data.export" = "Vie Tiedot";
+"settings.data.import" = "Tuo Tiedot";
+"settings.data.reset" = "Nollaa Kaikki Tiedot";
+"settings.data.reset.confirm" = "Tämä poistaa kaikki korttisi ja asetuksesi. Tätä toimintoa ei voi kumota.";
+
+// MARK: - Errors
+"error.generic" = "Jotain meni pieleen";
+"error.network" = "Verkkovirhe";
+"error.encryption" = "Salausvirhe";
+"error.decryption" = "Purkuvirhe";
+"error.storage" = "Tallennusvirhe";
+"error.biometric.unavailable" = "Biometrinen todennus ei ole käytettävissä";
+"error.biometric.notEnrolled" = "Biometrisiä tietoja ei ole rekisteröity";
