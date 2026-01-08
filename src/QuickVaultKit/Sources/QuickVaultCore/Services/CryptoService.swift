@@ -43,6 +43,9 @@ public protocol CryptoService {
 }
 
 public class CryptoServiceImpl: CryptoService {
+  /// Shared singleton instance / 共享单例实例
+  public static let shared = CryptoServiceImpl()
+  
   private var encryptionKey: SymmetricKey?
   private let keychainService: KeychainService
 

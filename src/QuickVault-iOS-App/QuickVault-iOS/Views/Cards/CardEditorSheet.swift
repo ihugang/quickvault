@@ -14,8 +14,7 @@ struct CardEditorSheet: View {
         self.onSave = onSave
         
         let persistenceController = PersistenceController.shared
-        let cryptoService = CryptoServiceImpl()
-        let cardService = CardServiceImpl(persistenceController: persistenceController, cryptoService: cryptoService)
+        let cardService = CardServiceImpl(persistenceController: persistenceController, cryptoService: CryptoServiceImpl.shared)
         _viewModel = StateObject(wrappedValue: CardEditorViewModel(cardService: cardService))
     }
     

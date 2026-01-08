@@ -8,7 +8,6 @@ struct QuickVaultApp: App {
     
     private let persistenceController = PersistenceController.shared
     private let keychainService = KeychainServiceImpl()
-    private let cryptoService = CryptoServiceImpl()
     
     @StateObject private var authViewModel: AuthViewModel
     @StateObject private var cardListViewModel: CardListViewModel
@@ -19,7 +18,7 @@ struct QuickVaultApp: App {
     
     init() {
         let keychainService = KeychainServiceImpl()
-        let cryptoService = CryptoServiceImpl()
+        let cryptoService = CryptoServiceImpl.shared
         let persistenceController = PersistenceController.shared
         
         let authService = AuthenticationServiceImpl(

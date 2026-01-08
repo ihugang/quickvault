@@ -329,12 +329,11 @@ class AttachmentListViewModel: ObservableObject {
         self.cardId = cardId
         
         let persistenceController = PersistenceController.shared
-        let cryptoService = CryptoServiceImpl()
         let watermarkService = WatermarkServiceImpl()
         
         self.attachmentService = AttachmentServiceImpl(
             persistenceController: persistenceController,
-            cryptoService: cryptoService,
+            cryptoService: CryptoServiceImpl.shared,
             watermarkService: watermarkService
         )
     }

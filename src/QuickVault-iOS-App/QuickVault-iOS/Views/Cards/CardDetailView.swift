@@ -12,7 +12,7 @@ struct CardDetailView: View {
     init(cardId: UUID) {
         self.cardId = cardId
         let persistenceController = PersistenceController.shared
-        let cryptoService = CryptoServiceImpl()
+        let cryptoService = CryptoServiceImpl.shared
         let cardService = CardServiceImpl(persistenceController: persistenceController, cryptoService: cryptoService)
         _viewModel = StateObject(wrappedValue: CardDetailViewModel(cardService: cardService, cryptoService: cryptoService))
     }
