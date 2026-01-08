@@ -53,6 +53,8 @@ class CardListViewModel: ObservableObject {
     private func setupBindings() {
         // React to search query changes
         $searchQuery
+            .dropFirst()
+            .removeDuplicates()
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
             .sink { [weak self] query in
                 Task {
@@ -63,6 +65,8 @@ class CardListViewModel: ObservableObject {
         
         // React to group filter changes
         $selectedGroup
+            .dropFirst()
+            .removeDuplicates()
             .sink { [weak self] _ in
                 self?.applyFilters()
             }
