@@ -390,86 +390,132 @@ class CardEditorViewModel: ObservableObject {
     }
     
     private func fillIDCardFields(from result: IDCardOCRResult) {
+        let nameLabel = "field.idcard.name".localized
+        let genderLabel = "field.idcard.gender".localized
+        let nationalityLabel = "field.idcard.nationality".localized
+        let birthdateLabel = "field.idcard.birthdate".localized
+        let numberLabel = "field.idcard.number".localized
+        let addressLabel = "field.idcard.address".localized
+        let issuerLabel = "field.idcard.issuer".localized
+        let validperiodLabel = "field.idcard.validperiod".localized
+        
         for i in 0..<fields.count {
             let label = fields[i].label
             
-            if label == "field.idcard.name".localized, let value = result.name {
+            if label == nameLabel, let value = result.name, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.idcard.gender".localized, let value = result.gender {
+            }
+            if label == genderLabel, let value = result.gender, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.idcard.nationality".localized, let value = result.nationality {
+            }
+            if label == nationalityLabel, let value = result.nationality, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.idcard.birthdate".localized, let value = result.birthDate {
+            }
+            if label == birthdateLabel, let value = result.birthDate, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.idcard.number".localized, let value = result.idNumber {
+            }
+            if label == numberLabel, let value = result.idNumber, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.idcard.address".localized, let value = result.address {
+            }
+            if label == addressLabel, let value = result.address, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.idcard.issuer".localized, let value = result.issuer {
+            }
+            if label == issuerLabel, let value = result.issuer, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.idcard.validperiod".localized, let value = result.validPeriod {
+            }
+            if label == validperiodLabel, let value = result.validPeriod, !value.isEmpty {
                 fields[i].value = value
             }
         }
         
         // 如果标题为空，使用姓名作为标题
-        if title.isEmpty, let name = result.name {
+        if title.isEmpty, let name = result.name, !name.isEmpty {
             title = name
         }
     }
     
     private func fillPassportFields(from result: PassportOCRResult) {
+        let nameLabel = "field.passport.name".localized
+        let nationalityLabel = "field.passport.nationality".localized
+        let birthdateLabel = "field.passport.birthdate".localized
+        let genderLabel = "field.passport.gender".localized
+        let numberLabel = "field.passport.number".localized
+        let issuedateLabel = "field.passport.issuedate".localized
+        let expirydateLabel = "field.passport.expirydate".localized
+        let issuerLabel = "field.passport.issuer".localized
+        
         for i in 0..<fields.count {
             let label = fields[i].label
             
-            if label == "field.passport.name".localized, let value = result.name {
+            if label == nameLabel, let value = result.name, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.passport.nationality".localized, let value = result.nationality {
+            }
+            if label == nationalityLabel, let value = result.nationality, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.passport.birthdate".localized, let value = result.birthDate {
+            }
+            if label == birthdateLabel, let value = result.birthDate, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.passport.gender".localized, let value = result.gender {
+            }
+            if label == genderLabel, let value = result.gender, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.passport.number".localized, let value = result.passportNumber {
+            }
+            if label == numberLabel, let value = result.passportNumber, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.passport.issuedate".localized, let value = result.issueDate {
+            }
+            if label == issuedateLabel, let value = result.issueDate, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.passport.expirydate".localized, let value = result.expiryDate {
+            }
+            if label == expirydateLabel, let value = result.expiryDate, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.passport.issuer".localized, let value = result.issuer {
+            }
+            if label == issuerLabel, let value = result.issuer, !value.isEmpty {
                 fields[i].value = value
             }
         }
         
         // 如果标题为空，使用姓名作为标题
-        if title.isEmpty, let name = result.name {
+        if title.isEmpty, let name = result.name, !name.isEmpty {
             title = name
         }
     }
     
     private func fillBusinessLicenseFields(from result: BusinessLicenseOCRResult) {
+        let companynameLabel = "field.license.companyname".localized
+        let creditcodeLabel = "field.license.creditcode".localized
+        let legalrepLabel = "field.license.legalrep".localized
+        let capitalLabel = "field.license.capital".localized
+        let addressLabel = "field.license.address".localized
+        let establishdateLabel = "field.license.establishdate".localized
+        let scopeLabel = "field.license.scope".localized
+        
         for i in 0..<fields.count {
             let label = fields[i].label
             
-            if label == "field.license.companyname".localized, let value = result.companyName {
+            if label == companynameLabel, let value = result.companyName, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.license.creditcode".localized, let value = result.creditCode {
+            }
+            if label == creditcodeLabel, let value = result.creditCode, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.license.legalrep".localized, let value = result.legalRepresentative {
+            }
+            if label == legalrepLabel, let value = result.legalRepresentative, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.license.capital".localized, let value = result.registeredCapital {
+            }
+            if label == capitalLabel, let value = result.registeredCapital, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.license.address".localized, let value = result.address {
+            }
+            if label == addressLabel, let value = result.address, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.license.establishdate".localized, let value = result.establishedDate {
+            }
+            if label == establishdateLabel, let value = result.establishedDate, !value.isEmpty {
                 fields[i].value = value
-            } else if label == "field.license.scope".localized, let value = result.businessScope {
+            }
+            if label == scopeLabel, let value = result.businessScope, !value.isEmpty {
                 fields[i].value = value
             }
         }
         
         // 如果标题为空，使用公司名称作为标题
-        if title.isEmpty, let companyName = result.companyName {
+        if title.isEmpty, let companyName = result.companyName, !companyName.isEmpty {
             title = companyName
         }
     }

@@ -89,13 +89,35 @@ final class OCRServiceImpl: OCRService {
                     ?? (index + 1 < texts.count ? texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines) : nil)
             }
             
-            // 性别
+            // 性别 - 可能在同一行或下一行
             if trimmed.contains("性别") {
-                if trimmed.contains("男") {
+                // 尝试从同一行提取
+                if let genderValue = extractValueAfterLabel(trimmed, label: "性别") {
+                    if genderValue.contains("男") {
+                        result.gender = "男"
+                    } else if genderValue.contains("女") {
+                        result.gender = "女"
+                    } else {
+                        result.gender = genderValue
+                    }
+                } else if trimmed.contains("男") {
                     result.gender = "男"
                 } else if trimmed.contains("女") {
                     result.gender = "女"
+                } else if index + 1 < texts.count {
+                    // 尝试从下一行提取
+                    let nextLine = texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    if nextLine == "男" || nextLine.hasPrefix("男") {
+                        result.gender = "男"
+                    } else if nextLine == "女" || nextLine.hasPrefix("女") {
+                        result.gender = "女"
+                    }
                 }
+            }
+            
+            // 单独出现的性别（有时 OCR 会把性别单独识别为一行）
+            if result.gender == nil && (trimmed == "男" || trimmed == "女") {
+                result.gender = trimmed
             }
             
             // 民族
