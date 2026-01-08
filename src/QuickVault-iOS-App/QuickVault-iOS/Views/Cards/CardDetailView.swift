@@ -27,8 +27,13 @@ struct CardDetailView: View {
                         // Card Header
                         CardHeaderView(card: card)
                         
-                        // Attachments (Document Photos)
-                        AttachmentListView(cardId: card.id)
+                        // Document Photos (for ID cards, passports, etc.)
+                        if isDocumentType(card.type) {
+                            DocumentPhotosSection(cardId: card.id, cardType: card.type)
+                        } else {
+                            // Generic attachments for other card types
+                            AttachmentListView(cardId: card.id)
+                        }
                         
                         // Fields
                         FieldsSection(
@@ -341,6 +346,194 @@ struct FlowLayout: Layout {
             
             self.size.height = y + rowHeight
         }
+    }
+}
+
+// MARK: - Helper Functions
+
+private func isDocumentType(_ type: String) -> Bool {
+    ["IdCard", "Passport", "BusinessLicense"].contains(type)
+}
+
+// MARK: - Document Photos Section
+
+struct DocumentPhotosSection: View {
+    let cardId: UUID
+    let cardType: String
+    @StateObject private var viewModel: AttachmentListViewModel
+    @State private var selectedAttachment: AttachmentDTO?
+    
+    init(cardId: UUID, cardType: String) {
+        self.cardId = cardId
+        self.cardType = cardType
+        _viewModel = StateObject(wrappedValue: AttachmentListViewModel(cardId: cardId))
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("attachment.document.photos".localized)
+                .font(.headline)
+                .foregroundStyle(.secondary)
+            
+            if cardType == "IdCard" {
+                // 身份证：固定正反面
+                HStack(spacing: 12) {
+                    DocumentPhotoCard(
+                        title: "ocr.idcard.front".localized,
+                        attachment: findAttachment(fileName: "idcard_front.jpg"),
+                        onTap: { attachment in
+                            selectedAttachment = attachment
+                        }
+                    )
+                    
+                    DocumentPhotoCard(
+                        title: "ocr.idcard.back".localized,
+                        attachment: findAttachment(fileName: "idcard_back.jpg"),
+                        onTap: { attachment in
+                            selectedAttachment = attachment
+                        }
+                    )
+                }
+            } else if cardType == "Passport" {
+                // 护照：信息页
+                DocumentPhotoCard(
+                    title: "ocr.passport.datapage".localized,
+                    attachment: findAttachment(fileName: "passport_datapage.jpg"),
+                    onTap: { attachment in
+                        selectedAttachment = attachment
+                    }
+                )
+            } else if cardType == "BusinessLicense" {
+                // 营业执照
+                DocumentPhotoCard(
+                    title: "ocr.license.photo".localized,
+                    attachment: findAttachment(fileName: "business_license.jpg"),
+                    onTap: { attachment in
+                        selectedAttachment = attachment
+                    }
+                )
+            }
+        }
+        .sheet(item: $selectedAttachment) { attachment in
+            AttachmentPreviewView(attachment: attachment)
+        }
+    }
+    
+    private func findAttachment(fileName: String) -> AttachmentDTO? {
+        viewModel.attachments.first { $0.fileName == fileName }
+    }
+}
+
+// MARK: - Document Photo Card
+
+struct DocumentPhotoCard: View {
+    let title: String
+    let attachment: AttachmentDTO?
+    let onTap: (AttachmentDTO) -> Void
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            
+            if let attachment = attachment, let thumbnail = attachment.thumbnailImage {
+                Image(uiImage: thumbnail)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 100)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .onTapGesture {
+                        onTap(attachment)
+                    }
+            } else {
+                // 占位符
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color(.systemGray5))
+                    .frame(height: 100)
+                    .overlay {
+                        VStack(spacing: 4) {
+                            Image(systemName: "photo")
+                                .font(.title2)
+                                .foregroundStyle(.secondary)
+                            Text("attachment.no.photo".localized)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+// MARK: - Attachment Preview View
+
+struct AttachmentPreviewView: View {
+    let attachment: AttachmentDTO
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel: AttachmentPreviewViewModel
+    
+    init(attachment: AttachmentDTO) {
+        self.attachment = attachment
+        _viewModel = StateObject(wrappedValue: AttachmentPreviewViewModel(attachmentId: attachment.id))
+    }
+    
+    var body: some View {
+        NavigationStack {
+            Group {
+                if viewModel.isLoading {
+                    ProgressView()
+                } else if let image = viewModel.image {
+                    ScrollView {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                } else {
+                    Text("attachment.load.failed".localized)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .navigationTitle(attachment.fileName)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("common.close".localized) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Attachment Preview ViewModel
+
+@MainActor
+class AttachmentPreviewViewModel: ObservableObject {
+    @Published var image: UIImage?
+    @Published var isLoading = true
+    
+    private let attachmentService = AttachmentServiceImpl.shared
+    private let attachmentId: UUID
+    
+    init(attachmentId: UUID) {
+        self.attachmentId = attachmentId
+        Task {
+            await loadImage()
+        }
+    }
+    
+    func loadImage() async {
+        isLoading = true
+        do {
+            let data = try await attachmentService.getAttachmentData(id: attachmentId)
+            image = UIImage(data: data)
+        } catch {
+            print("Failed to load attachment: \(error)")
+        }
+        isLoading = false
     }
 }
 

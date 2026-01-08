@@ -163,6 +163,10 @@
 "ocr.hint.passport" = "上传护照信息页（含照片的一页）。";
 "ocr.hint.license" = "上传营业执照照片。";
 "common.optional" = "可选";
+"common.close" = "关闭";
+"attachment.document.photos" = "证件照片";
+"attachment.no.photo" = "暂无照片";
+"attachment.load.failed" = "加载图片失败";
 
 // MARK: - Validation
 "validation.title.required" = "标题不能为空";

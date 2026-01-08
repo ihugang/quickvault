@@ -163,6 +163,10 @@
 "ocr.hint.passport" = "Upload the data page (photo page) of your passport.";
 "ocr.hint.license" = "Upload a photo of your business license.";
 "common.optional" = "optional";
+"common.close" = "Close";
+"attachment.document.photos" = "Document Photos";
+"attachment.no.photo" = "No photo";
+"attachment.load.failed" = "Failed to load image";
 
 // MARK: - Validation
 "validation.title.required" = "Title is required";
