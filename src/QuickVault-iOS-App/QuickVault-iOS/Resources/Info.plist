@@ -33,5 +33,9 @@
     <string>使用 Face ID 解锁应用 / Use Face ID to unlock the app</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>访问照片库以添加图片附件 / Access photo library to add image attachments</string>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>remote-notification</string>
+    </array>
 </dict>
 </plist>
