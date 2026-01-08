@@ -151,6 +151,18 @@
 "ocr.scan.photo" = "从照片识别";
 "ocr.section.footer" = "选择证件照片，自动提取信息填写表单";
 "ocr.processing" = "识别中...";
+"ocr.photo.upload" = "上传证件照片";
+"ocr.tap.upload" = "点击上传照片";
+"ocr.idcard.front" = "身份证正面（含头像与号码）";
+"ocr.idcard.back" = "身份证背面（含签发机关与有效期）";
+"ocr.passport.datapage" = "护照信息页（含照片页）";
+"ocr.license.photo" = "营业执照照片";
+"ocr.photo.front" = "正面";
+"ocr.photo.back" = "背面";
+"ocr.hint.idcard" = "上传身份证正反面照片，系统将自动识别并填写信息。";
+"ocr.hint.passport" = "上传护照信息页（含照片的一页）。";
+"ocr.hint.license" = "上传营业执照照片。";
+"common.optional" = "可选";
 
 // MARK: - Validation
 "validation.title.required" = "标题不能为空";

@@ -6,8 +6,12 @@ import QuickVaultCore
 struct CardEditorSheet: View {
     @StateObject private var viewModel: CardEditorViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var showImagePicker = false
-    @State private var selectedPhotoItem: PhotosPickerItem?
+    
+    // Photo upload states for different document sides
+    @State private var frontPhotoItem: PhotosPickerItem?
+    @State private var backPhotoItem: PhotosPickerItem?
+    @State private var frontImage: UIImage?
+    @State private var backImage: UIImage?
     
     let editingCard: CardDTO?
     let onSave: () -> Void
@@ -58,35 +62,53 @@ struct CardEditorSheet: View {
                     Text("cards.field.label".localized)
                 }
                 
-                // OCR Section - 支持从照片识别信息
+                // Document Photo Upload Section - 根据证件类型显示正反面上传
                 if viewModel.supportsOCR && !viewModel.isEditing {
                     Section {
-                        PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
-                            HStack {
-                                Image(systemName: "doc.text.viewfinder")
-                                    .foregroundStyle(.blue)
-                                Text("ocr.scan.photo".localized)
-                                Spacer()
-                                if viewModel.isOCRProcessing {
-                                    ProgressView()
-                                }
-                            }
-                        }
-                        .disabled(viewModel.isOCRProcessing)
-                        .onChange(of: selectedPhotoItem) { _, newItem in
+                        // Front side upload
+                        DocumentPhotoUploader(
+                            title: viewModel.selectedType.frontPhotoLabel,
+                            image: $frontImage,
+                            photoItem: $frontPhotoItem,
+                            isProcessing: viewModel.isOCRProcessing
+                        )
+                        .onChange(of: frontPhotoItem) { _, newItem in
                             Task {
                                 if let newItem = newItem,
                                    let data = try? await newItem.loadTransferable(type: Data.self),
                                    let image = UIImage(data: data) {
+                                    frontImage = image
                                     await viewModel.recognizeAndFillFromImage(image)
                                 }
-                                selectedPhotoItem = nil
+                                frontPhotoItem = nil
+                            }
+                        }
+                        
+                        // Back side upload (for ID cards that need it)
+                        if viewModel.selectedType.hasBackSide {
+                            DocumentPhotoUploader(
+                                title: viewModel.selectedType.backPhotoLabel,
+                                image: $backImage,
+                                photoItem: $backPhotoItem,
+                                isProcessing: viewModel.isOCRProcessing,
+                                isOptional: true
+                            )
+                            .onChange(of: backPhotoItem) { _, newItem in
+                                Task {
+                                    if let newItem = newItem,
+                                       let data = try? await newItem.loadTransferable(type: Data.self),
+                                       let image = UIImage(data: data) {
+                                        backImage = image
+                                        await viewModel.recognizeAndFillFromImage(image)
+                                    }
+                                    backPhotoItem = nil
+                                }
                             }
                         }
                     } header: {
-                        Text("ocr.section.title".localized)
+                        Text("ocr.photo.upload".localized)
                     } footer: {
-                        Text("ocr.section.footer".localized)
+                        Text(viewModel.selectedType.photoUploadHint)
                             .font(.caption)
                     }
                 }
@@ -237,6 +259,124 @@ struct CardTypeTag: View {
                 .clipShape(Capsule())
         }
         .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Document Photo Uploader Component
+
+struct DocumentPhotoUploader: View {
+    let title: String
+    @Binding var image: UIImage?
+    @Binding var photoItem: PhotosPickerItem?
+    let isProcessing: Bool
+    var isOptional: Bool = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(title)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                if isOptional {
+                    Text("(\("common.optional".localized))")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+                Spacer()
+                if isProcessing {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                }
+            }
+            
+            PhotosPicker(selection: $photoItem, matching: .images) {
+                if let image = image {
+                    // Show uploaded image
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxHeight: 150)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        )
+                } else {
+                    // Show upload placeholder
+                    HStack {
+                        Image(systemName: "camera.fill")
+                            .font(.title2)
+                        Text("ocr.tap.upload".localized)
+                            .font(.subheadline)
+                    }
+                    .foregroundStyle(.blue)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 80)
+                    .background(Color(.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
+                            .foregroundStyle(.blue.opacity(0.5))
+                    )
+                }
+            }
+            .disabled(isProcessing)
+        }
+    }
+}
+
+// MARK: - CardType Photo Properties Extension
+
+extension CardEditorViewModel.CardType {
+    /// 是否有背面（需要上传两张照片）
+    var hasBackSide: Bool {
+        switch self {
+        case .idCard:
+            return true  // 中国身份证需要正反面
+        case .passport, .businessLicense:
+            return false  // 护照和营业执照只需要一面
+        default:
+            return false
+        }
+    }
+    
+    /// 正面照片标签
+    var frontPhotoLabel: String {
+        switch self {
+        case .idCard:
+            return "ocr.idcard.front".localized
+        case .passport:
+            return "ocr.passport.datapage".localized
+        case .businessLicense:
+            return "ocr.license.photo".localized
+        default:
+            return "ocr.photo.front".localized
+        }
+    }
+    
+    /// 背面照片标签
+    var backPhotoLabel: String {
+        switch self {
+        case .idCard:
+            return "ocr.idcard.back".localized
+        default:
+            return "ocr.photo.back".localized
+        }
+    }
+    
+    /// 照片上传提示
+    var photoUploadHint: String {
+        switch self {
+        case .idCard:
+            return "ocr.hint.idcard".localized
+        case .passport:
+            return "ocr.hint.passport".localized
+        case .businessLicense:
+            return "ocr.hint.license".localized
+        default:
+            return ""
+        }
     }
 }
 

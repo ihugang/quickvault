@@ -151,6 +151,18 @@
 "ocr.scan.photo" = "Scan from Photo";
 "ocr.section.footer" = "Select a photo of your document to automatically extract information";
 "ocr.processing" = "Recognizing...";
+"ocr.photo.upload" = "Upload Document Photo";
+"ocr.tap.upload" = "Tap to upload photo";
+"ocr.idcard.front" = "ID Card Front (photo & number side)";
+"ocr.idcard.back" = "ID Card Back (issuer & validity)";
+"ocr.passport.datapage" = "Passport Data Page (photo page)";
+"ocr.license.photo" = "Business License Photo";
+"ocr.photo.front" = "Front Side";
+"ocr.photo.back" = "Back Side";
+"ocr.hint.idcard" = "Upload front and back of your ID card. Information will be automatically extracted.";
+"ocr.hint.passport" = "Upload the data page (photo page) of your passport.";
+"ocr.hint.license" = "Upload a photo of your business license.";
+"common.optional" = "optional";
 
 // MARK: - Validation
 "validation.title.required" = "Title is required";
