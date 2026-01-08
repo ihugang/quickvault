@@ -104,12 +104,13 @@ public protocol CardService {
 public final class CardServiceImpl: CardService, @unchecked Sendable {
 
   private let persistenceController: PersistenceController
-  private let cryptoService: CryptoService
+  private var cryptoService: CryptoService {
+    CryptoServiceImpl.shared
+  }
   private let context: NSManagedObjectContext
 
-  public init(persistenceController: PersistenceController, cryptoService: CryptoService) {
+  public init(persistenceController: PersistenceController, cryptoService: CryptoService? = nil) {
     self.persistenceController = persistenceController
-    self.cryptoService = cryptoService
     self.context = persistenceController.container.viewContext
   }
 

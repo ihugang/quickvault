@@ -65,7 +65,9 @@ public class AuthenticationServiceImpl: AuthenticationService {
   // MARK: - Properties
 
   private let keychainService: KeychainService
-  private let cryptoService: CryptoService
+  private var cryptoService: CryptoService {
+    CryptoServiceImpl.shared
+  }
 
   private let masterPasswordKey = "com.quickvault.masterPassword"
   private let biometricPasswordKey = "com.quickvault.biometricPassword"
@@ -92,9 +94,8 @@ public class AuthenticationServiceImpl: AuthenticationService {
 
   // MARK: - Initialization
 
-  public init(keychainService: KeychainService, cryptoService: CryptoService) {
+  public init(keychainService: KeychainService, cryptoService: CryptoService? = nil) {
     self.keychainService = keychainService
-    self.cryptoService = cryptoService
 
     // Check if master password exists
     if keychainService.exists(key: masterPasswordKey) {
@@ -188,10 +189,11 @@ public class AuthenticationServiceImpl: AuthenticationService {
 
       if success {
         // Load the stored password and initialize encryption key
-        if let passwordData = try? keychainService.load(key: biometricPasswordKey),
-           let password = String(data: passwordData, encoding: .utf8) {
-          try cryptoService.initializeKey(password: password, salt: nil)
+        guard let passwordData = try? keychainService.load(key: biometricPasswordKey),
+              let password = String(data: passwordData, encoding: .utf8) else {
+          throw AuthenticationError.keychainError("Failed to load biometric password")
         }
+        try cryptoService.initializeKey(password: password, salt: nil)
         stateSubject.send(.unlocked)
       } else {
         throw AuthenticationError.biometricFailed
