@@ -15,6 +15,10 @@ class AuthViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var showBiometricPrompt: Bool = false
     
+    // 防止生物识别重复调用
+    private var isBiometricInProgress: Bool = false
+    private var lastBiometricAttempt: Date?
+    
     // MARK: - Dependencies
     
     private let authService: AuthenticationService
@@ -108,6 +112,21 @@ class AuthViewModel: ObservableObject {
             return
         }
         
+        // 防止重复调用
+        guard !isBiometricInProgress else {
+            return
+        }
+        
+        // 如果距离上次尝试不到1秒，等待一下
+        if let lastAttempt = lastBiometricAttempt {
+            let elapsed = Date().timeIntervalSince(lastAttempt)
+            if elapsed < 1.0 {
+                try? await Task.sleep(nanoseconds: UInt64((1.0 - elapsed) * 1_000_000_000))
+            }
+        }
+        
+        isBiometricInProgress = true
+        lastBiometricAttempt = Date()
         isLoading = true
         errorMessage = nil
         
@@ -118,6 +137,7 @@ class AuthViewModel: ObservableObject {
         }
         
         isLoading = false
+        isBiometricInProgress = false
     }
     
     // MARK: - Biometric Management
