@@ -25,6 +25,7 @@ class CardEditorViewModel: ObservableObject {
         case invoice = "Invoice"
         case generalText = "GeneralText"
         case idCard = "IdCard"
+        case passport = "Passport"
         case businessLicense = "BusinessLicense"
         
         var id: String { rawValue }
@@ -35,7 +36,29 @@ class CardEditorViewModel: ObservableObject {
             case .invoice: return "cards.type.invoice".localized
             case .generalText: return "cards.type.general".localized
             case .idCard: return "cards.type.idcard".localized
+            case .passport: return "cards.type.passport".localized
             case .businessLicense: return "cards.type.businesslicense".localized
+            }
+        }
+        
+        /// 附件上传提示信息
+        var attachmentHints: [(label: String, required: Bool)] {
+            switch self {
+            case .idCard:
+                return [
+                    ("attachment.idcard.front".localized, false),
+                    ("attachment.idcard.back".localized, false)
+                ]
+            case .passport:
+                return [
+                    ("attachment.passport.datapage".localized, false)
+                ]
+            case .businessLicense:
+                return [
+                    ("attachment.license.photo".localized, false)
+                ]
+            default:
+                return []
             }
         }
     }
@@ -158,6 +181,18 @@ class CardEditorViewModel: ObservableObject {
                 EditableField(id: UUID(), label: "field.idcard.address".localized, value: "", isRequired: true, isCopyable: true, order: 5),
                 EditableField(id: UUID(), label: "field.idcard.issuer".localized, value: "", isRequired: false, isCopyable: true, order: 6),
                 EditableField(id: UUID(), label: "field.idcard.validperiod".localized, value: "", isRequired: false, isCopyable: true, order: 7),
+            ]
+            
+        case .passport:
+            fields = [
+                EditableField(id: UUID(), label: "field.passport.name".localized, value: "", isRequired: true, isCopyable: true, order: 0),
+                EditableField(id: UUID(), label: "field.passport.nationality".localized, value: "", isRequired: true, isCopyable: true, order: 1),
+                EditableField(id: UUID(), label: "field.passport.birthdate".localized, value: "", isRequired: true, isCopyable: true, order: 2),
+                EditableField(id: UUID(), label: "field.passport.gender".localized, value: "", isRequired: true, isCopyable: true, order: 3),
+                EditableField(id: UUID(), label: "field.passport.number".localized, value: "", isRequired: true, isCopyable: true, order: 4),
+                EditableField(id: UUID(), label: "field.passport.issuedate".localized, value: "", isRequired: false, isCopyable: true, order: 5),
+                EditableField(id: UUID(), label: "field.passport.expirydate".localized, value: "", isRequired: false, isCopyable: true, order: 6),
+                EditableField(id: UUID(), label: "field.passport.issuer".localized, value: "", isRequired: false, isCopyable: true, order: 7),
             ]
             
         case .businessLicense:

@@ -107,6 +107,7 @@
 
 // MARK: - Card Types
 "cards.type.idcard" = "身份证";
+"cards.type.passport" = "护照";
 "cards.type.businesslicense" = "营业执照";
 
 // MARK: - ID Card Fields
@@ -127,6 +128,22 @@
 "field.license.address" = "住所";
 "field.license.establishdate" = "成立日期";
 "field.license.scope" = "经营范围";
+
+// MARK: - Passport Fields
+"field.passport.name" = "姓名";
+"field.passport.nationality" = "国籍";
+"field.passport.birthdate" = "出生日期";
+"field.passport.gender" = "性别";
+"field.passport.number" = "护照号码";
+"field.passport.issuedate" = "签发日期";
+"field.passport.expirydate" = "有效期至";
+"field.passport.issuer" = "签发机关";
+
+// MARK: - Attachment Hints
+"attachment.idcard.front" = "上传证件正面（含头像与号码）";
+"attachment.idcard.back" = "上传证件背面（可选）";
+"attachment.passport.datapage" = "上传护照信息页（含照片页）";
+"attachment.license.photo" = "上传营业执照照片";
 
 // MARK: - Validation
 "validation.title.required" = "标题不能为空";

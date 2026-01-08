@@ -107,6 +107,7 @@
 
 // MARK: - Card Types
 "cards.type.idcard" = "ID Card";
+"cards.type.passport" = "Passport";
 "cards.type.businesslicense" = "Business License";
 
 // MARK: - ID Card Fields
@@ -127,6 +128,22 @@
 "field.license.address" = "Address";
 "field.license.establishdate" = "Established Date";
 "field.license.scope" = "Business Scope";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Name";
+"field.passport.nationality" = "Nationality";
+"field.passport.birthdate" = "Birth Date";
+"field.passport.gender" = "Gender";
+"field.passport.number" = "Passport Number";
+"field.passport.issuedate" = "Issue Date";
+"field.passport.expirydate" = "Expiry Date";
+"field.passport.issuer" = "Issuing Authority";
+
+// MARK: - Attachment Hints
+"attachment.idcard.front" = "Upload ID front (photo & number side)";
+"attachment.idcard.back" = "Upload ID back (optional)";
+"attachment.passport.datapage" = "Upload passport data page (photo page)";
+"attachment.license.photo" = "Upload business license photo";
 
 // MARK: - Validation
 "validation.title.required" = "Title is required";

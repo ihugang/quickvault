@@ -1,0 +1,327 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-01-08",
+  "default_policy": {
+    "purpose": "personal_info_storage_and_form_fill",
+    "min_collection": true,
+    "front_required_by_default": false,
+    "back_required_by_default": false,
+    "notes": [
+      "This ruleset is for UI guidance (what to ask users to upload), not for identity verification.",
+      "Avoid over-collection: only request back side when it contains required info (issuer/validity/address changes/MRZ/barcodes needed)."
+    ]
+  },
+  "document_types": {
+    "national_id": {
+      "labels": {
+        "zh": "身份证/国民身份证",
+        "en": "National ID"
+      },
+      "pages": ["front", "back"],
+      "upload_fields": {
+        "front": {
+          "labels": { "zh": "正面（含头像与号码的一面）", "en": "Front (photo & number side)" }
+        },
+        "back": {
+          "labels": { "zh": "背面（如有）", "en": "Back (if applicable)" }
+        }
+      }
+    },
+    "passport": {
+      "labels": { "zh": "护照", "en": "Passport" },
+      "pages": ["data_page"],
+      "upload_fields": {
+        "data_page": {
+          "labels": { "zh": "信息页（照片页）", "en": "Data page (photo page)" }
+        }
+      }
+    },
+    "drivers_license": {
+      "labels": { "zh": "驾照/驾驶执照", "en": "Driver's License" },
+      "pages": ["front", "back"],
+      "upload_fields": {
+        "front": { "labels": { "zh": "正面", "en": "Front" } },
+        "back": { "labels": { "zh": "背面（如有条码/磁条）", "en": "Back (if barcode/magstripe)" } }
+      }
+    },
+    "residence_permit": {
+      "labels": { "zh": "居留卡/居留许可", "en": "Residence Permit" },
+      "pages": ["front", "back"],
+      "upload_fields": {
+        "front": { "labels": { "zh": "正面", "en": "Front" } },
+        "back": { "labels": { "zh": "背面（如有MRZ/芯片信息）", "en": "Back (if MRZ/chip info)" } }
+      }
+    }
+  },
+  "countries": {
+    "CN": {
+      "name": { "zh": "中国", "en": "China" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": true,
+          "back_reason": ["issuer", "validity_period"],
+          "ui_hints": {
+            "zh": "中国居民身份证通常需要上传正反面：背面含签发机关与有效期限。",
+            "en": "China ID typically requires both sides; back contains issuer and validity."
+          }
+        },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "HK": {
+      "name": { "zh": "中国香港", "en": "Hong Kong" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "ui_hints": {
+            "zh": "香港身份证一般正面足够；如业务需要可选背面。",
+            "en": "HKID usually front is sufficient; back may be optional depending on use."
+          }
+        },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "MO": {
+      "name": { "zh": "中国澳门", "en": "Macao" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true
+        },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "TW": {
+      "name": { "zh": "中国台湾", "en": "Taiwan" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "ui_hints": {
+            "zh": "台湾地区证件样式多样，建议默认仅正面，背面作为可选补充。",
+            "en": "ID formats vary; default to front only with optional back."
+          }
+        }
+      }
+    },
+    "US": {
+      "name": { "zh": "美国", "en": "United States" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "back_reason_optional": ["barcode"],
+          "ui_hints": {
+            "zh": "美国常用驾照/州ID；一般仅正面即可，背面多为条码。",
+            "en": "US commonly uses Driver License/State ID; front is usually enough; back is often barcode."
+          }
+        },
+        "drivers_license": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "back_reason_optional": ["barcode", "magstripe"]
+        },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "CA": {
+      "name": { "zh": "加拿大", "en": "Canada" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true
+        },
+        "drivers_license": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "back_reason_optional": ["barcode"]
+        },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "GB": {
+      "name": { "zh": "英国", "en": "United Kingdom" },
+      "documents": {
+        "national_id": {
+          "supported": false,
+          "ui_hints": {
+            "zh": "英国没有统一全国身份证；常用护照或驾照作为身份证明。",
+            "en": "UK has no universal national ID; passport or driving licence is commonly used."
+          }
+        },
+        "drivers_license": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true
+        },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "DE": {
+      "name": { "zh": "德国", "en": "Germany" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "back_reason_optional": ["mrz", "chip_info"],
+          "ui_hints": {
+            "zh": "德国身份证通常正面足够；背面多为MRZ/机器读区，按用途可选。",
+            "en": "German ID: front usually sufficient; back often contains MRZ, optional depending on use."
+          }
+        },
+        "passport": { "data_page_required": true },
+        "residence_permit": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "back_reason_optional": ["mrz", "chip_info"]
+        }
+      }
+    },
+    "FR": {
+      "name": { "zh": "法国", "en": "France" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "ui_hints": {
+            "zh": "法国身份证通常正面即可；部分版本背面信息较多，建议背面可选。",
+            "en": "France ID: front usually enough; back may contain additional info depending on version, keep optional."
+          }
+        },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "JP": {
+      "name": { "zh": "日本", "en": "Japan" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "ui_hints": {
+            "zh": "日本常见为个人番号卡/驾照；一般正面足够，背面多为备注或无关信息。",
+            "en": "Japan: My Number card/driver license; front is usually enough; back often not required."
+          }
+        },
+        "passport": { "data_page_required": true },
+        "drivers_license": { "front_required": true, "back_required": false, "back_optional": true }
+      }
+    },
+    "KR": {
+      "name": { "zh": "韩国", "en": "South Korea" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": true,
+          "back_reason": ["address_change", "reissue_info"],
+          "ui_hints": {
+            "zh": "韩国居民证背面可能包含地址变更/再发行信息；如用于完整留存建议收正反面。",
+            "en": "Korea ID back may contain address change/reissue info; collect both sides for complete record."
+          }
+        },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "IN": {
+      "name": { "zh": "印度", "en": "India" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "ui_hints": {
+            "zh": "Aadhaar 通常单面即可（按实际卡面信息）；背面如包含地址等信息可选。",
+            "en": "Aadhaar often works with one side; back optional if it contains address or additional info."
+          }
+        },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "BR": {
+      "name": { "zh": "巴西", "en": "Brazil" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "ui_hints": {
+            "zh": "巴西证件体系较多（RG/CPF等）；通常正面足够，背面可选。",
+            "en": "Brazil has multiple ID documents; front usually enough; back optional."
+          }
+        },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "AU": {
+      "name": { "zh": "澳大利亚", "en": "Australia" },
+      "documents": {
+        "national_id": {
+          "supported": false,
+          "ui_hints": {
+            "zh": "澳大利亚没有统一全国身份证；常用护照/驾照/医保卡等。",
+            "en": "Australia has no universal national ID; passport/driver licence/Medicare card are common."
+          }
+        },
+        "drivers_license": { "front_required": true, "back_required": false, "back_optional": true },
+        "passport": { "data_page_required": true }
+      }
+    },
+    "SG": {
+      "name": { "zh": "新加坡", "en": "Singapore" },
+      "documents": {
+        "national_id": {
+          "front_required": true,
+          "back_required": false,
+          "back_optional": true,
+          "ui_hints": {
+            "zh": "新加坡 NRIC 通常正面足够；背面可作为可选补充。",
+            "en": "Singapore NRIC: front usually sufficient; back optional."
+          }
+        },
+        "passport": { "data_page_required": true }
+      }
+    }
+  },
+  "fallbacks": {
+    "unknown_country": {
+      "national_id": {
+        "front_required": true,
+        "back_required": false,
+        "back_optional": true,
+        "ui_hints": {
+          "zh": "默认仅要求上传包含头像与号码的一面；如证件背面含签发机关/有效期/住址等信息，可选补充上传。",
+          "en": "Default: require the side with photo & number; back is optional if it contains issuer/validity/address."
+        }
+      },
+      "passport": { "data_page_required": true }
+    }
+  },
+  "ui_copy_templates": {
+    "global": {
+      "primary": {
+        "zh": "上传证件照片（含头像与号码的一面）",
+        "en": "Upload your ID photo (photo & number side)"
+      },
+      "secondary_optional": {
+        "zh": "上传证件背面（如有）",
+        "en": "Upload the back side (if applicable)"
+      },
+      "passport": {
+        "zh": "上传护照信息页（含照片的一页）",
+        "en": "Upload passport data page (photo page)"
+      }
+    }
+  }
+}
