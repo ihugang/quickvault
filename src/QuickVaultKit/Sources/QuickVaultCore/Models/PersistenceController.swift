@@ -2,25 +2,48 @@
 //  PersistenceController.swift
 //  QuickVault
 //
+//  Supports iCloud CloudKit sync for data sharing between macOS and iOS
+//  支持 iCloud CloudKit 同步，用于 macOS 和 iOS 之间的数据共享
+//
 
 import CoreData
 
 public struct PersistenceController {
   public static let shared = PersistenceController()
 
-  public let container: NSPersistentContainer
+  /// CloudKit container identifier - must match in both macOS and iOS apps
+  /// CloudKit 容器标识符 - 必须在 macOS 和 iOS 应用中保持一致
+  public static let cloudKitContainerIdentifier = "iCloud.com.quickvault.app"
+  
+  public let container: NSPersistentCloudKitContainer
 
-  public init(inMemory: Bool = false) {
+  public init(inMemory: Bool = false, enableCloudKit: Bool = true) {
     // Load model from the package bundle
     guard let modelURL = Bundle.module.url(forResource: "QuickVault", withExtension: "momd"),
           let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL) else {
       fatalError("Failed to load Core Data model from bundle")
     }
     
-    container = NSPersistentContainer(name: "QuickVault", managedObjectModel: managedObjectModel)
+    container = NSPersistentCloudKitContainer(name: "QuickVault", managedObjectModel: managedObjectModel)
 
+    // Configure store description for CloudKit
+    guard let description = container.persistentStoreDescriptions.first else {
+      fatalError("Failed to get persistent store description")
+    }
+    
     if inMemory {
-      container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
+      description.url = URL(fileURLWithPath: "/dev/null")
+      description.cloudKitContainerOptions = nil
+    } else if enableCloudKit {
+      // Configure CloudKit container options
+      let cloudKitOptions = NSPersistentCloudKitContainerOptions(
+        containerIdentifier: Self.cloudKitContainerIdentifier
+      )
+      description.cloudKitContainerOptions = cloudKitOptions
+      
+      // Enable history tracking for CloudKit sync
+      description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+      description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
     }
 
     container.loadPersistentStores { description, error in
@@ -31,15 +54,18 @@ public struct PersistenceController {
 
     container.viewContext.automaticallyMergesChangesFromParent = true
     container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    
+    // Set query generation to track changes
+    try? container.viewContext.setQueryGenerationFrom(.current)
   }
 
   public var viewContext: NSManagedObjectContext {
     container.viewContext
   }
 
-  // For testing
+  // For testing (without CloudKit)
   public static var preview: PersistenceController = {
-    let controller = PersistenceController(inMemory: true)
+    let controller = PersistenceController(inMemory: true, enableCloudKit: false)
     let context = controller.viewContext
 
     // Create sample data for previews
