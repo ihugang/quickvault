@@ -14,9 +14,9 @@ struct SettingsView: View {
                 // Security Section
                 Section {
                     // Auto-Lock Timeout
-                    Picker("settings.security.autolock".localized, selection: $viewModel.autoLockTimeout) {
+                    Picker(localizationManager.localizedString("settings.security.autolock"), selection: $viewModel.autoLockTimeout) {
                         ForEach(AutoLockTimeout.allCases) { timeout in
-                            Text(timeout.localizationKey.localized).tag(timeout)
+                            Text(localizationManager.localizedString(timeout.localizationKey)).tag(timeout)
                         }
                     }
                     .onChange(of: viewModel.autoLockTimeout) { _, newValue in
@@ -25,7 +25,7 @@ struct SettingsView: View {
                     
                     // Biometric Toggle
                     if viewModel.isBiometricAvailable {
-                        Toggle("settings.security.biometric".localized, isOn: Binding(
+                        Toggle(localizationManager.localizedString("settings.security.biometric"), isOn: Binding(
                             get: { viewModel.isBiometricEnabled },
                             set: { viewModel.toggleBiometric($0) }
                         ))
@@ -36,7 +36,7 @@ struct SettingsView: View {
                         showChangePassword = true
                     } label: {
                         HStack {
-                            Text("settings.security.changepassword".localized)
+                            Text(localizationManager.localizedString("settings.security.changepassword"))
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .foregroundStyle(.secondary)
@@ -44,7 +44,7 @@ struct SettingsView: View {
                     }
                     .foregroundStyle(.primary)
                 } header: {
-                    Text("settings.security".localized)
+                    Text(localizationManager.localizedString("settings.security"))
                 }
                 
                 // Language Section
@@ -53,7 +53,7 @@ struct SettingsView: View {
                         showLanguagePicker = true
                     } label: {
                         HStack {
-                            Text("settings.language".localized)
+                            Text(localizationManager.localizedString("settings.language"))
                             Spacer()
                             Text(localizationManager.currentLanguage.displayName)
                                 .foregroundStyle(.secondary)
@@ -63,22 +63,22 @@ struct SettingsView: View {
                     }
                     .foregroundStyle(.primary)
                 } header: {
-                    Text("settings.language.title".localized)
+                    Text(localizationManager.localizedString("settings.language.title"))
                 }
                 
                 // About Section
                 Section {
                     HStack {
-                        Text("settings.about.version".localized)
+                        Text(localizationManager.localizedString("settings.about.version"))
                         Spacer()
                         Text(viewModel.appVersion)
                             .foregroundStyle(.secondary)
                     }
                 } header: {
-                    Text("settings.about".localized)
+                    Text(localizationManager.localizedString("settings.about"))
                 }
             }
-            .navigationTitle("settings.title".localized)
+            .navigationTitle(localizationManager.localizedString("settings.title"))
             .environment(\.layoutDirection, localizationManager.layoutDirection)
             .sheet(isPresented: $showChangePassword) {
                 ChangePasswordSheet(viewModel: viewModel)

@@ -87,13 +87,14 @@ struct CardListView: View {
 /// Group filter view / 分组过滤视图
 struct GroupFilterView: View {
     @Binding var selectedGroup: CardGroup
+    @ObservedObject var localizationManager = LocalizationManager.shared
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 12) {
                 ForEach(CardGroup.allCases, id: \.self) { group in
                     FilterChip(
-                        title: group.localizedName,
+                        title: localizedGroupName(group),
                         isSelected: selectedGroup == group
                     ) {
                         selectedGroup = group
@@ -104,6 +105,14 @@ struct GroupFilterView: View {
             .padding(.vertical, 8)
         }
         .background(Color(.systemGroupedBackground))
+    }
+    
+    private func localizedGroupName(_ group: CardGroup) -> String {
+        switch group {
+        case .all: return localizationManager.localizedString("cards.all")
+        case .personal: return localizationManager.localizedString("cards.group.personal")
+        case .company: return localizationManager.localizedString("cards.group.company")
+        }
     }
 }
 
