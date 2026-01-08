@@ -10,17 +10,17 @@ struct MainTabView: View {
         TabView {
             CardListView(viewModel: cardListViewModel)
                 .tabItem {
-                    Label("卡片 / Cards", systemImage: "creditcard.fill")
+                    Label("cards.title".localized, systemImage: "creditcard.fill")
                 }
             
             SearchView(viewModel: cardListViewModel)
                 .tabItem {
-                    Label("搜索 / Search", systemImage: "magnifyingglass")
+                    Label("search.title".localized, systemImage: "magnifyingglass")
                 }
             
             SettingsView(viewModel: settingsViewModel)
                 .tabItem {
-                    Label("设置 / Settings", systemImage: "gearshape.fill")
+                    Label("settings.title".localized, systemImage: "gearshape.fill")
                 }
         }
     }

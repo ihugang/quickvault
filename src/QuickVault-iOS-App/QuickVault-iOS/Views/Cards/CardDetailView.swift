@@ -48,8 +48,8 @@ struct CardDetailView: View {
             } else {
                 EmptyStateView(
                     icon: "exclamationmark.triangle",
-                    title: "加载失败 / Load Failed",
-                    message: viewModel.errorMessage ?? "无法加载卡片 / Unable to load card"
+                    title: "error.generic".localized,
+                    message: viewModel.errorMessage ?? "error.generic".localized
                 )
             }
         }
@@ -61,13 +61,13 @@ struct CardDetailView: View {
                     Button {
                         viewModel.copyCard()
                     } label: {
-                        Label("复制全部 / Copy All", systemImage: "doc.on.doc")
+                        Label("common.copy".localized, systemImage: "doc.on.doc")
                     }
                     
                     Button {
                         showEditSheet = true
                     } label: {
-                        Label("编辑 / Edit", systemImage: "pencil")
+                        Label("common.edit".localized, systemImage: "pencil")
                     }
                     
                     Divider()
@@ -75,16 +75,16 @@ struct CardDetailView: View {
                     Button(role: .destructive) {
                         showDeleteConfirmation = true
                     } label: {
-                        Label("删除 / Delete", systemImage: "trash")
+                        Label("common.delete".localized, systemImage: "trash")
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
             }
         }
-        .alert("确认删除 / Confirm Delete", isPresented: $showDeleteConfirmation) {
-            Button("取消 / Cancel", role: .cancel) {}
-            Button("删除 / Delete", role: .destructive) {
+        .alert("cards.delete.confirm".localized, isPresented: $showDeleteConfirmation) {
+            Button("common.cancel".localized, role: .cancel) {}
+            Button("common.delete".localized, role: .destructive) {
                 Task {
                     if await viewModel.deleteCard() {
                         dismiss()
@@ -92,7 +92,7 @@ struct CardDetailView: View {
                 }
             }
         } message: {
-            Text("此操作无法撤销 / This action cannot be undone")
+            Text("cards.delete.confirm".localized)
         }
         .sheet(isPresented: $showEditSheet) {
             if let card = viewModel.card {
@@ -170,8 +170,8 @@ struct CardHeaderView: View {
     
     private var groupDisplayName: String {
         switch card.group {
-        case "Personal": return "个人 / Personal"
-        case "Company": return "公司 / Company"
+        case "Personal": return "cards.group.personal".localized
+        case "Company": return "cards.group.company".localized
         default: return card.group
         }
     }
@@ -184,7 +184,7 @@ struct FieldsSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("详细信息 / Details")
+            Text("cards.field.label".localized)
                 .font(.headline)
                 .foregroundStyle(.secondary)
             
@@ -241,7 +241,7 @@ struct TagsSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("标签 / Tags")
+            Text("cards.tags".localized)
                 .font(.headline)
                 .foregroundStyle(.secondary)
             
@@ -267,7 +267,7 @@ struct TimestampsSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("创建时间 / Created")
+                Text("cards.created".localized)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()
@@ -277,7 +277,7 @@ struct TimestampsSection: View {
             }
             
             HStack {
-                Text("修改时间 / Modified")
+                Text("cards.updated".localized)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()

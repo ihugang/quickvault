@@ -17,11 +17,11 @@ struct WelcomeView: View {
                         .font(.system(size: 80))
                         .foregroundStyle(.blue)
                     
-                    Text("随取 / QuickVault")
+                    Text("app.name".localized)
                         .font(.largeTitle)
                         .fontWeight(.bold)
                     
-                    Text("安全存储您的个人信息\nSecurely store your personal information")
+                    Text("app.tagline".localized)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -31,18 +31,18 @@ struct WelcomeView: View {
                 
                 // Password Setup Form
                 VStack(spacing: 20) {
-                    Text("创建主密码 / Create Master Password")
+                    Text("auth.welcome.subtitle".localized)
                         .font(.headline)
                     
-                    SecureField("密码 / Password", text: $viewModel.password)
+                    SecureField("auth.password.placeholder".localized, text: $viewModel.password)
                         .textFieldStyle(.roundedBorder)
                         .textContentType(.newPassword)
                     
-                    SecureField("确认密码 / Confirm Password", text: $viewModel.confirmPassword)
+                    SecureField("auth.password.confirm".localized, text: $viewModel.confirmPassword)
                         .textFieldStyle(.roundedBorder)
                         .textContentType(.newPassword)
                     
-                    Text("密码至少需要 8 个字符\nPassword must be at least 8 characters")
+                    Text("auth.password.hint".localized)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     
@@ -64,7 +64,7 @@ struct WelcomeView: View {
                             ProgressView()
                                 .frame(maxWidth: .infinity)
                         } else {
-                            Text("创建密码 / Create Password")
+                            Text("auth.setup.button".localized)
                                 .frame(maxWidth: .infinity)
                         }
                     }
@@ -97,11 +97,11 @@ struct BiometricSetupSheet: View {
                     .font(.system(size: 80))
                     .foregroundStyle(.blue)
                 
-                Text("启用 Face ID / Enable Face ID")
+                Text("settings.security.biometric.enable".localized)
                     .font(.title2)
                     .fontWeight(.semibold)
                 
-                Text("使用 Face ID 快速解锁应用\nUse Face ID to quickly unlock the app")
+                Text("auth.unlock.biometric".localized)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -113,7 +113,7 @@ struct BiometricSetupSheet: View {
                         viewModel.enableBiometric(true)
                         dismiss()
                     }) {
-                        Text("启用 / Enable")
+                        Text("common.confirm".localized)
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
@@ -121,7 +121,7 @@ struct BiometricSetupSheet: View {
                     Button(action: {
                         dismiss()
                     }) {
-                        Text("稍后设置 / Set Up Later")
+                        Text("common.cancel".localized)
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)

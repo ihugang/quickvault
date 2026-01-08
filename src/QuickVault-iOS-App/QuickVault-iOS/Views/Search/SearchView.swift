@@ -18,8 +18,8 @@ struct SearchView: View {
                 } else if viewModel.filteredCards.isEmpty {
                     EmptyStateView(
                         icon: "magnifyingglass",
-                        title: "无搜索结果 / No Results",
-                        message: "尝试其他关键词\nTry different keywords"
+                        title: "search.empty".localized,
+                        message: "search.placeholder".localized
                     )
                 } else {
                     List {
@@ -32,8 +32,8 @@ struct SearchView: View {
                     .listStyle(.plain)
                 }
             }
-            .navigationTitle("搜索 / Search")
-            .searchable(text: $searchText, prompt: "搜索卡片 / Search cards")
+            .navigationTitle("search.title".localized)
+            .searchable(text: $searchText, prompt: "search.placeholder".localized)
             .onChange(of: searchText) { _, newValue in
                 viewModel.searchQuery = newValue
             }
@@ -52,11 +52,11 @@ struct SearchPlaceholderView: View {
                 .font(.system(size: 60))
                 .foregroundStyle(.secondary)
             
-            Text("搜索卡片 / Search Cards")
+            Text("search.title".localized)
                 .font(.title2)
                 .fontWeight(.semibold)
             
-            Text("输入关键词搜索标题、内容或标签\nSearch by title, content, or tags")
+            Text("search.placeholder".localized)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

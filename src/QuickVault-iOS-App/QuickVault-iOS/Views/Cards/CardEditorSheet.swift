@@ -24,10 +24,10 @@ struct CardEditorSheet: View {
             Form {
                 // Basic Info Section
                 Section {
-                    TextField("标题 / Title", text: $viewModel.title)
+                    TextField("cards.title.placeholder".localized, text: $viewModel.title)
                     
                     if !viewModel.isEditing {
-                        Picker("类型 / Type", selection: $viewModel.selectedType) {
+                        Picker("cards.type.general".localized, selection: $viewModel.selectedType) {
                             ForEach(CardEditorViewModel.CardType.allCases) { type in
                                 Text(type.displayName).tag(type)
                             }
@@ -37,13 +37,13 @@ struct CardEditorSheet: View {
                         }
                     }
                     
-                    Picker("分组 / Group", selection: $viewModel.selectedGroup) {
+                    Picker("cards.group.placeholder".localized, selection: $viewModel.selectedGroup) {
                         ForEach(Array(zip(viewModel.groupOptions, viewModel.groupDisplayNames)), id: \.0) { option, displayName in
                             Text(displayName).tag(option)
                         }
                     }
                 } header: {
-                    Text("基本信息 / Basic Info")
+                    Text("cards.field.label".localized)
                 }
                 
                 if let error = viewModel.validationErrors["title"] {
@@ -86,7 +86,7 @@ struct CardEditorSheet: View {
                         }
                     }
                 } header: {
-                    Text("字段 / Fields")
+                    Text("cards.field.add".localized)
                 }
                 
                 // Tags Section
@@ -106,7 +106,7 @@ struct CardEditorSheet: View {
                     }
                     
                     HStack {
-                        TextField("添加标签 / Add Tag", text: $viewModel.newTag)
+                        TextField("cards.tags.add".localized, text: $viewModel.newTag)
                             .textFieldStyle(.roundedBorder)
                             .submitLabel(.done)
                             .onSubmit {
@@ -123,7 +123,7 @@ struct CardEditorSheet: View {
                         .disabled(viewModel.newTag.isEmpty)
                     }
                 } header: {
-                    Text("标签 / Tags")
+                    Text("cards.tags".localized)
                 }
                 
                 // Error Message
@@ -134,17 +134,17 @@ struct CardEditorSheet: View {
                     }
                 }
             }
-            .navigationTitle(viewModel.isEditing ? "编辑卡片 / Edit Card" : "新建卡片 / New Card")
+            .navigationTitle(viewModel.isEditing ? "cards.edit".localized : "cards.add".localized)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("取消 / Cancel") {
+                    Button("common.cancel".localized) {
                         dismiss()
                     }
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("保存 / Save") {
+                    Button("common.save".localized) {
                         Task {
                             if await viewModel.saveCard() != nil {
                                 onSave()

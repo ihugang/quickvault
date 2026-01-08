@@ -15,7 +15,7 @@ struct LockScreenView: View {
                     .font(.system(size: 60))
                     .foregroundStyle(.blue)
                 
-                Text("随取 / QuickVault")
+                Text("app.name".localized)
                     .font(.title)
                     .fontWeight(.bold)
             }
@@ -24,7 +24,7 @@ struct LockScreenView: View {
             
             // Authentication Form
             VStack(spacing: 20) {
-                SecureField("密码 / Password", text: $viewModel.password)
+                SecureField("auth.password.placeholder".localized, text: $viewModel.password)
                     .textFieldStyle(.roundedBorder)
                     .textContentType(.password)
                     .submitLabel(.done)
@@ -50,7 +50,7 @@ struct LockScreenView: View {
                         ProgressView()
                             .frame(maxWidth: .infinity)
                     } else {
-                        Text("解锁 / Unlock")
+                        Text("auth.unlock.button".localized)
                             .frame(maxWidth: .infinity)
                     }
                 }
@@ -66,7 +66,7 @@ struct LockScreenView: View {
                     }) {
                         HStack {
                             Image(systemName: "faceid")
-                            Text("使用 Face ID / Use Face ID")
+                            Text("auth.unlock.biometric".localized)
                         }
                     }
                     .buttonStyle(.bordered)

@@ -103,6 +103,8 @@
 "settings.security" = "安全";
 "settings.security.biometric" = "面容ID / 触控ID";
 "settings.security.biometric.enable" = "启用生物识别认证";
+"settings.security.biometric.enabled" = "已启用生物识别";
+"settings.security.biometric.disabled" = "已禁用生物识别";
 "settings.security.autolock" = "自动锁定";
 "settings.security.autolock.immediately" = "立即";
 "settings.security.autolock.1min" = "1分钟后";

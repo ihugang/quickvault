@@ -103,6 +103,8 @@
 "settings.security" = "Security";
 "settings.security.biometric" = "Face ID / Touch ID";
 "settings.security.biometric.enable" = "Enable biometric authentication";
+"settings.security.biometric.enabled" = "Biometric enabled";
+"settings.security.biometric.disabled" = "Biometric disabled";
 "settings.security.autolock" = "Auto-Lock";
 "settings.security.autolock.immediately" = "Immediately";
 "settings.security.autolock.1min" = "After 1 minute";

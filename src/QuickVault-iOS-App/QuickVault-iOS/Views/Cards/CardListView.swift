@@ -19,8 +19,8 @@ struct CardListView: View {
                 } else if viewModel.filteredCards.isEmpty {
                     EmptyStateView(
                         icon: "creditcard",
-                        title: "暂无卡片 / No Cards",
-                        message: "点击右上角添加新卡片\nTap + to add a new card"
+                        title: "cards.empty".localized,
+                        message: "cards.empty.subtitle".localized
                     )
                 } else {
                     List {
@@ -34,7 +34,7 @@ struct CardListView: View {
                                         await viewModel.deleteCard(card.id)
                                     }
                                 } label: {
-                                    Label("删除 / Delete", systemImage: "trash")
+                                    Label("common.delete".localized, systemImage: "trash")
                                 }
                                 
                                 Button {
@@ -43,7 +43,7 @@ struct CardListView: View {
                                     }
                                 } label: {
                                     Label(
-                                        card.isPinned ? "取消置顶 / Unpin" : "置顶 / Pin",
+                                        card.isPinned ? "cards.unpin".localized : "cards.pin".localized,
                                         systemImage: card.isPinned ? "pin.slash" : "pin"
                                     )
                                 }
@@ -57,7 +57,7 @@ struct CardListView: View {
                     }
                 }
             }
-            .navigationTitle("卡片 / Cards")
+            .navigationTitle("cards.title".localized)
             .navigationDestination(for: CardDTO.self) { card in
                 CardDetailView(cardId: card.id)
             }

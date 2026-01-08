@@ -96,8 +96,8 @@ class SettingsViewModel: ObservableObject {
             try authService.enableBiometric(enabled)
             isBiometricEnabled = enabled
             successMessage = enabled 
-                ? "已启用生物识别 / Biometric enabled"
-                : "已禁用生物识别 / Biometric disabled"
+                ? "settings.security.biometric.enabled".localized
+                : "settings.security.biometric.disabled".localized
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -108,17 +108,17 @@ class SettingsViewModel: ObservableObject {
     func changePassword() async -> Bool {
         // Validate inputs
         guard !oldPassword.isEmpty else {
-            errorMessage = "请输入当前密码 / Please enter current password"
+            errorMessage = "auth.change.current".localized
             return false
         }
         
         guard newPassword.count >= 8 else {
-            errorMessage = "新密码必须至少 8 个字符 / New password must be at least 8 characters"
+            errorMessage = "auth.password.hint".localized
             return false
         }
         
         guard newPassword == confirmNewPassword else {
-            errorMessage = "新密码不匹配 / New passwords do not match"
+            errorMessage = "auth.password.mismatch".localized
             return false
         }
         
@@ -128,7 +128,7 @@ class SettingsViewModel: ObservableObject {
         do {
             try await authService.changePassword(oldPassword: oldPassword, newPassword: newPassword)
             clearPasswordFields()
-            successMessage = "密码已更改 / Password changed successfully"
+            successMessage = "auth.change.success".localized
             isLoading = false
             return true
         } catch {

@@ -59,12 +59,12 @@ class AuthViewModel: ObservableObject {
     
     func setupPassword() async {
         guard password.count >= 8 else {
-            errorMessage = "密码必须至少 8 个字符 / Password must be at least 8 characters"
+            errorMessage = "auth.password.hint".localized
             return
         }
         
         guard password == confirmPassword else {
-            errorMessage = "密码不匹配 / Passwords do not match"
+            errorMessage = "auth.password.mismatch".localized
             return
         }
         
@@ -86,7 +86,7 @@ class AuthViewModel: ObservableObject {
     
     func authenticateWithPassword() async {
         guard !password.isEmpty else {
-            errorMessage = "请输入密码 / Please enter password"
+            errorMessage = "auth.password.placeholder".localized
             return
         }
         
@@ -143,12 +143,12 @@ class AuthViewModel: ObservableObject {
     
     func changePassword(oldPassword: String, newPassword: String, confirmNewPassword: String) async -> Bool {
         guard newPassword.count >= 8 else {
-            errorMessage = "新密码必须至少 8 个字符 / New password must be at least 8 characters"
+            errorMessage = "auth.password.hint".localized
             return false
         }
         
         guard newPassword == confirmNewPassword else {
-            errorMessage = "新密码不匹配 / New passwords do not match"
+            errorMessage = "auth.password.mismatch".localized
             return false
         }
         
