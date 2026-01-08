@@ -123,11 +123,13 @@
 
 // MARK: - Business License Fields
 "field.license.companyname" = "Company Name";
+"field.license.companytype" = "Company Type";
 "field.license.creditcode" = "Unified Social Credit Code";
 "field.license.legalrep" = "Legal Representative";
 "field.license.capital" = "Registered Capital";
 "field.license.address" = "Address";
 "field.license.establishdate" = "Established Date";
+"field.license.businessterm" = "Business Term";
 "field.license.scope" = "Business Scope";
 
 // MARK: - Passport Fields

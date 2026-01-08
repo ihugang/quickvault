@@ -211,12 +211,14 @@ class CardEditorViewModel: ObservableObject {
         case .businessLicense:
             fields = [
                 EditableField(id: UUID(), label: "field.license.companyname".localized, value: "", isRequired: true, isCopyable: true, order: 0),
-                EditableField(id: UUID(), label: "field.license.creditcode".localized, value: "", isRequired: true, isCopyable: true, order: 1),
-                EditableField(id: UUID(), label: "field.license.legalrep".localized, value: "", isRequired: true, isCopyable: true, order: 2),
-                EditableField(id: UUID(), label: "field.license.capital".localized, value: "", isRequired: true, isCopyable: true, order: 3),
-                EditableField(id: UUID(), label: "field.license.address".localized, value: "", isRequired: true, isCopyable: true, order: 4),
-                EditableField(id: UUID(), label: "field.license.establishdate".localized, value: "", isRequired: true, isCopyable: true, order: 5),
-                EditableField(id: UUID(), label: "field.license.scope".localized, value: "", isRequired: false, isCopyable: true, order: 6),
+                EditableField(id: UUID(), label: "field.license.companytype".localized, value: "", isRequired: false, isCopyable: true, order: 1),
+                EditableField(id: UUID(), label: "field.license.creditcode".localized, value: "", isRequired: true, isCopyable: true, order: 2),
+                EditableField(id: UUID(), label: "field.license.legalrep".localized, value: "", isRequired: true, isCopyable: true, order: 3),
+                EditableField(id: UUID(), label: "field.license.capital".localized, value: "", isRequired: false, isCopyable: true, order: 4),
+                EditableField(id: UUID(), label: "field.license.address".localized, value: "", isRequired: false, isCopyable: true, order: 5),
+                EditableField(id: UUID(), label: "field.license.establishdate".localized, value: "", isRequired: false, isCopyable: true, order: 6),
+                EditableField(id: UUID(), label: "field.license.businessterm".localized, value: "", isRequired: false, isCopyable: true, order: 7),
+                EditableField(id: UUID(), label: "field.license.scope".localized, value: "", isRequired: false, isCopyable: true, order: 8),
             ]
         }
     }
@@ -575,17 +577,22 @@ class CardEditorViewModel: ObservableObject {
     
     private func fillBusinessLicenseFields(from result: BusinessLicenseOCRResult) {
         let companynameLabel = "field.license.companyname".localized
+        let companytypeLabel = "field.license.companytype".localized
         let creditcodeLabel = "field.license.creditcode".localized
         let legalrepLabel = "field.license.legalrep".localized
         let capitalLabel = "field.license.capital".localized
         let addressLabel = "field.license.address".localized
         let establishdateLabel = "field.license.establishdate".localized
+        let businesstermLabel = "field.license.businessterm".localized
         let scopeLabel = "field.license.scope".localized
         
         for i in 0..<fields.count {
             let label = fields[i].label
             
             if label == companynameLabel, let value = result.companyName, !value.isEmpty {
+                fields[i].value = value
+            }
+            if label == companytypeLabel, let value = result.companyType, !value.isEmpty {
                 fields[i].value = value
             }
             if label == creditcodeLabel, let value = result.creditCode, !value.isEmpty {
@@ -601,6 +608,9 @@ class CardEditorViewModel: ObservableObject {
                 fields[i].value = value
             }
             if label == establishdateLabel, let value = result.establishedDate, !value.isEmpty {
+                fields[i].value = value
+            }
+            if label == businesstermLabel, let value = result.businessTerm, !value.isEmpty {
                 fields[i].value = value
             }
             if label == scopeLabel, let value = result.businessScope, !value.isEmpty {

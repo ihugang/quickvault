@@ -39,11 +39,13 @@ struct PassportOCRResult {
 /// 营业执照 OCR 识别结果
 struct BusinessLicenseOCRResult {
     var companyName: String?
+    var companyType: String?
     var creditCode: String?
     var legalRepresentative: String?
     var registeredCapital: String?
     var address: String?
     var establishedDate: String?
+    var businessTerm: String?
     var businessScope: String?
 }
 
@@ -310,83 +312,150 @@ final class OCRServiceImpl: OCRService {
     private func parseBusinessLicenseTexts(_ texts: [String]) -> BusinessLicenseOCRResult {
         var result = BusinessLicenseOCRResult()
         
+        // 合并所有文本用于某些字段的提取
+        let fullText = texts.joined(separator: "\n")
+        
         for (index, text) in texts.enumerated() {
             let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
             
             // 统一社会信用代码 - 18位
-            if let codeMatch = trimmed.range(of: #"[0-9A-Z]{18}"#, options: .regularExpression) {
-                let code = String(trimmed[codeMatch])
-                // 验证是否符合统一社会信用代码格式
-                if isValidCreditCode(code) {
-                    result.creditCode = code
+            if result.creditCode == nil {
+                if let codeMatch = trimmed.range(of: #"[0-9A-Z]{18}"#, options: .regularExpression) {
+                    let code = String(trimmed[codeMatch])
+                    if isValidCreditCode(code) {
+                        result.creditCode = code
+                    }
                 }
             }
             
-            // 企业名称/名称
-            if trimmed.contains("名称") || trimmed.contains("企业名称") {
-                result.companyName = extractValueAfterLabel(trimmed, label: "名称")
-                    ?? extractValueAfterLabel(trimmed, label: "企业名称")
-                    ?? (index + 1 < texts.count ? texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines) : nil)
-            }
-            
-            // 法定代表人
-            if trimmed.contains("法定代表人") || trimmed.contains("负责人") {
-                result.legalRepresentative = extractValueAfterLabel(trimmed, label: "法定代表人")
-                    ?? extractValueAfterLabel(trimmed, label: "负责人")
-                    ?? (index + 1 < texts.count ? texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines) : nil)
-            }
-            
-            // 注册资本
-            if trimmed.contains("注册资本") || trimmed.contains("注册资金") {
-                result.registeredCapital = extractValueAfterLabel(trimmed, label: "注册资本")
-                    ?? extractValueAfterLabel(trimmed, label: "注册资金")
-                // 提取金额
-                if let capitalMatch = trimmed.range(of: #"\d+(\.\d+)?万?[元人民币]?"#, options: .regularExpression) {
-                    result.registeredCapital = String(trimmed[capitalMatch])
+            // 企业名称 - OCR 可能把"名"和"称"分开识别
+            // 格式1: "名称 XXX公司" 或 "企业名称 XXX公司"
+            // 格式2: "名" 在一行，"称 XXX公司" 在下一行
+            if result.companyName == nil {
+                if trimmed.contains("名称") || trimmed.contains("企业名称") {
+                    result.companyName = extractValueAfterLabel(trimmed, label: "名称")
+                        ?? extractValueAfterLabel(trimmed, label: "企业名称")
+                } else if trimmed == "名" && index + 1 < texts.count {
+                    // "名" 单独一行，下一行是 "称 XXX公司"
+                    let nextLine = texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    if nextLine.hasPrefix("称") {
+                        result.companyName = String(nextLine.dropFirst()).trimmingCharacters(in: .whitespaces)
+                    }
+                } else if trimmed.hasPrefix("称 ") || trimmed.hasPrefix("称") {
+                    // "称 XXX公司" 格式
+                    result.companyName = String(trimmed.dropFirst()).trimmingCharacters(in: .whitespaces)
                 }
             }
             
-            // 住所/经营场所
-            if trimmed.contains("住所") || trimmed.contains("经营场所") {
-                result.address = extractValueAfterLabel(trimmed, label: "住所")
-                    ?? extractValueAfterLabel(trimmed, label: "经营场所")
-                // 地址可能跨多行
-                if result.address == nil || result.address?.isEmpty == true {
-                    var addressParts: [String] = []
-                    for i in (index + 1)..<min(index + 3, texts.count) {
-                        let part = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
-                        if !part.contains("成立日期") && !part.contains("经营范围") && !part.isEmpty {
-                            addressParts.append(part)
-                        } else {
-                            break
+            // 类型
+            if result.companyType == nil && trimmed.contains("类型") {
+                result.companyType = extractValueAfterLabel(trimmed, label: "类型")
+            }
+            
+            // 法定代表人 - 可能分行
+            if result.legalRepresentative == nil {
+                if trimmed.contains("法定代表人") || trimmed.contains("负责人") {
+                    result.legalRepresentative = extractValueAfterLabel(trimmed, label: "法定代表人")
+                        ?? extractValueAfterLabel(trimmed, label: "负责人")
+                    // 如果同一行没有值，取下一行
+                    if (result.legalRepresentative == nil || result.legalRepresentative?.isEmpty == true) && index + 1 < texts.count {
+                        let nextLine = texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines)
+                        // 排除其他标签
+                        if !nextLine.contains("经营范围") && !nextLine.contains("注册资本") && !nextLine.isEmpty {
+                            result.legalRepresentative = nextLine
                         }
                     }
-                    if !addressParts.isEmpty {
-                        result.address = addressParts.joined()
+                }
+            }
+            
+            // 注册资本 - 可能是中文大写金额如"壹佰万元整"
+            if result.registeredCapital == nil && (trimmed.contains("注册资本") || trimmed.contains("注册资金")) {
+                result.registeredCapital = extractValueAfterLabel(trimmed, label: "注册资本")
+                    ?? extractValueAfterLabel(trimmed, label: "注册资金")
+                // 提取数字金额
+                if result.registeredCapital == nil {
+                    if let capitalMatch = trimmed.range(of: #"\d+(\.\d+)?万?[元人民币]?"#, options: .regularExpression) {
+                        result.registeredCapital = String(trimmed[capitalMatch])
                     }
+                }
+                // 提取中文大写金额
+                if result.registeredCapital == nil {
+                    if let capitalMatch = trimmed.range(of: #"[零壹贰叁肆伍陆柒捌玖拾佰仟万亿]+[元人民币整]+"#, options: .regularExpression) {
+                        result.registeredCapital = String(trimmed[capitalMatch])
+                    }
+                }
+            }
+            
+            // 住所/经营场所 - 可能跨多行
+            if result.address == nil && (trimmed.contains("住所") || trimmed.contains("经营场所")) {
+                result.address = extractValueAfterLabel(trimmed, label: "住所")
+                    ?? extractValueAfterLabel(trimmed, label: "经营场所")
+                // 地址可能跨多行，收集后续行直到遇到其他标签
+                var addressParts: [String] = []
+                if let addr = result.address, !addr.isEmpty {
+                    addressParts.append(addr)
+                }
+                for i in (index + 1)..<min(index + 4, texts.count) {
+                    let part = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
+                    // 遇到其他标签停止
+                    if part.contains("登记机关") || part.contains("成立日期") || part.contains("经营范围") ||
+                       part.contains("营业期限") || part.isEmpty || part.range(of: #"^\d{4}$"#, options: .regularExpression) != nil {
+                        break
+                    }
+                    addressParts.append(part)
+                }
+                if !addressParts.isEmpty {
+                    result.address = addressParts.joined()
                 }
             }
             
             // 成立日期
-            if trimmed.contains("成立日期") {
+            if result.establishedDate == nil && trimmed.contains("成立日期") {
                 if let dateMatch = trimmed.range(of: #"\d{4}年\d{1,2}月\d{1,2}日"#, options: .regularExpression) {
                     result.establishedDate = String(trimmed[dateMatch])
                 }
             }
             
-            // 经营范围
-            if trimmed.contains("经营范围") {
+            // 营业期限 - 格式如 "2001年04月20日 至长期" 或 "2001年04月20日 至 2031年04月20日"
+            if result.businessTerm == nil && trimmed.contains("营业期限") {
+                // 尝试从当前行和后续行提取
+                var termParts: [String] = []
+                for i in index..<min(index + 3, texts.count) {
+                    let part = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
+                    if let match = part.range(of: #"\d{4}年\d{1,2}月\d{1,2}日"#, options: .regularExpression) {
+                        termParts.append(String(part[match]))
+                    }
+                    if part.contains("长期") || part.contains("至长期") {
+                        termParts.append("长期")
+                        break
+                    }
+                }
+                if termParts.count >= 2 {
+                    result.businessTerm = termParts[0] + " 至 " + termParts[1]
+                } else if termParts.count == 1 {
+                    result.businessTerm = termParts[0]
+                }
+            }
+            
+            // 经营范围 - 通常很长，可能跨多行
+            if result.businessScope == nil && trimmed.contains("经营范围") {
                 result.businessScope = extractValueAfterLabel(trimmed, label: "经营范围")
-                // 经营范围通常很长，可能跨多行
-                if result.businessScope == nil || result.businessScope?.isEmpty == true {
-                    var scopeParts: [String] = []
-                    for i in (index + 1)..<min(index + 5, texts.count) {
-                        let part = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
-                        scopeParts.append(part)
+                // 收集后续行
+                var scopeParts: [String] = []
+                if let scope = result.businessScope, !scope.isEmpty {
+                    scopeParts.append(scope)
+                }
+                for i in (index + 1)..<min(index + 6, texts.count) {
+                    let part = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
+                    // 遇到其他标签停止
+                    if part.contains("注册资本") || part.contains("成立日期") || part.contains("住所") ||
+                       part.contains("营业期限") || part.contains("登记机关") {
+                        break
                     }
-                    if !scopeParts.isEmpty {
-                        result.businessScope = scopeParts.joined()
-                    }
+                    scopeParts.append(part)
+                }
+                if !scopeParts.isEmpty {
+                    result.businessScope = scopeParts.joined()
                 }
             }
         }

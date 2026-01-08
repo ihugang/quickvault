@@ -123,11 +123,13 @@
 
 // MARK: - Business License Fields
 "field.license.companyname" = "企业名称";
+"field.license.companytype" = "类型";
 "field.license.creditcode" = "统一社会信用代码";
 "field.license.legalrep" = "法定代表人";
 "field.license.capital" = "注册资本";
 "field.license.address" = "住所";
 "field.license.establishdate" = "成立日期";
+"field.license.businessterm" = "营业期限";
 "field.license.scope" = "经营范围";
 
 // MARK: - Passport Fields
