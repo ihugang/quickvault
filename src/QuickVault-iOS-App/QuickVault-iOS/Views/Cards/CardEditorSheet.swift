@@ -78,7 +78,8 @@ struct CardEditorSheet: View {
                                    let data = try? await newItem.loadTransferable(type: Data.self),
                                    let image = UIImage(data: data) {
                                     frontImage = image
-                                    await viewModel.recognizeAndFillFromImage(image)
+                                    // 正面照片：清空并重新识别
+                                    await viewModel.recognizeAndFillFromImage(image, isFrontSide: true)
                                 }
                                 frontPhotoItem = nil
                             }
@@ -99,7 +100,8 @@ struct CardEditorSheet: View {
                                        let data = try? await newItem.loadTransferable(type: Data.self),
                                        let image = UIImage(data: data) {
                                         backImage = image
-                                        await viewModel.recognizeAndFillFromImage(image)
+                                        // 背面照片：只更新背面字段，不清空正面
+                                        await viewModel.recognizeAndFillFromImage(image, isFrontSide: false)
                                     }
                                     backPhotoItem = nil
                                 }

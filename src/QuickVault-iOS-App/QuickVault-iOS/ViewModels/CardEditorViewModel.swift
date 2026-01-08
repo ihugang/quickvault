@@ -361,21 +361,29 @@ class CardEditorViewModel: ObservableObject {
     // MARK: - OCR Recognition
     
     /// 从图片中识别信息并自动填充表单
-    func recognizeAndFillFromImage(_ image: UIImage) async {
+    /// - Parameter image: 要识别的图片
+    /// - Parameter isFrontSide: 是否是正面照片（用于身份证区分正反面）
+    func recognizeAndFillFromImage(_ image: UIImage, isFrontSide: Bool = true) async {
         isOCRProcessing = true
         errorMessage = nil
         
         do {
             switch selectedType {
             case .idCard:
+                // 正面照片时清空所有字段，背面照片时只更新背面特有字段
+                if isFrontSide {
+                    clearAllFields()
+                }
                 let result = try await ocrService.recognizeIDCard(image: image)
-                fillIDCardFields(from: result)
+                fillIDCardFields(from: result, isFrontSide: isFrontSide)
                 
             case .passport:
+                clearAllFields()
                 let result = try await ocrService.recognizePassport(image: image)
                 fillPassportFields(from: result)
                 
             case .businessLicense:
+                clearAllFields()
                 let result = try await ocrService.recognizeBusinessLicense(image: image)
                 fillBusinessLicenseFields(from: result)
                 
@@ -389,7 +397,15 @@ class CardEditorViewModel: ObservableObject {
         isOCRProcessing = false
     }
     
-    private func fillIDCardFields(from result: IDCardOCRResult) {
+    /// 清空所有字段值
+    private func clearAllFields() {
+        for i in 0..<fields.count {
+            fields[i].value = ""
+        }
+        title = ""
+    }
+    
+    private func fillIDCardFields(from result: IDCardOCRResult, isFrontSide: Bool = true) {
         let nameLabel = "field.idcard.name".localized
         let genderLabel = "field.idcard.gender".localized
         let nationalityLabel = "field.idcard.nationality".localized
@@ -402,24 +418,29 @@ class CardEditorViewModel: ObservableObject {
         for i in 0..<fields.count {
             let label = fields[i].label
             
-            if label == nameLabel, let value = result.name, !value.isEmpty {
-                fields[i].value = value
+            // 正面字段：姓名、性别、民族、出生日期、身份证号、住址
+            if isFrontSide {
+                if label == nameLabel, let value = result.name, !value.isEmpty {
+                    fields[i].value = value
+                }
+                if label == genderLabel, let value = result.gender, !value.isEmpty {
+                    fields[i].value = value
+                }
+                if label == nationalityLabel, let value = result.nationality, !value.isEmpty {
+                    fields[i].value = value
+                }
+                if label == birthdateLabel, let value = result.birthDate, !value.isEmpty {
+                    fields[i].value = value
+                }
+                if label == numberLabel, let value = result.idNumber, !value.isEmpty {
+                    fields[i].value = value
+                }
+                if label == addressLabel, let value = result.address, !value.isEmpty {
+                    fields[i].value = value
+                }
             }
-            if label == genderLabel, let value = result.gender, !value.isEmpty {
-                fields[i].value = value
-            }
-            if label == nationalityLabel, let value = result.nationality, !value.isEmpty {
-                fields[i].value = value
-            }
-            if label == birthdateLabel, let value = result.birthDate, !value.isEmpty {
-                fields[i].value = value
-            }
-            if label == numberLabel, let value = result.idNumber, !value.isEmpty {
-                fields[i].value = value
-            }
-            if label == addressLabel, let value = result.address, !value.isEmpty {
-                fields[i].value = value
-            }
+            
+            // 背面字段：签发机关、有效期限
             if label == issuerLabel, let value = result.issuer, !value.isEmpty {
                 fields[i].value = value
             }
@@ -428,8 +449,8 @@ class CardEditorViewModel: ObservableObject {
             }
         }
         
-        // 如果标题为空，使用姓名作为标题
-        if title.isEmpty, let name = result.name, !name.isEmpty {
+        // 如果标题为空，使用姓名作为标题（仅正面）
+        if isFrontSide && title.isEmpty, let name = result.name, !name.isEmpty {
             title = name
         }
     }
