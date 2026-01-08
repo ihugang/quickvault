@@ -339,6 +339,9 @@ class CardEditorViewModel: ObservableObject {
                     fields: fieldDTOs,
                     tags: tags
                 )
+                
+                // Save new document photos as attachments (for editing)
+                await saveDocumentPhotos(for: cardId)
             } else {
                 // Create new card
                 savedCard = try await cardService.createCard(

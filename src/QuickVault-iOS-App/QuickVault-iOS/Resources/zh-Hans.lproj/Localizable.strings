@@ -167,6 +167,7 @@
 "attachment.document.photos" = "证件照片";
 "attachment.no.photo" = "暂无照片";
 "attachment.load.failed" = "加载图片失败";
+"ocr.edit.photo.hint" = "点击添加或替换证件照片";
 
 // MARK: - Validation
 "validation.title.required" = "标题不能为空";

@@ -167,6 +167,7 @@
 "attachment.document.photos" = "Document Photos";
 "attachment.no.photo" = "No photo";
 "attachment.load.failed" = "Failed to load image";
+"ocr.edit.photo.hint" = "Click to add or replace document photos";
 
 // MARK: - Validation
 "validation.title.required" = "Title is required";

@@ -63,7 +63,7 @@ struct CardEditorSheet: View {
                 }
                 
                 // Document Photo Upload Section - 根据证件类型显示正反面上传
-                if viewModel.supportsOCR && !viewModel.isEditing {
+                if viewModel.supportsOCR {
                     Section {
                         // Front side upload
                         DocumentPhotoUploader(
@@ -79,8 +79,10 @@ struct CardEditorSheet: View {
                                    let image = UIImage(data: data) {
                                     frontImage = image
                                     viewModel.frontPhoto = image  // 保存到 ViewModel
-                                    // 正面照片：清空并重新识别
-                                    await viewModel.recognizeAndFillFromImage(image, isFrontSide: true)
+                                    // 新建时：清空并重新识别；编辑时：只保存不识别
+                                    if !viewModel.isEditing {
+                                        await viewModel.recognizeAndFillFromImage(image, isFrontSide: true)
+                                    }
                                 }
                                 frontPhotoItem = nil
                             }
@@ -102,17 +104,19 @@ struct CardEditorSheet: View {
                                        let image = UIImage(data: data) {
                                         backImage = image
                                         viewModel.backPhoto = image  // 保存到 ViewModel
-                                        // 背面照片：只更新背面字段，不清空正面
-                                        await viewModel.recognizeAndFillFromImage(image, isFrontSide: false)
+                                        // 新建时：只更新背面字段；编辑时：只保存不识别
+                                        if !viewModel.isEditing {
+                                            await viewModel.recognizeAndFillFromImage(image, isFrontSide: false)
+                                        }
                                     }
                                     backPhotoItem = nil
                                 }
                             }
                         }
                     } header: {
-                        Text("ocr.photo.upload".localized)
+                        Text(viewModel.isEditing ? "attachment.document.photos".localized : "ocr.photo.upload".localized)
                     } footer: {
-                        Text(viewModel.selectedType.photoUploadHint)
+                        Text(viewModel.isEditing ? "ocr.edit.photo.hint".localized : viewModel.selectedType.photoUploadHint)
                             .font(.caption)
                     }
                 }
@@ -226,9 +230,11 @@ struct CardEditorSheet: View {
                     .disabled(viewModel.isLoading)
                 }
             }
-            .onAppear {
+            .task {
                 if let card = editingCard {
                     viewModel.setupForEditing(card: card)
+                    // 加载已有的证件照片
+                    await loadExistingPhotos(cardId: card.id)
                 } else {
                     viewModel.setupForNewCard()
                 }
@@ -240,6 +246,34 @@ struct CardEditorSheet: View {
                         .background(Color.black.opacity(0.1))
                 }
             }
+        }
+    }
+    
+    /// 加载已有的证件照片
+    private func loadExistingPhotos(cardId: UUID) async {
+        let attachmentService = AttachmentServiceImpl.shared
+        do {
+            let attachments = try await attachmentService.fetchAttachments(for: cardId)
+            
+            // 加载正面照片
+            if let frontAttachment = attachments.first(where: { $0.fileName == viewModel.selectedType.frontPhotoFileName }) {
+                let data = try await attachmentService.getAttachmentData(id: frontAttachment.id)
+                if let image = UIImage(data: data) {
+                    frontImage = image
+                    viewModel.frontPhoto = nil  // 不重新保存已有照片
+                }
+            }
+            
+            // 加载背面照片
+            if let backAttachment = attachments.first(where: { $0.fileName == viewModel.selectedType.backPhotoFileName }) {
+                let data = try await attachmentService.getAttachmentData(id: backAttachment.id)
+                if let image = UIImage(data: data) {
+                    backImage = image
+                    viewModel.backPhoto = nil  // 不重新保存已有照片
+                }
+            }
+        } catch {
+            print("Failed to load existing photos: \(error)")
         }
     }
 }
