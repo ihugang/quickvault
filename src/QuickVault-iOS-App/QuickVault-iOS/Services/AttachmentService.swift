@@ -63,6 +63,7 @@ protocol AttachmentService {
     func getAttachmentData(id: UUID) async throws -> Data
     func updateWatermark(id: UUID, text: String?) async throws -> AttachmentDTO
     func shareAttachment(id: UUID) async throws -> URL
+    func shareAttachment(id: UUID, watermarkText: String?) async throws -> URL
 }
 
 // MARK: - Attachment Service Implementation / 附件服务实现
@@ -112,26 +113,18 @@ final class AttachmentServiceImpl: AttachmentService, @unchecked Sendable {
             throw AttachmentError.unsupportedFormat
         }
         
-        var processedData = fileData
+        // 保存原始照片，不加水印（水印仅在导出时添加）
         var thumbnailData: Data?
-        
-        // Apply watermark if requested and it's an image
-        if let watermarkText = watermarkText, supportedImageTypes.contains(mimeType) {
-            if let image = UIImage(data: fileData),
-               let watermarkedImage = watermarkService.applyWatermark(to: image, text: watermarkText, style: .default) {
-                processedData = watermarkedImage.jpegData(compressionQuality: 0.9) ?? fileData
-            }
-        }
         
         // Generate thumbnail for images
         if supportedImageTypes.contains(mimeType) {
-            thumbnailData = generateThumbnail(from: processedData)
+            thumbnailData = generateThumbnail(from: fileData)
         }
         
         // Encrypt the file data
         let encryptedData: Data
         do {
-            encryptedData = try cryptoService.encryptFile(processedData)
+            encryptedData = try cryptoService.encryptFile(fileData)
         } catch {
             throw AttachmentError.encryptionFailed
         }
@@ -351,6 +344,15 @@ final class AttachmentServiceImpl: AttachmentService, @unchecked Sendable {
     // MARK: - Share Attachment
     
     func shareAttachment(id: UUID) async throws -> URL {
+        return try await shareAttachment(id: id, watermarkText: nil)
+    }
+    
+    /// 导出附件，可选添加水印
+    /// - Parameters:
+    ///   - id: 附件 ID
+    ///   - watermarkText: 水印文字（nil 表示不加水印）
+    /// - Returns: 临时文件 URL
+    func shareAttachment(id: UUID, watermarkText: String?) async throws -> URL {
         let data = try await getAttachmentData(id: id)
         
         let context = persistenceController.container.viewContext
@@ -364,11 +366,23 @@ final class AttachmentServiceImpl: AttachmentService, @unchecked Sendable {
                 throw AttachmentError.attachmentNotFound
             }
             
+            var exportData = data
+            
+            // 导出时添加水印（仅图片）
+            if let watermarkText = watermarkText,
+               !watermarkText.isEmpty,
+               self.supportedImageTypes.contains(attachment.fileType),
+               let image = UIImage(data: data),
+               let watermarkedImage = self.watermarkService.applyWatermark(to: image, text: watermarkText, style: .default),
+               let watermarkedData = watermarkedImage.jpegData(compressionQuality: 0.9) {
+                exportData = watermarkedData
+            }
+            
             // Create temporary file for sharing
             let tempDir = FileManager.default.temporaryDirectory
             let fileURL = tempDir.appendingPathComponent(attachment.fileName)
             
-            try data.write(to: fileURL)
+            try exportData.write(to: fileURL)
             
             return fileURL
         }

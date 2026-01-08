@@ -169,6 +169,14 @@
 "attachment.load.failed" = "Failed to load image";
 "ocr.edit.photo.hint" = "Click to add or replace document photos";
 
+// MARK: - Export
+"export.title" = "Export";
+"export.action" = "Export";
+"export.add.watermark" = "Add Watermark";
+"export.watermark.title" = "Watermark Settings";
+"export.watermark.placeholder" = "Enter watermark text";
+"export.watermark.hint" = "Watermark will only be added to the exported copy, the original photo remains unchanged.";
+
 // MARK: - Validation
 "validation.title.required" = "Title is required";
 "validation.field.required" = "This field is required";

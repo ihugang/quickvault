@@ -169,6 +169,14 @@
 "attachment.load.failed" = "加载图片失败";
 "ocr.edit.photo.hint" = "点击添加或替换证件照片";
 
+// MARK: - Export
+"export.title" = "导出";
+"export.action" = "导出";
+"export.add.watermark" = "添加水印";
+"export.watermark.title" = "水印设置";
+"export.watermark.placeholder" = "输入水印文字";
+"export.watermark.hint" = "水印仅添加到导出的副本上，原始照片保持不变。";
+
 // MARK: - Validation
 "validation.title.required" = "标题不能为空";
 "validation.field.required" = "此字段不能为空";

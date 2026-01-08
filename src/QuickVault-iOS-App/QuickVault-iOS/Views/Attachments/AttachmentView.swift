@@ -9,6 +9,8 @@ struct AttachmentListView: View {
     @State private var showImagePicker = false
     @State private var selectedAttachment: AttachmentDTO?
     @State private var showWatermarkSheet = false
+    @State private var showExportSheet = false
+    @State private var attachmentToExport: AttachmentDTO?
     
     init(cardId: UUID) {
         self.cardId = cardId
@@ -57,11 +59,10 @@ struct AttachmentListView: View {
                                 }
                                 
                                 Button {
-                                    Task {
-                                        await viewModel.shareAttachment(attachment)
-                                    }
+                                    attachmentToExport = attachment
+                                    showExportSheet = true
                                 } label: {
-                                    Label("分享 / Share", systemImage: "square.and.arrow.up")
+                                    Label("导出 / Export", systemImage: "square.and.arrow.up")
                                 }
                                 
                                 Button(role: .destructive) {
@@ -89,6 +90,11 @@ struct AttachmentListView: View {
         .sheet(isPresented: $showWatermarkSheet) {
             if let attachment = selectedAttachment {
                 WatermarkSheet(attachment: attachment, viewModel: viewModel)
+            }
+        }
+        .sheet(isPresented: $showExportSheet) {
+            if let attachment = attachmentToExport {
+                ExportWatermarkSheet(attachment: attachment, viewModel: viewModel)
             }
         }
         .task {
@@ -264,6 +270,61 @@ struct WatermarkSheet: View {
     }
 }
 
+/// Export watermark sheet / 导出水印输入界面
+struct ExportWatermarkSheet: View {
+    let attachment: AttachmentDTO
+    @ObservedObject var viewModel: AttachmentListViewModel
+    @Environment(\.dismiss) private var dismiss
+    @State private var watermarkText: String = ""
+    @State private var addWatermark: Bool = true
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    Toggle("export.add.watermark".localized, isOn: $addWatermark)
+                    
+                    if addWatermark {
+                        TextField("export.watermark.placeholder".localized, text: $watermarkText)
+                            .textFieldStyle(.roundedBorder)
+                    }
+                } header: {
+                    Text("export.watermark.title".localized)
+                } footer: {
+                    Text("export.watermark.hint".localized)
+                        .font(.caption)
+                }
+                
+                Section {
+                    Button {
+                        Task {
+                            let watermark = addWatermark && !watermarkText.isEmpty ? watermarkText : nil
+                            await viewModel.shareAttachment(attachment, watermarkText: watermark)
+                            dismiss()
+                        }
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text("export.action".localized)
+                                .fontWeight(.semibold)
+                            Spacer()
+                        }
+                    }
+                }
+            }
+            .navigationTitle("export.title".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("common.cancel".localized) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
 /// Image picker / 图片选择器
 struct ImagePicker: UIViewControllerRepresentable {
     let cardId: UUID
@@ -394,9 +455,9 @@ class AttachmentListViewModel: ObservableObject {
         isLoading = false
     }
     
-    func shareAttachment(_ attachment: AttachmentDTO) async {
+    func shareAttachment(_ attachment: AttachmentDTO, watermarkText: String? = nil) async {
         do {
-            let url = try await attachmentService.shareAttachment(id: attachment.id)
+            let url = try await attachmentService.shareAttachment(id: attachment.id, watermarkText: watermarkText)
             shareURL = url
             
             // Present share sheet
