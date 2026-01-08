@@ -20,6 +20,7 @@
         <attribute name="fileType" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="thumbnailData" optional="YES" attributeType="Binary"/>
+        <attribute name="watermarkText" optional="YES" attributeType="String"/>
         <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Card" inverseName="attachments" inverseEntity="Card"/>
     </entity>
     <entity name="CardField" representedClassName="CardField" syncable="YES">
