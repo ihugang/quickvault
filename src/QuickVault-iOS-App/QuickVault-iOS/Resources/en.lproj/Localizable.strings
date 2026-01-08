@@ -105,6 +105,29 @@
 "field.bankaccount" = "Bank Account";
 "field.content" = "Content";
 
+// MARK: - Card Types
+"cards.type.idcard" = "ID Card";
+"cards.type.businesslicense" = "Business License";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Name";
+"field.idcard.gender" = "Gender";
+"field.idcard.nationality" = "Nationality";
+"field.idcard.birthdate" = "Birth Date";
+"field.idcard.number" = "ID Number";
+"field.idcard.address" = "Address";
+"field.idcard.issuer" = "Issuing Authority";
+"field.idcard.validperiod" = "Valid Period";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Company Name";
+"field.license.creditcode" = "Unified Social Credit Code";
+"field.license.legalrep" = "Legal Representative";
+"field.license.capital" = "Registered Capital";
+"field.license.address" = "Address";
+"field.license.establishdate" = "Established Date";
+"field.license.scope" = "Business Scope";
+
 // MARK: - Validation
 "validation.title.required" = "Title is required";
 "validation.field.required" = "This field is required";

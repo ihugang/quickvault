@@ -105,6 +105,29 @@
 "field.bankaccount" = "银行账号";
 "field.content" = "内容";
 
+// MARK: - Card Types
+"cards.type.idcard" = "身份证";
+"cards.type.businesslicense" = "营业执照";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "姓名";
+"field.idcard.gender" = "性别";
+"field.idcard.nationality" = "民族";
+"field.idcard.birthdate" = "出生日期";
+"field.idcard.number" = "身份证号";
+"field.idcard.address" = "住址";
+"field.idcard.issuer" = "签发机关";
+"field.idcard.validperiod" = "有效期限";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "企业名称";
+"field.license.creditcode" = "统一社会信用代码";
+"field.license.legalrep" = "法定代表人";
+"field.license.capital" = "注册资本";
+"field.license.address" = "住所";
+"field.license.establishdate" = "成立日期";
+"field.license.scope" = "经营范围";
+
 // MARK: - Validation
 "validation.title.required" = "标题不能为空";
 "validation.field.required" = "此字段不能为空";

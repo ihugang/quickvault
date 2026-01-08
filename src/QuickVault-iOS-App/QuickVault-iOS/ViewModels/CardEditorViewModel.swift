@@ -24,6 +24,8 @@ class CardEditorViewModel: ObservableObject {
         case address = "Address"
         case invoice = "Invoice"
         case generalText = "GeneralText"
+        case idCard = "IdCard"
+        case businessLicense = "BusinessLicense"
         
         var id: String { rawValue }
         
@@ -32,6 +34,8 @@ class CardEditorViewModel: ObservableObject {
             case .address: return "cards.type.address".localized
             case .invoice: return "cards.type.invoice".localized
             case .generalText: return "cards.type.general".localized
+            case .idCard: return "cards.type.idcard".localized
+            case .businessLicense: return "cards.type.businesslicense".localized
             }
         }
     }
@@ -142,6 +146,29 @@ class CardEditorViewModel: ObservableObject {
         case .generalText:
             fields = [
                 EditableField(id: UUID(), label: "field.content".localized, value: "", isRequired: true, isCopyable: true, order: 0),
+            ]
+            
+        case .idCard:
+            fields = [
+                EditableField(id: UUID(), label: "field.idcard.name".localized, value: "", isRequired: true, isCopyable: true, order: 0),
+                EditableField(id: UUID(), label: "field.idcard.gender".localized, value: "", isRequired: true, isCopyable: true, order: 1),
+                EditableField(id: UUID(), label: "field.idcard.nationality".localized, value: "", isRequired: true, isCopyable: true, order: 2),
+                EditableField(id: UUID(), label: "field.idcard.birthdate".localized, value: "", isRequired: true, isCopyable: true, order: 3),
+                EditableField(id: UUID(), label: "field.idcard.number".localized, value: "", isRequired: true, isCopyable: true, order: 4),
+                EditableField(id: UUID(), label: "field.idcard.address".localized, value: "", isRequired: true, isCopyable: true, order: 5),
+                EditableField(id: UUID(), label: "field.idcard.issuer".localized, value: "", isRequired: false, isCopyable: true, order: 6),
+                EditableField(id: UUID(), label: "field.idcard.validperiod".localized, value: "", isRequired: false, isCopyable: true, order: 7),
+            ]
+            
+        case .businessLicense:
+            fields = [
+                EditableField(id: UUID(), label: "field.license.companyname".localized, value: "", isRequired: true, isCopyable: true, order: 0),
+                EditableField(id: UUID(), label: "field.license.creditcode".localized, value: "", isRequired: true, isCopyable: true, order: 1),
+                EditableField(id: UUID(), label: "field.license.legalrep".localized, value: "", isRequired: true, isCopyable: true, order: 2),
+                EditableField(id: UUID(), label: "field.license.capital".localized, value: "", isRequired: true, isCopyable: true, order: 3),
+                EditableField(id: UUID(), label: "field.license.address".localized, value: "", isRequired: true, isCopyable: true, order: 4),
+                EditableField(id: UUID(), label: "field.license.establishdate".localized, value: "", isRequired: true, isCopyable: true, order: 5),
+                EditableField(id: UUID(), label: "field.license.scope".localized, value: "", isRequired: false, isCopyable: true, order: 6),
             ]
         }
     }
