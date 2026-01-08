@@ -10,6 +10,7 @@ private let authLogger = Logger(subsystem: "com.quickvault", category: "AuthServ
 public enum AuthenticationError: LocalizedError {
   case biometricNotAvailable  // 生物识别不可用
   case biometricFailed  // 生物识别失败
+  case biometricPasswordNotStored  // 生物识别密码未存储，需要先用密码登录
   case passwordIncorrect  // 密码错误
   case passwordTooShort  // 密码太短
   case noPasswordSet  // 未设置密码
@@ -22,6 +23,8 @@ public enum AuthenticationError: LocalizedError {
       return "Touch ID is not available / 触控 ID 不可用"
     case .biometricFailed:
       return "Touch ID authentication failed / 触控 ID 认证失败"
+    case .biometricPasswordNotStored:
+      return "Please login with password first to enable Touch ID / 请先使用密码登录以启用触控 ID"
     case .passwordIncorrect:
       return "Incorrect password / 密码错误"
     case .passwordTooShort:
@@ -211,7 +214,9 @@ public class AuthenticationServiceImpl: AuthenticationService {
         guard let passwordData = try? keychainService.load(key: biometricPasswordKey),
               let password = String(data: passwordData, encoding: .utf8) else {
           authLogger.error("[AuthService] Failed to load biometric password from keychain")
-          throw AuthenticationError.keychainError("Failed to load biometric password")
+          // Password not stored - user needs to authenticate with password first
+          // This can happen if biometric was enabled before password was stored
+          throw AuthenticationError.biometricPasswordNotStored
         }
         authLogger.debug("[AuthService] Biometric password loaded, initializing key...")
         try cryptoService.initializeKey(password: password, salt: nil)
