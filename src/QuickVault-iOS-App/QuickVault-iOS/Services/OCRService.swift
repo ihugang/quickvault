@@ -135,18 +135,34 @@ final class OCRServiceImpl: OCRService {
                 result.idNumber = String(trimmed[idMatch]).uppercased()
             }
             
-            // 住址
-            if trimmed.contains("住址") {
-                result.address = extractValueAfterLabel(trimmed, label: "住址")
-                // 地址可能跨多行
+            // 住址 - 需要更精确的匹配，避免误识别
+            if trimmed.contains("住址") && result.address == nil {
+                // 先尝试从同一行提取
+                if let addressValue = extractValueAfterLabel(trimmed, label: "住址"), !addressValue.isEmpty {
+                    // 过滤掉明显不是地址的内容（如性别、民族等）
+                    if !addressValue.contains("性别") && !addressValue.contains("民族") && addressValue.count > 5 {
+                        result.address = addressValue
+                    }
+                }
+                
+                // 如果同一行没有有效地址，从后续行收集
                 if result.address == nil || result.address?.isEmpty == true {
                     var addressParts: [String] = []
-                    for i in (index + 1)..<min(index + 4, texts.count) {
+                    for i in (index + 1)..<min(index + 5, texts.count) {
                         let part = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
-                        if !part.contains("公民身份") && !part.isEmpty {
-                            addressParts.append(part)
-                        } else {
+                        // 排除非地址内容
+                        if part.contains("公民身份") || part.contains("身份证") || 
+                           part.contains("性别") || part.contains("民族") ||
+                           part.contains("出生") || part.isEmpty ||
+                           part.range(of: #"^\d{17}[\dXx]$"#, options: .regularExpression) != nil {
                             break
+                        }
+                        // 地址通常包含省市区街道等
+                        if part.contains("省") || part.contains("市") || part.contains("区") || 
+                           part.contains("县") || part.contains("镇") || part.contains("村") ||
+                           part.contains("路") || part.contains("街") || part.contains("号") ||
+                           addressParts.count > 0 {
+                            addressParts.append(part)
                         }
                     }
                     if !addressParts.isEmpty {
@@ -157,13 +173,46 @@ final class OCRServiceImpl: OCRService {
             
             // 签发机关 (背面)
             if trimmed.contains("签发机关") {
-                result.issuer = extractValueAfterLabel(trimmed, label: "签发机关")
-                    ?? (index + 1 < texts.count ? texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines) : nil)
+                if let issuerValue = extractValueAfterLabel(trimmed, label: "签发机关"), !issuerValue.isEmpty {
+                    result.issuer = issuerValue
+                } else if index + 1 < texts.count {
+                    let nextLine = texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    // 签发机关通常是公安局
+                    if nextLine.contains("公安") || nextLine.contains("派出所") || nextLine.count > 3 {
+                        result.issuer = nextLine
+                    }
+                }
             }
             
-            // 有效期限 (背面)
-            if trimmed.contains("有效期") {
-                // 格式: YYYY.MM.DD-YYYY.MM.DD 或 YYYY.MM.DD-长期
+            // 有效期限 (背面) - 支持多种格式
+            if trimmed.contains("有效期") && result.validPeriod == nil {
+                // 格式1: YYYY.MM.DD-YYYY.MM.DD
+                if let validMatch = trimmed.range(of: #"\d{4}\.\d{2}\.\d{2}[-－]\d{4}\.\d{2}\.\d{2}"#, options: .regularExpression) {
+                    result.validPeriod = String(trimmed[validMatch])
+                }
+                // 格式2: YYYY.MM.DD-长期
+                else if let validMatch = trimmed.range(of: #"\d{4}\.\d{2}\.\d{2}[-－]长期"#, options: .regularExpression) {
+                    result.validPeriod = String(trimmed[validMatch])
+                }
+                // 格式3: 从下一行获取
+                else if index + 1 < texts.count {
+                    let nextLine = texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    if let validMatch = nextLine.range(of: #"\d{4}\.\d{2}\.\d{2}[-－]\d{4}\.\d{2}\.\d{2}"#, options: .regularExpression) {
+                        result.validPeriod = String(nextLine[validMatch])
+                    } else if let validMatch = nextLine.range(of: #"\d{4}\.\d{2}\.\d{2}[-－]长期"#, options: .regularExpression) {
+                        result.validPeriod = String(nextLine[validMatch])
+                    } else if nextLine.contains("长期") {
+                        // 尝试组合当前行和下一行
+                        let combined = trimmed + nextLine
+                        if let validMatch = combined.range(of: #"\d{4}\.\d{2}\.\d{2}[-－]长期"#, options: .regularExpression) {
+                            result.validPeriod = String(combined[validMatch])
+                        }
+                    }
+                }
+            }
+            
+            // 单独出现的有效期格式（有时OCR会把日期单独识别）
+            if result.validPeriod == nil {
                 if let validMatch = trimmed.range(of: #"\d{4}\.\d{2}\.\d{2}[-－]\d{4}\.\d{2}\.\d{2}"#, options: .regularExpression) {
                     result.validPeriod = String(trimmed[validMatch])
                 } else if let validMatch = trimmed.range(of: #"\d{4}\.\d{2}\.\d{2}[-－]长期"#, options: .regularExpression) {
