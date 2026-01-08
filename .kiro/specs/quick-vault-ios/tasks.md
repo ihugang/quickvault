@@ -8,7 +8,7 @@ This implementation plan breaks down the QuickVault iOS application into discret
 
 ## Tasks / 任务
 
--   [ ] 1. Project Setup and Core Infrastructure / 项目设置和核心基础设施
+-   [x] 1. Project Setup and Core Infrastructure / 项目设置和核心基础设施
 
     -   Create iOS app project with SwiftUI + CoreData template / 使用 SwiftUI + CoreData 模板创建 iOS 应用项目
     -   Configure project structure (Sources/Core, Sources/Features, Sources/Views) / 配置项目结构
@@ -18,9 +18,9 @@ This implementation plan breaks down the QuickVault iOS application into discret
     -   Set up bilingual string resources / 设置双语字符串资源
     -   _Requirements: 14.1, 9.1_
 
--   [ ] 2. Implement Keychain Service / 实现钥匙串服务
+-   [x] 2. Implement Keychain Service / 实现钥匙串服务
 
-    -   [ ] 2.1 Create KeychainService protocol and implementation / 创建 KeychainService 协议和实现
+    -   [x] 2.1 Create KeychainService protocol and implementation / 创建 KeychainService 协议和实现
 
         -   Implement save, load, delete, exists methods / 实现 save、load、delete、exists 方法
         -   Handle Keychain errors gracefully / 优雅地处理钥匙串错误
@@ -31,9 +31,9 @@ This implementation plan breaks down the QuickVault iOS application into discret
         -   Test error handling / 测试错误处理
         -   _Requirements: 10.2_
 
--   [ ] 3. Implement Crypto Service / 实现加密服务
+-   [x] 3. Implement Crypto Service / 实现加密服务
 
-    -   [ ] 3.1 Create CryptoService protocol and implementation / 创建 CryptoService 协议和实现
+    -   [x] 3.1 Create CryptoService protocol and implementation / 创建 CryptoService 协议和实现
 
         -   Implement AES-GCM encryption and decryption / 实现 AES-GCM 加密和解密
         -   Implement PBKDF2 key derivation (100,000 iterations) / 实现 PBKDF2 密钥派生
@@ -56,9 +56,9 @@ This implementation plan breaks down the QuickVault iOS application into discret
         -   **Property 14: Attachment Encryption Round Trip** / **属性 14：附件加密往返**
         -   **Validates: Requirements 5.2** / **验证：需求 5.2**
 
--   [ ] 4. Implement Authentication Service / 实现认证服务
+-   [x] 4. Implement Authentication Service / 实现认证服务
 
-    -   [ ] 4.1 Create AuthenticationService protocol and implementation / 创建 AuthenticationService 协议和实现
+    -   [x] 4.1 Create AuthenticationService protocol and implementation / 创建 AuthenticationService 协议和实现
 
         -   Implement Face ID/Touch ID authentication using LocalAuthentication / 使用 LocalAuthentication 实现 Face ID/Touch ID 认证
         -   Implement master password authentication / 实现主密码认证
@@ -86,13 +86,13 @@ This implementation plan breaks down the QuickVault iOS application into discret
         -   **Property 25: Background Lock** / **属性 25：后台锁定**
         -   **Validates: Requirements 9.7** / **验证：需求 9.7**
 
--   [ ] 5. Checkpoint - Core Services Complete / 检查点 - 核心服务完成
+-   [x] 5. Checkpoint - Core Services Complete / 检查点 - 核心服务完成
 
     -   Ensure all tests pass, ask the user if questions arise. / 确保所有测试通过，如有问题请询问用户。
 
--   [ ] 6. Implement Card Service / 实现卡片服务
+-   [x] 6. Implement Card Service / 实现卡片服务
 
-    -   [ ] 6.1 Create CardService protocol and implementation / 创建 CardService 协议和实现
+    -   [x] 6.1 Create CardService protocol and implementation / 创建 CardService 协议和实现
 
         -   Implement createCard with field encryption / 实现带字段加密的 createCard
         -   Implement updateCard with timestamp update / 实现带时间戳更新的 updateCard

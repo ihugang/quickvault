@@ -11,7 +11,13 @@ public struct PersistenceController {
   public let container: NSPersistentContainer
 
   public init(inMemory: Bool = false) {
-    container = NSPersistentContainer(name: "QuickVault")
+    // Load model from the package bundle
+    guard let modelURL = Bundle.module.url(forResource: "QuickVault", withExtension: "momd"),
+          let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL) else {
+      fatalError("Failed to load Core Data model from bundle")
+    }
+    
+    container = NSPersistentContainer(name: "QuickVault", managedObjectModel: managedObjectModel)
 
     if inMemory {
       container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")

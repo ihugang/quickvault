@@ -15,8 +15,9 @@ extension CardAttachment {
   @NSManaged public var fileName: String
   @NSManaged public var fileType: String
   @NSManaged public var fileSize: Int64
-  @NSManaged public var encryptedData: Data
+  @NSManaged public var encryptedData: Data?
   @NSManaged public var thumbnailData: Data?
+  @NSManaged public var watermarkText: String?
   @NSManaged public var createdAt: Date
   @NSManaged public var card: Card?
 }

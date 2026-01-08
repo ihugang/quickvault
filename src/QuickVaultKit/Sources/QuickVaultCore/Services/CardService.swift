@@ -29,7 +29,7 @@ public enum CardServiceError: LocalizedError {
 
 // MARK: - Card Data Transfer Object / 卡片数据传输对象
 
-public struct CardDTO {
+public struct CardDTO: Hashable, Identifiable {
   public let id: UUID
   public let title: String
   public let group: String
@@ -53,7 +53,7 @@ public struct CardDTO {
   }
 }
 
-public struct CardFieldDTO {
+public struct CardFieldDTO: Hashable, Identifiable {
   public let id: UUID
   public let label: String
   public let value: String
