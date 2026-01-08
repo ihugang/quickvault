@@ -71,8 +71,8 @@
 "cards.type.card" = "Πιστωτική Κάρτα";
 "cards.type.identity" = "Ταυτότητα";
 "cards.type.note" = "Ασφαλής Σημείωση";
-"cards.created" = "Δημιουργήθηκε: %@";
-"cards.updated" = "Ενημερώθηκε: %@";
+"cards.created" = "Δημιουργήθηκε: ";
+"cards.updated" = "Ενημερώθηκε: ";
 "cards.tags" = "Ετικέτες";
 "cards.tags.add" = "Προσθήκη Ετικέτας";
 

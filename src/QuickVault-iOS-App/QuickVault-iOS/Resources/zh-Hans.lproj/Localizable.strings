@@ -83,8 +83,8 @@
 "cards.type.card" = "信用卡";
 "cards.type.identity" = "身份信息";
 "cards.type.note" = "安全笔记";
-"cards.created" = "创建时间：%@";
-"cards.updated" = "更新时间：%@";
+"cards.created" = "创建时间";
+"cards.updated" = "更新时间";
 "cards.tags" = "标签";
 "cards.tags.add" = "添加标签";
 "cards.type.address" = "地址";

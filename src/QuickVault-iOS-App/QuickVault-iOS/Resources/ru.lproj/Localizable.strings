@@ -71,8 +71,8 @@
 "cards.type.card" = "Кредитная Карта";
 "cards.type.identity" = "Личность";
 "cards.type.note" = "Защищённая Заметка";
-"cards.created" = "Создано: %@";
-"cards.updated" = "Обновлено: %@";
+"cards.created" = "Создано: ";
+"cards.updated" = "Обновлено: ";
 "cards.tags" = "Теги";
 "cards.tags.add" = "Добавить Тег";
 

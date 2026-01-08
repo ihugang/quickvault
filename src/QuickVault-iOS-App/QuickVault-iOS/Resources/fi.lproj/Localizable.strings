@@ -71,8 +71,8 @@
 "cards.type.card" = "Luottokortti";
 "cards.type.identity" = "Henkilöllisyys";
 "cards.type.note" = "Suojattu Muistiinpano";
-"cards.created" = "Luotu: %@";
-"cards.updated" = "Päivitetty: %@";
+"cards.created" = "Luotu: ";
+"cards.updated" = "Päivitetty: ";
 "cards.tags" = "Tunnisteet";
 "cards.tags.add" = "Lisää Tunniste";
 

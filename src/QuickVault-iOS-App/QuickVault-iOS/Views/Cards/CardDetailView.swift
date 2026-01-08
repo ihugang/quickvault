@@ -482,16 +482,68 @@ struct AttachmentPreviewView: View {
         _viewModel = StateObject(wrappedValue: AttachmentPreviewViewModel(attachmentId: attachment.id))
     }
     
+    @State private var scale: CGFloat = 1.0
+    @State private var lastScale: CGFloat = 1.0
+    @State private var offset: CGSize = .zero
+    @State private var lastOffset: CGSize = .zero
+    
     var body: some View {
         NavigationStack {
             Group {
                 if viewModel.isLoading {
                     ProgressView()
                 } else if let image = viewModel.image {
-                    ScrollView {
+                    GeometryReader { geometry in
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                            .scaleEffect(scale)
+                            .offset(offset)
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .gesture(
+                                MagnificationGesture()
+                                    .onChanged { value in
+                                        scale = lastScale * value
+                                    }
+                                    .onEnded { _ in
+                                        lastScale = scale
+                                        if scale < 1.0 {
+                                            withAnimation {
+                                                scale = 1.0
+                                                lastScale = 1.0
+                                                offset = .zero
+                                                lastOffset = .zero
+                                            }
+                                        }
+                                    }
+                            )
+                            .simultaneousGesture(
+                                DragGesture()
+                                    .onChanged { value in
+                                        if scale > 1.0 {
+                                            offset = CGSize(
+                                                width: lastOffset.width + value.translation.width,
+                                                height: lastOffset.height + value.translation.height
+                                            )
+                                        }
+                                    }
+                                    .onEnded { _ in
+                                        lastOffset = offset
+                                    }
+                            )
+                            .onTapGesture(count: 2) {
+                                withAnimation {
+                                    if scale > 1.0 {
+                                        scale = 1.0
+                                        lastScale = 1.0
+                                        offset = .zero
+                                        lastOffset = .zero
+                                    } else {
+                                        scale = 2.5
+                                        lastScale = 2.5
+                                    }
+                                }
+                            }
                     }
                 } else {
                     Text("attachment.load.failed".localized)

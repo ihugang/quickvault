@@ -71,8 +71,8 @@
 "cards.type.card" = "Kreditní Karta";
 "cards.type.identity" = "Identita";
 "cards.type.note" = "Zabezpečená Poznámka";
-"cards.created" = "Vytvořeno: %@";
-"cards.updated" = "Aktualizováno: %@";
+"cards.created" = "Vytvořeno: ";
+"cards.updated" = "Aktualizováno: ";
 "cards.tags" = "Štítky";
 "cards.tags.add" = "Přidat Štítek";
 

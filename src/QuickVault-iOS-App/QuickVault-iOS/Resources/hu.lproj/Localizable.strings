@@ -71,8 +71,8 @@
 "cards.type.card" = "Hitelkártya";
 "cards.type.identity" = "Személyazonosság";
 "cards.type.note" = "Biztonságos Jegyzet";
-"cards.created" = "Létrehozva: %@";
-"cards.updated" = "Frissítve: %@";
+"cards.created" = "Létrehozva: ";
+"cards.updated" = "Frissítve: ";
 "cards.tags" = "Címkék";
 "cards.tags.add" = "Címke Hozzáadása";
 

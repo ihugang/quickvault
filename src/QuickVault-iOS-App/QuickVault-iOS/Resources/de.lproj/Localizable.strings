@@ -71,8 +71,8 @@
 "cards.type.card" = "Kreditkarte";
 "cards.type.identity" = "Identität";
 "cards.type.note" = "Sichere Notiz";
-"cards.created" = "Erstellt: %@";
-"cards.updated" = "Aktualisiert: %@";
+"cards.created" = "Erstellt: ";
+"cards.updated" = "Aktualisiert: ";
 "cards.tags" = "Tags";
 "cards.tags.add" = "Tag Hinzufügen";
 

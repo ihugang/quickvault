@@ -33,7 +33,11 @@ class CardListViewModel: ObservableObject {
     
     @Published var cards: [CardDTO] = []
     @Published var filteredCards: [CardDTO] = []
-    @Published var selectedGroup: CardGroup = .all
+    @Published var selectedGroup: CardGroup = .all {
+        didSet {
+            applyFilters()
+        }
+    }
     @Published var searchQuery: String = ""
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
@@ -63,14 +67,7 @@ class CardListViewModel: ObservableObject {
             }
             .store(in: &cancellables)
         
-        // React to group filter changes
-        $selectedGroup
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.applyFilters()
-            }
-            .store(in: &cancellables)
+        // selectedGroup 使用 didSet 处理，不再使用 Combine
     }
     
     // MARK: - Data Loading

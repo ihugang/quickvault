@@ -71,8 +71,8 @@
 "cards.type.card" = "Karta Kredytowa";
 "cards.type.identity" = "Tożsamość";
 "cards.type.note" = "Bezpieczna Notatka";
-"cards.created" = "Utworzono: %@";
-"cards.updated" = "Zaktualizowano: %@";
+"cards.created" = "Utworzono: ";
+"cards.updated" = "Zaktualizowano: ";
 "cards.tags" = "Tagi";
 "cards.tags.add" = "Dodaj Tag";
 

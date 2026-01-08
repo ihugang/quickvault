@@ -71,8 +71,8 @@
 "cards.type.card" = "クレジットカード";
 "cards.type.identity" = "ID";
 "cards.type.note" = "セキュアメモ";
-"cards.created" = "作成日: %@";
-"cards.updated" = "更新日: %@";
+"cards.created" = "作成日: ";
+"cards.updated" = "更新日: ";
 "cards.tags" = "タグ";
 "cards.tags.add" = "タグを追加";
 

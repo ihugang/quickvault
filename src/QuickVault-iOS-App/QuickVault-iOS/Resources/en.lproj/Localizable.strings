@@ -83,8 +83,8 @@
 "cards.type.card" = "Credit Card";
 "cards.type.identity" = "Identity";
 "cards.type.note" = "Secure Note";
-"cards.created" = "Created: %@";
-"cards.updated" = "Updated: %@";
+"cards.created" = "Created";
+"cards.updated" = "Updated";
 "cards.tags" = "Tags";
 "cards.tags.add" = "Add Tag";
 "cards.type.address" = "Address";

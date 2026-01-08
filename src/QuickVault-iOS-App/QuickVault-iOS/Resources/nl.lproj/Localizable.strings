@@ -71,8 +71,8 @@
 "cards.type.card" = "Creditcard";
 "cards.type.identity" = "Identiteit";
 "cards.type.note" = "Beveiligde Notitie";
-"cards.created" = "Aangemaakt: %@";
-"cards.updated" = "Bijgewerkt: %@";
+"cards.created" = "Aangemaakt: ";
+"cards.updated" = "Bijgewerkt: ";
 "cards.tags" = "Tags";
 "cards.tags.add" = "Tag Toevoegen";
 

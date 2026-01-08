@@ -71,8 +71,8 @@
 "cards.type.card" = "Card de Credit";
 "cards.type.identity" = "Identitate";
 "cards.type.note" = "Notă Securizată";
-"cards.created" = "Creat: %@";
-"cards.updated" = "Actualizat: %@";
+"cards.created" = "Creat: ";
+"cards.updated" = "Actualizat: ";
 "cards.tags" = "Etichete";
 "cards.tags.add" = "Adaugă Etichetă";
 

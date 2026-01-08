@@ -71,8 +71,8 @@
 "cards.type.card" = "Kreditkort";
 "cards.type.identity" = "Identitet";
 "cards.type.note" = "Sikker Note";
-"cards.created" = "Oprettet: %@";
-"cards.updated" = "Opdateret: %@";
+"cards.created" = "Oprettet: ";
+"cards.updated" = "Opdateret: ";
 "cards.tags" = "Tags";
 "cards.tags.add" = "Tilføj Tag";
 

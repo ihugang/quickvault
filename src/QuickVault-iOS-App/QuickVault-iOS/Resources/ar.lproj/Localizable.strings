@@ -72,8 +72,8 @@
 "cards.type.card" = "بطاقة ائتمان";
 "cards.type.identity" = "الهوية";
 "cards.type.note" = "ملاحظة آمنة";
-"cards.created" = "تاريخ الإنشاء: %@";
-"cards.updated" = "تاريخ التحديث: %@";
+"cards.created" = "تاريخ الإنشاء: ";
+"cards.updated" = "تاريخ التحديث: ";
 "cards.tags" = "الوسوم";
 "cards.tags.add" = "إضافة وسم";
 
