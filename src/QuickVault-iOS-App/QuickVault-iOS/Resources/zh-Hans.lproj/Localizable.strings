@@ -182,10 +182,33 @@
 // MARK: - Export
 "export.title" = "导出";
 "export.action" = "导出";
+"export.image" = "导出图片";
+"export.images" = "导出图片";
+"export.images.all" = "导出全部图片";
+"export.text" = "导出文本";
 "export.add.watermark" = "添加水印";
 "export.watermark.title" = "水印设置";
+"export.watermark.text" = "水印文字";
 "export.watermark.placeholder" = "输入水印文字";
-"export.watermark.hint" = "水印仅添加到导出的副本上，原始照片保持不变。";
+"export.watermark.hint" = "水印将以半透明对角线方式覆盖在图片上";
+"export.watermark.fontsize" = "字号大小";
+"export.watermark.spacing" = "行间距";
+"export.watermark.spacing.dense" = "密集";
+"export.watermark.spacing.normal" = "正常";
+"export.watermark.spacing.sparse" = "稀疏";
+"export.watermark.opacity" = "透明度";
+"export.preview" = "预览";
+"export.advanced.options" = "高级选项";
+"export.size.compression" = "尺寸与压缩";
+"export.max.width" = "最大宽度";
+"export.max.height" = "最大高度";
+"export.max.filesize" = "最大文件大小";
+"export.pixel" = "像素";
+"export.hint.limits" = "留空表示不限制。图片会等比例缩放以适应尺寸限制";
+"export.success" = "导出成功";
+"export.failed" = "导出失败";
+"export.copied" = "已复制到剪贴板";
+"export.images.count" = "已导出 %d 张图片";
 
 // MARK: - Validation
 "validation.title.required" = "标题不能为空";

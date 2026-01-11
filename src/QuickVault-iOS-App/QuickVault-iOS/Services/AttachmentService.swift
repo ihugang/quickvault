@@ -64,6 +64,7 @@ protocol AttachmentService {
     func updateWatermark(id: UUID, text: String?) async throws -> AttachmentDTO
     func shareAttachment(id: UUID) async throws -> URL
     func shareAttachment(id: UUID, watermarkText: String?) async throws -> URL
+    func shareAttachment(id: UUID, watermarkText: String?, watermarkFontSize: CGFloat, watermarkSpacing: WatermarkSpacing, watermarkOpacity: CGFloat, exportOptions: ImageExportOptions) async throws -> URL
 }
 
 // MARK: - Attachment Service Implementation / 附件服务实现
@@ -344,46 +345,66 @@ final class AttachmentServiceImpl: AttachmentService, @unchecked Sendable {
     // MARK: - Share Attachment
     
     func shareAttachment(id: UUID) async throws -> URL {
-        return try await shareAttachment(id: id, watermarkText: nil)
+        return try await shareAttachment(id: id, watermarkText: nil, watermarkFontSize: 30, watermarkSpacing: .normal, watermarkOpacity: 0.3, exportOptions: .default)
     }
-    
-    /// 导出附件，可选添加水印
+
+    func shareAttachment(id: UUID, watermarkText: String?) async throws -> URL {
+        return try await shareAttachment(id: id, watermarkText: watermarkText, watermarkFontSize: 30, watermarkSpacing: .normal, watermarkOpacity: 0.3, exportOptions: .default)
+    }
+
+    /// 导出附件，可选添加水印和导出选项
     /// - Parameters:
     ///   - id: 附件 ID
     ///   - watermarkText: 水印文字（nil 表示不加水印）
+    ///   - watermarkFontSize: 水印字号大小 (20-80)
+    ///   - watermarkSpacing: 水印行间距模式
+    ///   - watermarkOpacity: 水印透明度 (0.1-1.0)
+    ///   - exportOptions: 导出选项（尺寸和文件大小限制）
     /// - Returns: 临时文件 URL
-    func shareAttachment(id: UUID, watermarkText: String?) async throws -> URL {
+    func shareAttachment(id: UUID, watermarkText: String?, watermarkFontSize: CGFloat, watermarkSpacing: WatermarkSpacing, watermarkOpacity: CGFloat, exportOptions: ImageExportOptions) async throws -> URL {
         let data = try await getAttachmentData(id: id)
-        
+
         let context = persistenceController.container.viewContext
-        
+
         return try await context.perform {
             let fetchRequest = CardAttachment.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
             fetchRequest.fetchLimit = 1
-            
+
             guard let attachment = try context.fetch(fetchRequest).first else {
                 throw AttachmentError.attachmentNotFound
             }
-            
+
             var exportData = data
-            
-            // 导出时添加水印（仅图片）
-            if let watermarkText = watermarkText,
-               !watermarkText.isEmpty,
-               self.supportedImageTypes.contains(attachment.fileType),
-               let image = UIImage(data: data),
-               let watermarkedImage = self.watermarkService.applyWatermark(to: image, text: watermarkText, style: .default),
-               let watermarkedData = watermarkedImage.jpegData(compressionQuality: 0.9) {
-                exportData = watermarkedData
+
+            // Process image if needed
+            if self.supportedImageTypes.contains(attachment.fileType),
+               let image = UIImage(data: data) {
+                var processedImage = image
+
+                // Step 1: Apply watermark if specified
+                if let watermarkText = watermarkText, !watermarkText.isEmpty {
+                    let style = WatermarkStyle.from(fontSize: watermarkFontSize, opacity: watermarkOpacity, spacing: watermarkSpacing)
+                    if let watermarkedImage = self.watermarkService.applyWatermark(to: processedImage, text: watermarkText, style: style) {
+                        processedImage = watermarkedImage
+                    }
+                }
+
+                // Step 2: Apply export options (resize & compress)
+                if let processedData = ImageProcessor.process(image: processedImage, options: exportOptions) {
+                    exportData = processedData
+                } else {
+                    // Fallback to basic JPEG compression
+                    exportData = processedImage.jpegData(compressionQuality: exportOptions.jpegQuality) ?? data
+                }
             }
-            
+
             // Create temporary file for sharing
             let tempDir = FileManager.default.temporaryDirectory
             let fileURL = tempDir.appendingPathComponent(attachment.fileName)
-            
+
             try exportData.write(to: fileURL)
-            
+
             return fileURL
         }
     }

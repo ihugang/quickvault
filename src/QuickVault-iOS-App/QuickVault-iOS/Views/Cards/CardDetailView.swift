@@ -50,6 +50,13 @@ struct CardDetailView: View {
                         
                         // Timestamps
                         TimestampsSection(card: card)
+
+                        // Export text button / 导出文本按钮
+                        ExportButtonsSection(
+                            onExportText: {
+                                viewModel.exportAsText()
+                            }
+                        )
                     }
                     .padding()
                 }
@@ -71,15 +78,21 @@ struct CardDetailView: View {
                     } label: {
                         Label("common.copy".localized, systemImage: "doc.on.doc")
                     }
-                    
+
+                    Button {
+                        viewModel.exportAsText()
+                    } label: {
+                        Label("导出文本 / Export Text", systemImage: "doc.text")
+                    }
+
                     Button {
                         showEditSheet = true
                     } label: {
                         Label("common.edit".localized, systemImage: "pencil")
                     }
-                    
+
                     Divider()
-                    
+
                     Button(role: .destructive) {
                         showDeleteConfirmation = true
                     } label: {
@@ -362,19 +375,39 @@ struct DocumentPhotosSection: View {
     let cardType: String
     @StateObject private var viewModel: AttachmentListViewModel
     @State private var selectedAttachment: AttachmentDTO?
-    
+    @State private var showExportAllSheet = false
+
     init(cardId: UUID, cardType: String) {
         self.cardId = cardId
         self.cardType = cardType
         _viewModel = StateObject(wrappedValue: AttachmentListViewModel(cardId: cardId))
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("attachment.document.photos".localized)
-                .font(.headline)
-                .foregroundStyle(.secondary)
-            
+            HStack {
+                Text("attachment.document.photos".localized)
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+
+                Spacer()
+
+                // Export all button (only show if there are attachments)
+                if hasAttachments {
+                    Button {
+                        showExportAllSheet = true
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.caption)
+                            Text("export.images.all".localized)
+                                .font(.caption)
+                        }
+                        .foregroundStyle(.blue)
+                    }
+                }
+            }
+
             if cardType == "IdCard" {
                 // 身份证：固定正反面
                 HStack(spacing: 12) {
@@ -385,7 +418,7 @@ struct DocumentPhotosSection: View {
                             selectedAttachment = attachment
                         }
                     )
-                    
+
                     DocumentPhotoCard(
                         title: "ocr.idcard.back".localized,
                         attachment: findAttachment(fileName: "idcard_back.jpg"),
@@ -417,11 +450,18 @@ struct DocumentPhotosSection: View {
         .sheet(item: $selectedAttachment) { attachment in
             AttachmentPreviewView(attachment: attachment)
         }
+        .sheet(isPresented: $showExportAllSheet) {
+            ExportAllImagesSheet(cardId: cardId)
+        }
         .task {
             await viewModel.loadAttachments()
         }
     }
-    
+
+    private var hasAttachments: Bool {
+        !viewModel.attachments.isEmpty
+    }
+
     private func findAttachment(fileName: String) -> AttachmentDTO? {
         viewModel.attachments.first { $0.fileName == fileName }
     }
@@ -476,17 +516,18 @@ struct AttachmentPreviewView: View {
     let attachment: AttachmentDTO
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: AttachmentPreviewViewModel
-    
+
     init(attachment: AttachmentDTO) {
         self.attachment = attachment
         _viewModel = StateObject(wrappedValue: AttachmentPreviewViewModel(attachmentId: attachment.id))
     }
-    
+
     @State private var scale: CGFloat = 1.0
     @State private var lastScale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
-    
+    @State private var showExportSheet = false
+
     var body: some View {
         NavigationStack {
             Group {
@@ -558,6 +599,30 @@ struct AttachmentPreviewView: View {
                         dismiss()
                     }
                 }
+
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        showExportSheet = true
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                }
+            }
+            .sheet(isPresented: $showExportSheet) {
+                ExportSingleImageSheet(
+                    attachmentId: attachment.id,
+                    fileName: attachment.fileName
+                )
+            }
+            .overlay {
+                if let toast = viewModel.toastMessage {
+                    ToastView(message: toast)
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                viewModel.clearToast()
+                            }
+                        }
+                }
             }
         }
     }
@@ -569,17 +634,18 @@ struct AttachmentPreviewView: View {
 class AttachmentPreviewViewModel: ObservableObject {
     @Published var image: UIImage?
     @Published var isLoading = true
-    
+    @Published var toastMessage: String?
+
     private let attachmentService = AttachmentServiceImpl.shared
     private let attachmentId: UUID
-    
+
     init(attachmentId: UUID) {
         self.attachmentId = attachmentId
         Task {
             await loadImage()
         }
     }
-    
+
     func loadImage() async {
         isLoading = true
         do {
@@ -589,6 +655,753 @@ class AttachmentPreviewViewModel: ObservableObject {
             print("Failed to load attachment: \(error)")
         }
         isLoading = false
+    }
+
+    func clearToast() {
+        toastMessage = nil
+    }
+}
+
+// MARK: - Export Buttons Section
+
+struct ExportButtonsSection: View {
+    let onExportText: () -> Void
+
+    var body: some View {
+        // Text export button
+        Button {
+            onExportText()
+        } label: {
+            HStack {
+                Image(systemName: "doc.text")
+                Text("导出文本 / Export Text")
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding()
+            .background(Color(.systemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(.plain)
+        .shadow(color: .black.opacity(0.05), radius: 5, y: 2)
+    }
+}
+
+// MARK: - Export All Images Sheet
+
+struct ExportAllImagesSheet: View {
+    let cardId: UUID
+    @Environment(\.dismiss) private var dismiss
+    @State private var watermarkText: String = ""
+    @State private var addWatermark: Bool = true
+    @State private var watermarkFontSize: Double = 30  // 字号范围 20-80
+    @State private var watermarkSpacing: WatermarkSpacing = .normal  // 行间距
+    @State private var watermarkOpacity: Double = 0.3
+    @State private var enableAdvancedOptions: Bool = false
+    @State private var maxWidth: String = ""
+    @State private var maxHeight: String = ""
+    @State private var maxFileSize: String = ""
+    @State private var isExporting = false
+    @State private var showToast = false
+    @State private var toastMessage = ""
+    @State private var previewImages: [UIImage] = []
+    @State private var isLoadingPreview = false
+    @State private var selectedPreviewIndex = 0
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                // Preview Section at top
+                if !previewImages.isEmpty {
+                    Section {
+                        TabView(selection: $selectedPreviewIndex) {
+                            ForEach(previewImages.indices, id: \.self) { index in
+                                Image(uiImage: previewImages[index])
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxHeight: 300)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .tag(index)
+                            }
+                        }
+                        .tabViewStyle(.page(indexDisplayMode: .always))
+                        .frame(height: 300)
+
+                        Text("\(selectedPreviewIndex + 1) / \(previewImages.count)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    } header: {
+                        Text("export.preview".localized)
+                    }
+                } else if isLoadingPreview {
+                    Section {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                        .frame(height: 200)
+                    } header: {
+                        Text("export.preview".localized)
+                    }
+                }
+
+                Section {
+                    Toggle("export.add.watermark".localized, isOn: $addWatermark)
+
+                    if addWatermark {
+                        TextField("export.watermark.placeholder".localized, text: $watermarkText)
+                            .textFieldStyle(.roundedBorder)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("export.watermark.fontsize".localized)
+                                Spacer()
+                                Text("\(Int(watermarkFontSize))")
+                                    .foregroundStyle(.secondary)
+                            }
+                            Slider(value: $watermarkFontSize, in: 20...80, step: 1)
+                        }
+
+                        Picker("export.watermark.spacing".localized, selection: $watermarkSpacing) {
+                            ForEach(WatermarkSpacing.allCases) { spacing in
+                                Text(spacing.displayName).tag(spacing)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("export.watermark.opacity".localized)
+                                Spacer()
+                                Text("\(Int(watermarkOpacity * 100))%")
+                                    .foregroundStyle(.secondary)
+                            }
+                            Slider(value: $watermarkOpacity, in: 0.1...1.0, step: 0.05)
+                        }
+                    }
+                } header: {
+                    Text("export.watermark.title".localized)
+                } footer: {
+                    Text("export.watermark.hint".localized)
+                        .font(.caption)
+                }
+                .listRowSpacing(6)
+
+                Section {
+                    Toggle("export.advanced.options".localized, isOn: $enableAdvancedOptions)
+
+                    if enableAdvancedOptions {
+                        HStack {
+                            Text("export.max.width".localized)
+                            Spacer()
+                            TextField("export.pixel".localized, text: $maxWidth)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 100)
+                        }
+
+                        HStack {
+                            Text("export.max.height".localized)
+                            Spacer()
+                            TextField("export.pixel".localized, text: $maxHeight)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 100)
+                        }
+
+                        HStack {
+                            Text("export.max.filesize".localized)
+                            Spacer()
+                            TextField("KB", text: $maxFileSize)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 100)
+                        }
+                    }
+                } header: {
+                    Text("export.size.compression".localized)
+                } footer: {
+                    if enableAdvancedOptions {
+                        Text("export.hint.limits".localized)
+                            .font(.caption)
+                    }
+                }
+                .listRowSpacing(6)
+
+                Section {
+                    Button {
+                        Task {
+                            await exportAllImages()
+                        }
+                    } label: {
+                        HStack {
+                            Spacer()
+                            if isExporting {
+                                ProgressView()
+                                    .padding(.trailing, 8)
+                            }
+                            Text("export.images.all".localized)
+                                .fontWeight(.semibold)
+                            Spacer()
+                        }
+                    }
+                    .disabled(isExporting)
+                }
+                .listRowSpacing(6)
+            }
+            .navigationTitle("export.images.all".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("common.cancel".localized) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
+        .task {
+            await generatePreview()
+        }
+        .onChange(of: addWatermark) { _, _ in
+            Task { await generatePreview() }
+        }
+        .onChange(of: watermarkText) { _, _ in
+            Task { await generatePreview() }
+        }
+        .onChange(of: watermarkFontSize) { _, _ in
+            Task { await generatePreview() }
+        }
+        .onChange(of: watermarkSpacing) { _, _ in
+            Task { await generatePreview() }
+        }
+        .onChange(of: watermarkOpacity) { _, _ in
+            Task { await generatePreview() }
+        }
+        .overlay {
+            if showToast {
+                ToastView(message: toastMessage)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            showToast = false
+                        }
+                    }
+            }
+        }
+    }
+
+    private func exportAllImages() async {
+        isExporting = true
+
+        do {
+            let attachmentService = AttachmentServiceImpl.shared
+            let attachments = try await attachmentService.fetchAttachments(for: cardId)
+
+            // Filter only image attachments
+            let imageAttachments = attachments.filter { $0.mimeType.contains("image") }
+
+            guard !imageAttachments.isEmpty else {
+                toastMessage = "attachments.empty".localized
+                showToast = true
+                isExporting = false
+                return
+            }
+
+            // Build export options
+            let exportOptions = ImageExportOptions(
+                maxWidth: maxWidth.isEmpty ? nil : CGFloat(Int(maxWidth) ?? 0),
+                maxHeight: maxHeight.isEmpty ? nil : CGFloat(Int(maxHeight) ?? 0),
+                maxFileSizeKB: maxFileSize.isEmpty ? nil : Int(maxFileSize),
+                jpegQuality: 0.9
+            )
+
+            // Collect all processed image URLs
+            var imageURLs: [URL] = []
+            let watermark = addWatermark && !watermarkText.isEmpty ? watermarkText : nil
+
+            for attachment in imageAttachments {
+                let url = try await attachmentService.shareAttachment(
+                    id: attachment.id,
+                    watermarkText: watermark,
+                    watermarkFontSize: watermarkFontSize,
+                    watermarkSpacing: watermarkSpacing,
+                    watermarkOpacity: watermarkOpacity,
+                    exportOptions: exportOptions
+                )
+                imageURLs.append(url)
+            }
+
+            // Present share sheet with all images
+            await MainActor.run {
+                let activityVC = UIActivityViewController(activityItems: imageURLs, applicationActivities: nil)
+
+                activityVC.completionWithItemsHandler = { [self] activityType, completed, returnedItems, error in
+                    Task { @MainActor in
+                        if let error = error {
+                            toastMessage = "export.failed".localized + ": \(error.localizedDescription)"
+                            showToast = true
+                        } else if completed {
+                            toastMessage = String(format: "export.images.count".localized, imageURLs.count)
+                            showToast = true
+                            // Close the sheet after a short delay
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                dismiss()
+                            }
+                        }
+                    }
+                }
+
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let rootVC = windowScene.windows.first?.rootViewController {
+                    var presentingVC = rootVC
+                    while let presented = presentingVC.presentedViewController {
+                        presentingVC = presented
+                    }
+                    presentingVC.present(activityVC, animated: true)
+                }
+            }
+        } catch {
+            toastMessage = "export.failed".localized + ": \(error.localizedDescription)"
+            showToast = true
+        }
+
+        isExporting = false
+    }
+
+    private func generatePreview() async {
+        await MainActor.run {
+            isLoadingPreview = true
+        }
+
+        do {
+            let attachmentService = AttachmentServiceImpl.shared
+            let attachments = try await attachmentService.fetchAttachments(for: cardId)
+
+            // Filter only image attachments
+            let imageAttachments = attachments.filter { $0.mimeType.contains("image") }
+
+            guard !imageAttachments.isEmpty else {
+                await MainActor.run {
+                    isLoadingPreview = false
+                }
+                return
+            }
+
+            var processedImages: [UIImage] = []
+
+            for attachment in imageAttachments {
+                let data = try await attachmentService.getAttachmentData(id: attachment.id)
+                guard let image = UIImage(data: data) else { continue }
+
+                // Apply watermark if enabled
+                if addWatermark && !watermarkText.isEmpty {
+                    let watermarkService = WatermarkServiceImpl()
+                    let style = WatermarkStyle.from(fontSize: watermarkFontSize, opacity: watermarkOpacity, spacing: watermarkSpacing)
+                    if let watermarkedImage = watermarkService.applyWatermark(to: image, text: watermarkText, style: style) {
+                        processedImages.append(watermarkedImage)
+                    } else {
+                        processedImages.append(image)
+                    }
+                } else {
+                    processedImages.append(image)
+                }
+            }
+
+            await MainActor.run {
+                self.previewImages = processedImages
+                self.isLoadingPreview = false
+                self.selectedPreviewIndex = 0
+            }
+        } catch {
+            await MainActor.run {
+                self.isLoadingPreview = false
+            }
+        }
+    }
+}
+
+// MARK: - Export Single Image Sheet
+
+struct ExportSingleImageSheet: View {
+    let attachmentId: UUID
+    let fileName: String
+    @Environment(\.dismiss) private var dismiss
+    @State private var watermarkText: String = ""
+    @State private var addWatermark: Bool = true
+    @State private var watermarkFontSize: Double = 30  // 字号范围 20-80
+    @State private var watermarkSpacing: WatermarkSpacing = .normal  // 行间距
+    @State private var watermarkOpacity: Double = 0.3
+    @State private var enableAdvancedOptions: Bool = false
+    @State private var maxWidth: String = ""
+    @State private var maxHeight: String = ""
+    @State private var maxFileSize: String = ""
+    @State private var isExporting = false
+    @State private var showToast = false
+    @State private var toastMessage = ""
+    @State private var previewImage: UIImage?
+    @State private var isLoadingPreview = false
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                // Preview Section at top
+                if let previewImage = previewImage {
+                    Section {
+                        Image(uiImage: previewImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxHeight: 300)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                    } header: {
+                        Text("export.preview".localized)
+                    }
+                    .listRowSpacing(8)
+                } else if isLoadingPreview {
+                    Section {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                        .frame(height: 200)
+                    } header: {
+                        Text("export.preview".localized)
+                    }
+                    .listRowSpacing(8)
+                }
+
+                Section {
+                    Toggle("export.add.watermark".localized, isOn: $addWatermark)
+
+                    if addWatermark {
+                        TextField("export.watermark.placeholder".localized, text: $watermarkText)
+                            .textFieldStyle(.roundedBorder)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("export.watermark.fontsize".localized)
+                                Spacer()
+                                Text("\(Int(watermarkFontSize))")
+                                    .foregroundStyle(.secondary)
+                            }
+                            Slider(value: $watermarkFontSize, in: 20...80, step: 1)
+                        }
+
+                        Picker("export.watermark.spacing".localized, selection: $watermarkSpacing) {
+                            ForEach(WatermarkSpacing.allCases) { spacing in
+                                Text(spacing.displayName).tag(spacing)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("export.watermark.opacity".localized)
+                                Spacer()
+                                Text("\(Int(watermarkOpacity * 100))%")
+                                    .foregroundStyle(.secondary)
+                            }
+                            Slider(value: $watermarkOpacity, in: 0.1...1.0, step: 0.05)
+                        }
+                    }
+                } header: {
+                    Text("export.watermark.title".localized)
+                } footer: {
+                    Text("export.watermark.hint".localized)
+                        .font(.caption)
+                }
+                .listRowSpacing(6)
+
+                Section {
+                    Toggle("export.advanced.options".localized, isOn: $enableAdvancedOptions)
+
+                    if enableAdvancedOptions {
+                        HStack {
+                            Text("export.max.width".localized)
+                            Spacer()
+                            TextField("export.pixel".localized, text: $maxWidth)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 100)
+                        }
+
+                        HStack {
+                            Text("export.max.height".localized)
+                            Spacer()
+                            TextField("export.pixel".localized, text: $maxHeight)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 100)
+                        }
+
+                        HStack {
+                            Text("export.max.filesize".localized)
+                            Spacer()
+                            TextField("KB", text: $maxFileSize)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 100)
+                        }
+                    }
+                } header: {
+                    Text("export.size.compression".localized)
+                } footer: {
+                    if enableAdvancedOptions {
+                        Text("export.hint.limits".localized)
+                            .font(.caption)
+                    }
+                }
+                .listRowSpacing(6)
+
+                Section {
+                    Button {
+                        Task {
+                            await exportImage()
+                        }
+                    } label: {
+                        HStack {
+                            Spacer()
+                            if isExporting {
+                                ProgressView()
+                                    .padding(.trailing, 8)
+                            }
+                            Text("export.action".localized)
+                                .fontWeight(.semibold)
+                            Spacer()
+                        }
+                    }
+                    .disabled(isExporting)
+                }
+                .listRowSpacing(6)
+            }
+            .navigationTitle("export.image".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("common.cancel".localized) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
+        .task {
+            await generatePreview()
+        }
+        .onChange(of: addWatermark) { _, _ in
+            Task { await generatePreview() }
+        }
+        .onChange(of: watermarkText) { _, _ in
+            Task { await generatePreview() }
+        }
+        .onChange(of: watermarkFontSize) { _, _ in
+            Task { await generatePreview() }
+        }
+        .onChange(of: watermarkSpacing) { _, _ in
+            Task { await generatePreview() }
+        }
+        .onChange(of: watermarkOpacity) { _, _ in
+            Task { await generatePreview() }
+        }
+        .overlay {
+            if showToast {
+                ToastView(message: toastMessage)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            showToast = false
+                        }
+                    }
+            }
+        }
+    }
+
+    private func exportImage() async {
+        isExporting = true
+
+        do {
+            let attachmentService = AttachmentServiceImpl.shared
+            let watermark = addWatermark && !watermarkText.isEmpty ? watermarkText : nil
+
+            // Build export options
+            let exportOptions = ImageExportOptions(
+                maxWidth: maxWidth.isEmpty ? nil : CGFloat(Int(maxWidth) ?? 0),
+                maxHeight: maxHeight.isEmpty ? nil : CGFloat(Int(maxHeight) ?? 0),
+                maxFileSizeKB: maxFileSize.isEmpty ? nil : Int(maxFileSize),
+                jpegQuality: 0.9
+            )
+
+            let url = try await attachmentService.shareAttachment(
+                id: attachmentId,
+                watermarkText: watermark,
+                watermarkFontSize: watermarkFontSize,
+                watermarkSpacing: watermarkSpacing,
+                watermarkOpacity: watermarkOpacity,
+                exportOptions: exportOptions
+            )
+
+            // Present share sheet
+            await MainActor.run {
+                let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+
+                activityVC.completionWithItemsHandler = { [self] activityType, completed, returnedItems, error in
+                    Task { @MainActor in
+                        if let error = error {
+                            toastMessage = "export.failed".localized + ": \(error.localizedDescription)"
+                            showToast = true
+                        } else if completed {
+                            toastMessage = "export.success".localized
+                            showToast = true
+                            // Close the sheet after a short delay
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                dismiss()
+                            }
+                        }
+                    }
+                }
+
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let rootVC = windowScene.windows.first?.rootViewController {
+                    var presentingVC = rootVC
+                    while let presented = presentingVC.presentedViewController {
+                        presentingVC = presented
+                    }
+                    presentingVC.present(activityVC, animated: true)
+                }
+            }
+        } catch {
+            toastMessage = "export.failed".localized + ": \(error.localizedDescription)"
+            showToast = true
+        }
+
+        isExporting = false
+    }
+
+    private func generatePreview() async {
+        await MainActor.run {
+            isLoadingPreview = true
+        }
+
+        do {
+            let attachmentService = AttachmentServiceImpl.shared
+            let data = try await attachmentService.getAttachmentData(id: attachmentId)
+
+            guard let image = UIImage(data: data) else {
+                await MainActor.run {
+                    isLoadingPreview = false
+                }
+                return
+            }
+
+            // Apply watermark if enabled
+            if addWatermark && !watermarkText.isEmpty {
+                let watermarkService = WatermarkServiceImpl()
+                let style = WatermarkStyle.from(fontSize: watermarkFontSize, opacity: watermarkOpacity, spacing: watermarkSpacing)
+                if let watermarkedImage = watermarkService.applyWatermark(to: image, text: watermarkText, style: style) {
+                    await MainActor.run {
+                        self.previewImage = watermarkedImage
+                        self.isLoadingPreview = false
+                    }
+                } else {
+                    await MainActor.run {
+                        self.previewImage = image
+                        self.isLoadingPreview = false
+                    }
+                }
+            } else {
+                // Show original image
+                await MainActor.run {
+                    self.previewImage = image
+                    self.isLoadingPreview = false
+                }
+            }
+        } catch {
+            await MainActor.run {
+                self.isLoadingPreview = false
+            }
+        }
+    }
+}
+
+// MARK: - Image Preview Sheet
+
+struct ImagePreviewSheet: View {
+    let image: UIImage
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            GeometryReader { geometry in
+                ScrollView([.horizontal, .vertical]) {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(
+                            minWidth: geometry.size.width,
+                            minHeight: geometry.size.height
+                        )
+                }
+            }
+            .navigationTitle("export.preview".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("common.close".localized) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Multiple Images Preview Sheet
+
+struct MultipleImagesPreviewSheet: View {
+    let images: [UIImage]
+    @Environment(\.dismiss) private var dismiss
+    @State private var selectedIndex = 0
+
+    var body: some View {
+        NavigationStack {
+            VStack {
+                TabView(selection: $selectedIndex) {
+                    ForEach(images.indices, id: \.self) { index in
+                        GeometryReader { geometry in
+                            ScrollView([.horizontal, .vertical]) {
+                                Image(uiImage: images[index])
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(
+                                        minWidth: geometry.size.width,
+                                        minHeight: geometry.size.height
+                                    )
+                            }
+                        }
+                        .tag(index)
+                    }
+                }
+                .tabViewStyle(.page(indexDisplayMode: .always))
+
+                Text("\(selectedIndex + 1) / \(images.count)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .padding(.bottom, 8)
+            }
+            .navigationTitle("export.preview".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("common.close".localized) {
+                        dismiss()
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -182,10 +182,33 @@
 // MARK: - Export
 "export.title" = "Export";
 "export.action" = "Export";
+"export.image" = "Export Image";
+"export.images" = "Export Images";
+"export.images.all" = "Export All Images";
+"export.text" = "Export Text";
 "export.add.watermark" = "Add Watermark";
 "export.watermark.title" = "Watermark Settings";
+"export.watermark.text" = "Watermark Text";
 "export.watermark.placeholder" = "Enter watermark text";
-"export.watermark.hint" = "Watermark will only be added to the exported copy, the original photo remains unchanged.";
+"export.watermark.hint" = "Watermark will be overlaid diagonally on the image";
+"export.watermark.fontsize" = "Font Size";
+"export.watermark.spacing" = "Spacing";
+"export.watermark.spacing.dense" = "Dense";
+"export.watermark.spacing.normal" = "Normal";
+"export.watermark.spacing.sparse" = "Sparse";
+"export.watermark.opacity" = "Opacity";
+"export.preview" = "Preview";
+"export.advanced.options" = "Advanced Options";
+"export.size.compression" = "Size & Compression";
+"export.max.width" = "Max Width";
+"export.max.height" = "Max Height";
+"export.max.filesize" = "Max File Size";
+"export.pixel" = "px";
+"export.hint.limits" = "Leave empty for no limit. Image will be resized proportionally";
+"export.success" = "Export Successful";
+"export.failed" = "Export Failed";
+"export.copied" = "Copied to clipboard";
+"export.images.count" = "Exported %d images";
 
 // MARK: - Validation
 "validation.title.required" = "Title is required";
