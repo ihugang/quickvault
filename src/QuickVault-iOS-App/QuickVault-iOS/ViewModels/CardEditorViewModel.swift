@@ -11,7 +11,7 @@ class CardEditorViewModel: ObservableObject {
     
     @Published var title: String = ""
     @Published var selectedGroup: String = "Personal"
-    @Published var selectedType: CardType = .address
+    @Published var selectedType: CardType = .general
     @Published var fields: [EditableField] = []
     @Published var tags: [String] = []
     @Published var newTag: String = ""
@@ -29,51 +29,6 @@ class CardEditorViewModel: ObservableObject {
     
     private let ocrService: OCRService = OCRServiceImpl.shared
     private let attachmentService: AttachmentService
-    
-    // MARK: - Card Type
-    
-    enum CardType: String, CaseIterable, Identifiable {
-        case address = "Address"
-        case invoice = "Invoice"
-        case generalText = "GeneralText"
-        case idCard = "IdCard"
-        case passport = "Passport"
-        case businessLicense = "BusinessLicense"
-        
-        var id: String { rawValue }
-        
-        var displayName: String {
-            switch self {
-            case .address: return "cards.type.address".localized
-            case .invoice: return "cards.type.invoice".localized
-            case .generalText: return "cards.type.general".localized
-            case .idCard: return "cards.type.idcard".localized
-            case .passport: return "cards.type.passport".localized
-            case .businessLicense: return "cards.type.businesslicense".localized
-            }
-        }
-        
-        /// 附件上传提示信息
-        var attachmentHints: [(label: String, required: Bool)] {
-            switch self {
-            case .idCard:
-                return [
-                    ("attachment.idcard.front".localized, false),
-                    ("attachment.idcard.back".localized, false)
-                ]
-            case .passport:
-                return [
-                    ("attachment.passport.datapage".localized, false)
-                ]
-            case .businessLicense:
-                return [
-                    ("attachment.license.photo".localized, false)
-                ]
-            default:
-                return []
-            }
-        }
-    }
     
     // MARK: - Editable Field
     
@@ -190,7 +145,7 @@ class CardEditorViewModel: ObservableObject {
                 EditableField(id: UUID(), label: "field.notes".localized, value: "", isRequired: false, isCopyable: false, order: 6),
             ]
             
-        case .generalText:
+        case .general:
             fields = [
                 EditableField(id: UUID(), label: "field.content".localized, value: "", isRequired: true, isCopyable: true, order: 0),
             ]
@@ -230,6 +185,50 @@ class CardEditorViewModel: ObservableObject {
                 EditableField(id: UUID(), label: "field.license.establishdate".localized, value: "", isRequired: false, isCopyable: true, order: 6),
                 EditableField(id: UUID(), label: "field.license.businessterm".localized, value: "", isRequired: false, isCopyable: true, order: 7),
                 EditableField(id: UUID(), label: "field.license.scope".localized, value: "", isRequired: false, isCopyable: true, order: 8, isMultiline: true),
+            ]
+            
+        case .driversLicense:
+            fields = [
+                EditableField(id: UUID(), label: "姓名 / Name", value: "", isRequired: true, isCopyable: true, order: 0),
+                EditableField(id: UUID(), label: "证号 / License No.", value: "", isRequired: true, isCopyable: true, order: 1),
+                EditableField(id: UUID(), label: "性别 / Gender", value: "", isRequired: true, isCopyable: true, order: 2),
+                EditableField(id: UUID(), label: "国籍 / Nationality", value: "", isRequired: false, isCopyable: true, order: 3),
+                EditableField(id: UUID(), label: "出生日期 / Date of Birth", value: "", isRequired: true, isCopyable: true, order: 4),
+                EditableField(id: UUID(), label: "住址 / Address", value: "", isRequired: false, isCopyable: true, order: 5),
+                EditableField(id: UUID(), label: "初次领证日期 / Issue Date", value: "", isRequired: false, isCopyable: true, order: 6),
+                EditableField(id: UUID(), label: "有效期限 / Valid Until", value: "", isRequired: false, isCopyable: true, order: 7),
+                EditableField(id: UUID(), label: "准驾车型 / License Class", value: "", isRequired: false, isCopyable: true, order: 8),
+            ]
+            
+        case .residencePermit:
+            fields = [
+                EditableField(id: UUID(), label: "姓名 / Name", value: "", isRequired: true, isCopyable: true, order: 0),
+                EditableField(id: UUID(), label: "证件号码 / Permit No.", value: "", isRequired: true, isCopyable: true, order: 1),
+                EditableField(id: UUID(), label: "性别 / Gender", value: "", isRequired: true, isCopyable: true, order: 2),
+                EditableField(id: UUID(), label: "国籍 / Nationality", value: "", isRequired: true, isCopyable: true, order: 3),
+                EditableField(id: UUID(), label: "出生日期 / Date of Birth", value: "", isRequired: true, isCopyable: true, order: 4),
+                EditableField(id: UUID(), label: "签发日期 / Issue Date", value: "", isRequired: false, isCopyable: true, order: 5),
+                EditableField(id: UUID(), label: "有效期至 / Expiry Date", value: "", isRequired: false, isCopyable: true, order: 6),
+                EditableField(id: UUID(), label: "居留事由 / Permit Type", value: "", isRequired: false, isCopyable: true, order: 7),
+            ]
+            
+        case .socialSecurityCard:
+            fields = [
+                EditableField(id: UUID(), label: "姓名 / Name", value: "", isRequired: true, isCopyable: true, order: 0),
+                EditableField(id: UUID(), label: "社保卡号 / Card No.", value: "", isRequired: true, isCopyable: true, order: 1),
+                EditableField(id: UUID(), label: "社会保障号码 / ID No.", value: "", isRequired: true, isCopyable: true, order: 2),
+                EditableField(id: UUID(), label: "发卡日期 / Issue Date", value: "", isRequired: false, isCopyable: true, order: 3),
+                EditableField(id: UUID(), label: "发卡银行 / Issuing Bank", value: "", isRequired: false, isCopyable: true, order: 4),
+            ]
+            
+        case .bankCard:
+            fields = [
+                EditableField(id: UUID(), label: "卡号 / Card No.", value: "", isRequired: true, isCopyable: true, order: 0),
+                EditableField(id: UUID(), label: "持卡人 / Cardholder", value: "", isRequired: true, isCopyable: true, order: 1),
+                EditableField(id: UUID(), label: "开户行 / Bank", value: "", isRequired: true, isCopyable: true, order: 2),
+                EditableField(id: UUID(), label: "有效期 / Expiry Date", value: "", isRequired: false, isCopyable: true, order: 3),
+                EditableField(id: UUID(), label: "CVV", value: "", isRequired: false, isCopyable: true, order: 4),
+                EditableField(id: UUID(), label: "备注 / Notes", value: "", isRequired: false, isCopyable: false, order: 5, isMultiline: true),
             ]
         }
     }
@@ -394,28 +393,35 @@ class CardEditorViewModel: ObservableObject {
         errorMessage = nil
         
         do {
-            switch selectedType {
-            case .idCard:
-                // 正面照片时清空所有字段，背面照片时只更新背面特有字段
-                if isFrontSide {
-                    clearAllFields()
-                }
-                let result = try await ocrService.recognizeIDCard(image: image)
-                fillIDCardFields(from: result, isFrontSide: isFrontSide)
-                
-            case .passport:
-                clearAllFields()
-                let result = try await ocrService.recognizePassport(image: image)
-                fillPassportFields(from: result)
-                
-            case .businessLicense:
-                clearAllFields()
-                let result = try await ocrService.recognizeBusinessLicense(image: image)
-                fillBusinessLicenseFields(from: result)
-                
-            default:
-                break
+            // 使用新的 OCR API 自动检测并识别
+            let result = try await ocrService.recognizeDocument(image: image)
+            
+            // 直接从 OCR 结果获取字段
+            let ocrFields = result.toCardFields()
+            
+            // 根据检测到的文档类型映射到卡片类型
+            let detectedCardType = mapDocumentTypeToCardType(result.documentType)
+            
+            // 如果自动检测的类型与当前选择的类型不匹配，提示用户
+            if detectedCardType != selectedType {
+                print("⚠️ 检测到的文档类型(\(detectedCardType.displayName))与当前卡片类型(\(selectedType.displayName))不匹配")
             }
+            
+            // 正面照片时清空所有字段，背面照片时只更新背面特有字段
+            if isFrontSide {
+                clearAllFields()
+            }
+            
+            // 填充字段（带字段标准化）
+            fillFieldsFromOCR(normalizeFields(ocrFields), isFrontSide: isFrontSide)
+            
+            // 如果标题为空，使用姓名或公司名作为标题
+            if title.isEmpty {
+                if let name = ocrFields["name"] ?? ocrFields["companyName"], !name.isEmpty {
+                    title = name
+                }
+            }
+            
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -490,6 +496,112 @@ class CardEditorViewModel: ObservableObject {
             }
         }
     }
+    
+    // MARK: - OCR Field Mapping
+    
+    /// 将文档类型映射到卡片类型
+    private func mapDocumentTypeToCardType(_ documentType: DocumentType) -> CardType {
+        switch documentType {
+        case .idCard:
+            return .idCard
+        case .passport:
+            return .passport
+        case .driversLicense:
+            return .driversLicense
+        case .businessLicense:
+            return .businessLicense
+        case .residencePermit:
+            return .residencePermit
+        case .socialSecurityCard:
+            return .socialSecurityCard
+        case .bankCard:
+            return .bankCard
+        case .invoice:
+            return .invoice
+        case .unknown:
+            return .general
+        }
+    }
+    
+    /// 标准化字段值（日期格式、大小写等）
+    private func normalizeFields(_ fields: [String: String]) -> [String: String] {
+        var normalized = fields
+        
+        // 标准化日期字段
+        let dateKeys = ["birthDate", "issueDate", "expiryDate", "validFrom", "validUntil", "establishedDate"]
+        for key in dateKeys {
+            if let dateValue = normalized[key] {
+                let standardized = dateValue
+                    .replacingOccurrences(of: "年", with: "-")
+                    .replacingOccurrences(of: "月", with: "-")
+                    .replacingOccurrences(of: "日", with: "")
+                normalized[key] = standardized
+            }
+        }
+        
+        // 标准化身份证号
+        if let idNumber = normalized["idNumber"] {
+            normalized["idNumber"] = idNumber.uppercased()
+        }
+        
+        // 标准化护照号
+        if let passportNumber = normalized["passportNumber"] {
+            normalized["passportNumber"] = passportNumber.uppercased()
+        }
+        
+        // 标准化性别
+        if let gender = normalized["gender"] {
+            if gender.contains("男") || gender.lowercased().contains("m") {
+                normalized["gender"] = "男"
+            } else if gender.contains("女") || gender.lowercased().contains("f") {
+                normalized["gender"] = "女"
+            }
+        }
+        
+        return normalized
+    }
+    
+    /// 通用的 OCR 字段填充方法
+    /// - Parameters:
+    ///   - ocrFields: OCR 识别的字段字典
+    ///   - isFrontSide: 是否为正面照片
+    private func fillFieldsFromOCR(_ ocrFields: [String: String], isFrontSide: Bool) {
+        // 获取当前卡片类型的字段定义
+        let templateFields = CardTemplateHelper.fields(for: selectedType)
+        
+        // 创建字段 key 到标签的映射
+        let keyToLabelMap = Dictionary(uniqueKeysWithValues: templateFields.map { ($0.key, $0.label) })
+        
+        // 遍历当前字段列表
+        for i in 0..<fields.count {
+            let currentLabel = fields[i].label
+            
+            // 找到对应的字段 key
+            if let matchingKey = keyToLabelMap.first(where: { $0.value == currentLabel })?.key,
+               let ocrValue = ocrFields[matchingKey],
+               !ocrValue.isEmpty {
+                
+                // 对于背面字段，如果不是正面照片才更新
+                let isBackField = ["issuingAuthority", "validPeriod", "issuer"].contains(matchingKey)
+                
+                if isFrontSide && !isBackField {
+                    // 正面照片 - 更新正面字段
+                    fields[i].value = ocrValue
+                } else if !isFrontSide && isBackField {
+                    // 背面照片 - 只更新背面字段
+                    fields[i].value = ocrValue
+                } else if !isFrontSide && !isBackField {
+                    // 背面照片 - 保留正面字段的现有值，不覆盖
+                    continue
+                } else {
+                    // 其他情况 - 更新字段
+                    fields[i].value = ocrValue
+                }
+            }
+        }
+    }
+    
+    // MARK: - Legacy Field Fill Methods (保留用于兼容性)
     
     private func fillIDCardFields(from result: IDCardOCRResult, isFrontSide: Bool = true) {
         let nameLabel = "field.idcard.name".localized
@@ -810,5 +922,157 @@ class CardEditorViewModel: ObservableObject {
             }
         }
         return ""
+    }
+}
+
+// MARK: - CardType Extensions for UI
+
+extension CardType: Identifiable {
+    /// Identifiable conformance for SwiftUI
+    public var id: String { rawValue }
+    
+    /// 证件正面照片的附件文件名
+    var frontPhotoFileName: String {
+        switch self {
+        case .idCard:
+            return "idcard_front.jpg"
+        case .passport:
+            return "passport_datapage.jpg"
+        case .driversLicense:
+            return "driverslicense_front.jpg"
+        case .residencePermit:
+            return "residencepermit_front.jpg"
+        case .socialSecurityCard:
+            return "socialsecuritycard.jpg"
+        case .bankCard:
+            return "bankcard_front.jpg"
+        case .businessLicense:
+            return "businesslicense.jpg"
+        default:
+            return "document_front.jpg"
+        }
+    }
+    
+    /// 证件背面照片的附件文件名
+    var backPhotoFileName: String {
+        switch self {
+        case .idCard:
+            return "idcard_back.jpg"
+        case .driversLicense:
+            return "driverslicense_back.jpg"
+        case .residencePermit:
+            return "residencepermit_back.jpg"
+        default:
+            return "document_back.jpg"
+        }
+    }
+    
+    /// 是否有背面（需要上传两张照片）
+    var hasBackSide: Bool {
+        switch self {
+        case .idCard, .driversLicense, .residencePermit:
+            return true
+        case .passport, .businessLicense, .socialSecurityCard, .bankCard:
+            return false
+        default:
+            return false
+        }
+    }
+    
+    /// 正面照片标签
+    var frontPhotoLabel: String {
+        switch self {
+        case .idCard:
+            return "ocr.idcard.front".localized
+        case .passport:
+            return "ocr.passport.datapage".localized
+        case .businessLicense:
+            return "ocr.license.photo".localized
+        case .driversLicense:
+            return "驾照正面 / Driver's License Front"
+        case .residencePermit:
+            return "居留卡正面 / Residence Permit Front"
+        case .socialSecurityCard:
+            return "社保卡照片 / Social Security Card Photo"
+        case .bankCard:
+            return "银行卡正面 / Bank Card Front"
+        default:
+            return "ocr.photo.front".localized
+        }
+    }
+    
+    /// 背面照片标签
+    var backPhotoLabel: String {
+        switch self {
+        case .idCard:
+            return "ocr.idcard.back".localized
+        case .driversLicense:
+            return "驾照背面 / Driver's License Back"
+        case .residencePermit:
+            return "居留卡背面 / Residence Permit Back"
+        default:
+            return "ocr.photo.back".localized
+        }
+    }
+    
+    /// 照片上传提示
+    var photoUploadHint: String {
+        switch self {
+        case .idCard:
+            return "ocr.hint.idcard".localized
+        case .passport:
+            return "ocr.hint.passport".localized
+        case .businessLicense:
+            return "ocr.hint.license".localized
+        case .driversLicense:
+            return "请拍摄驾照正反面，确保文字清晰可读 / Please take photos of both sides of the driver's license with clear text"
+        case .residencePermit:
+            return "请拍摄居留许可证，确保信息完整 / Please take photos of the residence permit with complete information"
+        case .socialSecurityCard:
+            return "请拍摄社保卡，确保卡号清晰 / Please take a photo of the social security card with clear card number"
+        case .bankCard:
+            return "请拍摄银行卡正面，注意保护敏感信息 / Please take a photo of the bank card front, protect sensitive information"
+        default:
+            return ""
+        }
+    }
+    
+    /// 附件上传提示信息
+    var attachmentHints: [(label: String, required: Bool)] {
+        switch self {
+        case .idCard:
+            return [
+                ("attachment.idcard.front".localized, false),
+                ("attachment.idcard.back".localized, false)
+            ]
+        case .passport:
+            return [
+                ("attachment.passport.datapage".localized, false)
+            ]
+        case .driversLicense:
+            return [
+                ("驾照正面 / Driver's License Front", false),
+                ("驾照背面 / Driver's License Back", false)
+            ]
+        case .businessLicense:
+            return [
+                ("attachment.license.photo".localized, false)
+            ]
+        case .residencePermit:
+            return [
+                ("居留卡正面 / Residence Permit Front", false),
+                ("居留卡背面 / Residence Permit Back", false)
+            ]
+        case .socialSecurityCard:
+            return [
+                ("社保卡照片 / Social Security Card Photo", false)
+            ]
+        case .bankCard:
+            return [
+                ("银行卡正面 / Bank Card Front", false)
+            ]
+        default:
+            return []
+        }
     }
 }

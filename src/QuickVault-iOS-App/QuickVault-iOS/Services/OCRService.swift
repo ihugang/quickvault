@@ -2,17 +2,62 @@
 //  OCRService.swift
 //  QuickVault
 //
-//  OCR service for extracting text from ID cards, passports, and business licenses
+//  Enhanced OCR service with intelligent document type detection and structured parsing
 //
 
 import Foundation
 import Vision
 import UIKit
 
-// MARK: - OCR Result Types
+// MARK: - Document Type
+
+/// 文档类型枚举
+enum DocumentType: String, CaseIterable {
+    case idCard = "id_card"
+    case passport = "passport"
+    case driversLicense = "drivers_license"
+    case businessLicense = "business_license"
+    case residencePermit = "residence_permit"
+    case socialSecurityCard = "social_security_card"
+    case bankCard = "bank_card"
+    case invoice = "invoice"
+    case unknown = "unknown"
+    
+    var displayName: String {
+        switch self {
+        case .idCard: return "身份证 / ID Card"
+        case .passport: return "护照 / Passport"
+        case .driversLicense: return "驾照 / Driver's License"
+        case .businessLicense: return "营业执照 / Business License"
+        case .residencePermit: return "居留卡 / Residence Permit"
+        case .socialSecurityCard: return "社保卡 / Social Security Card"
+        case .bankCard: return "银行卡 / Bank Card"
+        case .invoice: return "发票 / Invoice"
+        case .unknown: return "未知 / Unknown"
+        }
+    }
+}
+
+// MARK: - OCR Result Protocol
+
+/// 统一的 OCR 结果协议
+protocol OCRResult {
+    var documentType: DocumentType { get }
+    var confidence: Double { get set }
+    var rawTexts: [String] { get set }
+    
+    /// 转换为卡片字段字典
+    func toCardFields() -> [String: String]
+}
+
+// MARK: - Concrete OCR Results
 
 /// 身份证 OCR 识别结果
-struct IDCardOCRResult {
+struct IDCardOCRResult: OCRResult {
+    let documentType: DocumentType = .idCard
+    var confidence: Double = 0.0
+    var rawTexts: [String] = []
+    
     var name: String?
     var gender: String?
     var nationality: String?
@@ -22,22 +67,91 @@ struct IDCardOCRResult {
     var issuer: String?
     var validPeriod: String?
     var isFrontSide: Bool = true
+    
+    func toCardFields() -> [String: String] {
+        var fields: [String: String] = [:]
+        if let name = name { fields["name"] = name }
+        if let gender = gender { fields["gender"] = gender }
+        if let nationality = nationality { fields["nationality"] = nationality }
+        if let birthDate = birthDate { fields["birthDate"] = birthDate }
+        if let idNumber = idNumber { fields["idNumber"] = idNumber }
+        if let address = address { fields["address"] = address }
+        if let issuer = issuer { fields["issuingAuthority"] = issuer }
+        if let validPeriod = validPeriod { fields["validPeriod"] = validPeriod }
+        return fields
+    }
 }
 
 /// 护照 OCR 识别结果
-struct PassportOCRResult {
+struct PassportOCRResult: OCRResult {
+    let documentType: DocumentType = .passport
+    var confidence: Double = 0.0
+    var rawTexts: [String] = []
+    
     var name: String?
     var nationality: String?
     var birthDate: String?
+    var birthPlace: String?
     var gender: String?
     var passportNumber: String?
     var issueDate: String?
     var expiryDate: String?
     var issuer: String?
+    
+    func toCardFields() -> [String: String] {
+        var fields: [String: String] = [:]
+        if let name = name { fields["name"] = name }
+        if let nationality = nationality { fields["nationality"] = nationality }
+        if let birthDate = birthDate { fields["birthDate"] = birthDate }
+        if let birthPlace = birthPlace { fields["birthPlace"] = birthPlace }
+        if let gender = gender { fields["gender"] = gender }
+        if let passportNumber = passportNumber { fields["passportNumber"] = passportNumber }
+        if let issueDate = issueDate { fields["issueDate"] = issueDate }
+        if let expiryDate = expiryDate { fields["expiryDate"] = expiryDate }
+        if let issuer = issuer { fields["issuer"] = issuer }
+        return fields
+    }
+}
+
+/// 驾照 OCR 识别结果
+struct DriversLicenseOCRResult: OCRResult {
+    let documentType: DocumentType = .driversLicense
+    var confidence: Double = 0.0
+    var rawTexts: [String] = []
+    
+    var name: String?
+    var gender: String?
+    var nationality: String?
+    var birthDate: String?
+    var licenseNumber: String?
+    var address: String?
+    var issueDate: String?
+    var validFrom: String?
+    var validUntil: String?
+    var licenseClass: String?
+    
+    func toCardFields() -> [String: String] {
+        var fields: [String: String] = [:]
+        if let name = name { fields["name"] = name }
+        if let gender = gender { fields["gender"] = gender }
+        if let nationality = nationality { fields["nationality"] = nationality }
+        if let birthDate = birthDate { fields["birthDate"] = birthDate }
+        if let licenseNumber = licenseNumber { fields["licenseNumber"] = licenseNumber }
+        if let address = address { fields["address"] = address }
+        if let issueDate = issueDate { fields["issueDate"] = issueDate }
+        if let validFrom = validFrom { fields["validFrom"] = validFrom }
+        if let validUntil = validUntil { fields["validUntil"] = validUntil }
+        if let licenseClass = licenseClass { fields["licenseClass"] = licenseClass }
+        return fields
+    }
 }
 
 /// 营业执照 OCR 识别结果
-struct BusinessLicenseOCRResult {
+struct BusinessLicenseOCRResult: OCRResult {
+    let documentType: DocumentType = .businessLicense
+    var confidence: Double = 0.0
+    var rawTexts: [String] = []
+    
     var companyName: String?
     var companyType: String?
     var creditCode: String?
@@ -47,14 +161,120 @@ struct BusinessLicenseOCRResult {
     var establishedDate: String?
     var businessTerm: String?
     var businessScope: String?
+    
+    func toCardFields() -> [String: String] {
+        var fields: [String: String] = [:]
+        if let companyName = companyName { fields["companyName"] = companyName }
+        if let creditCode = creditCode { fields["creditCode"] = creditCode }
+        if let legalRepresentative = legalRepresentative { fields["legalRepresentative"] = legalRepresentative }
+        if let registeredCapital = registeredCapital { fields["registeredCapital"] = registeredCapital }
+        if let address = address { fields["address"] = address }
+        if let establishedDate = establishedDate { fields["establishedDate"] = establishedDate }
+        if let businessScope = businessScope { fields["businessScope"] = businessScope }
+        return fields
+    }
 }
 
 // MARK: - OCR Service Protocol
 
 protocol OCRService {
-    func recognizeIDCard(image: UIImage) async throws -> IDCardOCRResult
-    func recognizePassport(image: UIImage) async throws -> PassportOCRResult
-    func recognizeBusinessLicense(image: UIImage) async throws -> BusinessLicenseOCRResult
+    /// 自动检测文档类型并识别
+    func recognizeDocument(image: UIImage) async throws -> any OCRResult
+    
+    /// 识别指定类型的文档
+    func recognizeDocument(image: UIImage, expectedType: DocumentType) async throws -> any OCRResult
+    
+    /// 仅检测文档类型
+    func detectDocumentType(image: UIImage) async throws -> DocumentType
+}
+
+// MARK: - Document Type Detection
+
+/// 文档类型检测器
+struct DocumentTypeDetector {
+    
+    /// 基于关键词检测文档类型
+    static func detect(from texts: [String]) -> (type: DocumentType, confidence: Double) {
+        let fullText = texts.joined(separator: "\n").lowercased()
+        
+        // 定义各类文档的关键词和权重
+        let patterns: [(DocumentType, [String: Double])] = [
+            (.idCard, [
+                "公民身份": 0.9,
+                "居民身份证": 0.9,
+                "签发机关": 0.7,
+                "民族": 0.6,
+                "身份证": 0.5
+            ]),
+            (.passport, [
+                "passport": 0.9,
+                "护照": 0.9,
+                "p<": 0.8,
+                "mrz": 0.7,
+                "nationality": 0.6
+            ]),
+            (.driversLicense, [
+                "驾驶证": 0.9,
+                "driver": 0.8,
+                "license": 0.7,
+                "准驾车型": 0.8,
+                "有效期限": 0.4,
+                "初次领证日期": 0.7
+            ]),
+            (.businessLicense, [
+                "营业执照": 0.9,
+                "统一社会信用代码": 0.9,
+                "法定代表人": 0.8,
+                "注册资本": 0.7,
+                "经营范围": 0.6,
+                "登记机关": 0.6
+            ]),
+            (.residencePermit, [
+                "居留": 0.8,
+                "residence": 0.8,
+                "permit": 0.7,
+                "签证": 0.6
+            ]),
+            (.socialSecurityCard, [
+                "社会保障": 0.9,
+                "社保卡": 0.9,
+                "social security": 0.8
+            ]),
+            (.bankCard, [
+                "银联": 0.8,
+                "unionpay": 0.8,
+                "valid thru": 0.7,
+                "信用卡": 0.7,
+                "储蓄卡": 0.7
+            ]),
+            (.invoice, [
+                "发票": 0.9,
+                "invoice": 0.8,
+                "税号": 0.7,
+                "价税合计": 0.8
+            ])
+        ]
+        
+        var scores: [DocumentType: Double] = [:]
+        
+        for (docType, keywords) in patterns {
+            var score = 0.0
+            for (keyword, weight) in keywords {
+                if fullText.contains(keyword) {
+                    score += weight
+                }
+            }
+            scores[docType] = score
+        }
+        
+        // 找到得分最高的类型
+        if let (type, score) = scores.max(by: { $0.value < $1.value }), score > 0.5 {
+            let confidence = min(score / 3.0, 1.0) // 归一化置信度
+            return (type, confidence)
+        }
+        
+        return (.unknown, 0.0)
+    }
 }
 
 // MARK: - OCR Service Implementation
@@ -65,12 +285,73 @@ final class OCRServiceImpl: OCRService {
     
     private init() {}
     
-    // MARK: - ID Card Recognition
+    // MARK: - Public API
     
-    func recognizeIDCard(image: UIImage) async throws -> IDCardOCRResult {
+    /// 自动检测文档类型并识别
+    func recognizeDocument(image: UIImage) async throws -> any OCRResult {
         let recognizedTexts = try await performOCR(on: image)
-        return parseIDCardTexts(recognizedTexts)
+        let (detectedType, confidence) = DocumentTypeDetector.detect(from: recognizedTexts)
+        
+        return try await recognizeDocument(image: image, expectedType: detectedType, 
+                                          preExtractedTexts: recognizedTexts, 
+                                          detectedConfidence: confidence)
     }
+    
+    /// 识别指定类型的文档
+    func recognizeDocument(image: UIImage, expectedType: DocumentType) async throws -> any OCRResult {
+        let recognizedTexts = try await performOCR(on: image)
+        return try await recognizeDocument(image: image, expectedType: expectedType, 
+                                          preExtractedTexts: recognizedTexts, 
+                                          detectedConfidence: 0.9)
+    }
+    
+    /// 仅检测文档类型
+    func detectDocumentType(image: UIImage) async throws -> DocumentType {
+        let recognizedTexts = try await performOCR(on: image)
+        let (detectedType, _) = DocumentTypeDetector.detect(from: recognizedTexts)
+        return detectedType
+    }
+    
+    // MARK: - Internal Recognition
+    
+    private func recognizeDocument(image: UIImage, expectedType: DocumentType, 
+                                   preExtractedTexts: [String], 
+                                   detectedConfidence: Double) async throws -> any OCRResult {
+        switch expectedType {
+        case .idCard:
+            var result = parseIDCardTexts(preExtractedTexts)
+            result.confidence = detectedConfidence
+            result.rawTexts = preExtractedTexts
+            return result
+            
+        case .passport:
+            var result = parsePassportTexts(preExtractedTexts)
+            result.confidence = detectedConfidence
+            result.rawTexts = preExtractedTexts
+            return result
+            
+        case .driversLicense:
+            var result = parseDriversLicenseTexts(preExtractedTexts)
+            result.confidence = detectedConfidence
+            result.rawTexts = preExtractedTexts
+            return result
+            
+        case .businessLicense:
+            var result = parseBusinessLicenseTexts(preExtractedTexts)
+            result.confidence = detectedConfidence
+            result.rawTexts = preExtractedTexts
+            return result
+            
+        case .residencePermit, .socialSecurityCard, .bankCard, .invoice, .unknown:
+            // 对于暂未实现的类型，返回基本的 ID Card 结果
+            var result = IDCardOCRResult()
+            result.confidence = 0.0
+            result.rawTexts = preExtractedTexts
+            return result
+        }
+    }
+    
+    // MARK: - ID Card Recognition
     
     private func parseIDCardTexts(_ texts: [String]) -> IDCardOCRResult {
         var result = IDCardOCRResult()
@@ -223,11 +504,6 @@ final class OCRServiceImpl: OCRService {
     
     // MARK: - Passport Recognition
     
-    func recognizePassport(image: UIImage) async throws -> PassportOCRResult {
-        let recognizedTexts = try await performOCR(on: image)
-        return parsePassportTexts(recognizedTexts)
-    }
-    
     private func parsePassportTexts(_ texts: [String]) -> PassportOCRResult {
         var result = PassportOCRResult()
         
@@ -302,12 +578,114 @@ final class OCRServiceImpl: OCRService {
         }
     }
     
-    // MARK: - Business License Recognition
+    // MARK: - Driver's License Recognition
     
-    func recognizeBusinessLicense(image: UIImage) async throws -> BusinessLicenseOCRResult {
-        let recognizedTexts = try await performOCR(on: image)
-        return parseBusinessLicenseTexts(recognizedTexts)
+    private func parseDriversLicenseTexts(_ texts: [String]) -> DriversLicenseOCRResult {
+        var result = DriversLicenseOCRResult()
+        
+        for (index, text) in texts.enumerated() {
+            let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            // 姓名
+            if trimmed.contains("姓名") {
+                result.name = extractValueAfterLabel(trimmed, label: "姓名")
+                    ?? (index + 1 < texts.count ? texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines) : nil)
+            }
+            
+            // 性别
+            if trimmed.contains("性别") {
+                if let genderValue = extractValueAfterLabel(trimmed, label: "性别") {
+                    if genderValue.contains("男") {
+                        result.gender = "男"
+                    } else if genderValue.contains("女") {
+                        result.gender = "女"
+                    }
+                } else if trimmed.contains("男") {
+                    result.gender = "男"
+                } else if trimmed.contains("女") {
+                    result.gender = "女"
+                }
+            }
+            
+            // 国籍
+            if trimmed.contains("国籍") {
+                result.nationality = extractValueAfterLabel(trimmed, label: "国籍")
+            }
+            
+            // 出生日期 - 支持多种格式
+            if let birthMatch = trimmed.range(of: #"\d{4}年\d{1,2}月\d{1,2}日"#, options: .regularExpression) {
+                result.birthDate = String(trimmed[birthMatch])
+            } else if let birthMatch = trimmed.range(of: #"\d{4}-\d{2}-\d{2}"#, options: .regularExpression) {
+                result.birthDate = String(trimmed[birthMatch])
+            }
+            
+            // 驾照号码 - 通常12位或18位
+            if result.licenseNumber == nil {
+                if let licenseMatch = trimmed.range(of: #"\d{12}|\d{18}"#, options: .regularExpression) {
+                    let number = String(trimmed[licenseMatch])
+                    // 排除身份证号（18位）和日期（8位）
+                    if number.count == 12 || (number.count == 18 && !trimmed.contains("身份证")) {
+                        result.licenseNumber = number
+                    }
+                }
+            }
+            
+            // 住址
+            if trimmed.contains("住址") && result.address == nil {
+                var addressParts: [String] = []
+                if let addressValue = extractValueAfterLabel(trimmed, label: "住址"), !addressValue.isEmpty {
+                    addressParts.append(addressValue)
+                }
+                for i in (index + 1)..<min(index + 3, texts.count) {
+                    let part = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
+                    if part.isEmpty || part.contains("初次领证") || part.contains("有效期") {
+                        break
+                    }
+                    addressParts.append(part)
+                }
+                if !addressParts.isEmpty {
+                    result.address = addressParts.joined()
+                }
+            }
+            
+            // 初次领证日期
+            if trimmed.contains("初次领证") {
+                if let dateMatch = trimmed.range(of: #"\d{4}年\d{1,2}月\d{1,2}日"#, options: .regularExpression) {
+                    result.issueDate = String(trimmed[dateMatch])
+                } else if let dateMatch = trimmed.range(of: #"\d{4}-\d{2}-\d{2}"#, options: .regularExpression) {
+                    result.issueDate = String(trimmed[dateMatch])
+                }
+            }
+            
+            // 有效期限
+            if trimmed.contains("有效期限") || trimmed.contains("有效期") {
+                // 格式: YYYY-MM-DD至YYYY-MM-DD 或 YYYY年MM月DD日至YYYY年MM月DD日
+                if let validMatch = trimmed.range(of: #"\d{4}[-年]\d{2}[-月]\d{2}[日]?至\d{4}[-年]\d{2}[-月]\d{2}[日]?"#, options: .regularExpression) {
+                    let validPeriod = String(trimmed[validMatch])
+                    let dates = validPeriod.split(separator: "至").map { String($0) }
+                    if dates.count == 2 {
+                        result.validFrom = dates[0]
+                        result.validUntil = dates[1]
+                    }
+                }
+            }
+            
+            // 准驾车型
+            if trimmed.contains("准驾车型") {
+                result.licenseClass = extractValueAfterLabel(trimmed, label: "准驾车型")
+                // 常见车型: C1, C2, B2, A1, A2 等
+                if result.licenseClass == nil {
+                    if let classMatch = trimmed.range(of: #"[A-D][1-3]"#, options: .regularExpression) {
+                        result.licenseClass = String(trimmed[classMatch])
+                    }
+                }
+            }
+        }
+        
+        return result
     }
+    
+    // MARK: - Business License Recognition
     
     private func parseBusinessLicenseTexts(_ texts: [String]) -> BusinessLicenseOCRResult {
         var result = BusinessLicenseOCRResult()

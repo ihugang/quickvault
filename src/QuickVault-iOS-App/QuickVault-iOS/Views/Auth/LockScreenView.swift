@@ -4,24 +4,25 @@ import QuickVaultCore
 /// Lock screen view / 锁屏视图
 struct LockScreenView: View {
     @ObservedObject var viewModel: AuthViewModel
-    
+    @State private var viewId = UUID()
+
     var body: some View {
         VStack(spacing: 32) {
             Spacer()
-            
+
             // App Icon
             VStack(spacing: 16) {
                 Image(systemName: "lock.shield.fill")
                     .font(.system(size: 60))
                     .foregroundStyle(.blue)
-                
+
                 Text("app.name".localized)
                     .font(.title)
                     .fontWeight(.bold)
             }
-            
+
             Spacer()
-            
+
             // Authentication Form
             VStack(spacing: 20) {
                 SecureField("auth.password.placeholder".localized, text: $viewModel.password)
@@ -33,14 +34,14 @@ struct LockScreenView: View {
                             await viewModel.authenticateWithPassword()
                         }
                     }
-                
+
                 if let error = viewModel.errorMessage {
                     Text(error)
                         .font(.caption)
                         .foregroundStyle(.red)
                         .multilineTextAlignment(.center)
                 }
-                
+
                 Button(action: {
                     Task {
                         await viewModel.authenticateWithPassword()
@@ -56,7 +57,7 @@ struct LockScreenView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(viewModel.isLoading || viewModel.password.isEmpty)
-                
+
                 // Biometric Button
                 if viewModel.canUseBiometric {
                     Button(action: {
@@ -74,16 +75,17 @@ struct LockScreenView: View {
                 }
             }
             .padding(.horizontal, 32)
-            
+
             Spacer()
         }
         .padding()
-        .onAppear {
-            // Automatically try biometric on appear
+        .id(viewId)
+        .task {
+            // Only attempt biometric once when this specific view instance appears
             if viewModel.canUseBiometric {
-                Task {
-                    await viewModel.authenticateWithBiometric()
-                }
+                // Add a small delay to ensure view is fully rendered
+                try? await Task.sleep(nanoseconds: 500_000_000)
+                await viewModel.authenticateWithBiometric()
             }
         }
     }

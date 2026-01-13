@@ -178,12 +178,88 @@ class CardDetailViewModel: ObservableObject {
     }
     
     // MARK: - Clear Messages
-    
+
     func clearError() {
         errorMessage = nil
     }
-    
+
     func clearToast() {
         toastMessage = nil
+    }
+
+    // MARK: - Export Functions
+
+    /// Export card as formatted text
+    func exportAsText() {
+        guard let card = card else { return }
+
+        let formattedText = formatCardForCopy(card)
+        UIPasteboard.general.string = formattedText
+        toastMessage = "已复制到剪贴板 / Copied to clipboard"
+    }
+
+    /// Check if card has image attachments
+    func hasImageAttachments(cardId: UUID) async -> Bool {
+        do {
+            let attachmentService = AttachmentServiceImpl.shared
+            let attachments = try await attachmentService.fetchAttachments(for: cardId)
+            return !attachments.isEmpty && attachments.contains { attachment in
+                attachment.mimeType.contains("image")
+            }
+        } catch {
+            return false
+        }
+    }
+
+    /// Export all image attachments with watermark
+    func exportImagesWithWatermark(cardId: UUID, watermarkText: String?) async {
+        do {
+            let attachmentService = AttachmentServiceImpl.shared
+            let attachments = try await attachmentService.fetchAttachments(for: cardId)
+
+            // Filter only image attachments
+            let imageAttachments = attachments.filter { $0.mimeType.contains("image") }
+
+            guard !imageAttachments.isEmpty else {
+                toastMessage = "没有图片附件 / No image attachments"
+                return
+            }
+
+            // Collect all processed image URLs
+            var imageURLs: [URL] = []
+
+            for attachment in imageAttachments {
+                let url = try await attachmentService.shareAttachment(id: attachment.id, watermarkText: watermarkText)
+                imageURLs.append(url)
+            }
+
+            // Present share sheet with all images
+            await MainActor.run {
+                let activityVC = UIActivityViewController(activityItems: imageURLs, applicationActivities: nil)
+
+                // Add completion handler to show proper feedback based on user action
+                activityVC.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
+                    Task { @MainActor in
+                        if let error = error {
+                            self?.toastMessage = "分享失败 / Share failed: \(error.localizedDescription)"
+                        } else if completed {
+                            self?.toastMessage = "已导出 \(imageURLs.count) 张图片 / Exported \(imageURLs.count) images"
+                        }
+                        // If cancelled (completed == false), don't show any message
+                    }
+                }
+
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let rootVC = windowScene.windows.first?.rootViewController {
+                    var presentingVC = rootVC
+                    while let presented = presentingVC.presentedViewController {
+                        presentingVC = presented
+                    }
+                    presentingVC.present(activityVC, animated: true)
+                }
+            }
+        } catch {
+            toastMessage = "导出失败 / Export failed: \(error.localizedDescription)"
+        }
     }
 }

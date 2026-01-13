@@ -18,6 +18,8 @@ class AuthViewModel: ObservableObject {
     // 防止生物识别重复调用
     private var isBiometricInProgress: Bool = false
     private var lastBiometricAttempt: Date?
+    private var biometricFailureCount: Int = 0
+    private var lastBiometricFailure: Date?
     
     // MARK: - Dependencies
     
@@ -108,34 +110,67 @@ class AuthViewModel: ObservableObject {
     }
     
     func authenticateWithBiometric() async {
-        guard canUseBiometric else {
+        // 先检查是否已解锁,如果已解锁直接返回
+        guard authState == .locked else {
+            print("[AuthViewModel] Already unlocked, skipping biometric auth")
             return
         }
-        
+
+        guard canUseBiometric else {
+            print("[AuthViewModel] Biometric not available or enabled")
+            return
+        }
+
         // 防止重复调用
         guard !isBiometricInProgress else {
+            print("[AuthViewModel] Biometric already in progress, skipping")
             return
         }
-        
-        // 如果距离上次尝试不到1秒，等待一下
+
+        // 检查失败冷却时间 (连续失败3次后需要等待10秒)
+        if biometricFailureCount >= 3 {
+            if let lastFailure = lastBiometricFailure {
+                let elapsed = Date().timeIntervalSince(lastFailure)
+                if elapsed < 10.0 {
+                    let remaining = Int(10.0 - elapsed)
+                    errorMessage = "生物识别失败次数过多,请等待 \(remaining) 秒 / Too many biometric failures, please wait \(remaining) seconds"
+                    return
+                }
+            }
+            // 冷却时间已过,重置计数
+            biometricFailureCount = 0
+            lastBiometricFailure = nil
+        }
+
+        // 如果距离上次尝试不到2秒,直接返回(避免系统级重试)
         if let lastAttempt = lastBiometricAttempt {
             let elapsed = Date().timeIntervalSince(lastAttempt)
-            if elapsed < 1.0 {
-                try? await Task.sleep(nanoseconds: UInt64((1.0 - elapsed) * 1_000_000_000))
+            if elapsed < 2.0 {
+                print("[AuthViewModel] Too soon since last attempt, skipping")
+                return
             }
         }
-        
+
+        print("[AuthViewModel] Starting biometric authentication")
         isBiometricInProgress = true
         lastBiometricAttempt = Date()
         isLoading = true
         errorMessage = nil
-        
+
         do {
             try await authService.authenticateWithBiometric()
+            // 成功后重置失败计数
+            biometricFailureCount = 0
+            lastBiometricFailure = nil
+            print("[AuthViewModel] Biometric authentication completed successfully")
         } catch {
+            // 失败计数增加
+            biometricFailureCount += 1
+            lastBiometricFailure = Date()
             errorMessage = error.localizedDescription
+            print("[AuthViewModel] Biometric authentication failed: \(error)")
         }
-        
+
         isLoading = false
         isBiometricInProgress = false
     }
@@ -151,12 +186,16 @@ class AuthViewModel: ObservableObject {
     }
     
     // MARK: - Lock
-    
+
     func lock() {
         authService.lock()
         password = ""
         confirmPassword = ""
         errorMessage = nil
+        // 重置生物识别状态
+        biometricFailureCount = 0
+        lastBiometricFailure = nil
+        isBiometricInProgress = false
     }
     
     // MARK: - Password Change

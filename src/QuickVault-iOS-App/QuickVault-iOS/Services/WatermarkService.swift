@@ -36,9 +36,9 @@ struct ImageExportOptions {
 /// Watermark spacing multiplier / 水印行间距倍数
 /// Controls how densely watermarks are tiled
 enum WatermarkSpacing: CGFloat, CaseIterable, Identifiable {
-    case dense = 1.5    // 密集 - 1.5x spacing
-    case normal = 2.5   // 正常 - 2.5x spacing (default)
-    case sparse = 4.0   // 稀疏 - 4.0x spacing
+    case dense = 1.2    // 密集 - 1.2x spacing
+    case normal = 1.8   // 正常 - 1.8x spacing (default)
+    case sparse = 2.5   // 稀疏 - 2.5x spacing
 
     var id: CGFloat { rawValue }
 

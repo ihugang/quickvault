@@ -30,14 +30,34 @@ public enum CardType: String, CaseIterable, Sendable {
   case invoice
   case businessLicense
   case idCard
+  case passport
+  case driversLicense
+  case residencePermit
+  case socialSecurityCard
+  case bankCard
 
   public var displayName: String {
     switch self {
-    case .general: return "通用文本"
-    case .address: return "地址"
-    case .invoice: return "发票"
-    case .businessLicense: return "营业执照"
-    case .idCard: return "身份证"
+    case .general: return "通用文本 / General Text"
+    case .address: return "地址 / Address"
+    case .invoice: return "发票 / Invoice"
+    case .businessLicense: return "营业执照 / Business License"
+    case .idCard: return "身份证 / ID Card"
+    case .passport: return "护照 / Passport"
+    case .driversLicense: return "驾照 / Driver's License"
+    case .residencePermit: return "居留卡 / Residence Permit"
+    case .socialSecurityCard: return "社保卡 / Social Security Card"
+    case .bankCard: return "银行卡 / Bank Card"
+    }
+  }
+  
+  public var group: CardGroup {
+    switch self {
+    case .general, .address, .idCard, .passport, .driversLicense, 
+         .residencePermit, .socialSecurityCard, .bankCard:
+      return .personal
+    case .invoice, .businessLicense:
+      return .company
     }
   }
 }
@@ -251,6 +271,246 @@ public struct IdCardTemplate {
   }
 }
 
+// MARK: - Passport Template
+
+public struct PassportTemplate {
+  public static let type: CardType = .passport
+
+  public static let fields: [FieldDefinition] = [
+    FieldDefinition(key: "name", label: "姓名 / Name", required: true),
+    FieldDefinition(key: "passportNumber", label: "护照号 / Passport No.", required: true),
+    FieldDefinition(key: "nationality", label: "国籍 / Nationality", required: true),
+    FieldDefinition(key: "gender", label: "性别 / Gender", required: true),
+    FieldDefinition(key: "birthDate", label: "出生日期 / Date of Birth", required: true),
+    FieldDefinition(key: "birthPlace", label: "出生地 / Place of Birth", required: false),
+    FieldDefinition(key: "issueDate", label: "签发日期 / Issue Date", required: false),
+    FieldDefinition(key: "expiryDate", label: "有效期至 / Expiry Date", required: false),
+    FieldDefinition(key: "issuer", label: "签发机关 / Issuing Authority", required: false),
+  ]
+
+  public static func formatForCopy(fieldValues: [String: String]) -> String {
+    let name = fieldValues["name"] ?? ""
+    let passportNumber = fieldValues["passportNumber"] ?? ""
+    let nationality = fieldValues["nationality"] ?? ""
+    let gender = fieldValues["gender"] ?? ""
+    let birthDate = fieldValues["birthDate"] ?? ""
+    let birthPlace = fieldValues["birthPlace"] ?? ""
+    let issueDate = fieldValues["issueDate"] ?? ""
+    let expiryDate = fieldValues["expiryDate"] ?? ""
+    let issuer = fieldValues["issuer"] ?? ""
+
+    var result = """
+      姓名：\(name)
+      护照号：\(passportNumber)
+      国籍：\(nationality)
+      性别：\(gender)
+      出生日期：\(birthDate)
+      """
+
+    if !birthPlace.isEmpty {
+      result += "\n出生地：\(birthPlace)"
+    }
+    if !issueDate.isEmpty {
+      result += "\n签发日期：\(issueDate)"
+    }
+    if !expiryDate.isEmpty {
+      result += "\n有效期至：\(expiryDate)"
+    }
+    if !issuer.isEmpty {
+      result += "\n签发机关：\(issuer)"
+    }
+
+    return result
+  }
+}
+
+// MARK: - Driver's License Template
+
+public struct DriversLicenseTemplate {
+  public static let type: CardType = .driversLicense
+
+  public static let fields: [FieldDefinition] = [
+    FieldDefinition(key: "name", label: "姓名 / Name", required: true),
+    FieldDefinition(key: "licenseNumber", label: "证号 / License No.", required: true),
+    FieldDefinition(key: "gender", label: "性别 / Gender", required: true),
+    FieldDefinition(key: "nationality", label: "国籍 / Nationality", required: false),
+    FieldDefinition(key: "birthDate", label: "出生日期 / Date of Birth", required: true),
+    FieldDefinition(key: "address", label: "住址 / Address", required: false),
+    FieldDefinition(key: "issueDate", label: "初次领证日期 / Issue Date", required: false),
+    FieldDefinition(key: "validFrom", label: "有效起始日期 / Valid From", required: false),
+    FieldDefinition(key: "validUntil", label: "有效期限 / Valid Until", required: false),
+    FieldDefinition(key: "licenseClass", label: "准驾车型 / License Class", required: false),
+  ]
+
+  public static func formatForCopy(fieldValues: [String: String]) -> String {
+    let name = fieldValues["name"] ?? ""
+    let licenseNumber = fieldValues["licenseNumber"] ?? ""
+    let gender = fieldValues["gender"] ?? ""
+    let nationality = fieldValues["nationality"] ?? ""
+    let birthDate = fieldValues["birthDate"] ?? ""
+    let address = fieldValues["address"] ?? ""
+    let issueDate = fieldValues["issueDate"] ?? ""
+    let validFrom = fieldValues["validFrom"] ?? ""
+    let validUntil = fieldValues["validUntil"] ?? ""
+    let licenseClass = fieldValues["licenseClass"] ?? ""
+
+    var result = """
+      姓名：\(name)
+      证号：\(licenseNumber)
+      性别：\(gender)
+      出生日期：\(birthDate)
+      """
+
+    if !nationality.isEmpty {
+      result += "\n国籍：\(nationality)"
+    }
+    if !address.isEmpty {
+      result += "\n住址：\(address)"
+    }
+    if !issueDate.isEmpty {
+      result += "\n初次领证日期：\(issueDate)"
+    }
+    if !validFrom.isEmpty {
+      result += "\n有效起始：\(validFrom)"
+    }
+    if !validUntil.isEmpty {
+      result += "\n有效期限：\(validUntil)"
+    }
+    if !licenseClass.isEmpty {
+      result += "\n准驾车型：\(licenseClass)"
+    }
+
+    return result
+  }
+}
+
+// MARK: - Residence Permit Template
+
+public struct ResidencePermitTemplate {
+  public static let type: CardType = .residencePermit
+
+  public static let fields: [FieldDefinition] = [
+    FieldDefinition(key: "name", label: "姓名 / Name", required: true),
+    FieldDefinition(key: "permitNumber", label: "证件号码 / Permit No.", required: true),
+    FieldDefinition(key: "gender", label: "性别 / Gender", required: true),
+    FieldDefinition(key: "nationality", label: "国籍 / Nationality", required: true),
+    FieldDefinition(key: "birthDate", label: "出生日期 / Date of Birth", required: true),
+    FieldDefinition(key: "issueDate", label: "签发日期 / Issue Date", required: false),
+    FieldDefinition(key: "expiryDate", label: "有效期至 / Expiry Date", required: false),
+    FieldDefinition(key: "permitType", label: "居留事由 / Permit Type", required: false),
+  ]
+
+  public static func formatForCopy(fieldValues: [String: String]) -> String {
+    let name = fieldValues["name"] ?? ""
+    let permitNumber = fieldValues["permitNumber"] ?? ""
+    let gender = fieldValues["gender"] ?? ""
+    let nationality = fieldValues["nationality"] ?? ""
+    let birthDate = fieldValues["birthDate"] ?? ""
+    let issueDate = fieldValues["issueDate"] ?? ""
+    let expiryDate = fieldValues["expiryDate"] ?? ""
+    let permitType = fieldValues["permitType"] ?? ""
+
+    var result = """
+      姓名：\(name)
+      证件号码：\(permitNumber)
+      性别：\(gender)
+      国籍：\(nationality)
+      出生日期：\(birthDate)
+      """
+
+    if !issueDate.isEmpty {
+      result += "\n签发日期：\(issueDate)"
+    }
+    if !expiryDate.isEmpty {
+      result += "\n有效期至：\(expiryDate)"
+    }
+    if !permitType.isEmpty {
+      result += "\n居留事由：\(permitType)"
+    }
+
+    return result
+  }
+}
+
+// MARK: - Social Security Card Template
+
+public struct SocialSecurityCardTemplate {
+  public static let type: CardType = .socialSecurityCard
+
+  public static let fields: [FieldDefinition] = [
+    FieldDefinition(key: "name", label: "姓名 / Name", required: true),
+    FieldDefinition(key: "cardNumber", label: "社保卡号 / Card No.", required: true),
+    FieldDefinition(key: "idNumber", label: "社会保障号码 / ID No.", required: true),
+    FieldDefinition(key: "issueDate", label: "发卡日期 / Issue Date", required: false),
+    FieldDefinition(key: "bankName", label: "发卡银行 / Issuing Bank", required: false),
+  ]
+
+  public static func formatForCopy(fieldValues: [String: String]) -> String {
+    let name = fieldValues["name"] ?? ""
+    let cardNumber = fieldValues["cardNumber"] ?? ""
+    let idNumber = fieldValues["idNumber"] ?? ""
+    let issueDate = fieldValues["issueDate"] ?? ""
+    let bankName = fieldValues["bankName"] ?? ""
+
+    var result = """
+      姓名：\(name)
+      社保卡号：\(cardNumber)
+      社会保障号码：\(idNumber)
+      """
+
+    if !issueDate.isEmpty {
+      result += "\n发卡日期：\(issueDate)"
+    }
+    if !bankName.isEmpty {
+      result += "\n发卡银行：\(bankName)"
+    }
+
+    return result
+  }
+}
+
+// MARK: - Bank Card Template
+
+public struct BankCardTemplate {
+  public static let type: CardType = .bankCard
+
+  public static let fields: [FieldDefinition] = [
+    FieldDefinition(key: "cardNumber", label: "卡号 / Card No.", required: true),
+    FieldDefinition(key: "cardholderName", label: "持卡人 / Cardholder", required: true),
+    FieldDefinition(key: "bankName", label: "开户行 / Bank", required: true),
+    FieldDefinition(key: "expiryDate", label: "有效期 / Expiry Date", required: false),
+    FieldDefinition(key: "cvv", label: "CVV", required: false),
+    FieldDefinition(key: "notes", label: "备注 / Notes", required: false, multiline: true),
+  ]
+
+  public static func formatForCopy(fieldValues: [String: String]) -> String {
+    let cardNumber = fieldValues["cardNumber"] ?? ""
+    let cardholderName = fieldValues["cardholderName"] ?? ""
+    let bankName = fieldValues["bankName"] ?? ""
+    let expiryDate = fieldValues["expiryDate"] ?? ""
+    let cvv = fieldValues["cvv"] ?? ""
+    let notes = fieldValues["notes"] ?? ""
+
+    var result = """
+      持卡人：\(cardholderName)
+      卡号：\(cardNumber)
+      开户行：\(bankName)
+      """
+
+    if !expiryDate.isEmpty {
+      result += "\n有效期：\(expiryDate)"
+    }
+    if !cvv.isEmpty {
+      result += "\nCVV：\(cvv)"
+    }
+    if !notes.isEmpty {
+      result += "\n备注：\(notes)"
+    }
+
+    return result
+  }
+}
+
 // MARK: - Template Helper
 
 public struct CardTemplateHelper {
@@ -267,6 +527,16 @@ public struct CardTemplateHelper {
       return BusinessLicenseTemplate.fields
     case .idCard:
       return IdCardTemplate.fields
+    case .passport:
+      return PassportTemplate.fields
+    case .driversLicense:
+      return DriversLicenseTemplate.fields
+    case .residencePermit:
+      return ResidencePermitTemplate.fields
+    case .socialSecurityCard:
+      return SocialSecurityCardTemplate.fields
+    case .bankCard:
+      return BankCardTemplate.fields
     }
   }
 
@@ -283,6 +553,16 @@ public struct CardTemplateHelper {
       return BusinessLicenseTemplate.formatForCopy(fieldValues: fieldValues)
     case .idCard:
       return IdCardTemplate.formatForCopy(fieldValues: fieldValues)
+    case .passport:
+      return PassportTemplate.formatForCopy(fieldValues: fieldValues)
+    case .driversLicense:
+      return DriversLicenseTemplate.formatForCopy(fieldValues: fieldValues)
+    case .residencePermit:
+      return ResidencePermitTemplate.formatForCopy(fieldValues: fieldValues)
+    case .socialSecurityCard:
+      return SocialSecurityCardTemplate.formatForCopy(fieldValues: fieldValues)
+    case .bankCard:
+      return BankCardTemplate.formatForCopy(fieldValues: fieldValues)
     }
   }
 }

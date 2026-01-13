@@ -31,13 +31,14 @@ struct QuickVaultApp: App {
             cryptoService: cryptoService
         )
         
-        _authViewModel = StateObject(wrappedValue: AuthViewModel(authService: authService))
+        let authViewModelInstance = AuthViewModel(authService: authService)
+
+        _authViewModel = StateObject(wrappedValue: authViewModelInstance)
         _cardListViewModel = StateObject(wrappedValue: CardListViewModel(cardService: cardService))
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(authService: authService))
-        
-        // Auto-lock manager with lock action
-        let authViewModelInstance = AuthViewModel(authService: authService)
-        _autoLockManager = StateObject(wrappedValue: AutoLockManager {
+
+        // Auto-lock manager with auth service and lock action
+        _autoLockManager = StateObject(wrappedValue: AutoLockManager(authService: authService) {
             authViewModelInstance.lock()
         })
     }

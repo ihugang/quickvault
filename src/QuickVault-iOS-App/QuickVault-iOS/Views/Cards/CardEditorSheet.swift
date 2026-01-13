@@ -37,7 +37,7 @@ struct CardEditorSheet: View {
                     Section {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 10) {
-                                ForEach(CardEditorViewModel.CardType.allCases) { type in
+                                ForEach(CardType.allCases) { type in
                                     CardTypeTag(
                                         title: type.displayName,
                                         isSelected: viewModel.selectedType == type
@@ -395,84 +395,6 @@ struct DocumentPhotoUploader: View {
                 }
             }
             .disabled(isProcessing)
-        }
-    }
-}
-
-// MARK: - CardType Photo Properties Extension
-
-extension CardEditorViewModel.CardType {
-    /// 是否有背面（需要上传两张照片）
-    var hasBackSide: Bool {
-        switch self {
-        case .idCard:
-            return true  // 中国身份证需要正反面
-        case .passport, .businessLicense:
-            return false  // 护照和营业执照只需要一面
-        default:
-            return false
-        }
-    }
-    
-    /// 正面照片标签
-    var frontPhotoLabel: String {
-        switch self {
-        case .idCard:
-            return "ocr.idcard.front".localized
-        case .passport:
-            return "ocr.passport.datapage".localized
-        case .businessLicense:
-            return "ocr.license.photo".localized
-        default:
-            return "ocr.photo.front".localized
-        }
-    }
-    
-    /// 背面照片标签
-    var backPhotoLabel: String {
-        switch self {
-        case .idCard:
-            return "ocr.idcard.back".localized
-        default:
-            return "ocr.photo.back".localized
-        }
-    }
-    
-    /// 照片上传提示
-    var photoUploadHint: String {
-        switch self {
-        case .idCard:
-            return "ocr.hint.idcard".localized
-        case .passport:
-            return "ocr.hint.passport".localized
-        case .businessLicense:
-            return "ocr.hint.license".localized
-        default:
-            return ""
-        }
-    }
-    
-    /// 正面照片文件名
-    var frontPhotoFileName: String {
-        switch self {
-        case .idCard:
-            return "idcard_front.jpg"
-        case .passport:
-            return "passport_datapage.jpg"
-        case .businessLicense:
-            return "business_license.jpg"
-        default:
-            return "document_front.jpg"
-        }
-    }
-    
-    /// 背面照片文件名
-    var backPhotoFileName: String {
-        switch self {
-        case .idCard:
-            return "idcard_back.jpg"
-        default:
-            return "document_back.jpg"
         }
     }
 }
