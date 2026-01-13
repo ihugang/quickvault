@@ -71,7 +71,7 @@ struct CardListView: View {
                 }
             }
             .sheet(isPresented: $showingNewCard) {
-                CardEditorSheet(onSave: {
+                CardCreationWizard(onSave: {
                     Task {
                         await viewModel.refresh()
                     }

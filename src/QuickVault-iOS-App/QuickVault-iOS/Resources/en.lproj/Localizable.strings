@@ -148,6 +148,7 @@
 "field.passport.number" = "Passport Number";
 "field.passport.issuedate" = "Issue Date";
 "field.passport.expirydate" = "Expiry Date";
+"field.passport.issueplace" = "Place of Issue";
 "field.passport.issuer" = "Issuing Authority";
 
 // MARK: - Attachment Hints

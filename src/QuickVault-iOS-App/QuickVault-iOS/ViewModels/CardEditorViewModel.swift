@@ -71,7 +71,28 @@ class CardEditorViewModel: ObservableObject {
     }
     
     var isValid: Bool {
-        !title.isEmpty && validateFields()
+        !title.isEmpty && checkFieldsValid()
+    }
+    
+    // 检查字段有效性，不修改 @Published 属性
+    private func checkFieldsValid() -> Bool {
+        // 检查必填字段
+        for field in fields where field.isRequired {
+            if field.value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                return false
+            }
+        }
+        
+        // 检查地址卡片的电话号码
+        if selectedType == .address {
+            if let phoneField = fields.first(where: { $0.label == "field.phone".localized }) {
+                if !phoneField.value.isEmpty && !isValidPhoneNumber(phoneField.value) {
+                    return false
+                }
+            }
+        }
+        
+        return true
     }
     
     // MARK: - Initialization
@@ -79,7 +100,7 @@ class CardEditorViewModel: ObservableObject {
     init(cardService: CardService, attachmentService: AttachmentService? = nil) {
         self.cardService = cardService
         self.attachmentService = attachmentService ?? AttachmentServiceImpl.shared
-        setupFieldsForType(.address)
+        // 延迟初始化，避免在 init 中触发 @Published 更新
     }
     
     // MARK: - Setup for New Card
@@ -171,7 +192,8 @@ class CardEditorViewModel: ObservableObject {
                 EditableField(id: UUID(), label: "field.passport.number".localized, value: "", isRequired: true, isCopyable: true, order: 4),
                 EditableField(id: UUID(), label: "field.passport.issuedate".localized, value: "", isRequired: false, isCopyable: true, order: 5),
                 EditableField(id: UUID(), label: "field.passport.expirydate".localized, value: "", isRequired: false, isCopyable: true, order: 6),
-                EditableField(id: UUID(), label: "field.passport.issuer".localized, value: "", isRequired: false, isCopyable: true, order: 7),
+                EditableField(id: UUID(), label: "field.passport.issueplace".localized, value: "", isRequired: false, isCopyable: true, order: 7),
+                EditableField(id: UUID(), label: "field.passport.issuer".localized, value: "", isRequired: false, isCopyable: true, order: 8),
             ]
             
         case .businessLicense:

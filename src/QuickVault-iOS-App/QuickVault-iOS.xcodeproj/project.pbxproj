@@ -13,6 +13,14 @@
 		0CE31A7EB6E85309E237FA7E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A94BADA7314FFC3AB224CC1 /* Security.framework */; };
 		13A6E1143B488B1ADACDB7B4 /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049240424C29CF75F1AB30BC /* AttachmentView.swift */; };
 		145614B82F0FD8C000A640B2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 145614B72F0FD8C000A640B2 /* Launch Screen.storyboard */; };
+		14B786202F168B95000265C8 /* CardCreationWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B7861F2F168B95000265C8 /* CardCreationWizard.swift */; };
+		14B786232F1693A0000265C8 /* MRZError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B786222F1693A0000265C8 /* MRZError.swift */; };
+		14B786252F1693AC000265C8 /* MRZTD3Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B786242F1693AC000265C8 /* MRZTD3Parser.swift */; };
+		14B786272F1693B6000265C8 /* MRZSanitizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B786262F1693B6000265C8 /* MRZSanitizer.swift */; };
+		14B786292F1693C2000265C8 /* MRZAutoCorrector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B786282F1693C2000265C8 /* MRZAutoCorrector.swift */; };
+		14B7862D2F169CD8000265C8 /* OCRFieldMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B7862C2F169CD8000265C8 /* OCRFieldMapper.swift */; };
+		14B7862E2F169CD8000265C8 /* DocumentRulesEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B7862A2F169CD8000265C8 /* DocumentRulesEngine.swift */; };
+		14B7862F2F169CD8000265C8 /* MRZVisionOCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B7862B2F169CD8000265C8 /* MRZVisionOCR.swift */; };
 		1AD7A722939943DC463FB3E0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 209029622DBA6B9474A19E6B /* Localizable.strings */; };
 		3A3A183F7A792B67576B3362 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F86578624AA0C712D14FBEB1 /* SwiftUI.framework */; };
 		3A8456C37A281FE028E4866F /* CardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D2C69EA477FD9C8C0C19BD /* CardDetailView.swift */; };
@@ -56,6 +64,14 @@
 		0AFA131B5F9AAE485AA676C1 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0E427F3CA78A156EDDCF3807 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		145614B72F0FD8C000A640B2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		14B7861F2F168B95000265C8 /* CardCreationWizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCreationWizard.swift; sourceTree = "<group>"; };
+		14B786222F1693A0000265C8 /* MRZError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZError.swift; sourceTree = "<group>"; };
+		14B786242F1693AC000265C8 /* MRZTD3Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZTD3Parser.swift; sourceTree = "<group>"; };
+		14B786262F1693B6000265C8 /* MRZSanitizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZSanitizer.swift; sourceTree = "<group>"; };
+		14B786282F1693C2000265C8 /* MRZAutoCorrector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZAutoCorrector.swift; sourceTree = "<group>"; };
+		14B7862A2F169CD8000265C8 /* DocumentRulesEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentRulesEngine.swift; sourceTree = "<group>"; };
+		14B7862B2F169CD8000265C8 /* MRZVisionOCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZVisionOCR.swift; sourceTree = "<group>"; };
+		14B7862C2F169CD8000265C8 /* OCRFieldMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRFieldMapper.swift; sourceTree = "<group>"; };
 		15D2C69EA477FD9C8C0C19BD /* CardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailView.swift; sourceTree = "<group>"; };
 		1C7FAB4F06991E87B162E011 /* LockScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenView.swift; sourceTree = "<group>"; };
 		241F80E21BB55F57FD2858BA /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -152,6 +168,17 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		14B786212F169370000265C8 /* Passport */ = {
+			isa = PBXGroup;
+			children = (
+				14B786282F1693C2000265C8 /* MRZAutoCorrector.swift */,
+				14B786262F1693B6000265C8 /* MRZSanitizer.swift */,
+				14B786242F1693AC000265C8 /* MRZTD3Parser.swift */,
+				14B786222F1693A0000265C8 /* MRZError.swift */,
+			);
+			path = Passport;
+			sourceTree = "<group>";
+		};
 		353BA6AC4B8674B2FFBCC7C1 /* QuickVault-iOSTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +206,10 @@
 		6B2881DED988CA35FB04C484 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				14B7862A2F169CD8000265C8 /* DocumentRulesEngine.swift */,
+				14B7862B2F169CD8000265C8 /* MRZVisionOCR.swift */,
+				14B7862C2F169CD8000265C8 /* OCRFieldMapper.swift */,
+				14B786212F169370000265C8 /* Passport */,
 				8A7DC778EA1AC3B79534F91B /* AttachmentService.swift */,
 				F30E6359AFF9F1BF32530737 /* AutoLockManager.swift */,
 				C6B35E855E6CE70709D93082 /* LocalizationManager.swift */,
@@ -235,6 +266,7 @@
 		C2C8FB6C957B0B671145C799 /* Cards */ = {
 			isa = PBXGroup;
 			children = (
+				14B7861F2F168B95000265C8 /* CardCreationWizard.swift */,
 				15D2C69EA477FD9C8C0C19BD /* CardDetailView.swift */,
 				911A33BF8A5E7CF480E43FAB /* CardEditorSheet.swift */,
 				4E0354FD13E17A19DC4264D0 /* CardListView.swift */,
@@ -449,10 +481,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14B786292F1693C2000265C8 /* MRZAutoCorrector.swift in Sources */,
+				14B786232F1693A0000265C8 /* MRZError.swift in Sources */,
 				EE29D888CDD5525843053A29 /* AttachmentService.swift in Sources */,
 				OCR12345678901234567890AB /* OCRService.swift in Sources */,
 				13A6E1143B488B1ADACDB7B4 /* AttachmentView.swift in Sources */,
 				E5ED2247045E53F85379D740 /* AuthViewModel.swift in Sources */,
+				14B7862D2F169CD8000265C8 /* OCRFieldMapper.swift in Sources */,
+				14B7862E2F169CD8000265C8 /* DocumentRulesEngine.swift in Sources */,
+				14B7862F2F169CD8000265C8 /* MRZVisionOCR.swift in Sources */,
 				5CFAA7F4802FDDA7041B618B /* AutoLockManager.swift in Sources */,
 				3A8456C37A281FE028E4866F /* CardDetailView.swift in Sources */,
 				3EE56ADA4DCB2D12D917DD37 /* CardDetailViewModel.swift in Sources */,
@@ -462,6 +499,8 @@
 				691A9B8A2138CAE22BED5FF3 /* CardListViewModel.swift in Sources */,
 				047BF0012540900CEC812FDF /* LocalizationManager.swift in Sources */,
 				AC29E035EAA6D5ECA835DEBE /* LockScreenView.swift in Sources */,
+				14B786272F1693B6000265C8 /* MRZSanitizer.swift in Sources */,
+				14B786252F1693AC000265C8 /* MRZTD3Parser.swift in Sources */,
 				D15718CAF8878FB83E92F81C /* MainTabView.swift in Sources */,
 				D2CBD75B229D1F91D92C6458 /* QuickVaultApp.swift in Sources */,
 				A5945102A1B5FA0252A136D1 /* SearchView.swift in Sources */,
@@ -470,6 +509,7 @@
 				7C1A9F54BB66A0FCCBAE54E2 /* ToastView.swift in Sources */,
 				97B8A32947562A4A6DD0CA66 /* WatermarkService.swift in Sources */,
 				4B64B0A685D2F3C9FFBA2BD8 /* WelcomeView.swift in Sources */,
+				14B786202F168B95000265C8 /* CardCreationWizard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -148,6 +148,7 @@
 "field.passport.number" = "护照号码";
 "field.passport.issuedate" = "签发日期";
 "field.passport.expirydate" = "有效期至";
+"field.passport.issueplace" = "签发地点";
 "field.passport.issuer" = "签发机关";
 
 // MARK: - Attachment Hints
