@@ -365,7 +365,7 @@ struct FlowLayout: Layout {
 // MARK: - Helper Functions
 
 private func isDocumentType(_ type: String) -> Bool {
-    ["IdCard", "Passport", "BusinessLicense"].contains(type)
+    ["idCard", "passport", "businessLicense"].contains(type)
 }
 
 // MARK: - Document Photos Section
@@ -408,7 +408,9 @@ struct DocumentPhotosSection: View {
                 }
             }
 
-            if cardType == "IdCard" {
+            let normalizedType = cardType.lowercased()
+
+            if normalizedType == "idcard" {
                 // 身份证：固定正反面
                 HStack(spacing: 12) {
                     DocumentPhotoCard(
@@ -427,7 +429,7 @@ struct DocumentPhotosSection: View {
                         }
                     )
                 }
-            } else if cardType == "Passport" {
+            } else if normalizedType == "passport" {
                 // 护照：信息页
                 DocumentPhotoCard(
                     title: "ocr.passport.datapage".localized,
@@ -436,7 +438,7 @@ struct DocumentPhotosSection: View {
                         selectedAttachment = attachment
                     }
                 )
-            } else if cardType == "BusinessLicense" {
+            } else if normalizedType == "businesslicense" {
                 // 营业执照
                 DocumentPhotoCard(
                     title: "ocr.license.photo".localized,
