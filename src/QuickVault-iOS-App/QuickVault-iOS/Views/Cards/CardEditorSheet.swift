@@ -206,7 +206,7 @@ struct CardEditorSheet: View {
                     }
                     
                     HStack {
-                        TextField("cards.tags.add".localized, text: $viewModel.newTag)
+                        TextField("cards.tags.add".localized, text: $viewModel.newTag, prompt: Text("输入后按回车 / Enter"))
                             .textFieldStyle(.roundedBorder)
                             .submitLabel(.done)
                             .onSubmit {
@@ -221,6 +221,22 @@ struct CardEditorSheet: View {
                         }
                         .buttonStyle(.plain)
                         .disabled(viewModel.newTag.isEmpty)
+                    }
+                    .onChange(of: viewModel.newTag) { oldValue, newValue in
+                        // 如果用户输入了逗号或分号，自动添加标签
+                        if newValue.contains(",") || newValue.contains("，") || newValue.contains(";") || newValue.contains("；") {
+                            let separator = newValue.contains(",") ? "," : 
+                                          newValue.contains("，") ? "，" : 
+                                          newValue.contains(";") ? ";" : "；"
+                            let parts = newValue.components(separatedBy: separator)
+                            
+                            // 添加第一部分作为标签
+                            if let first = parts.first?.trimmingCharacters(in: .whitespacesAndNewlines), !first.isEmpty {
+                                viewModel.tags.append(first)
+                                // 剩余部分放回输入框
+                                viewModel.newTag = parts.dropFirst().joined(separator: separator).trimmingCharacters(in: .whitespacesAndNewlines)
+                            }
+                        }
                     }
                 } header: {
                     Text("cards.tags".localized)

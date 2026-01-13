@@ -12,6 +12,14 @@ struct CardListView: View {
                 // Group Filter
                 GroupFilterView(selectedGroup: $viewModel.selectedGroup)
                 
+                // Tag Filter
+                if !viewModel.allAvailableTags.isEmpty {
+                    TagFilterView(
+                        availableTags: viewModel.allAvailableTags,
+                        selectedTags: $viewModel.selectedTags
+                    )
+                }
+                
                 // Card List
                 if viewModel.isLoading && viewModel.filteredCards.isEmpty {
                     ProgressView()
@@ -244,6 +252,115 @@ struct EmptyStateView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
+    }
+}
+
+/// Tag filter view / 标签过滤视图
+struct TagFilterView: View {
+    let availableTags: [String]
+    @Binding var selectedTags: Set<String>
+    @State private var isExpanded = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Header with expand/collapse button
+            Button {
+                withAnimation {
+                    isExpanded.toggle()
+                }
+            } label: {
+                HStack {
+                    Image(systemName: "tag.fill")
+                        .font(.caption)
+                    Text("按标签筛选")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                    if !selectedTags.isEmpty {
+                        Text("(\(selectedTags.count))")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            
+            // Tag chips (only show when expanded)
+            if isExpanded {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        // Clear all button
+                        if !selectedTags.isEmpty {
+                            Button {
+                                selectedTags.removeAll()
+                            } label: {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .font(.caption2)
+                                    Text("清除")
+                                        .font(.caption)
+                                }
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 6)
+                                .background(Color.red.opacity(0.1))
+                                .foregroundStyle(.red)
+                                .clipShape(Capsule())
+                            }
+                        }
+                        
+                        // Tag chips
+                        ForEach(availableTags, id: \.self) { tag in
+                            TagFilterChip(
+                                tag: tag,
+                                isSelected: selectedTags.contains(tag)
+                            ) {
+                                if selectedTags.contains(tag) {
+                                    selectedTags.remove(tag)
+                                } else {
+                                    selectedTags.insert(tag)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+                }
+            }
+        }
+        .background(Color(.systemGroupedBackground))
+    }
+}
+
+/// Tag filter chip / 标签过滤按钮
+struct TagFilterChip: View {
+    let tag: String
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 4) {
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "tag")
+                    .font(.caption)
+                Text(tag)
+                    .font(.caption)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(isSelected ? Color.blue : Color(.systemBackground))
+            .foregroundStyle(isSelected ? .white : .primary)
+            .clipShape(Capsule())
+            .overlay(
+                Capsule()
+                    .stroke(isSelected ? Color.clear : Color(.separator), lineWidth: 1)
+            )
+        }
     }
 }
 

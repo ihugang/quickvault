@@ -38,9 +38,20 @@ class CardListViewModel: ObservableObject {
             applyFilters()
         }
     }
+    @Published var selectedTags: Set<String> = [] {
+        didSet {
+            applyFilters()
+        }
+    }
     @Published var searchQuery: String = ""
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
+    
+    /// 所有可用标签（从当前卡片中提取）
+    var allAvailableTags: [String] {
+        let allTags = cards.flatMap { $0.tags }
+        return Array(Set(allTags)).sorted()
+    }
     
     // MARK: - Dependencies
     
@@ -113,12 +124,32 @@ class CardListViewModel: ObservableObject {
         selectedGroup = group
     }
     
+    func toggleTag(_ tag: String) {
+        if selectedTags.contains(tag) {
+            selectedTags.remove(tag)
+        } else {
+            selectedTags.insert(tag)
+        }
+    }
+    
+    func clearTagFilters() {
+        selectedTags.removeAll()
+    }
+    
     private func applyFilters() {
         var result = cards
         
         // Apply group filter
         if let groupValue = selectedGroup.rawGroupValue {
             result = result.filter { $0.group == groupValue }
+        }
+        
+        // Apply tag filter
+        if !selectedTags.isEmpty {
+            result = result.filter { card in
+                // 卡片的标签集合与选中的标签有交集（满足任一标签即可）
+                !Set(card.tags).isDisjoint(with: selectedTags)
+            }
         }
         
         // Sort: pinned first, then by modification date

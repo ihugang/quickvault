@@ -344,6 +344,11 @@ class CardEditorViewModel: ObservableObject {
     // MARK: - Save Card
     
     func saveCard() async -> CardDTO? {
+        // 自动添加用户可能输入但未点击加号的标签
+        if !newTag.isEmpty {
+            addTag()
+        }
+        
         guard validateFields() else {
             return nil
         }
