@@ -26,6 +26,7 @@ struct ItemDetailView: View {
     let itemService: ItemService
     let onUpdate: () -> Void
     
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @Environment(\.dismiss) private var dismiss
     @State private var showingDeleteAlert = false
     @State private var showingEditSheet = false
@@ -65,14 +66,14 @@ struct ItemDetailView: View {
                     Button {
                         showingEditSheet = true
                     } label: {
-                        Label("编辑", systemImage: "pencil")
+                        Label(localizationManager.localizedString("items.detail.edit"), systemImage: "pencil")
                     }
                     
                     Button {
                         Task { await togglePin() }
                     } label: {
                         Label(
-                            item.isPinned ? "取消置顶" : "置顶",
+                            localizationManager.localizedString(item.isPinned ? "items.detail.unpin" : "items.detail.pin"),
                             systemImage: item.isPinned ? "pin.slash" : "pin"
                         )
                     }
@@ -82,7 +83,7 @@ struct ItemDetailView: View {
                     Button(role: .destructive) {
                         showingDeleteAlert = true
                     } label: {
-                        Label("删除", systemImage: "trash")
+                        Label(localizationManager.localizedString("items.detail.delete"), systemImage: "trash")
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
@@ -90,13 +91,13 @@ struct ItemDetailView: View {
                 }
             }
         }
-        .alert("确认删除", isPresented: $showingDeleteAlert) {
-            Button("取消", role: .cancel) { }
-            Button("删除", role: .destructive) {
+        .alert(localizationManager.localizedString("items.delete.title"), isPresented: $showingDeleteAlert) {
+            Button(localizationManager.localizedString("common.cancel"), role: .cancel) { }
+            Button(localizationManager.localizedString("items.detail.delete"), role: .destructive) {
                 Task { await deleteItem() }
             }
         } message: {
-            Text("此操作不可恢复")
+            Text(localizationManager.localizedString("items.delete.message"))
         }
         .sheet(isPresented: $showingEditSheet) {
             EditItemSheet(item: item, itemService: itemService, onUpdate: onUpdate)
@@ -131,7 +132,7 @@ struct ItemDetailView: View {
                 )
                 
                 if item.isPinned {
-                    Label("已置顶", systemImage: "pin.fill")
+                    Label(localizationManager.localizedString("items.detail.pinned"), systemImage: "pin.fill")
                         .foregroundStyle(.orange)
                 }
             }
@@ -159,7 +160,7 @@ struct ItemDetailView: View {
             HStack {
                 Image(systemName: "doc.text")
                     .font(.caption)
-                Text("内容")
+                Text(localizationManager.localizedString("items.detail.content"))
                     .font(.subheadline.weight(.semibold))
                 Spacer()
             }
@@ -190,10 +191,10 @@ struct ItemDetailView: View {
                 Image(systemName: "photo")
                     .font(.caption)
                     .foregroundStyle(Color(red: 0.2, green: 0.5, blue: 0.3))
-                Text("图片")
+                Text(localizationManager.localizedString("items.detail.images"))
                     .font(.subheadline.weight(.semibold))
                 Spacer()
-                Text("\(item.images?.count ?? 0) 张")
+                Text(String(format: localizationManager.localizedString("items.detail.images.count"), item.images?.count ?? 0))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -216,7 +217,7 @@ struct ItemDetailView: View {
             HStack {
                 Image(systemName: "tag")
                     .font(.caption)
-                Text("标签")
+                Text(localizationManager.localizedString("items.detail.tags"))
                     .font(.subheadline.weight(.semibold))
             }
             .foregroundStyle(.secondary)
@@ -247,7 +248,7 @@ struct ItemDetailView: View {
                 } label: {
                     HStack {
                         Image(systemName: "square.and.arrow.up")
-                        Text("分享文本")
+                        Text(localizationManager.localizedString("items.detail.share.text"))
                         Spacer()
                         if isLoading {
                             ProgressView()
@@ -558,7 +559,7 @@ struct FullImageView: View {
                     } label: {
                         HStack(spacing: 6) {
                             Image(systemName: showControls ? "chevron.down" : "slider.horizontal.3")
-                            Text(showControls ? "收起" : "水印设置")
+                            Text(localizationManager.localizedString(showControls ? "watermark.collapse" : "watermark.settings"))
                         }
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(.white)
@@ -579,7 +580,7 @@ struct FullImageView: View {
                                     .tint(.white)
                             } else {
                                 Image(systemName: "square.and.arrow.up")
-                                Text("分享")
+                                Text(localizationManager.localizedString("watermark.share"))
                             }
                         }
                         .font(.subheadline.weight(.semibold))
@@ -603,18 +604,18 @@ struct FullImageView: View {
             // 分享范围选择（仅多图时显示）
             if let images = item.images, images.count > 1 {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("分享范围")
+                    Text(localizationManager.localizedString("watermark.scope"))
                         .font(.subheadline)
-                    Picker("分享范围", selection: $shareAllImages) {
-                        Text("仅此图片").tag(false)
-                        Text("全部图片（\(images.count)张）").tag(true)
+                    Picker(localizationManager.localizedString("watermark.scope"), selection: $shareAllImages) {
+                        Text(localizationManager.localizedString("watermark.scope.current")).tag(false)
+                        Text(String(format: localizationManager.localizedString("watermark.scope.all"), images.count)).tag(true)
                     }
                     .pickerStyle(.segmented)
                 }
             }
             
             // 水印开关
-            Toggle("添加水印", isOn: $useWatermark)
+            Toggle(localizationManager.localizedString("watermark.add"), isOn: $useWatermark)
                 .toggleStyle(.switch)
                 .tint(DetailPalette.primary)
                 .onChange(of: useWatermark) { _, _ in
@@ -624,7 +625,7 @@ struct FullImageView: View {
             
             if useWatermark {
                 // 水印文字
-                TextField("水印文字（例如：仅供XX使用）", text: $watermarkText)
+                TextField(localizationManager.localizedString("watermark.text"), text: $watermarkText)
                     .textFieldStyle(.roundedBorder)
                     .focused($isTextFieldFocused)
                     .submitLabel(.done)
@@ -638,7 +639,7 @@ struct FullImageView: View {
                 // 字体大小
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Text("字体大小")
+                        Text(localizationManager.localizedString("watermark.fontsize"))
                         Spacer()
                         Text("\(Int(watermarkFontSize))")
                             .foregroundStyle(.secondary)
@@ -654,9 +655,9 @@ struct FullImageView: View {
                 
                 // 行间距
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("行间距")
+                    Text(localizationManager.localizedString("watermark.spacing"))
                         .font(.subheadline)
-                    Picker("行间距", selection: $watermarkSpacing) {
+                    Picker(localizationManager.localizedString("watermark.spacing"), selection: $watermarkSpacing) {
                         ForEach(WatermarkSpacing.allCases) { spacing in
                             Text(spacing.displayName).tag(spacing)
                         }
@@ -671,7 +672,7 @@ struct FullImageView: View {
                 // 透明度
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Text("透明度")
+                        Text(localizationManager.localizedString("watermark.opacity"))
                         Spacer()
                         Text("\(Int(watermarkOpacity * 100))%")
                             .foregroundStyle(.secondary)
@@ -836,6 +837,7 @@ struct WatermarkConfigSheet: View {
     let item: ItemDTO
     let itemService: ItemService
     
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @Environment(\.dismiss) private var dismiss
     @State private var useWatermark = false
     @State private var watermarkText = ""
@@ -859,7 +861,7 @@ struct WatermarkConfigSheet: View {
                             .frame(maxHeight: 300)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                     } header: {
-                        Text("预览")
+                        Text(localizationManager.localizedString("watermark.preview"))
                     }
                 } else if isLoadingPreview {
                     Section {
@@ -870,21 +872,21 @@ struct WatermarkConfigSheet: View {
                         }
                         .frame(height: 200)
                     } header: {
-                        Text("预览")
+                        Text(localizationManager.localizedString("watermark.preview"))
                     }
                 }
                 
                 Section {
-                    Toggle("添加水印", isOn: $useWatermark)
+                    Toggle(localizationManager.localizedString("watermark.add"), isOn: $useWatermark)
                         .onChange(of: useWatermark) { _, _ in
                             updatePreview()
                         }
                     
                     if useWatermark {
-                        TextField("水印文字", text: $watermarkText)
+                        TextField(localizationManager.localizedString("watermark.text"), text: $watermarkText)
                             .textFieldStyle(.roundedBorder)
                             .placeholder(when: watermarkText.isEmpty) {
-                                Text("例如：仅供XX使用")
+                                Text(localizationManager.localizedString("watermark.text.placeholder"))
                                     .foregroundColor(.secondary)
                             }
                             .onChange(of: watermarkText) { _, _ in
@@ -893,7 +895,7 @@ struct WatermarkConfigSheet: View {
                         
                         VStack(alignment: .leading, spacing: 4) {
                             HStack {
-                                Text("字体大小")
+                                Text(localizationManager.localizedString("watermark.fontsize"))
                                 Spacer()
                                 Text("\(Int(watermarkFontSize))")
                                     .foregroundStyle(.secondary)
@@ -906,10 +908,10 @@ struct WatermarkConfigSheet: View {
                         
                         VStack(alignment: .leading, spacing: 4) {
                             HStack {
-                                Text("行间距")
+                                Text(localizationManager.localizedString("watermark.spacing"))
                                 Spacer()
                             }
-                            Picker("行间距", selection: $watermarkSpacing) {
+                            Picker(localizationManager.localizedString("watermark.spacing"), selection: $watermarkSpacing) {
                                 ForEach(WatermarkSpacing.allCases) { spacing in
                                     Text(spacing.displayName).tag(spacing)
                                 }
@@ -922,7 +924,7 @@ struct WatermarkConfigSheet: View {
                         
                         VStack(alignment: .leading, spacing: 4) {
                             HStack {
-                                Text("透明度")
+                                Text(localizationManager.localizedString("watermark.opacity"))
                                 Spacer()
                                 Text("\(Int(watermarkOpacity * 100))%")
                                     .foregroundStyle(.secondary)
@@ -934,24 +936,24 @@ struct WatermarkConfigSheet: View {
                         }
                     }
                 } header: {
-                    Text("水印设置")
+                    Text(localizationManager.localizedString("watermark.settings"))
                 } footer: {
-                    Text("水印将以对角线平铺方式覆盖在图片上")
+                    Text(localizationManager.localizedString("watermark.hint"))
                         .font(.caption)
                 }
                 .listRowSpacing(6)
             }
-            .navigationTitle("分享图片")
+            .navigationTitle(localizationManager.localizedString("watermark.sheet.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("取消") {
+                    Button(localizationManager.localizedString("common.cancel")) {
                         dismiss()
                     }
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("分享") {
+                    Button(localizationManager.localizedString("watermark.share")) {
                         Task { await shareImages() }
                     }
                     .disabled(isLoading || (useWatermark && watermarkText.isEmpty))
@@ -966,7 +968,7 @@ struct WatermarkConfigSheet: View {
                         VStack(spacing: 16) {
                             ProgressView()
                                 .scaleEffect(1.5)
-                            Text("准备中...")
+                            Text(localizationManager.localizedString("watermark.preparing"))
                                 .foregroundColor(.white)
                         }
                         .padding(32)

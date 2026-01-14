@@ -44,9 +44,9 @@ enum WatermarkSpacing: Int, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .dense: return NSLocalizedString("export.watermark.spacing.dense", comment: "")
-        case .normal: return NSLocalizedString("export.watermark.spacing.normal", comment: "")
-        case .sparse: return NSLocalizedString("export.watermark.spacing.sparse", comment: "")
+        case .dense: return NSLocalizedString("watermark.spacing.dense", comment: "")
+        case .normal: return NSLocalizedString("watermark.spacing.normal", comment: "")
+        case .sparse: return NSLocalizedString("watermark.spacing.sparse", comment: "")
         }
     }
     

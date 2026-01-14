@@ -309,10 +309,40 @@
 "items.detail.delete" = "删除";
 "items.detail.pin" = "置顶";
 "items.detail.unpin" = "取消置顶";
-"items.delete.confirm" = "确定要删除这张卡片吗？";
+"items.detail.pinned" = "已置顶";
+"items.detail.content" = "内容";
+"items.detail.images" = "图片";
+"items.detail.images.count" = "%d 张";
+"items.detail.tags" = "标签";
+"items.detail.share.text" = "分享文本";
+"items.detail.share.images" = "分享图片";
+"items.delete.confirm" = "确定要删除这张卡片吗?";
+"items.delete.title" = "确认删除";
+"items.delete.message" = "此操作不可恢复";
 "items.created.success" = "创建成功";
 "items.updated.success" = "更新成功";
 "items.deleted.success" = "删除成功";
+
+// MARK: - Watermark
+"watermark.settings" = "水印设置";
+"watermark.collapse" = "收起";
+"watermark.add" = "添加水印";
+"watermark.text" = "水印文字（例如：仅供XX使用）";
+"watermark.text.placeholder" = "例如：仅供XX使用";
+"watermark.fontsize" = "字体大小";
+"watermark.spacing" = "行间距";
+"watermark.spacing.dense" = "密集";
+"watermark.spacing.normal" = "正常";
+"watermark.spacing.sparse" = "稀疏";
+"watermark.opacity" = "透明度";
+"watermark.preview" = "预览";
+"watermark.share" = "分享";
+"watermark.scope" = "分享范围";
+"watermark.scope.current" = "仅此图片";
+"watermark.scope.all" = "全部图片（%d张）";
+"watermark.hint" = "水印将以对角线平铺方式覆盖在图片上";
+"watermark.sheet.title" = "分享图片";
+"watermark.preparing" = "准备中...";
 
 // MARK: - Errors
 "error.generic" = "出现错误";
