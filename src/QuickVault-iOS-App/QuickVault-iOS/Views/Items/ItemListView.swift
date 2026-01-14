@@ -287,6 +287,7 @@ struct ItemListView: View {
 
 struct ItemCard: View {
     let item: ItemDTO
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
