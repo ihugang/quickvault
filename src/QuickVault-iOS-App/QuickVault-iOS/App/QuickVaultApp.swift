@@ -54,6 +54,19 @@ struct QuickVaultSimpleApp: App {
 /// Simple root view for the new architecture
 struct SimpleRootView: View {
     @ObservedObject var authViewModel: AuthViewModel
+    @AppStorage("com.quickvault.appearanceMode") private var appearanceModeRaw: Int = 0
+    
+    private var preferredColorScheme: ColorScheme? {
+        // 0 = system, 1 = light, 2 = dark
+        switch appearanceModeRaw {
+        case 1:
+            return .light
+        case 2:
+            return .dark
+        default:
+            return nil  // system
+        }
+    }
     
     var body: some View {
         Group {
@@ -72,6 +85,7 @@ struct SimpleRootView: View {
             }
         }
         .animation(.easeInOut, value: authViewModel.authState)
+        .preferredColorScheme(preferredColorScheme)
     }
 }
 
