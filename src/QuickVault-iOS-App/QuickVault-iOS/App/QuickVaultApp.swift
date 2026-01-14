@@ -24,7 +24,7 @@ struct QuickVaultSimpleApp: App {
     init() {
         let keychainService = KeychainServiceImpl()
         let cryptoService = CryptoServiceImpl.shared
-        let persistenceController = PersistenceController.shared
+        let _ = PersistenceController.shared
         
         let authService = AuthenticationServiceImpl(
             keychainService: keychainService,

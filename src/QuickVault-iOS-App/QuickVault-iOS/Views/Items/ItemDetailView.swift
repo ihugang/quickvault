@@ -736,7 +736,6 @@ struct FullImageView: View {
             }
             
             // 根据选择决定处理哪些图片
-            let imagesToProcess: [UIImage]
             if shareAllImages {
                 print("🔍 [FullImageView] Processing all \(images.count) images")
             } else {

@@ -451,7 +451,7 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
       images = sortedImages.compactMap { img in
         guard let id = img.id,
               let fileName = img.fileName,
-              let encData = img.encryptedData else {
+              let _ = img.encryptedData else {
           return nil
         }
         var thumbnailData: Data?
