@@ -167,6 +167,9 @@ struct CreateItemSheet: View {
         Section {
             TextEditor(text: $textContent)
                 .frame(minHeight: 150)
+                .font(.body)
+                .lineSpacing(4)
+                .autocorrectionDisabled()
         } header: {
             Text("内容")
         } footer: {

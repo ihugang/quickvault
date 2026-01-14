@@ -329,6 +329,8 @@ struct ItemCard: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .lineLimit(3)
+                .lineSpacing(2)
+                .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
         } else if item.type == .image, let images = item.images, !images.isEmpty {
             ScrollView(.horizontal, showsIndicators: false) {

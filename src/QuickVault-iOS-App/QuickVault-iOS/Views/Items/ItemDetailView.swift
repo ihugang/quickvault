@@ -165,6 +165,8 @@ struct ItemDetailView: View {
             if let content = item.textContent {
                 Text(content)
                     .font(.body)
+                    .lineSpacing(4)
+                    .multilineTextAlignment(.leading)
                     .textSelection(.enabled)
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)

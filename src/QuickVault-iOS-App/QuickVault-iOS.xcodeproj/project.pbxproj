@@ -16,6 +16,7 @@
 		1437BFFB2F17920B005C1E8B /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1437BFF72F17920B005C1E8B /* ItemDetailView.swift */; };
 		1437BFFC2F17920B005C1E8B /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1437BFF82F17920B005C1E8B /* ItemListView.swift */; };
 		1437BFFE2F17922C005C1E8B /* ItemListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1437BFFD2F17922C005C1E8B /* ItemListViewModel.swift */; };
+		1437C0002F17DC18005C1E8B /* EditItemSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1437BFFF2F17DC18005C1E8B /* EditItemSheet.swift */; };
 		145614B82F0FD8C000A640B2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 145614B72F0FD8C000A640B2 /* Launch Screen.storyboard */; };
 		14B786202F168B95000265C8 /* CardCreationWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B7861F2F168B95000265C8 /* CardCreationWizard.swift */; };
 		14B786232F1693A0000265C8 /* MRZError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B786222F1693A0000265C8 /* MRZError.swift */; };
@@ -71,6 +72,7 @@
 		1437BFF72F17920B005C1E8B /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 		1437BFF82F17920B005C1E8B /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
 		1437BFFD2F17922C005C1E8B /* ItemListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListViewModel.swift; sourceTree = "<group>"; };
+		1437BFFF2F17DC18005C1E8B /* EditItemSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemSheet.swift; sourceTree = "<group>"; };
 		145614B72F0FD8C000A640B2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		14B7861F2F168B95000265C8 /* CardCreationWizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCreationWizard.swift; sourceTree = "<group>"; };
 		14B786222F1693A0000265C8 /* MRZError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZError.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 		1437BFF92F17920B005C1E8B /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				1437BFFF2F17DC18005C1E8B /* EditItemSheet.swift */,
 				1437BFF62F17920B005C1E8B /* CreateItemSheet.swift */,
 				1437BFF72F17920B005C1E8B /* ItemDetailView.swift */,
 				1437BFF82F17920B005C1E8B /* ItemListView.swift */,
@@ -501,6 +504,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1437C0002F17DC18005C1E8B /* EditItemSheet.swift in Sources */,
 				14B786292F1693C2000265C8 /* MRZAutoCorrector.swift in Sources */,
 				14B786232F1693A0000265C8 /* MRZError.swift in Sources */,
 				EE29D888CDD5525843053A29 /* AttachmentService.swift in Sources */,

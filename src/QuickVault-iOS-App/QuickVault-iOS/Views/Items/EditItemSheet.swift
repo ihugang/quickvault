@@ -46,6 +46,8 @@ struct EditItemSheet: View {
                         TextEditor(text: $content)
                             .frame(minHeight: 200)
                             .font(.body)
+                            .lineSpacing(4)
+                            .autocorrectionDisabled()
                     } header: {
                         Text("内容 / Content")
                     }
