@@ -241,6 +241,7 @@
 
 // MARK: - Settings
 "settings.title" = "Settings";
+"settings.tab" = "Settings";
 "settings.security" = "Security";
 "settings.security.biometric" = "Face ID / Touch ID";
 "settings.security.biometric.enable" = "Enable biometric authentication";
@@ -273,6 +274,7 @@
 
 // MARK: - Items (New Design)
 "items.title" = "QuickVault";
+"items.tab" = "Items";
 "items.search.placeholder" = "Search title or tags...";
 "items.loading" = "Loading...";
 "items.empty" = "No items yet";

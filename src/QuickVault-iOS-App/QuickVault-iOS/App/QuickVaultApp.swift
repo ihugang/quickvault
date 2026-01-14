@@ -95,20 +95,22 @@ struct MainContentView: View {
         persistenceController: PersistenceController.shared
     )
     
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @State private var showingSettings = false
     
     var body: some View {
         TabView {
             ItemListView(itemService: itemService)
                 .tabItem {
-                    Label("卡片", systemImage: "rectangle.stack")
+                    Label(localizationManager.localizedString("items.tab"), systemImage: "rectangle.stack")
                 }
             
             SettingsTabView()
                 .tabItem {
-                    Label("设置", systemImage: "gear")
+                    Label(localizationManager.localizedString("settings.tab"), systemImage: "gear")
                 }
         }
+        .environment(\.layoutDirection, localizationManager.layoutDirection)
     }
 }
 

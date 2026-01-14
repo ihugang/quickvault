@@ -241,6 +241,7 @@
 
 // MARK: - Settings
 "settings.title" = "设置";
+"settings.tab" = "设置";
 "settings.security" = "安全";
 "settings.security.biometric" = "面容ID / 触控ID";
 "settings.security.biometric.enable" = "启用生物识别认证";
@@ -273,6 +274,7 @@
 
 // MARK: - Items (New Design)
 "items.title" = "随取 QuickVault";
+"items.tab" = "卡片";
 "items.search.placeholder" = "搜索标题或标签...";
 "items.loading" = "加载中...";
 "items.empty" = "还没有卡片";
