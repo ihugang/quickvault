@@ -33,14 +33,14 @@ struct ImageExportOptions {
     }
 }
 
-/// Watermark spacing multiplier / 水印行间距倍数
-/// Controls how densely watermarks are tiled
-enum WatermarkSpacing: CGFloat, CaseIterable, Identifiable {
-    case dense = 1.2    // 密集 - 1.2x spacing
-    case normal = 1.8   // 正常 - 1.8x spacing (default)
-    case sparse = 2.5   // 稀疏 - 2.5x spacing
+/// Watermark spacing mode / 水印行间距模式
+/// Controls how densely watermarks are tiled based on number of rows
+enum WatermarkSpacing: Int, CaseIterable, Identifiable {
+    case dense = 9      // 密集 - 约9行
+    case normal = 6     // 正常 - 约6行 (default)
+    case sparse = 4     // 稀疏 - 约4行
 
-    var id: CGFloat { rawValue }
+    var id: Int { rawValue }
 
     var displayName: String {
         switch self {
@@ -49,6 +49,9 @@ enum WatermarkSpacing: CGFloat, CaseIterable, Identifiable {
         case .sparse: return NSLocalizedString("export.watermark.spacing.sparse", comment: "")
         }
     }
+    
+    /// Get the number of rows for this spacing mode
+    var rowCount: Int { rawValue }
 }
 
 /// Watermark configuration / 水印配置
@@ -187,25 +190,29 @@ class WatermarkServiceImpl: WatermarkService {
 
         let textSize = (text as NSString).size(withAttributes: attributes)
 
-        // Calculate diagonal dimension for tile coverage
+        // Calculate spacing based on desired row count and image diagonal
+        // 使用对角线长度来计算覆盖范围
         let diagonal = sqrt(pow(image.size.width, 2) + pow(image.size.height, 2))
-
-        // Dynamic spacing based on text size, font size, and spacing multiplier
-        // Use spacing multiplier to control density (1.5x = dense, 2.5x = normal, 4.0x = sparse)
-        let horizontalSpacing = textSize.width * style.spacing.rawValue
-        let verticalSpacing = max(textSize.height * 3, style.fontSize * 4)
-        let spacing = max(horizontalSpacing, verticalSpacing)
-
-        let tilesNeeded = Int(ceil(diagonal / spacing))
+        
+        // 根据目标行数计算垂直间距
+        let targetRows = CGFloat(style.spacing.rowCount)
+        let verticalSpacing = diagonal / targetRows
+        
+        // 水平间距 = 文字宽度 + 2em (2倍字体大小)
+        let horizontalSpacing = textSize.width + (style.fontSize * 2)
+        
+        // 计算需要的瓦片数量
+        let rowsNeeded = Int(ceil(diagonal / verticalSpacing)) + 2
+        let colsNeeded = Int(ceil(diagonal / horizontalSpacing)) + 2
 
         // Save context state
         context.saveGState()
 
         // Apply tiled watermark pattern
-        for row in 0..<tilesNeeded {
-            for col in 0..<tilesNeeded {
-                let x = CGFloat(col) * spacing
-                let y = CGFloat(row) * spacing
+        for row in 0..<rowsNeeded {
+            for col in 0..<colsNeeded {
+                let x = CGFloat(col) * horizontalSpacing
+                let y = CGFloat(row) * verticalSpacing
 
                 context.saveGState()
 

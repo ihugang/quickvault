@@ -303,26 +303,24 @@ struct ItemCard: View {
             }
         }
         .padding(16)
-        .background(
+        .background(Color(.systemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .overlay(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color(.systemBackground))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .strokeBorder(Color(.separator).opacity(0.3), lineWidth: 0.5)
-                )
-                .shadow(color: .black.opacity(0.08), radius: 12, y: 4)
+                .stroke(Color(.separator).opacity(0.8), lineWidth: 1.5)
         )
+        .shadow(color: .black.opacity(0.08), radius: 12, y: 4)
     }
     
     private var itemTypeIcon: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(item.type == .text ? Color.blue.opacity(0.1) : Color.purple.opacity(0.1))
+                .fill(item.type == .text ? Color.blue.opacity(0.1) : Color(red: 0.2, green: 0.5, blue: 0.3).opacity(0.1))
                 .frame(width: 44, height: 44)
             
             Image(systemName: item.type.icon)
                 .font(.title3)
-                .foregroundStyle(item.type == .text ? .blue : .purple)
+                .foregroundStyle(item.type == .text ? .blue : Color(red: 0.2, green: 0.5, blue: 0.3))
         }
     }
     

@@ -44,7 +44,10 @@ struct AttachmentListView: View {
                         ForEach(viewModel.attachments) { attachment in
                             AttachmentThumbnailView(attachment: attachment)
                                 .onTapGesture {
+                                    print("🔍 [AttachmentListView] Tapped on attachment: \(attachment.fileName)")
+                                    print("🔍 [AttachmentListView] Attachment ID: \(attachment.id)")
                                     selectedAttachment = attachment
+                                    print("🔍 [AttachmentListView] selectedAttachment set to: \(selectedAttachment?.fileName ?? "nil")")
                                 }
                                 .contextMenu {
                                     Button {
@@ -83,6 +86,9 @@ struct AttachmentListView: View {
         }
         .sheet(item: $selectedAttachment) { attachment in
             AttachmentDetailSheet(attachment: attachment, viewModel: viewModel)
+                .onAppear {
+                    print("🔍 [AttachmentListView] Sheet appeared for: \(attachment.fileName)")
+                }
         }
         .sheet(isPresented: $showWatermarkSheet) {
             if let attachment = selectedAttachment {
@@ -157,22 +163,55 @@ struct AttachmentDetailSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var imageData: Data?
     @State private var isLoading = true
+    @State private var loadError: String?
+    
+    init(attachment: AttachmentDTO, viewModel: AttachmentListViewModel) {
+        self.attachment = attachment
+        self.viewModel = viewModel
+        print("🔍 [AttachmentDetailSheet] Initialized for: \(attachment.fileName)")
+    }
     
     var body: some View {
         NavigationStack {
-            Group {
+            ZStack {
                 if isLoading {
-                    ProgressView()
+                    VStack {
+                        ProgressView()
+                        Text("加载中... / Loading...")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 8)
+                    }
                 } else if let data = imageData, let image = UIImage(data: data) {
-                    ScrollView {
+                    ZoomableScrollView {
                         Image(uiImage: image)
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .padding()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(.systemBackground))
+                    .onAppear {
+                        print("📸 [AttachmentView] Image displayed successfully, size: \(image.size)")
                     }
                 } else {
-                    Text("无法加载附件 / Unable to load attachment")
-                        .foregroundStyle(.secondary)
+                    VStack(spacing: 12) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.largeTitle)
+                            .foregroundStyle(.orange)
+                        Text("无法加载附件 / Unable to load attachment")
+                            .foregroundStyle(.secondary)
+                        if let error = loadError {
+                            Text(error)
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                                .padding()
+                        }
+                        Text("数据大小: \(imageData?.count ?? 0) bytes")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding()
                 }
             }
             .navigationTitle(attachment.fileName)
@@ -195,12 +234,30 @@ struct AttachmentDetailSheet: View {
                 }
             }
             .task {
+                print("🔍 [AttachmentView] Starting to load attachment: \(attachment.id)")
+                print("🔍 [AttachmentView] Attachment fileName: \(attachment.fileName)")
+                print("🔍 [AttachmentView] Attachment mimeType: \(attachment.mimeType)")
+                
                 do {
                     imageData = try await viewModel.getAttachmentData(attachment.id)
+                    print("✅ [AttachmentView] Data loaded successfully, size: \(imageData?.count ?? 0) bytes")
+                    
+                    if let data = imageData {
+                        if let image = UIImage(data: data) {
+                            print("✅ [AttachmentView] UIImage created successfully, size: \(image.size)")
+                        } else {
+                            print("❌ [AttachmentView] Failed to create UIImage from data")
+                        }
+                    } else {
+                        print("❌ [AttachmentView] imageData is nil after loading")
+                    }
                 } catch {
-                    // Handle error
+                    loadError = error.localizedDescription
+                    print("❌ [AttachmentView] Failed to load attachment: \(error)")
+                    print("❌ [AttachmentView] Error details: \(error.localizedDescription)")
                 }
                 isLoading = false
+                print("🔍 [AttachmentView] Loading finished, isLoading: \(isLoading)")
             }
         }
     }
@@ -473,6 +530,62 @@ class AttachmentListViewModel: ObservableObject {
     
     func clearToast() {
         toastMessage = nil
+    }
+}
+
+// MARK: - ZoomableScrollView for Attachments
+
+fileprivate struct ZoomableScrollView<Content: View>: UIViewRepresentable {
+    private var content: Content
+    
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+    
+    func makeUIView(context: Context) -> UIScrollView {
+        let scrollView = UIScrollView()
+        scrollView.delegate = context.coordinator
+        scrollView.maximumZoomScale = 4.0
+        scrollView.minimumZoomScale = 1.0
+        scrollView.bouncesZoom = true
+        scrollView.showsVerticalScrollIndicator = true
+        scrollView.showsHorizontalScrollIndicator = true
+        scrollView.backgroundColor = .systemBackground
+        
+        let hostedView = context.coordinator.hostingController.view!
+        hostedView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(hostedView)
+        
+        NSLayoutConstraint.activate([
+            hostedView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            hostedView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            hostedView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            hostedView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            hostedView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            hostedView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor)
+        ])
+        
+        return scrollView
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(hostingController: UIHostingController(rootView: content))
+    }
+    
+    func updateUIView(_ uiView: UIScrollView, context: Context) {
+        context.coordinator.hostingController.rootView = content
+    }
+    
+    class Coordinator: NSObject, UIScrollViewDelegate {
+        var hostingController: UIHostingController<Content>
+        
+        init(hostingController: UIHostingController<Content>) {
+            self.hostingController = hostingController
+        }
+        
+        func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+            return hostingController.view
+        }
     }
 }
 

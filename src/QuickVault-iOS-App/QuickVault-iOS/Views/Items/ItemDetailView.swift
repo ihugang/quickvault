@@ -15,10 +15,8 @@ struct ItemDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     @State private var showingDeleteAlert = false
-    @State private var showingShareSheet = false
     @State private var showingWatermarkSheet = false
     @State private var showingEditSheet = false
-    @State private var shareContent: Any?
     @State private var isLoading = false
     
     var body: some View {
@@ -85,15 +83,7 @@ struct ItemDetailView: View {
             Text("此操作不可恢复")
         }
         .sheet(isPresented: $showingWatermarkSheet) {
-            WatermarkConfigSheet(item: item, itemService: itemService) { content in
-                shareContent = content
-                showingShareSheet = true
-            }
-        }
-        .sheet(isPresented: $showingShareSheet) {
-            if let content = shareContent {
-                ShareSheet(activityItems: [content])
-            }
+            WatermarkConfigSheet(item: item, itemService: itemService)
         }
         .sheet(isPresented: $showingEditSheet) {
             EditItemSheet(item: item, itemService: itemService, onUpdate: onUpdate)
@@ -107,12 +97,12 @@ struct ItemDetailView: View {
             // 类型图标
             ZStack {
                 Circle()
-                    .fill(item.type == .text ? Color.blue.opacity(0.1) : Color.purple.opacity(0.1))
+                    .fill(item.type == .text ? Color.blue.opacity(0.1) : Color(red: 0.2, green: 0.5, blue: 0.3).opacity(0.1))
                     .frame(width: 80, height: 80)
                 
                 Image(systemName: item.type.icon)
                     .font(.system(size: 36))
-                    .foregroundStyle(item.type == .text ? .blue : .purple)
+                    .foregroundStyle(item.type == .text ? .blue : Color(red: 0.2, green: 0.5, blue: 0.3))
             }
             
             // 标题
@@ -170,15 +160,13 @@ struct ItemDetailView: View {
                     .textSelection(.enabled)
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(
+                    .background(Color(.systemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color(.systemBackground))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .strokeBorder(Color(.separator).opacity(0.3), lineWidth: 0.5)
-                            )
-                            .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+                            .stroke(Color(.separator).opacity(0.8), lineWidth: 1.5)
                     )
+                    .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
             }
         }
     }
@@ -188,6 +176,7 @@ struct ItemDetailView: View {
             HStack {
                 Image(systemName: "photo")
                     .font(.caption)
+                    .foregroundStyle(Color(red: 0.2, green: 0.5, blue: 0.3))
                 Text("图片")
                     .font(.subheadline.weight(.semibold))
                 Spacer()
@@ -198,12 +187,9 @@ struct ItemDetailView: View {
             .foregroundStyle(.secondary)
             
             if let images = item.images, !images.isEmpty {
-                LazyVGrid(columns: [
-                    GridItem(.flexible(), spacing: 12),
-                    GridItem(.flexible(), spacing: 12)
-                ], spacing: 12) {
+                VStack(spacing: 12) {
                     ForEach(images) { image in
-                        ImageThumbnailView(image: image, itemService: itemService)
+                        ImageThumbnailView(image: image, itemService: itemService, item: item)
                     }
                 }
             }
@@ -279,7 +265,7 @@ struct ItemDetailView: View {
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color.purple)
+                            .fill(Color(red: 0.2, green: 0.5, blue: 0.3))
                     )
                 }
             }
@@ -314,57 +300,171 @@ struct ItemDetailView: View {
         
         do {
             let text = try await itemService.getShareableText(id: item.id)
-            shareContent = text
-            showingShareSheet = true
+            await MainActor.run {
+                showSystemShareSheet(items: [text])
+            }
         } catch {
             print("Error getting shareable text: \(error)")
         }
+    }
+    
+    private func showSystemShareSheet(items: [Any]) {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController else {
+            print("❌ [ItemDetailView] Cannot find root view controller")
+            return
+        }
+        
+        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        
+        // iPad 需要设置 popover
+        if let popover = activityVC.popoverPresentationController {
+            popover.sourceView = rootViewController.view
+            popover.sourceRect = CGRect(x: rootViewController.view.bounds.midX,
+                                       y: rootViewController.view.bounds.midY,
+                                       width: 0, height: 0)
+            popover.permittedArrowDirections = []
+        }
+        
+        // 找到最顶层的 presented view controller
+        var topController = rootViewController
+        while let presented = topController.presentedViewController {
+            topController = presented
+        }
+        
+        topController.present(activityVC, animated: true)
     }
 }
 
 // MARK: - Image Thumbnail View
 
+// MARK: - Image Thumbnail View
+
+struct ImageDataWrapper: Identifiable {
+    let id = UUID()
+    let data: Data
+}
+
 struct ImageThumbnailView: View {
     let image: ImageDTO
     let itemService: ItemService
+    let item: ItemDTO
     
-    @State private var showingFullImage = false
-    @State private var fullImageData: Data?
+    @State private var imageDataToShow: ImageDataWrapper?
+    @State private var displayImageData: Data?
+    @State private var isLoading = true
     
     var body: some View {
         Button {
             Task { await loadFullImage() }
         } label: {
             Group {
-                if let thumbnailData = image.thumbnailData,
-                   let uiImage = UIImage(data: thumbnailData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                } else {
+                if isLoading {
                     ZStack {
                         Rectangle()
                             .fill(Color(.systemGray5))
                         ProgressView()
                     }
+                    .frame(height: 200)
+                } else if let data = displayImageData,
+                          let uiImage = UIImage(data: data) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity)
+                } else {
+                    ZStack {
+                        Rectangle()
+                            .fill(Color(.systemGray5))
+                        Image(systemName: "photo")
+                            .font(.largeTitle)
+                            .foregroundStyle(Color(red: 0.2, green: 0.5, blue: 0.3).opacity(0.6))
+                    }
+                    .frame(height: 200)
                 }
             }
-            .frame(height: 160)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
-        .sheet(isPresented: $showingFullImage) {
-            if let data = fullImageData, let uiImage = UIImage(data: data) {
-                FullImageView(image: uiImage)
+        .fullScreenCover(item: $imageDataToShow) { wrapper in
+            if let uiImage = UIImage(data: wrapper.data) {
+                FullImageView(image: uiImage, item: item, itemService: itemService)
+                    .onAppear {
+                        print("✅ [FullImageView] Displayed image from \(wrapper.data.count) bytes")
+                    }
+            } else {
+                ZStack {
+                    Color.black.ignoresSafeArea()
+                    
+                    VStack(spacing: 16) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.largeTitle)
+                            .foregroundStyle(.yellow)
+                        Text("无法创建图片")
+                            .foregroundStyle(.white)
+                            .font(.headline)
+                        Text("数据大小: \(wrapper.data.count) bytes")
+                            .font(.caption)
+                            .foregroundStyle(.white.opacity(0.7))
+                    }
+                    
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button {
+                                imageDataToShow = nil
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.title2)
+                                    .foregroundStyle(.white, .black.opacity(0.5))
+                            }
+                            .padding()
+                        }
+                        Spacer()
+                    }
+                }
+                .onAppear {
+                    print("❌ [FullImageView] Failed to create UIImage from \(wrapper.data.count) bytes")
+                }
             }
+        }
+        .task {
+            await loadDisplayImage()
         }
     }
     
-    private func loadFullImage() async {
+    private func loadDisplayImage() async {
+        print("🔍 [ImageThumbnailView] Loading display image: \(image.id)")
         do {
-            fullImageData = try await itemService.getDecryptedImage(imageId: image.id)
-            showingFullImage = true
+            displayImageData = try await itemService.getDecryptedImage(imageId: image.id)
+            print("✅ [ImageThumbnailView] Display image loaded: \(displayImageData?.count ?? 0) bytes")
         } catch {
-            print("Error loading full image: \(error)")
+            print("❌ [ImageThumbnailView] Error loading display image: \(error)")
+        }
+        isLoading = false
+    }
+    
+    private func loadFullImage() async {
+        print("🔍 [ImageThumbnailView] Loading full image for viewing")
+        
+        // 优先使用已加载的displayImageData
+        if let displayData = displayImageData {
+            print("✅ [ImageThumbnailView] Using display image data: \(displayData.count) bytes")
+            imageDataToShow = ImageDataWrapper(data: displayData)
+        } else {
+            print("🔍 [ImageThumbnailView] Loading fresh image data")
+            do {
+                let freshData = try await itemService.getDecryptedImage(imageId: image.id)
+                print("✅ [ImageThumbnailView] Fresh image loaded: \(freshData.count) bytes")
+                imageDataToShow = ImageDataWrapper(data: freshData)
+            } catch {
+                print("❌ [ImageThumbnailView] Error loading image: \(error)")
+            }
+        }
+        
+        if imageDataToShow != nil {
+            print("✅ [ImageThumbnailView] imageDataToShow is set, fullScreenCover should open")
+        } else {
+            print("❌ [ImageThumbnailView] imageDataToShow is still nil")
         }
     }
 }
@@ -373,27 +473,363 @@ struct ImageThumbnailView: View {
 
 struct FullImageView: View {
     let image: UIImage
+    let item: ItemDTO
+    let itemService: ItemService
+    
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var isTextFieldFocused: Bool
+    @State private var showControls = false
+    @State private var useWatermark = false
+    @State private var watermarkText = ""
+    @State private var watermarkFontSize: CGFloat = 30
+    @State private var watermarkSpacing: WatermarkSpacing = .normal
+    @State private var watermarkOpacity: CGFloat = 0.3
+    @State private var isSharing = false
+    @State private var previewImage: UIImage?
+    @State private var shareAllImages = true
+    
+    init(image: UIImage, item: ItemDTO, itemService: ItemService) {
+        self.image = image
+        self.item = item
+        self.itemService = itemService
+        print("✅ [FullImageView] Initialized with image size: \(image.size)")
+    }
     
     var body: some View {
-        NavigationStack {
-            ZoomableScrollView {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-            }
-            .background(Color.black)
-            .ignoresSafeArea()
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("完成") {
-                        dismiss()
+        GeometryReader { geometry in
+            ZStack {
+                Color.black.ignoresSafeArea()
+                
+                // 图片区域
+                VStack(spacing: 0) {
+                    if showControls {
+                        // 水印模式：图片置顶
+                        ZoomableScrollView {
+                            Image(uiImage: previewImage ?? image)
+                                .resizable()
+                                .scaledToFit()
+                        }
+                        .frame(maxHeight: geometry.size.height * 0.5) // 占上半部分
+                        .id(previewImage?.hashValue ?? image.hashValue)
+                        
+                        Spacer()
+                    } else {
+                        // 查看模式：图片居中
+                        ZoomableScrollView {
+                            Image(uiImage: previewImage ?? image)
+                                .resizable()
+                                .scaledToFit()
+                        }
+                        .id(previewImage?.hashValue ?? image.hashValue)
                     }
-                    .foregroundColor(.white)
+                }
+                .onAppear {
+                    print("✅ [FullImageView] View appeared")
+                }
+                .animation(.easeInOut(duration: 0.3), value: showControls)
+            
+            VStack(spacing: 0) {
+                // 顶部按钮栏
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(.white, .black.opacity(0.5))
+                    }
+                    .padding()
+                }
+                
+                Spacer()
+                
+                // 底部控制面板（可展开）
+                if showControls {
+                    watermarkControlPanel
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .padding(.bottom, 8)
+                }
+                
+                // 底部按钮栏（始终显示）
+                HStack {
+                    Button {
+                        withAnimation(.spring(response: 0.3)) {
+                            showControls.toggle()
+                        }
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: showControls ? "chevron.down" : "slider.horizontal.3")
+                            Text(showControls ? "收起" : "水印设置")
+                        }
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(Color.black.opacity(0.7))
+                        .clipShape(Capsule())
+                    }
+                    
+                    Spacer()
+                    
+                    Button {
+                        Task { await shareImages() }
+                    } label: {
+                        HStack(spacing: 6) {
+                            if isSharing {
+                                ProgressView()
+                                    .tint(.white)
+                            } else {
+                                Image(systemName: "square.and.arrow.up")
+                                Text("分享")
+                            }
+                        }
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(Color.blue)
+                        .clipShape(Capsule())
+                    }
+                    .disabled(isSharing)
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
+            }
+            }
+        }
+    }
+    
+    private var watermarkControlPanel: some View {
+        VStack(spacing: 16) {
+            // 分享范围选择（仅多图时显示）
+            if let images = item.images, images.count > 1 {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("分享范围")
+                        .font(.subheadline)
+                    Picker("分享范围", selection: $shareAllImages) {
+                        Text("仅此图片").tag(false)
+                        Text("全部图片（\(images.count)张）").tag(true)
+                    }
+                    .pickerStyle(.segmented)
+                    .colorScheme(.dark)
+                }
+            }
+            
+            // 水印开关
+            Toggle("添加水印", isOn: $useWatermark)
+                .toggleStyle(.switch)
+                .tint(.blue)
+                .onChange(of: useWatermark) { _, _ in
+                    isTextFieldFocused = false
+                    updatePreview()
+                }
+            
+            if useWatermark {
+                // 水印文字
+                TextField("水印文字（例如：仅供XX使用）", text: $watermarkText)
+                    .textFieldStyle(.roundedBorder)
+                    .colorScheme(.dark)
+                    .focused($isTextFieldFocused)
+                    .submitLabel(.done)
+                    .onSubmit {
+                        isTextFieldFocused = false
+                    }
+                    .onChange(of: watermarkText) { _, _ in
+                        updatePreview()
+                    }
+                
+                // 字体大小
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Text("字体大小")
+                        Spacer()
+                        Text("\(Int(watermarkFontSize))")
+                            .foregroundStyle(.secondary)
+                    }
+                    .font(.subheadline)
+                    Slider(value: $watermarkFontSize, in: 20...80, step: 1)
+                        .tint(.blue)
+                        .onChange(of: watermarkFontSize) { _, _ in
+                            isTextFieldFocused = false
+                            updatePreview()
+                        }
+                }
+                
+                // 行间距
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("行间距")
+                        .font(.subheadline)
+                    Picker("行间距", selection: $watermarkSpacing) {
+                        ForEach(WatermarkSpacing.allCases) { spacing in
+                            Text(spacing.displayName).tag(spacing)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .colorScheme(.dark)
+                    .onChange(of: watermarkSpacing) { _, _ in
+                        isTextFieldFocused = false
+                        updatePreview()
+                    }
+                }
+                
+                // 透明度
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Text("透明度")
+                        Spacer()
+                        Text("\(Int(watermarkOpacity * 100))%")
+                            .foregroundStyle(.secondary)
+                    }
+                    .font(.subheadline)
+                    Slider(value: $watermarkOpacity, in: 0.1...1.0, step: 0.05)
+                        .tint(.blue)
+                        .onChange(of: watermarkOpacity) { _, _ in
+                            isTextFieldFocused = false
+                            updatePreview()
+                        }
                 }
             }
         }
+        .foregroundStyle(.white)
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color.black.opacity(0.85))
+                .shadow(color: .black.opacity(0.3), radius: 20, y: -5)
+        )
+        .padding(.horizontal, 16)
+        .onTapGesture {
+            // 点击面板空白区域时收起键盘
+            isTextFieldFocused = false
+        }
+    }
+    
+    private func updatePreview() {
+        guard useWatermark, !watermarkText.isEmpty else {
+            previewImage = nil
+            return
+        }
+        
+        let watermarkService = WatermarkServiceImpl()
+        let style = WatermarkStyle.from(
+            fontSize: watermarkFontSize,
+            opacity: watermarkOpacity,
+            spacing: watermarkSpacing
+        )
+        
+        previewImage = watermarkService.applyWatermark(
+            to: image,
+            text: watermarkText,
+            style: style
+        )
+    }
+    
+    private func shareImages() async {
+        isSharing = true
+        defer { isSharing = false }
+        
+        do {
+            guard let images = item.images, !images.isEmpty else {
+                print("❌ [FullImageView] No images to share")
+                return
+            }
+            
+            // 根据选择决定处理哪些图片
+            let imagesToProcess: [UIImage]
+            if shareAllImages {
+                print("🔍 [FullImageView] Processing all \(images.count) images")
+            } else {
+                print("🔍 [FullImageView] Processing current image only")
+            }
+            
+            var processedImages: [UIImage] = []
+            let watermarkService = WatermarkServiceImpl()
+            
+            // 如果只分享当前图片，直接使用已加载的 image
+            if !shareAllImages {
+                var imageToShare = image
+                
+                if useWatermark, !watermarkText.isEmpty {
+                    let style = WatermarkStyle.from(
+                        fontSize: watermarkFontSize,
+                        opacity: watermarkOpacity,
+                        spacing: watermarkSpacing
+                    )
+                    if let watermarked = watermarkService.applyWatermark(
+                        to: imageToShare,
+                        text: watermarkText,
+                        style: style
+                    ) {
+                        imageToShare = watermarked
+                        print("✅ [FullImageView] Watermark applied to current image")
+                    }
+                }
+                
+                processedImages = [imageToShare]
+            } else {
+                // 处理全部图片
+                for imageDTO in images {
+                let imageData = try await itemService.getDecryptedImage(imageId: imageDTO.id)
+                guard var uiImage = UIImage(data: imageData) else {
+                    print("❌ [FullImageView] Failed to create UIImage")
+                    continue
+                }
+                
+                if useWatermark, !watermarkText.isEmpty {
+                    let style = WatermarkStyle.from(
+                        fontSize: watermarkFontSize,
+                        opacity: watermarkOpacity,
+                        spacing: watermarkSpacing
+                    )
+                    if let watermarkedImage = watermarkService.applyWatermark(
+                        to: uiImage,
+                        text: watermarkText,
+                        style: style
+                    ) {
+                        uiImage = watermarkedImage
+                        print("✅ [FullImageView] Watermark applied")
+                    }
+                }
+                
+                    processedImages.append(uiImage)
+                }
+            }
+            
+            print("✅ [FullImageView] Processed \(processedImages.count) images")
+            await MainActor.run {
+                showSystemShareSheet(items: processedImages)
+            }
+        } catch {
+            print("❌ [FullImageView] Error: \(error)")
+        }
+    }
+    
+    private func showSystemShareSheet(items: [Any]) {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController else {
+            print("❌ [FullImageView] Cannot find root view controller")
+            return
+        }
+        
+        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        
+        if let popover = activityVC.popoverPresentationController {
+            popover.sourceView = rootViewController.view
+            popover.sourceRect = CGRect(x: rootViewController.view.bounds.midX,
+                                       y: rootViewController.view.bounds.midY,
+                                       width: 0, height: 0)
+            popover.permittedArrowDirections = []
+        }
+        
+        var topController = rootViewController
+        while let presented = topController.presentedViewController {
+            topController = presented
+        }
+        
+        print("✅ [FullImageView] Presenting share sheet")
+        topController.present(activityVC, animated: true)
     }
 }
 
@@ -402,31 +838,111 @@ struct FullImageView: View {
 struct WatermarkConfigSheet: View {
     let item: ItemDTO
     let itemService: ItemService
-    let onShare: ([UIImage]) -> Void
     
     @Environment(\.dismiss) private var dismiss
     @State private var useWatermark = false
     @State private var watermarkText = ""
+    @State private var watermarkFontSize: CGFloat = 30
+    @State private var watermarkSpacing: WatermarkSpacing = .normal
+    @State private var watermarkOpacity: CGFloat = 0.3
     @State private var isLoading = false
+    @State private var previewImage: UIImage?
+    @State private var originalImage: UIImage?
+    @State private var isLoadingPreview = false
     
     var body: some View {
         NavigationStack {
             Form {
+                // 预览区域
+                if let preview = previewImage {
+                    Section {
+                        Image(uiImage: preview)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxHeight: 300)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    } header: {
+                        Text("预览")
+                    }
+                } else if isLoadingPreview {
+                    Section {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                        .frame(height: 200)
+                    } header: {
+                        Text("预览")
+                    }
+                }
+                
                 Section {
                     Toggle("添加水印", isOn: $useWatermark)
+                        .onChange(of: useWatermark) { _, _ in
+                            updatePreview()
+                        }
                     
                     if useWatermark {
                         TextField("水印文字", text: $watermarkText)
+                            .textFieldStyle(.roundedBorder)
                             .placeholder(when: watermarkText.isEmpty) {
                                 Text("例如：仅供XX使用")
                                     .foregroundColor(.secondary)
                             }
+                            .onChange(of: watermarkText) { _, _ in
+                                updatePreview()
+                            }
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("字体大小")
+                                Spacer()
+                                Text("\(Int(watermarkFontSize))")
+                                    .foregroundStyle(.secondary)
+                            }
+                            Slider(value: $watermarkFontSize, in: 20...80, step: 1)
+                                .onChange(of: watermarkFontSize) { _, _ in
+                                    updatePreview()
+                                }
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("行间距")
+                                Spacer()
+                            }
+                            Picker("行间距", selection: $watermarkSpacing) {
+                                ForEach(WatermarkSpacing.allCases) { spacing in
+                                    Text(spacing.displayName).tag(spacing)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .onChange(of: watermarkSpacing) { _, _ in
+                                updatePreview()
+                            }
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("透明度")
+                                Spacer()
+                                Text("\(Int(watermarkOpacity * 100))%")
+                                    .foregroundStyle(.secondary)
+                            }
+                            Slider(value: $watermarkOpacity, in: 0.1...1.0, step: 0.05)
+                                .onChange(of: watermarkOpacity) { _, _ in
+                                    updatePreview()
+                                }
+                        }
                     }
                 } header: {
                     Text("水印设置")
                 } footer: {
-                    Text("水印将显示在图片右下角")
+                    Text("水印将以对角线平铺方式覆盖在图片上")
+                        .font(.caption)
                 }
+                .listRowSpacing(6)
             }
             .navigationTitle("分享图片")
             .navigationBarTitleDisplayMode(.inline)
@@ -457,18 +973,87 @@ struct WatermarkConfigSheet: View {
                                 .foregroundColor(.white)
                         }
                         .padding(32)
-                        .background(
+                        .background(Color(.systemBackground))
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .overlay(
                             RoundedRectangle(cornerRadius: 20)
-                                .fill(Color(.systemBackground))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .strokeBorder(Color(.separator).opacity(0.3), lineWidth: 0.5)
-                                )
+                                .stroke(Color(.separator).opacity(0.8), lineWidth: 1.5)
                         )
                     }
                 }
             }
+            .task {
+                await loadPreviewImage()
+            }
         }
+    }
+    
+    private func loadPreviewImage() async {
+        isLoadingPreview = true
+        defer { isLoadingPreview = false }
+        
+        guard let firstImage = item.images?.first else { return }
+        
+        do {
+            let imageData = try await itemService.getDecryptedImage(imageId: firstImage.id)
+            if let uiImage = UIImage(data: imageData) {
+                originalImage = uiImage
+                previewImage = uiImage
+            }
+        } catch {
+            print("Error loading preview image: \(error)")
+        }
+    }
+    
+    private func updatePreview() {
+        guard let original = originalImage else { return }
+        
+        if useWatermark && !watermarkText.isEmpty {
+            let watermarkService = WatermarkServiceImpl()
+            let style = WatermarkStyle.from(
+                fontSize: watermarkFontSize,
+                opacity: watermarkOpacity,
+                spacing: watermarkSpacing
+            )
+            
+            if let watermarked = watermarkService.applyWatermark(
+                to: original,
+                text: watermarkText,
+                style: style
+            ) {
+                previewImage = watermarked
+            }
+        } else {
+            previewImage = original
+        }
+    }
+    
+    private func showSystemShareSheet(items: [Any]) {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController else {
+            print("❌ [WatermarkConfigSheet] Cannot find root view controller")
+            return
+        }
+        
+        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        
+        // iPad 需要设置 popover
+        if let popover = activityVC.popoverPresentationController {
+            popover.sourceView = rootViewController.view
+            popover.sourceRect = CGRect(x: rootViewController.view.bounds.midX,
+                                       y: rootViewController.view.bounds.midY,
+                                       width: 0, height: 0)
+            popover.permittedArrowDirections = []
+        }
+        
+        // 找到最顶层的 presented view controller
+        var topController = rootViewController
+        while let presented = topController.presentedViewController {
+            topController = presented
+        }
+        
+        print("✅ [WatermarkConfigSheet] Presenting UIActivityViewController")
+        topController.present(activityVC, animated: true)
     }
     
     private func shareImages() async {
@@ -476,32 +1061,62 @@ struct WatermarkConfigSheet: View {
         defer { isLoading = false }
         
         do {
-            let imagesData = try await itemService.getShareableImages(
-                id: item.id,
-                withWatermark: useWatermark,
-                watermarkText: useWatermark ? watermarkText : nil
-            )
+            // 获取所有图片
+            guard let images = item.images, !images.isEmpty else {
+                print("❌ [WatermarkConfigSheet] No images to share")
+                return
+            }
             
-            let uiImages = imagesData.compactMap { UIImage(data: $0) }
+            print("🔍 [WatermarkConfigSheet] Processing \(images.count) images")
+            var processedImages: [UIImage] = []
+            let watermarkService = WatermarkServiceImpl()
             
-            dismiss()
-            onShare(uiImages)
+            for imageDTO in images {
+                // 获取解密后的图片数据
+                let imageData = try await itemService.getDecryptedImage(imageId: imageDTO.id)
+                guard var uiImage = UIImage(data: imageData) else {
+                    print("❌ [WatermarkConfigSheet] Failed to create UIImage from data")
+                    continue
+                }
+                
+                print("✅ [WatermarkConfigSheet] Loaded image: \(uiImage.size)")
+                
+                // 如果需要添加水印
+                if useWatermark, !watermarkText.isEmpty {
+                    let style = WatermarkStyle.from(
+                        fontSize: watermarkFontSize,
+                        opacity: watermarkOpacity,
+                        spacing: watermarkSpacing
+                    )
+                    print("🔍 [WatermarkConfigSheet] Applying watermark: '\(watermarkText)'")
+                    if let watermarkedImage = watermarkService.applyWatermark(
+                        to: uiImage,
+                        text: watermarkText,
+                        style: style
+                    ) {
+                        uiImage = watermarkedImage
+                        print("✅ [WatermarkConfigSheet] Watermark applied")
+                    } else {
+                        print("❌ [WatermarkConfigSheet] Failed to apply watermark")
+                    }
+                }
+                
+                processedImages.append(uiImage)
+            }
+            
+            print("✅ [WatermarkConfigSheet] Processed \(processedImages.count) images, showing share sheet")
+            
+            // 直接显示系统分享界面
+            await MainActor.run {
+                showSystemShareSheet(items: processedImages)
+                // 延迟一点再dismiss，确保分享界面已显示
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    dismiss()
+                }
+            }
         } catch {
-            print("Error getting shareable images: \(error)")
+            print("❌ [WatermarkConfigSheet] Error processing images for sharing: \(error)")
         }
-    }
-}
-
-// MARK: - Share Sheet
-
-struct ShareSheet: UIViewControllerRepresentable {
-    let activityItems: [Any]
-    
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-    }
-    
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
     }
 }
 
@@ -563,7 +1178,7 @@ extension View {
     }
 }
 
-struct ZoomableScrollView<Content: View>: UIViewRepresentable {
+fileprivate struct ZoomableScrollView<Content: View>: UIViewRepresentable {
     private var content: Content
     
     init(@ViewBuilder content: () -> Content) {
