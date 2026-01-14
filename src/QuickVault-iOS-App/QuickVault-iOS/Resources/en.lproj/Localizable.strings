@@ -271,6 +271,47 @@
 "settings.data.reset" = "Reset All Data";
 "settings.data.reset.confirm" = "This will delete all your cards and settings. This action cannot be undone.";
 
+// MARK: - Items (New Design)
+"items.title" = "QuickVault";
+"items.search.placeholder" = "Search title or tags...";
+"items.loading" = "Loading...";
+"items.empty" = "No items yet";
+"items.empty.subtitle" = "Tap + in the top right to create your first item";
+"items.empty.search" = "No results found";
+"items.empty.search.subtitle" = "Try different search keywords";
+"items.pinned" = "Pinned";
+"items.all" = "All";
+"items.create.text" = "Create Text Item";
+"items.create.image" = "Create Image Item";
+"items.type.text" = "Text Item";
+"items.type.image" = "Image Item";
+"items.type.text.desc" = "Store text information for quick sharing";
+"items.type.image.desc" = "Save images with watermark sharing support";
+"items.create.title" = "Create %@";
+"items.create.selecttype" = "Select Type";
+"items.create.button" = "Create";
+"items.info.basic" = "Basic Info";
+"items.info.title" = "Title";
+"items.info.title.hint" = "Set a clear title for the item";
+"items.content" = "Content";
+"items.content.characters" = "%d characters";
+"items.images.select" = "Select Images";
+"items.images.count" = "%d images";
+"items.images.section" = "Images";
+"items.images.limit" = "Up to 10 images can be selected";
+"items.tags.section" = "Tags";
+"items.tags.add" = "Add Tag";
+"items.tags.placeholder" = "Enter tag name";
+"items.tags.hint" = "Use tags to help with categorization and search";
+"items.detail.edit" = "Edit";
+"items.detail.delete" = "Delete";
+"items.detail.pin" = "Pin";
+"items.detail.unpin" = "Unpin";
+"items.delete.confirm" = "Are you sure you want to delete this item?";
+"items.created.success" = "Created successfully";
+"items.updated.success" = "Updated successfully";
+"items.deleted.success" = "Deleted successfully";
+
 // MARK: - Errors
 "error.generic" = "Something went wrong";
 "error.network" = "Network error";

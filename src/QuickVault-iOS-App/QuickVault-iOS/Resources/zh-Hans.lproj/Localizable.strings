@@ -271,6 +271,47 @@
 "settings.data.reset" = "重置所有数据";
 "settings.data.reset.confirm" = "这将删除您的所有卡片和设置。此操作无法撤销。";
 
+// MARK: - Items (New Design)
+"items.title" = "随取 QuickVault";
+"items.search.placeholder" = "搜索标题或标签...";
+"items.loading" = "加载中...";
+"items.empty" = "还没有卡片";
+"items.empty.subtitle" = "点击右上角 + 创建第一张卡片";
+"items.empty.search" = "未找到结果";
+"items.empty.search.subtitle" = "试试其他搜索关键词";
+"items.pinned" = "置顶";
+"items.all" = "全部";
+"items.create.text" = "创建文本卡片";
+"items.create.image" = "创建图片卡片";
+"items.type.text" = "文本卡片";
+"items.type.image" = "图片卡片";
+"items.type.text.desc" = "存储文本信息，便于快速分享";
+"items.type.image.desc" = "保存图片，支持添加水印分享";
+"items.create.title" = "创建%@";
+"items.create.selecttype" = "选择类型";
+"items.create.button" = "创建";
+"items.info.basic" = "基本信息";
+"items.info.title" = "标题";
+"items.info.title.hint" = "为卡片设置一个清晰的标题";
+"items.content" = "内容";
+"items.content.characters" = "%d 字符";
+"items.images.select" = "选择图片";
+"items.images.count" = "%d 张";
+"items.images.section" = "图片";
+"items.images.limit" = "最多可选择 10 张图片";
+"items.tags.section" = "标签";
+"items.tags.add" = "添加标签";
+"items.tags.placeholder" = "输入标签名称";
+"items.tags.hint" = "使用标签帮助分类和搜索";
+"items.detail.edit" = "编辑";
+"items.detail.delete" = "删除";
+"items.detail.pin" = "置顶";
+"items.detail.unpin" = "取消置顶";
+"items.delete.confirm" = "确定要删除这张卡片吗？";
+"items.created.success" = "创建成功";
+"items.updated.success" = "更新成功";
+"items.deleted.success" = "删除成功";
+
 // MARK: - Errors
 "error.generic" = "出现错误";
 "error.network" = "网络错误";

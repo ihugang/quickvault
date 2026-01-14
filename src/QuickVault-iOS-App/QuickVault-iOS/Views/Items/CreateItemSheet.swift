@@ -14,6 +14,7 @@ struct CreateItemSheet: View {
     @Binding var selectedType: ItemType?
     let onCreate: () -> Void
     
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @Environment(\.dismiss) private var dismiss
     @State private var title = ""
     @State private var textContent = ""
@@ -50,18 +51,19 @@ struct CreateItemSheet: View {
                     loadingOverlay
                 }
             }
-            .navigationTitle(selectedType == nil ? "选择类型" : "创建\(selectedType!.displayName)")
+            .navigationTitle(selectedType == nil ? localizationManager.localizedString("items.create.selecttype") : String(format: localizationManager.localizedString("items.create.title"), selectedType!.displayName))
             .navigationBarTitleDisplayMode(.inline)
+            .environment(\.layoutDirection, localizationManager.layoutDirection)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("取消") {
+                    Button(localizationManager.localizedString("common.cancel")) {
                         dismiss()
                     }
                 }
                 
                 if selectedType != nil {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("创建") {
+                        Button(localizationManager.localizedString("items.create.button")) {
                             Task { await createItem() }
                         }
                         .disabled(!canCreate)
@@ -92,11 +94,11 @@ struct CreateItemSheet: View {
                     }
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("文本卡片")
+                        Text(localizationManager.localizedString("items.type.text"))
                             .font(.headline)
                             .foregroundColor(.primary)
                         
-                        Text("存储文本信息，便于快速分享")
+                        Text(localizationManager.localizedString("items.type.text.desc"))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -127,11 +129,11 @@ struct CreateItemSheet: View {
                     }
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("图片卡片")
+                        Text(localizationManager.localizedString("items.type.image"))
                             .font(.headline)
                             .foregroundColor(.primary)
                         
-                        Text("保存图片，支持添加水印分享")
+                        Text(localizationManager.localizedString("items.type.image.desc"))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -145,7 +147,7 @@ struct CreateItemSheet: View {
                 .padding(.vertical, 8)
             }
         } header: {
-            Text("选择卡片类型")
+            Text(localizationManager.localizedString("items.create.selecttype"))
         }
     }
     
@@ -153,11 +155,11 @@ struct CreateItemSheet: View {
     
     private var basicInfoSection: some View {
         Section {
-            TextField("标题", text: $title)
+            TextField(localizationManager.localizedString("items.info.title"), text: $title)
         } header: {
-            Text("基本信息")
+            Text(localizationManager.localizedString("items.info.basic"))
         } footer: {
-            Text("为卡片设置一个清晰的标题")
+            Text(localizationManager.localizedString("items.info.title.hint"))
         }
     }
     
@@ -171,9 +173,9 @@ struct CreateItemSheet: View {
                 .lineSpacing(4)
                 .autocorrectionDisabled()
         } header: {
-            Text("内容")
+            Text(localizationManager.localizedString("items.content"))
         } footer: {
-            Text("\(textContent.count) 字符")
+            Text(String(format: localizationManager.localizedString("items.content.characters"), textContent.count))
         }
     }
     
@@ -184,10 +186,10 @@ struct CreateItemSheet: View {
             PhotosPicker(selection: $selectedImages, maxSelectionCount: 10, matching: .images) {
                 HStack {
                     Image(systemName: "photo.badge.plus")
-                    Text("选择图片")
+                    Text(localizationManager.localizedString("items.images.select"))
                     Spacer()
                     if !imageData.isEmpty {
-                        Text("\(imageData.count) 张")
+                        Text(String(format: localizationManager.localizedString("items.images.count"), imageData.count))
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -224,9 +226,9 @@ struct CreateItemSheet: View {
                 }
             }
         } header: {
-            Text("图片")
+            Text(localizationManager.localizedString("items.images.section"))
         } footer: {
-            Text("最多可选择 10 张图片")
+            Text(localizationManager.localizedString("items.images.limit"))
         }
     }
     
@@ -235,13 +237,13 @@ struct CreateItemSheet: View {
     private var tagsSection: some View {
         Section {
             HStack {
-                TextField("添加标签", text: $tagInput)
+                TextField(localizationManager.localizedString("items.tags.placeholder"), text: $tagInput)
                     .onSubmit {
                         addTag()
                     }
                 
                 if !tagInput.isEmpty {
-                    Button("添加") {
+                    Button(localizationManager.localizedString("items.tags.add")) {
                         addTag()
                     }
                 }
@@ -273,9 +275,9 @@ struct CreateItemSheet: View {
                 .padding(.vertical, 8)
             }
         } header: {
-            Text("标签")
+            Text(localizationManager.localizedString("items.tags.section"))
         } footer: {
-            Text("使用标签帮助分类和搜索")
+            Text(localizationManager.localizedString("items.tags.hint"))
         }
     }
     
@@ -289,7 +291,7 @@ struct CreateItemSheet: View {
             VStack(spacing: 16) {
                 ProgressView()
                     .scaleEffect(1.5)
-                Text("创建中...")
+                Text(localizationManager.localizedString("common.loading"))
                     .foregroundColor(.white)
             }
             .padding(32)

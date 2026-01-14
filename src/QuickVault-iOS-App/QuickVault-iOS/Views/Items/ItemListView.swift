@@ -24,6 +24,7 @@ private enum ListPalette {
 
 struct ItemListView: View {
     @StateObject private var viewModel: ItemListViewModel
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @State private var showingCreateSheet = false
     @State private var selectedItemType: ItemType?
     @State private var searchText = ""
@@ -52,8 +53,9 @@ struct ItemListView: View {
                     }
                 }
             }
-            .navigationTitle("随取 QuickVault")
+            .navigationTitle(localizationManager.localizedString("items.title"))
             .navigationBarTitleDisplayMode(.large)
+            .environment(\.layoutDirection, localizationManager.layoutDirection)
             .toolbarBackground(Color.white.opacity(0.94), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarColorScheme(.light, for: .navigationBar)
@@ -99,7 +101,7 @@ struct ItemListView: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
                 
-                TextField("搜索标题或标签...", text: $searchText)
+                TextField(localizationManager.localizedString("items.search.placeholder"), text: $searchText)
                     .textFieldStyle(.plain)
                     .autocorrectionDisabled()
                 
@@ -138,14 +140,14 @@ struct ItemListView: View {
                 selectedItemType = .text
                 showingCreateSheet = true
             } label: {
-                Label("文本卡片", systemImage: "doc.text")
+                Label(localizationManager.localizedString("items.type.text"), systemImage: "doc.text")
             }
             
             Button {
                 selectedItemType = .image
                 showingCreateSheet = true
             } label: {
-                Label("图片卡片", systemImage: "photo")
+                Label(localizationManager.localizedString("items.type.image"), systemImage: "photo")
             }
         } label: {
             Image(systemName: "plus.circle.fill")
@@ -160,7 +162,7 @@ struct ItemListView: View {
         VStack(spacing: 16) {
             ProgressView()
                 .scaleEffect(1.2)
-            Text("加载中...")
+            Text(localizationManager.localizedString("items.loading"))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
@@ -176,10 +178,10 @@ struct ItemListView: View {
                 .foregroundStyle(.tertiary)
             
             VStack(spacing: 8) {
-                Text(searchText.isEmpty ? "还没有卡片" : "未找到结果")
+                Text(localizationManager.localizedString(searchText.isEmpty ? "items.empty" : "items.empty.search"))
                     .font(.title3.weight(.semibold))
                 
-                Text(searchText.isEmpty ? "点击右上角 + 创建第一张卡片" : "试试其他搜索关键词")
+                Text(localizationManager.localizedString(searchText.isEmpty ? "items.empty.subtitle" : "items.empty.search.subtitle"))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -189,7 +191,7 @@ struct ItemListView: View {
                     selectedItemType = .text
                     showingCreateSheet = true
                 } label: {
-                    Label("创建文本卡片", systemImage: "doc.text")
+                    Label(localizationManager.localizedString("items.create.text"), systemImage: "doc.text")
                         .font(.headline)
                         .foregroundColor(.white)
                         .padding(.horizontal, 24)
@@ -233,7 +235,7 @@ struct ItemListView: View {
             HStack {
                 Image(systemName: "pin.fill")
                     .font(.caption)
-                Text("置顶")
+                Text(localizationManager.localizedString("items.pinned"))
                     .font(.subheadline.weight(.semibold))
             }
             .foregroundStyle(.secondary)
@@ -260,7 +262,7 @@ struct ItemListView: View {
                 HStack {
                     Image(systemName: "square.stack")
                         .font(.caption)
-                    Text("全部")
+                    Text(localizationManager.localizedString("items.all"))
                         .font(.subheadline.weight(.semibold))
                 }
                 .foregroundStyle(.secondary)
