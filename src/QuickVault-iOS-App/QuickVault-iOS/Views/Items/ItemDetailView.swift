@@ -8,6 +8,19 @@
 import SwiftUI
 import QuickVaultCore
 
+// MARK: - Color Palette
+private enum DetailPalette {
+    // Primary - 深蓝色（安全与信任）
+    static let primary = Color(red: 0.20, green: 0.40, blue: 0.70)       // #3366B3
+    static let secondary = Color(red: 0.15, green: 0.65, blue: 0.60)     // #26A699 青绿色
+    static let accent = Color(red: 0.95, green: 0.70, blue: 0.20)        // #F2B333 金色
+    
+    // Neutral
+    static let canvas = Color(red: 0.965, green: 0.975, blue: 0.985)
+    static let card = Color.white
+    static let border = Color(red: 0.88, green: 0.90, blue: 0.92)        // #E0E5EB
+}
+
 struct ItemDetailView: View {
     let item: ItemDTO
     let itemService: ItemService
@@ -15,7 +28,6 @@ struct ItemDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     @State private var showingDeleteAlert = false
-    @State private var showingWatermarkSheet = false
     @State private var showingEditSheet = false
     @State private var isLoading = false
     
@@ -41,8 +53,12 @@ struct ItemDetailView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 24)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(DetailPalette.canvas)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.white.opacity(0.94), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarColorScheme(.light, for: .navigationBar)
+        .tint(DetailPalette.primary)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
@@ -82,9 +98,6 @@ struct ItemDetailView: View {
         } message: {
             Text("此操作不可恢复")
         }
-        .sheet(isPresented: $showingWatermarkSheet) {
-            WatermarkConfigSheet(item: item, itemService: itemService)
-        }
         .sheet(isPresented: $showingEditSheet) {
             EditItemSheet(item: item, itemService: itemService, onUpdate: onUpdate)
         }
@@ -97,12 +110,12 @@ struct ItemDetailView: View {
             // 类型图标
             ZStack {
                 Circle()
-                    .fill(item.type == .text ? Color.blue.opacity(0.1) : Color(red: 0.2, green: 0.5, blue: 0.3).opacity(0.1))
+                    .fill(item.type == .text ? Color.blue.opacity(0.12) : DetailPalette.primary.opacity(0.12))
                     .frame(width: 80, height: 80)
                 
                 Image(systemName: item.type.icon)
                     .font(.system(size: 36))
-                    .foregroundStyle(item.type == .text ? .blue : Color(red: 0.2, green: 0.5, blue: 0.3))
+                    .foregroundStyle(item.type == .text ? .blue : DetailPalette.primary)
             }
             
             // 标题
@@ -160,13 +173,13 @@ struct ItemDetailView: View {
                     .textSelection(.enabled)
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color(.systemBackground))
+                        .background(DetailPalette.card)
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(Color(.separator).opacity(0.8), lineWidth: 1.5)
+                            .stroke(DetailPalette.border, lineWidth: 1)
                     )
-                    .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+                        .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
             }
         }
     }
@@ -212,12 +225,12 @@ struct ItemDetailView: View {
                 ForEach(item.tags, id: \.self) { tag in
                     Text(tag)
                         .font(.subheadline.weight(.medium))
-                        .foregroundStyle(.blue)
+                        .foregroundStyle(DetailPalette.primary)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 8)
                         .background(
                             Capsule()
-                                .fill(Color.blue.opacity(0.1))
+                            .fill(DetailPalette.primary.opacity(0.12))
                         )
                 }
             }
@@ -246,28 +259,10 @@ struct ItemDetailView: View {
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color.blue)
+                            .fill(DetailPalette.primary)
                     )
                 }
                 .disabled(isLoading)
-            } else {
-                Button {
-                    showingWatermarkSheet = true
-                } label: {
-                    HStack {
-                        Image(systemName: "photo.badge.arrow.down")
-                        Text("分享图片")
-                        Spacer()
-                    }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding(16)
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color(red: 0.2, green: 0.5, blue: 0.3))
-                    )
-                }
             }
         }
     }
@@ -498,7 +493,9 @@ struct FullImageView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                Color.black.ignoresSafeArea()
+                // 背景：水印模式时用较亮的背景，查看模式时用黑色
+                (showControls ? Color(.systemBackground) : Color.black)
+                    .ignoresSafeArea()
                 
                 // 图片区域
                 VStack(spacing: 0) {
@@ -613,14 +610,13 @@ struct FullImageView: View {
                         Text("全部图片（\(images.count)张）").tag(true)
                     }
                     .pickerStyle(.segmented)
-                    .colorScheme(.dark)
                 }
             }
             
             // 水印开关
             Toggle("添加水印", isOn: $useWatermark)
                 .toggleStyle(.switch)
-                .tint(.blue)
+                .tint(DetailPalette.primary)
                 .onChange(of: useWatermark) { _, _ in
                     isTextFieldFocused = false
                     updatePreview()
@@ -630,7 +626,6 @@ struct FullImageView: View {
                 // 水印文字
                 TextField("水印文字（例如：仅供XX使用）", text: $watermarkText)
                     .textFieldStyle(.roundedBorder)
-                    .colorScheme(.dark)
                     .focused($isTextFieldFocused)
                     .submitLabel(.done)
                     .onSubmit {
@@ -650,7 +645,7 @@ struct FullImageView: View {
                     }
                     .font(.subheadline)
                     Slider(value: $watermarkFontSize, in: 20...80, step: 1)
-                        .tint(.blue)
+                        .tint(DetailPalette.primary)
                         .onChange(of: watermarkFontSize) { _, _ in
                             isTextFieldFocused = false
                             updatePreview()
@@ -667,7 +662,6 @@ struct FullImageView: View {
                         }
                     }
                     .pickerStyle(.segmented)
-                    .colorScheme(.dark)
                     .onChange(of: watermarkSpacing) { _, _ in
                         isTextFieldFocused = false
                         updatePreview()
@@ -684,7 +678,7 @@ struct FullImageView: View {
                     }
                     .font(.subheadline)
                     Slider(value: $watermarkOpacity, in: 0.1...1.0, step: 0.05)
-                        .tint(.blue)
+                        .tint(DetailPalette.primary)
                         .onChange(of: watermarkOpacity) { _, _ in
                             isTextFieldFocused = false
                             updatePreview()
@@ -692,12 +686,15 @@ struct FullImageView: View {
                 }
             }
         }
-        .foregroundStyle(.white)
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color.black.opacity(0.85))
-                .shadow(color: .black.opacity(0.3), radius: 20, y: -5)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.15), radius: 16, y: -4)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .stroke(DetailPalette.border, lineWidth: 1)
         )
         .padding(.horizontal, 16)
         .onTapGesture {

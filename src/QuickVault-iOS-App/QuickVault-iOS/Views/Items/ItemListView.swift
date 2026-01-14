@@ -8,6 +8,20 @@
 import SwiftUI
 import QuickVaultCore
 
+// MARK: - Color Palette
+private enum ListPalette {
+    // Primary - 深蓝色（安全与信任）
+    static let primary = Color(red: 0.20, green: 0.40, blue: 0.70)       // #3366B3
+    static let secondary = Color(red: 0.15, green: 0.65, blue: 0.60)     // #26A699 青绿色
+    static let accent = Color(red: 0.95, green: 0.70, blue: 0.20)        // #F2B333 金色
+    
+    // Neutral
+    static let canvasTop = Color(red: 0.965, green: 0.975, blue: 0.985)  // light gray-blue
+    static let canvasBottom = Color(red: 0.95, green: 0.96, blue: 0.97)
+    static let card = Color.white
+    static let border = Color(red: 0.88, green: 0.90, blue: 0.92)        // #E0E5EB
+}
+
 struct ItemListView: View {
     @StateObject private var viewModel: ItemListViewModel
     @State private var showingCreateSheet = false
@@ -40,6 +54,10 @@ struct ItemListView: View {
             }
             .navigationTitle("随取 QuickVault")
             .navigationBarTitleDisplayMode(.large)
+            .toolbarBackground(Color.white.opacity(0.94), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarColorScheme(.light, for: .navigationBar)
+            .tint(ListPalette.primary)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     createButton
@@ -64,8 +82,8 @@ struct ItemListView: View {
     private var backgroundGradient: some View {
         LinearGradient(
             colors: [
-                Color(.systemBackground),
-                Color(.systemBackground).opacity(0.95)
+                ListPalette.canvasTop,
+                ListPalette.canvasBottom
             ],
             startPoint: .top,
             endPoint: .bottom
@@ -99,6 +117,10 @@ struct ItemListView: View {
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(Color(.systemGray6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(ListPalette.border, lineWidth: 1)
+                    )
             )
         }
         .padding(.horizontal, 20)
@@ -174,7 +196,7 @@ struct ItemListView: View {
                         .padding(.vertical, 14)
                         .background(
                             RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(Color.accentColor)
+                                .fill(ListPalette.primary)
                         )
                 }
                 .padding(.top, 8)
@@ -303,24 +325,24 @@ struct ItemCard: View {
             }
         }
         .padding(16)
-        .background(Color(.systemBackground))
+        .background(ListPalette.card)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .stroke(Color(.separator).opacity(0.8), lineWidth: 1.5)
+            .stroke(ListPalette.border, lineWidth: 1)
         )
-        .shadow(color: .black.opacity(0.08), radius: 12, y: 4)
+        .shadow(color: .black.opacity(0.06), radius: 10, y: 2)
     }
     
     private var itemTypeIcon: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(item.type == .text ? Color.blue.opacity(0.1) : Color(red: 0.2, green: 0.5, blue: 0.3).opacity(0.1))
+                .fill(item.type == .text ? Color.blue.opacity(0.1) : ListPalette.primary.opacity(0.12))
                 .frame(width: 44, height: 44)
             
             Image(systemName: item.type.icon)
                 .font(.title3)
-                .foregroundStyle(item.type == .text ? .blue : Color(red: 0.2, green: 0.5, blue: 0.3))
+                .foregroundStyle(item.type == .text ? .blue : ListPalette.primary)
         }
     }
     
