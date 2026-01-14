@@ -797,9 +797,6 @@ class CardEditorViewModel: ObservableObject {
         var bankName: String?
         var bankAccount: String?
         
-        // 合并所有行为一个字符串用于正则匹配
-        let fullText = text
-        
         for line in lines {
             let trimmed = line.trimmingCharacters(in: .whitespaces)
             if trimmed.isEmpty { continue }
@@ -954,10 +951,7 @@ class CardEditorViewModel: ObservableObject {
 
 // MARK: - CardType Extensions for UI
 
-extension CardType: Identifiable {
-    /// Identifiable conformance for SwiftUI
-    public var id: String { rawValue }
-    
+extension CardType {
     /// 证件正面照片的附件文件名
     var frontPhotoFileName: String {
         switch self {

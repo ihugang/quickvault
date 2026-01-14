@@ -77,7 +77,7 @@ public struct PersistenceController: Sendable {
     }
 
     container.viewContext.automaticallyMergesChangesFromParent = true
-    container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+    container.viewContext.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
     
     // Set query generation to track changes
     try? container.viewContext.setQueryGenerationFrom(.current)

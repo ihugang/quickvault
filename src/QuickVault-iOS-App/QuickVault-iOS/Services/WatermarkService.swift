@@ -154,7 +154,7 @@ class ImageProcessor {
     /// Apply export options to image / 应用导出选项到图片
     static func process(image: UIImage, options: ImageExportOptions) -> Data? {
         // Step 1: Resize if needed
-        var processedImage = resize(image: image, maxWidth: options.maxWidth, maxHeight: options.maxHeight)
+        let processedImage = resize(image: image, maxWidth: options.maxWidth, maxHeight: options.maxHeight)
 
         // Step 2: Compress to file size if specified
         if let maxSizeKB = options.maxFileSizeKB {

@@ -74,7 +74,6 @@ final class MRZTD3Parser {
 
     private func splitName(_ s: String) -> (String?, String?) {
         // "ERIKSSON<<ANNA<MARIA<<<<<<<<"
-        let parts = s.split(separator: "<", omittingEmptySubsequences: false)
         // 更可靠：用 "<<"
         if let range = s.range(of: "<<") {
             let sur = s[..<range.lowerBound].replacingOccurrences(of: "<", with: " ").trimmingCharacters(in: .whitespaces)

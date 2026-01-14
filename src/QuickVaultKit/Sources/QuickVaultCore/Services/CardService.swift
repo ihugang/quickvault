@@ -309,7 +309,7 @@ public final class CardServiceImpl: CardService, @unchecked Sendable {
         let cards = try self.context.fetch(fetchRequest)
 
         // Also search in decrypted field values and tags
-        let filteredCards = try cards.filter { card in
+        let filteredCards = cards.filter { card in
           // Check title (already matched by predicate)
           if card.title.localizedCaseInsensitiveContains(query) {
             return true

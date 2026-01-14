@@ -402,14 +402,13 @@ struct CardCreationWizard: View {
     
     private func saveCard() {
         Task {
-            do {
-                try await viewModel.saveCard()
+            if await viewModel.saveCard() != nil {
                 await MainActor.run {
                     onSave()
                     dismiss()
                 }
-            } catch {
-                print("Save error: \(error)")
+            } else if let errorMessage = viewModel.errorMessage {
+                print("Save error: \(errorMessage)")
             }
         }
     }

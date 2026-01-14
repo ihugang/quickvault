@@ -24,7 +24,7 @@ public struct FieldDefinition: Sendable {
 
 // MARK: - Card Type
 
-public enum CardType: String, CaseIterable, Sendable {
+public enum CardType: String, CaseIterable, Sendable, Identifiable {
   case general
   case address
   case invoice
@@ -49,6 +49,10 @@ public enum CardType: String, CaseIterable, Sendable {
     case .socialSecurityCard: return "社保卡 / Social Security Card"
     case .bankCard: return "银行卡 / Bank Card"
     }
+  }
+
+  public var id: String {
+    rawValue
   }
   
   public var group: CardGroup {

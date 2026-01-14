@@ -12,7 +12,7 @@ final class MRZAutoCorrector {
     /// 输入原始两行（可能有 OCR 错误），返回“尽量校验通过”的结果
     func parseWithAutoCorrection(line1: String, line2: String) throws -> MRZParsed {
         // 先标准化
-        var l1 = MRZSanitizer.normalizeLine(line1, targetLength: 44)
+        let l1 = MRZSanitizer.normalizeLine(line1, targetLength: 44)
         var l2 = MRZSanitizer.normalizeLine(line2, targetLength: 44)
 
         // 先尝试直接解析

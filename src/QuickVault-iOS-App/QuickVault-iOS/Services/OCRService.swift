@@ -951,12 +951,12 @@ final class OCRServiceImpl: OCRService {
                 
                 if result.passportNumber == nil || parsed.checksumsValid {
                     result.passportNumber = parsed.passportNumber
-                    print("    ✓ [MRZ矫正] 提取护照号: \(parsed.passportNumber)")
+                    print("    ✓ [MRZ矫正] 提取护照号: \(parsed.passportNumber ?? "nil")")
                 }
                 
                 if result.nationality == nil || parsed.checksumsValid {
                     result.nationality = parsed.nationality
-                    print("    ✓ [MRZ矫正] 提取国籍: \(parsed.nationality)")
+                    print("    ✓ [MRZ矫正] 提取国籍: \(parsed.nationality ?? "nil")")
                 }
                 
                 if result.birthDate == nil || parsed.checksumsValid {
@@ -1091,10 +1091,25 @@ final class OCRServiceImpl: OCRService {
         for (index, text) in texts.enumerated() {
             let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
             
-            // 姓名
-            if trimmed.contains("姓名") {
-                result.name = extractValueAfterLabel(trimmed, label: "姓名")
-                    ?? (index + 1 < texts.count ? texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines) : nil)
+            // 姓名 - 优先从主页提取（避免副页OCR错误）
+            if (trimmed.contains("姓名") || trimmed.contains("糕名")) && result.name == nil {
+                // 提取标签后的值
+                var extractedName = extractValueAfterLabel(trimmed, label: "姓名")
+                    ?? extractValueAfterLabel(trimmed, label: "糕名")
+                
+                // 如果没有提取到，检查下一行
+                if extractedName == nil && index + 1 < texts.count {
+                    let nextLine = texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    // 确保下一行不是其他标签
+                    if !nextLine.contains("性别") && !nextLine.contains("国籍") && !nextLine.isEmpty {
+                        extractedName = nextLine
+                    }
+                }
+                
+                // 只有在主页（非副页）时才设置姓名
+                if let name = extractedName, !trimmed.contains("副页") {
+                    result.name = name
+                }
             }
             
             // 性别
@@ -1117,19 +1132,42 @@ final class OCRServiceImpl: OCRService {
                 result.nationality = extractValueAfterLabel(trimmed, label: "国籍")
             }
             
-            // 出生日期 - 支持多种格式
-            if let birthMatch = trimmed.range(of: #"\d{4}年\d{1,2}月\d{1,2}日"#, options: .regularExpression) {
-                result.birthDate = String(trimmed[birthMatch])
-            } else if let birthMatch = trimmed.range(of: #"\d{4}-\d{2}-\d{2}"#, options: .regularExpression) {
-                result.birthDate = String(trimmed[birthMatch])
+            // 出生日期 - 必须明确包含"出生"标签，避免误取有效期
+            if trimmed.contains("出生") && result.birthDate == nil {
+                if let birthMatch = trimmed.range(of: #"\d{4}年\d{1,2}月\d{1,2}日"#, options: .regularExpression) {
+                    result.birthDate = String(trimmed[birthMatch])
+                } else if let birthMatch = trimmed.range(of: #"\d{4}-\d{2}-\d{2}"#, options: .regularExpression) {
+                    result.birthDate = String(trimmed[birthMatch])
+                }
             }
             
-            // 驾照号码 - 通常12位或18位
+            // 驾照号码 - 通常12位数字或18位（可能以X结尾）
             if result.licenseNumber == nil {
-                if let licenseMatch = trimmed.range(of: #"\d{12}|\d{18}"#, options: .regularExpression) {
+                // 方式1: 当前行包含"证号"标签，尝试在同行或下一行提取
+                if trimmed.contains("证号") && !trimmed.contains("副页") {
+                    var licenseNumber: String?
+                    
+                    // 先尝试从同行提取
+                    if let licenseMatch = trimmed.range(of: #"\d{17}[0-9Xx]|\d{12}|\d{18}"#, options: .regularExpression) {
+                        licenseNumber = String(trimmed[licenseMatch])
+                    }
+                    // 如果同行没有，检查下一行
+                    else if index + 1 < texts.count {
+                        let nextLine = texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines)
+                        if let licenseMatch = nextLine.range(of: #"\d{17}[0-9Xx]|\d{12}|\d{18}"#, options: .regularExpression) {
+                            licenseNumber = String(nextLine[licenseMatch])
+                        }
+                    }
+                    
+                    if let number = licenseNumber, !trimmed.contains("身份证") {
+                        result.licenseNumber = number
+                    }
+                }
+                // 方式2: 直接匹配18位数字+X格式（驾照特征）
+                else if let licenseMatch = trimmed.range(of: #"\d{17}[0-9Xx]"#, options: .regularExpression) {
                     let number = String(trimmed[licenseMatch])
-                    // 排除身份证号（18位）和日期（8位）
-                    if number.count == 12 || (number.count == 18 && !trimmed.contains("身份证")) {
+                    // 确保不是在副页或身份证相关的行
+                    if !trimmed.contains("副页") && !trimmed.contains("身份证") {
                         result.licenseNumber = number
                     }
                 }
@@ -1143,47 +1181,122 @@ final class OCRServiceImpl: OCRService {
                 }
                 for i in (index + 1)..<min(index + 3, texts.count) {
                     let part = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
-                    if part.isEmpty || part.contains("初次领证") || part.contains("有效期") {
+                    // 停止条件：遇到其他标签或空行
+                    if part.isEmpty || part.contains("初次领证") || part.contains("有效期") || part.contains("出生") {
                         break
                     }
-                    addressParts.append(part)
+                    // 过滤纯英文标签（如 "Avidns"、"Address" 等）
+                    if !part.allSatisfy({ $0.isASCII && $0.isLetter }) {
+                        addressParts.append(part)
+                    }
                 }
                 if !addressParts.isEmpty {
-                    result.address = addressParts.joined()
+                    // 清理地址中混入的英文标签
+                    let cleanedAddress = addressParts.joined()
+                        .replacingOccurrences(of: #"[A-Za-z]{3,}"#, with: "", options: .regularExpression)
+                        .trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !cleanedAddress.isEmpty {
+                        result.address = cleanedAddress
+                    }
                 }
             }
             
             // 初次领证日期
-            if trimmed.contains("初次领证") {
+            if (trimmed.contains("初次领证") || trimmed.contains("初次领証")) && result.issueDate == nil {
+                var issueDate: String?
+                
+                // 尝试从同行提取完整日期
                 if let dateMatch = trimmed.range(of: #"\d{4}年\d{1,2}月\d{1,2}日"#, options: .regularExpression) {
-                    result.issueDate = String(trimmed[dateMatch])
+                    issueDate = String(trimmed[dateMatch])
                 } else if let dateMatch = trimmed.range(of: #"\d{4}-\d{2}-\d{2}"#, options: .regularExpression) {
-                    result.issueDate = String(trimmed[dateMatch])
+                    issueDate = String(trimmed[dateMatch])
                 }
+                // 尝试从同行提取不完整日期（如 "2000-03-"）
+                else if let dateMatch = trimmed.range(of: #"\d{4}-\d{2}-?"#, options: .regularExpression) {
+                    issueDate = String(trimmed[dateMatch]).replacingOccurrences(of: "-$", with: "", options: .regularExpression)
+                }
+                
+                // 如果同行没有，检查下一行
+                if issueDate == nil && index + 1 < texts.count {
+                    let nextLine = texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    if let dateMatch = nextLine.range(of: #"\d{4}年\d{1,2}月\d{1,2}日"#, options: .regularExpression) {
+                        issueDate = String(nextLine[dateMatch])
+                    } else if let dateMatch = nextLine.range(of: #"\d{4}-\d{2}-\d{2}"#, options: .regularExpression) {
+                        issueDate = String(nextLine[dateMatch])
+                    } else if let dateMatch = nextLine.range(of: #"\d{4}-\d{2}-?"#, options: .regularExpression) {
+                        issueDate = String(nextLine[dateMatch]).replacingOccurrences(of: "-$", with: "", options: .regularExpression)
+                    }
+                }
+                
+                result.issueDate = issueDate
             }
             
             // 有效期限
-            if trimmed.contains("有效期限") || trimmed.contains("有效期") {
-                // 格式: YYYY-MM-DD至YYYY-MM-DD 或 YYYY年MM月DD日至YYYY年MM月DD日
+            if (trimmed.contains("有效期限") || trimmed.contains("有效期")) && result.validFrom == nil && result.validUntil == nil {
+                var validFrom: String?
+                var validUntil: String?
+                
+                // 格式1: 同行包含完整期限 "YYYY-MM-DD至YYYY-MM-DD"
                 if let validMatch = trimmed.range(of: #"\d{4}[-年]\d{2}[-月]\d{2}[日]?至\d{4}[-年]\d{2}[-月]\d{2}[日]?"#, options: .regularExpression) {
                     let validPeriod = String(trimmed[validMatch])
                     let dates = validPeriod.split(separator: "至").map { String($0) }
                     if dates.count == 2 {
-                        result.validFrom = dates[0]
-                        result.validUntil = dates[1]
+                        validFrom = dates[0]
+                        validUntil = dates[1]
                     }
                 }
+                // 格式2: 标签和日期分离，需要从后续行提取
+                else {
+                    // 检查接下来的2-3行
+                    for i in (index + 1)..<min(index + 4, texts.count) {
+                        let line = texts[i].trimmingCharacters(in: .whitespacesAndNewlines)
+                        
+                        // 提取validFrom（第一个日期）
+                        if validFrom == nil {
+                            if let dateMatch = line.range(of: #"\d{4}-\d{2}-\d{2}"#, options: .regularExpression) {
+                                validFrom = String(line[dateMatch])
+                                continue
+                            }
+                        }
+                        
+                        // 提取validUntil（"至"后的日期）
+                        if line.contains("至") {
+                            if let dateMatch = line.range(of: #"\d{4}-\d{2}-\d{2}"#, options: .regularExpression) {
+                                validUntil = String(line[dateMatch])
+                                break
+                            }
+                        }
+                    }
+                }
+                
+                result.validFrom = validFrom
+                result.validUntil = validUntil
             }
             
             // 准驾车型
-            if trimmed.contains("准驾车型") {
-                result.licenseClass = extractValueAfterLabel(trimmed, label: "准驾车型")
-                // 常见车型: C1, C2, B2, A1, A2 等
-                if result.licenseClass == nil {
+            if trimmed.contains("准驾车型") && result.licenseClass == nil {
+                var licenseClass: String?
+                
+                // 尝试从同行提取
+                licenseClass = extractValueAfterLabel(trimmed, label: "准驾车型")
+                
+                // 如果没有提取到，尝试正则匹配常见车型
+                if licenseClass == nil {
                     if let classMatch = trimmed.range(of: #"[A-D][1-3]"#, options: .regularExpression) {
-                        result.licenseClass = String(trimmed[classMatch])
+                        licenseClass = String(trimmed[classMatch])
                     }
                 }
+                
+                // 如果同行没有，检查下一行
+                if licenseClass == nil && index + 1 < texts.count {
+                    let nextLine = texts[index + 1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    // 匹配常见车型格式
+                    if let classMatch = nextLine.range(of: #"[A-D][1-3]"#, options: .regularExpression) {
+                        licenseClass = String(nextLine[classMatch])
+                    }
+                }
+                
+                result.licenseClass = licenseClass
             }
         }
         
@@ -1194,9 +1307,6 @@ final class OCRServiceImpl: OCRService {
     
     private func parseBusinessLicenseTexts(_ texts: [String]) -> BusinessLicenseOCRResult {
         var result = BusinessLicenseOCRResult()
-        
-        // 合并所有文本用于某些字段的提取
-        let fullText = texts.joined(separator: "\n")
         
         for (index, text) in texts.enumerated() {
             let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)

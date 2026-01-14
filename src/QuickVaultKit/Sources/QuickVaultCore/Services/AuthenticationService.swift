@@ -263,7 +263,7 @@ public class AuthenticationServiceImpl: AuthenticationService {
         throw AuthenticationError.biometricFailed
       }
     } catch let authError as AuthenticationError {
-      authLogger.error("[AuthService] Auth error: \(authError.localizedDescription ?? "unknown")")
+      authLogger.error("[AuthService] Auth error: \(authError.localizedDescription)")
       throw authError
     } catch {
       authLogger.error("[AuthService] Biometric failed with error: \(error.localizedDescription)")
