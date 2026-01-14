@@ -136,6 +136,16 @@ class LocalizationManager: ObservableObject {
     let format = localizedString(key)
     return String(format: format, arguments: arguments)
   }
+  
+  /// Format date according to current language locale / 根据当前语言的区域设置格式化日期
+  nonisolated func formatDate(_ date: Date, dateStyle: DateFormatter.Style = .medium, timeStyle: DateFormatter.Style = .none) -> String {
+    let languageCode = UserDefaults.standard.string(forKey: "app_language") ?? "en"
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: languageCode)
+    formatter.dateStyle = dateStyle
+    formatter.timeStyle = timeStyle
+    return formatter.string(from: date)
+  }
 }
 
 // MARK: - String Extension for Localization
