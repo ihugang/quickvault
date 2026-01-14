@@ -11,9 +11,9 @@ extension TextContent {
     return NSFetchRequest<TextContent>(entityName: "TextContent")
   }
 
-  @NSManaged public var id: UUID
-  @NSManaged public var encryptedContent: Data
-  @NSManaged public var item: Item
+  @NSManaged public var id: UUID?
+  @NSManaged public var encryptedContent: Data?
+  @NSManaged public var item: Item?
 }
 
 extension TextContent: Identifiable {

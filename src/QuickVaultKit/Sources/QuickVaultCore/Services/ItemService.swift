@@ -325,7 +325,7 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
 
       let item = imageContent.item
       self.context.delete(imageContent)
-      item.updatedAt = Date()
+      item?.updatedAt = Date()
       try self.context.save()
     }
   }
@@ -376,11 +376,11 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
         throw NSError(domain: "ItemService", code: 400, userInfo: [NSLocalizedDescriptionKey: "Item is not a text type"])
       }
       
-      guard let textContent = item.textContent else {
+      guard let textContent = item.textContent, let encData = textContent.encryptedContent else {
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Text content not found"])
       }
       
-      return try self.cryptoService.decrypt(textContent.encryptedContent)
+      return try self.cryptoService.decrypt(encData)
     }
   }
   
@@ -404,7 +404,8 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
       var results: [Data] = []
       
       for imageContent in sortedImages {
-        var imageData = try self.cryptoService.decryptFile(imageContent.encryptedData)
+        guard let encData = imageContent.encryptedData else { continue }
+        var imageData = try self.cryptoService.decryptFile(encData)
         
         // Apply watermark if requested
         #if canImport(UIKit)
@@ -424,36 +425,42 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
     return try await context.perform {
       let request = ImageContent.fetchRequest()
       request.predicate = NSPredicate(format: "id == %@", imageId as CVarArg)
-      guard let imageContent = try self.context.fetch(request).first else {
+      guard let imageContent = try self.context.fetch(request).first,
+            let encData = imageContent.encryptedData else {
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Image not found"])
       }
       
-      return try self.cryptoService.decryptFile(imageContent.encryptedData)
+      return try self.cryptoService.decryptFile(encData)
     }
   }
 
   // MARK: - Helpers
 
   private func mapToDTO(_ item: Item) throws -> ItemDTO {
-    guard let itemType = ItemType(rawValue: item.type) else {
+    guard let itemType = ItemType(rawValue: item.type ?? "text") else {
       throw NSError(domain: "ItemService", code: 400, userInfo: [NSLocalizedDescriptionKey: "Invalid item type"])
     }
 
     var textContent: String?
     var images: [ImageDTO]?
 
-    if itemType == .text, let tc = item.textContent {
-      textContent = try cryptoService.decrypt(tc.encryptedContent)
+    if itemType == .text, let tc = item.textContent, let encData = tc.encryptedContent {
+      textContent = try cryptoService.decrypt(encData)
     } else if itemType == .image, let imageSet = item.images {
       let sortedImages = (imageSet.allObjects as! [ImageContent]).sorted { $0.displayOrder < $1.displayOrder }
-      images = sortedImages.map { img in
+      images = sortedImages.compactMap { img in
+        guard let id = img.id,
+              let fileName = img.fileName,
+              let encData = img.encryptedData else {
+          return nil
+        }
         var thumbnailData: Data?
         if let encryptedThumbnail = img.thumbnailData {
           thumbnailData = try? cryptoService.decryptFile(encryptedThumbnail)
         }
         return ImageDTO(
-          id: img.id,
-          fileName: img.fileName,
+          id: id,
+          fileName: fileName,
           fileSize: img.fileSize,
           displayOrder: img.displayOrder,
           thumbnailData: thumbnailData
@@ -462,13 +469,13 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
     }
 
     return ItemDTO(
-      id: item.id,
-      title: item.title,
+      id: item.id ?? UUID(),
+      title: item.title ?? "",
       type: itemType,
       tags: item.tags,
       isPinned: item.isPinned,
-      createdAt: item.createdAt,
-      updatedAt: item.updatedAt,
+      createdAt: item.createdAt ?? Date(),
+      updatedAt: item.updatedAt ?? Date(),
       textContent: textContent,
       images: images
     )

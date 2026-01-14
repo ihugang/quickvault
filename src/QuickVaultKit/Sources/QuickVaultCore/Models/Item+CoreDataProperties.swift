@@ -11,13 +11,13 @@ extension Item {
     return NSFetchRequest<Item>(entityName: "Item")
   }
 
-  @NSManaged public var id: UUID
-  @NSManaged public var title: String
-  @NSManaged public var type: String
+  @NSManaged public var id: UUID?
+  @NSManaged public var title: String?
+  @NSManaged public var type: String?
   @NSManaged public var tagsJSON: String?
   @NSManaged public var isPinned: Bool
-  @NSManaged public var createdAt: Date
-  @NSManaged public var updatedAt: Date
+  @NSManaged public var createdAt: Date?
+  @NSManaged public var updatedAt: Date?
   @NSManaged public var textContent: TextContent?
   @NSManaged public var images: NSSet?
 }

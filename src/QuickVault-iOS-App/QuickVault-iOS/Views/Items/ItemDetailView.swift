@@ -486,7 +486,7 @@ struct ShareSheet: UIViewControllerRepresentable {
 
 // MARK: - Helper Views
 
-struct FlowLayout: Layout {
+fileprivate struct FlowLayout: Layout {
     var spacing: CGFloat = 8
     
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {

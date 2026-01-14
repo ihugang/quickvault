@@ -315,7 +315,7 @@ struct TimestampsSection: View {
 }
 
 /// Flow layout for tags / 标签流式布局
-struct FlowLayout: Layout {
+fileprivate struct FlowLayout: Layout {
     var spacing: CGFloat = 8
     
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
