@@ -1,8 +1,15 @@
+//
+//  QuickVaultSimpleApp.swift
+//  QuickVault
+//
+//  简化版应用入口
+//
+
 import SwiftUI
 import QuickVaultCore
 
 @main
-struct QuickVaultApp: App {
+struct QuickVaultSimpleApp: App {
     
     // MARK: - Core Services
     
@@ -10,8 +17,6 @@ struct QuickVaultApp: App {
     private let keychainService = KeychainServiceImpl()
     
     @StateObject private var authViewModel: AuthViewModel
-    @StateObject private var cardListViewModel: CardListViewModel
-    @StateObject private var settingsViewModel: SettingsViewModel
     @StateObject private var autoLockManager: AutoLockManager
     
     // MARK: - Initialization
@@ -26,16 +31,9 @@ struct QuickVaultApp: App {
             cryptoService: cryptoService
         )
         
-        let cardService = CardServiceImpl(
-            persistenceController: persistenceController,
-            cryptoService: cryptoService
-        )
-        
         let authViewModelInstance = AuthViewModel(authService: authService)
 
         _authViewModel = StateObject(wrappedValue: authViewModelInstance)
-        _cardListViewModel = StateObject(wrappedValue: CardListViewModel(cardService: cardService))
-        _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(authService: authService))
 
         // Auto-lock manager with auth service and lock action
         _autoLockManager = StateObject(wrappedValue: AutoLockManager(authService: authService) {
@@ -47,47 +45,74 @@ struct QuickVaultApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView(
-                authViewModel: authViewModel,
-                cardListViewModel: cardListViewModel,
-                settingsViewModel: settingsViewModel
-            )
-            .privacyScreen()
+            SimpleRootView(authViewModel: authViewModel)
+                .privacyScreen()
         }
     }
 }
 
-/// Root view that handles authentication state / 处理认证状态的根视图
-struct RootView: View {
+/// Simple root view for the new architecture
+struct SimpleRootView: View {
     @ObservedObject var authViewModel: AuthViewModel
-    @ObservedObject var cardListViewModel: CardListViewModel
-    @ObservedObject var settingsViewModel: SettingsViewModel
     
     var body: some View {
         Group {
             switch authViewModel.authState {
-            case .setupRequired:
-                WelcomeView(viewModel: authViewModel)
-                
             case .locked:
                 LockScreenView(viewModel: authViewModel)
+                    .transition(.opacity)
                 
             case .unlocked:
-                MainTabView(
-                    cardListViewModel: cardListViewModel,
-                    settingsViewModel: settingsViewModel
-                )
+                MainContentView()
+                    .transition(.opacity)
+                
+            case .setupRequired:
+                WelcomeView(viewModel: authViewModel)
+                    .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: 0.3), value: authViewModel.authState)
-        .preferredColorScheme(colorScheme)
+        .animation(.easeInOut, value: authViewModel.authState)
+    }
+}
+
+/// Main content view with ItemListView
+struct MainContentView: View {
+    private let itemService = ItemServiceImpl(
+        persistenceController: PersistenceController.shared
+    )
+    
+    @State private var showingSettings = false
+    
+    var body: some View {
+        TabView {
+            ItemListView(itemService: itemService)
+                .tabItem {
+                    Label("卡片", systemImage: "rectangle.stack")
+                }
+            
+            SettingsTabView()
+                .tabItem {
+                    Label("设置", systemImage: "gear")
+                }
+        }
+    }
+}
+
+/// Settings tab placeholder
+struct SettingsTabView: View {
+    @StateObject private var settingsViewModel: SettingsViewModel
+    
+    init() {
+        let authService = AuthenticationServiceImpl(
+            keychainService: KeychainServiceImpl(),
+            cryptoService: CryptoServiceImpl.shared
+        )
+        _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(authService: authService))
     }
     
-    private var colorScheme: ColorScheme? {
-        switch settingsViewModel.appearanceMode {
-        case .system: return nil
-        case .light: return .light
-        case .dark: return .dark
+    var body: some View {
+        NavigationStack {
+            SettingsView(viewModel: settingsViewModel)
         }
     }
 }

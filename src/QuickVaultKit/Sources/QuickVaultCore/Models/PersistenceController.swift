@@ -22,15 +22,31 @@ public struct PersistenceController: Sendable {
     let controller = PersistenceController(inMemory: true, enableCloudKit: false)
     let context = controller.viewContext
 
-    // Create sample data for previews
-    let card = Card(context: context)
-    card.id = UUID()
-    card.title = "Sample Card"
-    card.type = "general"
-    card.group = "personal"
-    card.isPinned = false
-    card.createdAt = Date()
-    card.updatedAt = Date()
+    // Create sample Item data for previews
+    let textItem = Item(context: context)
+    textItem.id = UUID()
+    textItem.title = "示例文本卡片"
+    textItem.type = ItemType.text.rawValue
+    textItem.tags = ["示例", "文本"]
+    textItem.isPinned = true
+    textItem.createdAt = Date()
+    textItem.updatedAt = Date()
+    
+    let textContent = TextContent(context: context)
+    textContent.id = UUID()
+    if let sampleData = "这是一个示例文本内容。\n可以包含多行文字。".data(using: .utf8) {
+      textContent.encryptedContent = sampleData // Preview uses unencrypted data
+    }
+    textContent.item = textItem
+    
+    let imageItem = Item(context: context)
+    imageItem.id = UUID()
+    imageItem.title = "示例图片卡片"
+    imageItem.type = ItemType.image.rawValue
+    imageItem.tags = ["示例", "图片"]
+    imageItem.isPinned = false
+    imageItem.createdAt = Date()
+    imageItem.updatedAt = Date()
 
     do {
       try context.save()

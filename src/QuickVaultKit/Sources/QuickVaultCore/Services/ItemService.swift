@@ -6,6 +6,10 @@
 import CoreData
 import Foundation
 
+#if canImport(UIKit)
+import UIKit
+#endif
+
 // MARK: - Item Data Transfer Object / 数据传输对象
 
 public struct ItemDTO: Hashable, Identifiable, Sendable {
@@ -129,7 +133,7 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
       // Create text content
       let textContent = TextContent(context: self.context)
       textContent.id = UUID()
-      textContent.encryptedContent = try self.cryptoService.encrypt(content.data(using: .utf8)!)
+      textContent.encryptedContent = try self.cryptoService.encrypt(content)
       textContent.item = item
 
       try self.context.save()
@@ -153,7 +157,7 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
         let imageContent = ImageContent(context: self.context)
         imageContent.id = UUID()
         imageContent.fileName = imageData.fileName
-        imageContent.encryptedData = try self.cryptoService.encrypt(imageData.data)
+        imageContent.encryptedData = try self.cryptoService.encryptFile(imageData.data)
         imageContent.fileSize = Int64(imageData.data.count)
         imageContent.displayOrder = Int16(index)
         imageContent.createdAt = Date()
@@ -161,7 +165,7 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
         // Generate thumbnail
         #if canImport(UIKit)
         if let thumbnail = self.generateThumbnail(from: imageData.data) {
-          imageContent.thumbnailData = try self.cryptoService.encrypt(thumbnail)
+          imageContent.thumbnailData = try self.cryptoService.encryptFile(thumbnail)
         }
         #endif
         
@@ -237,11 +241,11 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
 
       if let content = content {
         if let textContent = item.textContent {
-          textContent.encryptedContent = try self.cryptoService.encrypt(content.data(using: .utf8)!)
+          textContent.encryptedContent = try self.cryptoService.encrypt(content)
         } else {
           let textContent = TextContent(context: self.context)
           textContent.id = UUID()
-          textContent.encryptedContent = try self.cryptoService.encrypt(content.data(using: .utf8)!)
+          textContent.encryptedContent = try self.cryptoService.encrypt(content)
           textContent.item = item
         }
       }
@@ -292,14 +296,14 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
         let imageContent = ImageContent(context: self.context)
         imageContent.id = UUID()
         imageContent.fileName = imageData.fileName
-        imageContent.encryptedData = try self.cryptoService.encrypt(imageData.data)
+        imageContent.encryptedData = try self.cryptoService.encryptFile(imageData.data)
         imageContent.fileSize = Int64(imageData.data.count)
         imageContent.displayOrder = Int16(currentCount + index)
         imageContent.createdAt = Date()
         
         #if canImport(UIKit)
         if let thumbnail = self.generateThumbnail(from: imageData.data) {
-          imageContent.thumbnailData = try self.cryptoService.encrypt(thumbnail)
+          imageContent.thumbnailData = try self.cryptoService.encryptFile(thumbnail)
         }
         #endif
         
@@ -350,8 +354,13 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
       guard let item = try self.context.fetch(request).first else {
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Item not found"])
       }
-
-   
+      
+      item.isPinned.toggle()
+      item.updatedAt = Date()
+      try self.context.save()
+      return try self.mapToDTO(item)
+    }
+  }
   
   // MARK: - Share
   
@@ -371,12 +380,7 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Text content not found"])
       }
       
-      let decryptedData = try self.cryptoService.decrypt(textContent.encryptedContent)
-      guard let text = String(data: decryptedData, encoding: .utf8) else {
-        throw NSError(domain: "ItemService", code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to decode text"])
-      }
-      
-      return text
+      return try self.cryptoService.decrypt(textContent.encryptedContent)
     }
   }
   
@@ -392,7 +396,7 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
         throw NSError(domain: "ItemService", code: 400, userInfo: [NSLocalizedDescriptionKey: "Item is not an image type"])
       }
       
-      guard let imageSet = item.images, !imageSet.isEmpty else {
+      guard let imageSet = item.images, imageSet.count > 0 else {
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "No images found"])
       }
       
@@ -400,7 +404,7 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
       var results: [Data] = []
       
       for imageContent in sortedImages {
-        var imageData = try self.cryptoService.decrypt(imageContent.encryptedData)
+        var imageData = try self.cryptoService.decryptFile(imageContent.encryptedData)
         
         // Apply watermark if requested
         #if canImport(UIKit)
@@ -424,6 +428,73 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Image not found"])
       }
       
+      return try self.cryptoService.decryptFile(imageContent.encryptedData)
+    }
+  }
+
+  // MARK: - Helpers
+
+  private func mapToDTO(_ item: Item) throws -> ItemDTO {
+    guard let itemType = ItemType(rawValue: item.type) else {
+      throw NSError(domain: "ItemService", code: 400, userInfo: [NSLocalizedDescriptionKey: "Invalid item type"])
+    }
+
+    var textContent: String?
+    var images: [ImageDTO]?
+
+    if itemType == .text, let tc = item.textContent {
+      textContent = try cryptoService.decrypt(tc.encryptedContent)
+    } else if itemType == .image, let imageSet = item.images {
+      let sortedImages = (imageSet.allObjects as! [ImageContent]).sorted { $0.displayOrder < $1.displayOrder }
+      images = sortedImages.map { img in
+        var thumbnailData: Data?
+        if let encryptedThumbnail = img.thumbnailData {
+          thumbnailData = try? cryptoService.decryptFile(encryptedThumbnail)
+        }
+        return ImageDTO(
+          id: img.id,
+          fileName: img.fileName,
+          fileSize: img.fileSize,
+          displayOrder: img.displayOrder,
+          thumbnailData: thumbnailData
+        )
+      }
+    }
+
+    return ItemDTO(
+      id: item.id,
+      title: item.title,
+      type: itemType,
+      tags: item.tags,
+      isPinned: item.isPinned,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+      textContent: textContent,
+      images: images
+    )
+  }
+
+  #if canImport(UIKit)
+  private func generateThumbnail(from imageData: Data) -> Data? {
+    guard let image = UIImage(data: imageData) else { return nil }
+    let targetSize = CGSize(width: 200, height: 200)
+    
+    let widthRatio = targetSize.width / image.size.width
+    let heightRatio = targetSize.height / image.size.height
+    let scaleFactor = min(widthRatio, heightRatio)
+    
+    let scaledSize = CGSize(
+      width: image.size.width * scaleFactor,
+      height: image.size.height * scaleFactor
+    )
+    
+    UIGraphicsBeginImageContextWithOptions(scaledSize, false, 1.0)
+    image.draw(in: CGRect(origin: .zero, size: scaledSize))
+    let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return thumbnail?.jpegData(compressionQuality: 0.7)
+  }
   
   private func applyWatermark(to imageData: Data, text: String) throws -> Data {
     guard let image = UIImage(data: imageData) else {
@@ -462,81 +533,6 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
     }
     
     return resultData
-  }
-      return try self.cryptoService.decrypt(imageContent.encryptedData)
-    }
-  }   item.isPinned.toggle()
-      item.updatedAt = Date()
-      try self.context.save()
-      return try self.mapToDTO(item)
-    }
-  }
-
-  // MARK: - Helpers
-
-  private func mapToDTO(_ item: Item) throws -> ItemDTO {
-    guard let itemType = ItemType(rawValue: item.type) else {
-      throw NSError(domain: "ItemService", code: 400, userInfo: [NSLocalizedDescriptionKey: "Invalid item type"])
-    }
-
-    var textContent: String?
-    var images: [ImageDTO]?
-
-    if itemType == .text, let tc = item.textContent {
-      let decryptedData = try cryptoService.decrypt(tc.encryptedContent)
-      textContent = String(data: decryptedData, encoding: .utf8)
-    } else if itemType == .image, let imageSet = item.images {
-      let sortedImages = (imageSet.allObjects as! [ImageContent]).sorted { $0.displayOrder < $1.displayOrder }
-      images = sortedImages.map { img in
-        var thumbnailData: Data?
-        if let encryptedThumbnail = img.thumbnailData {
-          thumbnailData = try? cryptoService.decrypt(encryptedThumbnail)
-        }
-        return ImageDTO(
-          id: img.id,
-          fileName: img.fileName,
-          fileSize: img.fileSize,
-          displayOrder: img.displayOrder,
-          thumbnailData: thumbnailData
-        )
-      }
-    }
-
-    return ItemDTO(
-      id: item.id,
-      title: item.title,
-      type: itemType,
-      tags: item.tags,
-      isPinned: item.isPinned,
-      createdAt: item.createdAt,
-      updatedAt: item.updatedAt,
-      textContent: textContent,
-      images: images
-    )
-  }
-
-  #if canImport(UIKit)
-  import UIKit
-  
-  private func generateThumbnail(from imageData: Data) -> Data? {
-    guard let image = UIImage(data: imageData) else { return nil }
-    let targetSize = CGSize(width: 200, height: 200)
-    
-    let widthRatio = targetSize.width / image.size.width
-    let heightRatio = targetSize.height / image.size.height
-    let scaleFactor = min(widthRatio, heightRatio)
-    
-    let scaledSize = CGSize(
-      width: image.size.width * scaleFactor,
-      height: image.size.height * scaleFactor
-    )
-    
-    UIGraphicsBeginImageContextWithOptions(scaledSize, false, 1.0)
-    image.draw(in: CGRect(origin: .zero, size: scaledSize))
-    let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
-    
-    return thumbnail?.jpegData(compressionQuality: 0.7)
   }
   #endif
 }
