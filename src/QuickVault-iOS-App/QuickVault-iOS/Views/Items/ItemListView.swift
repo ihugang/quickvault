@@ -303,7 +303,7 @@ struct ItemCard: View {
                         .lineLimit(2)
                     
                     // 时间
-                    Text(item.updatedAt.formatted(.relative(presentation: .named)))
+                    Text(localizationManager.formatRelativeDate(item.updatedAt))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
