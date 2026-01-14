@@ -127,7 +127,7 @@ struct ItemDetailView: View {
             // 时间信息
             HStack(spacing: 16) {
                 Label(
-                    item.createdAt.formatted(date: .abbreviated, time: .omitted),
+                    "\(localizationManager.localizedString("items.detail.created")) \(item.createdAt.formatted(date: .abbreviated, time: .omitted))",
                     systemImage: "calendar"
                 )
                 

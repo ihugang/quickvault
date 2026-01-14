@@ -308,6 +308,7 @@
 "items.detail.edit" = "编辑";
 "items.detail.delete" = "删除";
 "items.detail.pin" = "置顶";
+"items.detail.created" = "创建于";
 "items.detail.unpin" = "取消置顶";
 "items.detail.pinned" = "已置顶";
 "items.detail.content" = "内容";

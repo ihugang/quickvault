@@ -308,6 +308,7 @@
 "items.detail.edit" = "Edit";
 "items.detail.delete" = "Delete";
 "items.detail.pin" = "Pin";
+"items.detail.created" = "Created";
 "items.detail.unpin" = "Unpin";
 "items.detail.pinned" = "Pinned";
 "items.detail.content" = "Content";
