@@ -173,6 +173,11 @@ struct ItemDetailView: View {
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .fill(Color(.systemBackground))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .strokeBorder(Color(.separator).opacity(0.3), lineWidth: 0.5)
+                            )
+                            .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
                     )
             }
         }
@@ -455,6 +460,10 @@ struct WatermarkConfigSheet: View {
                         .background(
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(Color(.systemBackground))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .strokeBorder(Color(.separator).opacity(0.3), lineWidth: 0.5)
+                                )
                         )
                     }
                 }

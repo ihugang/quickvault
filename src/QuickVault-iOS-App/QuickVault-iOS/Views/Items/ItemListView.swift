@@ -306,7 +306,11 @@ struct ItemCard: View {
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(Color(.systemBackground))
-                .shadow(color: .black.opacity(0.05), radius: 10, y: 4)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .strokeBorder(Color(.separator).opacity(0.3), lineWidth: 0.5)
+                )
+                .shadow(color: .black.opacity(0.08), radius: 12, y: 4)
         )
     }
     
