@@ -17,6 +17,7 @@ struct ItemDetailView: View {
     @State private var showingDeleteAlert = false
     @State private var showingShareSheet = false
     @State private var showingWatermarkSheet = false
+    @State private var showingEditSheet = false
     @State private var shareContent: Any?
     @State private var isLoading = false
     
@@ -47,6 +48,12 @@ struct ItemDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
+                    Button {
+                        showingEditSheet = true
+                    } label: {
+                        Label("编辑", systemImage: "pencil")
+                    }
+                    
                     Button {
                         Task { await togglePin() }
                     } label: {
@@ -87,6 +94,9 @@ struct ItemDetailView: View {
             if let content = shareContent {
                 ShareSheet(activityItems: [content])
             }
+        }
+        .sheet(isPresented: $showingEditSheet) {
+            EditItemSheet(item: item, itemService: itemService, onUpdate: onUpdate)
         }
     }
     
