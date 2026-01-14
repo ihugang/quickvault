@@ -314,7 +314,7 @@
 "items.detail.images" = "Images";
 "items.detail.images.count" = "%d images";
 "items.detail.tags" = "Tags";
-"items.detaWatermark
+"items.detaWatermark" = "";
 "watermark.settings" = "Watermark Settings";
 "watermark.collapse" = "Collapse";
 "watermark.add" = "Add Watermark";

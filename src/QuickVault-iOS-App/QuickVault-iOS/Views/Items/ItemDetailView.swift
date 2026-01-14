@@ -472,6 +472,7 @@ struct FullImageView: View {
     let item: ItemDTO
     let itemService: ItemService
     
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isTextFieldFocused: Bool
     @State private var showControls = false
