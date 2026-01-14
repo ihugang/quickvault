@@ -50,6 +50,15 @@ enum WatermarkSpacing: Int, CaseIterable, Identifiable {
         }
     }
     
+    /// Localization key for dynamic language switching / 用于动态语言切换的本地化键
+    var localizedKey: String {
+        switch self {
+        case .dense: return "dense"
+        case .normal: return "normal"
+        case .sparse: return "sparse"
+        }
+    }
+    
     /// Get the number of rows for this spacing mode
     var rowCount: Int { rawValue }
 }

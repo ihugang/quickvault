@@ -660,7 +660,7 @@ struct FullImageView: View {
                         .font(.subheadline)
                     Picker(localizationManager.localizedString("watermark.spacing"), selection: $watermarkSpacing) {
                         ForEach(WatermarkSpacing.allCases) { spacing in
-                            Text(spacing.displayName).tag(spacing)
+                            Text(localizationManager.localizedString("watermark.spacing.\(spacing.localizedKey)")).tag(spacing)
                         }
                     }
                     .pickerStyle(.segmented)
@@ -914,7 +914,7 @@ struct WatermarkConfigSheet: View {
                             }
                             Picker(localizationManager.localizedString("watermark.spacing"), selection: $watermarkSpacing) {
                                 ForEach(WatermarkSpacing.allCases) { spacing in
-                                    Text(spacing.displayName).tag(spacing)
+                                    Text(localizationManager.localizedString("watermark.spacing.\(spacing.localizedKey)")).tag(spacing)
                                 }
                             }
                             .pickerStyle(.segmented)
