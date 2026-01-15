@@ -15,9 +15,9 @@
 		75FF3C77908305D6DB637E04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FB02E06C0E259883BC8DF04 /* Assets.xcassets */; };
 		80CFB86835851631116568D9 /* CardTypePickerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E702EE8E9723FA21322F9AB /* CardTypePickerPreview.swift */; };
 		94C909D196B508BCA4216E8B /* TagInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B615649B7AEBA8A309EC58D /* TagInputView.swift */; };
-		9EB786CF8780110A494E56C1 /* QuickVaultCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1097B890545790332FC24A0C /* QuickVaultCore */; };
+		9EB786CF8780110A494E56C1 /* QuickHoldCore in Frameworks */ = {isa = PBXBuildFile; productRef = 798D8730369AB2A5C309C1C2 /* QuickHoldCore */; };
 		AFD1D4FC0A9BC8A346B90D06 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22440E376AC8EEF1376B4DA6 /* Security.framework */; };
-		B39BA1379FA94845A2A383A6 /* QuickVaultCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8FE7AA71BF710B5D1404ACD8 /* QuickVaultCore */; };
+		B39BA1379FA94845A2A383A6 /* QuickHoldCore in Frameworks */ = {isa = PBXBuildFile; productRef = C0B70B720D39D353F719984B /* QuickHoldCore */; };
 		BA30555BA93FA1A2D6FFE477 /* IconProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A859684A079D977BAC62EAB /* IconProvider.swift */; };
 		C67206AC8071A89BE9D0FA6E /* CardEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0B331C5E1E310AA4FEC095 /* CardEditorView.swift */; };
 		CAA26B32A3A5B98C1CA7A6FA /* MenuBarIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93262CF759408DC7AC97474D /* MenuBarIconView.swift */; };
@@ -44,6 +44,7 @@
 		4807C4988D69BEC606D79C6C /* QuickVault-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QuickVault-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A859684A079D977BAC62EAB /* IconProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconProvider.swift; sourceTree = "<group>"; };
 		4B18E3217F81DE554F5C8290 /* QuickVault-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuickVault-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CA482B2ECBB53F6FDB22921 /* QuickHoldKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = QuickHoldKit; path = ../QuickHoldKit; sourceTree = SOURCE_ROOT; };
 		522BFF8AB320ECA0DA4E7291 /* QuickVaultApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickVaultApp.swift; sourceTree = "<group>"; };
 		6B5810BC19BA4604EC55F072 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		7B615649B7AEBA8A309EC58D /* TagInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagInputView.swift; sourceTree = "<group>"; };
@@ -52,7 +53,6 @@
 		9FB02E06C0E259883BC8DF04 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB6AA3D5E35DF56526DAFA95 /* CardEditorWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEditorWindowController.swift; sourceTree = "<group>"; };
 		AC0B331C5E1E310AA4FEC095 /* CardEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEditorView.swift; sourceTree = "<group>"; };
-		C0D617F1E89ADD863C3247A9 /* QuickVaultKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = QuickVaultKit; path = ../QuickVaultKit; sourceTree = SOURCE_ROOT; };
 		C590BE0979268623CFB26801 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		CBEBBF2C92E743274DF2D4F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D488269A14F9D6C639E632FC /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -64,7 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EB786CF8780110A494E56C1 /* QuickVaultCore in Frameworks */,
+				9EB786CF8780110A494E56C1 /* QuickHoldCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,7 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B39BA1379FA94845A2A383A6 /* QuickVaultCore in Frameworks */,
+				B39BA1379FA94845A2A383A6 /* QuickHoldCore in Frameworks */,
 				D22E1C5154CDD153D17B0F63 /* AppKit.framework in Frameworks */,
 				AFD1D4FC0A9BC8A346B90D06 /* Security.framework in Frameworks */,
 				CC837E17AAE44D9E478F02D6 /* LocalAuthentication.framework in Frameworks */,
@@ -125,7 +125,7 @@
 		65D41C7CCB9ABE53CD5FF7E9 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				C0D617F1E89ADD863C3247A9 /* QuickVaultKit */,
+				4CA482B2ECBB53F6FDB22921 /* QuickHoldKit */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -197,7 +197,7 @@
 			);
 			name = "QuickVault-macOSTests";
 			packageProductDependencies = (
-				1097B890545790332FC24A0C /* QuickVaultCore */,
+				798D8730369AB2A5C309C1C2 /* QuickHoldCore */,
 			);
 			productName = "QuickVault-macOSTests";
 			productReference = 4807C4988D69BEC606D79C6C /* QuickVault-macOSTests.xctest */;
@@ -218,7 +218,7 @@
 			);
 			name = "QuickVault-macOS";
 			packageProductDependencies = (
-				8FE7AA71BF710B5D1404ACD8 /* QuickVaultCore */,
+				C0B70B720D39D353F719984B /* QuickHoldCore */,
 			);
 			productName = "QuickVault-macOS";
 			productReference = 4B18E3217F81DE554F5C8290 /* QuickVault-macOS.app */;
@@ -250,7 +250,7 @@
 			mainGroup = 951B2AD99FC4868E23EA43F3;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				C08872305AB32879251CAA17 /* XCLocalSwiftPackageReference "../QuickVaultKit" */,
+				2CA59539AAA0688454562AF6 /* XCLocalSwiftPackageReference "../QuickHoldKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
@@ -562,20 +562,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		C08872305AB32879251CAA17 /* XCLocalSwiftPackageReference "../QuickVaultKit" */ = {
+		2CA59539AAA0688454562AF6 /* XCLocalSwiftPackageReference "../QuickHoldKit" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../QuickVaultKit;
+			relativePath = ../QuickHoldKit;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1097B890545790332FC24A0C /* QuickVaultCore */ = {
+		798D8730369AB2A5C309C1C2 /* QuickHoldCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = QuickVaultCore;
+			productName = QuickHoldCore;
 		};
-		8FE7AA71BF710B5D1404ACD8 /* QuickVaultCore */ = {
+		C0B70B720D39D353F719984B /* QuickHoldCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = QuickVaultCore;
+			productName = QuickHoldCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

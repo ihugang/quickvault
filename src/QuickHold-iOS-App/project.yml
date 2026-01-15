@@ -19,11 +19,12 @@ targets:
       - path: QuickHold-iOS
         excludes:
           - "*.md"
+          - "todo_delete"
 
     settings:
       base:
         PRODUCT_NAME: QuickHold
-        PRODUCT_BUNDLE_IDENTIFIER: com.quickvault.ios
+        PRODUCT_BUNDLE_IDENTIFIER: com.codans.quickvault.ios
         INFOPLIST_FILE: QuickHold-iOS/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: QuickHold-iOS/Resources/QuickHold.entitlements
         CODE_SIGN_STYLE: Automatic

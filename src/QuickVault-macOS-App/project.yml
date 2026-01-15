@@ -6,8 +6,8 @@ options:
   developmentLanguage: zh-Hans
 
 packages:
-  QuickVaultKit:
-    path: ../QuickVaultKit
+  QuickHoldKit:
+    path: ../QuickHoldKit
 
 targets:
   QuickVault-macOS:
@@ -35,8 +35,8 @@ targets:
         DEVELOPMENT_TEAM: ""
 
     dependencies:
-      - package: QuickVaultKit
-        product: QuickVaultCore
+      - package: QuickHoldKit
+        product: QuickHoldCore
       - sdk: AppKit.framework
       - sdk: Security.framework
       - sdk: LocalAuthentication.framework
@@ -59,8 +59,8 @@ targets:
       - QuickVault-macOSTests
     dependencies:
       - target: QuickVault-macOS
-      - package: QuickVaultKit
-        product: QuickVaultCore
+      - package: QuickHoldKit
+        product: QuickHoldCore
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.quickvault.macos.tests

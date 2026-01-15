@@ -54,7 +54,7 @@ struct QuickHoldSimpleApp: App {
                 .onAppear {
                     // 报告设备信息到云端
                     Task {
-                        await DeviceReportService.shared.reportDeviceIfNeeded()
+                        DeviceReportService.shared.reportDeviceIfNeeded()
                     }
                 }
         }

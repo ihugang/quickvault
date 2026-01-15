@@ -228,7 +228,7 @@ public class DeviceReportService: ObservableObject {
     }
   }
 
-  private func countItems(of type: ItemType, in context: NSManagedObjectContext) -> Int {
+  nonisolated private func countItems(of type: ItemType, in context: NSManagedObjectContext) -> Int {
     let request = Item.fetchRequest()
     request.predicate = NSPredicate(format: "type == %@", type.rawValue)
     do {

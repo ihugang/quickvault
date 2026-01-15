@@ -105,7 +105,7 @@ public protocol AuthenticationService {
 
 // MARK: - Authentication Service Implementation / 认证服务实现
 
-public class AuthenticationServiceImpl: AuthenticationService {
+public class AuthenticationServiceImpl: AuthenticationService, @unchecked Sendable {
 
   // MARK: - Properties
 
@@ -342,13 +342,13 @@ public class AuthenticationServiceImpl: AuthenticationService {
     authLogger.warning("[AuthService] ⚠️ Starting to clear ALL data...")
     
     let context = persistenceController.container.viewContext
-    
-    try await context.perform {
+
+    try await context.perform { [cryptoService] in
       // 1. Delete all files from filesystem
       let itemRequest = Item.fetchRequest()
       let items = try context.fetch(itemRequest)
-      
-      let fileStorageManager = FileStorageManager(cryptoService: self.cryptoService, storageLocation: .local)
+
+      let fileStorageManager = FileStorageManager(cryptoService: cryptoService, storageLocation: .local)
       
       for item in items {
         if let fileSet = item.files {
@@ -402,13 +402,14 @@ public class AuthenticationServiceImpl: AuthenticationService {
     // Re-encrypt all Items in CoreData
     let context = persistenceController.container.viewContext
     
-    try await context.perform {
+    try await context.perform { [weak self] in
+      guard let self = self else { return }
       // Fetch all items
       let itemRequest = Item.fetchRequest()
       let items = try context.fetch(itemRequest)
-      
+
       authLogger.info("[AuthService] Re-encrypting \(items.count) items...")
-      
+
       for item in items {
         // Re-encrypt TextContent
         if let textContent = item.textContent,
