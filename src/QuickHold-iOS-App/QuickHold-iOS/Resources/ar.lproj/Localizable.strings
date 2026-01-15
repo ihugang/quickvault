@@ -1,0 +1,353 @@
+/* 
+  Localizable.strings (العربية)
+  QuickHold
+  RTL Language
+*/
+
+// MARK: - Common
+"common.ok" = "موافق";
+"common.cancel" = "إلغاء";
+"common.save" = "حفظ";
+"common.delete" = "حذف";
+"common.edit" = "تعديل";
+"common.done" = "تم";
+"common.add" = "إضافة";
+"common.close" = "إغلاق";
+"common.confirm" = "تأكيد";
+"common.error" = "خطأ";
+"common.success" = "نجاح";
+"common.loading" = "جاري التحميل...";
+"common.retry" = "إعادة المحاولة";
+"common.copy" = "نسخ";
+"common.share" = "مشاركة";
+"common.search" = "بحث";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "احمِ حياتك الرقمية";
+
+// MARK: - Authentication
+"auth.welcome.title" = "مرحباً بك في QuickHold";
+"auth.welcome.subtitle" = "قم بإعداد كلمة المرور الرئيسية للبدء";
+"auth.password.placeholder" = "أدخل كلمة المرور";
+"auth.password.confirm" = "تأكيد كلمة المرور";
+"auth.password.hint" = "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل";
+"auth.password.mismatch" = "كلمات المرور غير متطابقة";
+"auth.password.weak" = "كلمة المرور ضعيفة جداً";
+"auth.setup.button" = "إعداد كلمة المرور";
+"auth.unlock.title" = "فتح QuickHold";
+"auth.unlock.button" = "فتح";
+"auth.unlock.biometric" = "استخدام Face ID / Touch ID";
+"auth.unlock.failed" = "فشل المصادقة";
+"auth.unlock.attempts" = "المحاولات المتبقية: %d";
+"auth.unlock.locked" = "محاولات كثيرة جداً. حاول مرة أخرى بعد %d ثانية";
+"auth.change.title" = "تغيير كلمة المرور";
+"auth.change.current" = "كلمة المرور الحالية";
+"auth.change.new" = "كلمة المرور الجديدة";
+"auth.change.confirm" = "تأكيد كلمة المرور الجديدة";
+"auth.change.success" = "تم تغيير كلمة المرور بنجاح";
+"auth.change.failed" = "فشل تغيير كلمة المرور";
+
+// MARK: - Cards
+"cards.title" = "البطاقات";
+"cards.empty" = "لا توجد بطاقات";
+"cards.empty.subtitle" = "اضغط على + لإضافة أول بطاقة";
+"cards.add" = "إضافة بطاقة";
+"cards.edit" = "تعديل البطاقة";
+"cards.delete" = "حذف البطاقة";
+"cards.delete.confirm" = "هل أنت متأكد من حذف هذه البطاقة؟";
+"cards.pin" = "تثبيت";
+"cards.unpin" = "إلغاء التثبيت";
+"cards.pinned" = "مثبتة";
+"cards.all" = "الكل";
+"cards.field.add" = "إضافة حقل";
+"cards.field.label" = "التسمية";
+"cards.field.value" = "القيمة";
+"cards.field.copyable" = "قابل للنسخ";
+"cards.copied" = "تم النسخ إلى الحافظة";
+"cards.title.placeholder" = "عنوان البطاقة";
+"cards.group.placeholder" = "المجموعة";
+"cards.type.general" = "عام";
+"cards.type.login" = "تسجيل الدخول";
+"cards.type.card" = "بطاقة ائتمان";
+"cards.type.identity" = "الهوية";
+"cards.type.note" = "ملاحظة آمنة";
+"cards.created" = "تاريخ الإنشاء: ";
+"cards.updated" = "تاريخ التحديث: ";
+"cards.tags" = "الوسوم";
+"cards.tags.add" = "إضافة وسم";
+
+// MARK: - Attachments
+"attachments.title" = "المرفقات";
+"attachments.add" = "إضافة مرفق";
+"attachments.delete" = "حذف المرفق";
+"attachments.delete.confirm" = "هل أنت متأكد من حذف هذا المرفق؟";
+"attachments.watermark" = "علامة مائية";
+"attachments.watermark.add" = "إضافة علامة مائية";
+"attachments.watermark.remove" = "إزالة العلامة المائية";
+"attachments.watermark.text" = "نص العلامة المائية";
+"attachments.share" = "مشاركة";
+"attachments.preview" = "معاينة";
+"attachments.size" = "الحجم: %@";
+"attachments.empty" = "لا توجد مرفقات";
+"attachments.photo.library" = "مكتبة الصور";
+"attachments.photo.camera" = "الكاميرا";
+
+// MARK: - Search
+"search.title" = "بحث";
+"search.placeholder" = "البحث في البطاقات...";
+"search.empty" = "لم يتم العثور على نتائج";
+"search.recent" = "عمليات البحث الأخيرة";
+
+// MARK: - Settings
+"settings.title" = "الإعدادات";
+"settings.security" = "الأمان";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "تفعيل المصادقة البيومترية";
+"settings.security.autolock" = "القفل التلقائي";
+"settings.security.autolock.immediately" = "فوراً";
+"settings.security.autolock.1min" = "بعد دقيقة واحدة";
+"settings.security.autolock.5min" = "بعد 5 دقائق";
+"settings.security.autolock.15min" = "بعد 15 دقيقة";
+"settings.security.autolock.never" = "أبداً";
+"settings.security.changepassword" = "تغيير كلمة المرور";
+"settings.language" = "اللغة";
+"settings.language.title" = "لغة التطبيق";
+"settings.language.system" = "الافتراضي للنظام";
+"settings.about" = "حول";
+"settings.about.version" = "الإصدار";
+"settings.about.privacy" = "سياسة الخصوصية";
+"settings.about.terms" = "شروط الخدمة";
+"settings.data" = "البيانات";
+"settings.data.export" = "تصدير البيانات";
+"settings.data.import" = "استيراد البيانات";
+"settings.data.reset" = "إعادة تعيين جميع البيانات";
+"settings.data.reset.confirm" = "سيؤدي هذا إلى حذف جميع بطاقاتك وإعداداتك. لا يمكن التراجع عن هذا الإجراء.";
+
+// MARK: - Errors
+"error.generic" = "حدث خطأ ما";
+"error.network" = "خطأ في الشبكة";
+"error.encryption" = "خطأ في التشفير";
+"error.decryption" = "خطأ في فك التشفير";
+"error.storage" = "خطأ في التخزين";
+"error.biometric.unavailable" = "المصادقة البيومترية غير متاحة";
+"error.biometric.notEnrolled" = "لم يتم تسجيل بيانات بيومترية";
+
+// MARK: - Authentication Extras
+"auth.password.required" = "يرجى إدخال كلمة المرور";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "الملصق والتمييز";
+"invoice.paste.parse" = "اللصق للتعبئة التلقائية";
+"invoice.paste.hint" = "ألصق معلومات الفاتورة أو الدفع لتعبئة النموذج تلقائيًا";
+"invoice.paste.instruction" = "ألصق معلومات الفاتورة أو الدفع، سيقوم النظام بالتعرف وملء الحقول تلقائيًا";
+"invoice.paste.fromclipboard" = "اللصق من الحافظة";
+"invoice.parse.button" = "تحليل وتعبئة";
+
+// MARK: - Fields
+"field.name" = "الاسم";
+"field.phone" = "الهاتف";
+"field.province" = "المحافظة";
+"field.city" = "المدينة";
+"field.district" = "المنطقة";
+"field.address" = "العنوان";
+"field.postalcode" = "الرمز البريدي";
+"field.notes" = "ملاحظات";
+"field.companyname" = "اسم الشركة";
+"field.taxid" = "الرقم الضريبي";
+"field.bankname" = "اسم البنك";
+"field.bankaccount" = "الحساب البنكي";
+"field.content" = "المحتوى";
+
+// MARK: - Card Types
+"cards.type.select" = "اختر النوع";
+"cards.type.idcard" = "بطاقة تعريف";
+"cards.type.passport" = "جواز سفر";
+"cards.type.businesslicense" = "رخصة تجارية";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "الاسم";
+"field.idcard.gender" = "الجنس";
+"field.idcard.nationality" = "الجنسية";
+"field.idcard.birthdate" = "تاريخ الميلاد";
+"field.idcard.number" = "رقم الهوية";
+"field.idcard.address" = "العنوان";
+"field.idcard.issuer" = "جهة الإصدار";
+"field.idcard.validperiod" = "فترة الصلاحية";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "اسم الشركة";
+"field.license.companytype" = "نوع الشركة";
+"field.license.creditcode" = "رمز الائتمان الموحد";
+"field.license.legalrep" = "الممثل القانوني";
+"field.license.capital" = "رأس المال المسجل";
+"field.license.address" = "العنوان";
+"field.license.establishdate" = "تاريخ التأسيس";
+"field.license.businessterm" = "مدة النشاط";
+"field.license.scope" = "نطاق العمل";
+
+// MARK: - Passport Fields
+"field.passport.name" = "الاسم";
+"field.passport.nationality" = "الجنسية";
+"field.passport.birthdate" = "تاريخ الميلاد";
+"field.passport.gender" = "الجنس";
+"field.passport.number" = "رقم الجواز";
+"field.passport.issuedate" = "تاريخ الإصدار";
+"field.passport.expirydate" = "تاريخ الانتهاء";
+"field.passport.issueplace" = "مكان الإصدار";
+"field.passport.issuer" = "جهة الإصدار";
+
+// MARK: - OCR
+"ocr.section.title" = "التعرف الذكي";
+"ocr.scan.photo" = "المسح من صورة";
+"ocr.section.footer" = "اختر صورة المستند لاستخراج المعلومات تلقائيًا";
+"ocr.processing" = "جارٍ التعرف...";
+"ocr.photo.upload" = "تحميل صورة المستند";
+"ocr.tap.upload" = "انقر لتحميل صورة";
+"ocr.idcard.front" = "وجه بطاقة الهوية (صورة ورقم)";
+"ocr.idcard.back" = "خلفية بطاقة الهوية (الجهة والمدة)";
+"ocr.passport.datapage" = "صفحة بيانات جواز السفر (صفحة الصورة)";
+"ocr.license.photo" = "صورة الرخصة التجارية";
+"ocr.photo.front" = "الوجه";
+"ocr.photo.back" = "الخلف";
+"ocr.hint.idcard" = "حمّل وجه وبطاقة الهوية الخلفية. سيتم استخراج المعلومات تلقائيًا.";
+"ocr.hint.passport" = "حمّل صفحة بيانات جواز السفر (صفحة الصورة).";
+"ocr.hint.license" = "حمّل صورة رخصة الشركة.";
+
+// MARK: - Export
+"export.title" = "تصدير";
+"export.action" = "تصدير";
+"export.image" = "تصدير الصورة";
+"export.images" = "تصدير الصور";
+"export.images.all" = "تصدير كل الصور";
+"export.text" = "تصدير النص";
+"export.add.watermark" = "إضافة علامة مائية";
+"export.watermark.title" = "إعدادات العلامة المائية";
+"export.watermark.text" = "نص العلامة المائية";
+"export.watermark.placeholder" = "أدخل نص العلامة المائية";
+"export.watermark.hint" = "ستتم إضافة العلامة المائية بشكل مائل على الصورة";
+"export.watermark.fontsize" = "حجم الخط";
+"export.watermark.spacing" = "المسافة";
+"export.watermark.spacing.dense" = "كثيف";
+"export.watermark.spacing.normal" = "عادي";
+"export.watermark.spacing.sparse" = "متفرق";
+"export.watermark.opacity" = "العتامة";
+"export.preview" = "معاينة";
+"export.advanced.options" = "خيارات متقدمة";
+"export.size.compression" = "الحجم والضغط";
+"export.max.width" = "العرض الأقصى";
+"export.max.height" = "الارتفاع الأقصى";
+"export.max.filesize" = "الحد الأقصى لحجم الملف";
+"export.pixel" = "بكسل";
+"export.hint.limits" = "اتركه فارغًا لعدم وجود حد. سيتم تغيير حجم الصورة نسبيًا";
+"export.success" = "تم التصدير بنجاح";
+"export.failed" = "فشل التصدير";
+"export.copied" = "تم النسخ إلى الحافظة";
+"export.images.count" = "%d صورة تم تصديرها";
+
+// MARK: - Validation
+"validation.title.required" = "العنوان مطلوب";
+"validation.field.required" = "هذا الحقل مطلوب";
+"validation.phone.invalid" = "تنسيق رقم الهاتف غير صالح";
+"validation.taxid.invalid" = "يجب أن يكون الرقم الضريبي 18 حرفًا";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "العناصر";
+"items.search.placeholder" = "ابحث في العنوان أو الوسوم...";
+"items.loading" = "جارٍ التحميل...";
+"items.empty" = "لا توجد عناصر بعد";
+"items.empty.subtitle" = "اضغط + في أعلى اليمين لإنشاء العنصر الأول";
+"items.empty.search" = "لا توجد نتائج";
+"items.empty.search.subtitle" = "جرّب كلمات بحث مختلفة";
+"items.pinned" = "مثبت";
+"items.all" = "الكل";
+"items.create.text" = "إنشاء عنصر نصي";
+"items.create.image" = "إنشاء عنصر صور";
+"items.type.text" = "عنصر نص";
+"items.type.image" = "عنصر صورة";
+"items.type.file" = "عنصر ملف";
+"items.type.text.desc" = "احفظ معلومات نصية للمشاركة السريعة";
+"items.type.image.desc" = "احفظ الصور مع دعم مشاركة العلامة المائية";
+"items.type.file.desc" = "احفظ أنواع ملفات مختلفة مع معاينة PDF";
+
+// Items - Files
+"items.files.select" = "اختر ملفات";
+"items.files.count" = "%d ملفات";
+"items.files.section" = "الملفات";
+"items.files.limit" = "حتى 10 ملفات، كل ملف لا يزيد عن 10 ميغابايت";
+
+// Items - Detail Files
+"items.detail.files" = "الملفات";
+"items.detail.files.count" = "%d ملفات";
+"items.create.title" = "إنشاء %@";
+"items.create.selecttype" = "اختر النوع";
+"items.create.button" = "إنشاء";
+"items.info.basic" = "معلومات أساسية";
+"items.info.title" = "العنوان";
+"items.info.title.hint" = "حدد عنوانًا واضحًا للعنصر";
+"items.content" = "المحتوى";
+"items.content.characters" = "%d حرف";
+"items.images.select" = "اختر صورًا";
+"items.images.count" = "%d صور";
+"items.images.section" = "الصور";
+"items.images.limit" = "يمكن اختيار حتى 10 صور";
+"items.tags.section" = "الوسوم";
+"items.tags.add" = "إضافة وسم";
+"items.tags.placeholder" = "أدخل اسم الوسم";
+"items.tags.hint" = "استخدم الوسوم للمساعدة في التصنيف والبحث";
+"items.detail.edit" = "تعديل";
+"items.detail.delete" = "حذف";
+"items.detail.pin" = "تثبيت";
+"items.detail.created" = "تاريخ الإنشاء";
+"items.detail.unpin" = "إلغاء التثبيت";
+"items.detail.pinned" = "مثبت";
+"items.detail.content" = "المحتوى";
+"items.detail.images" = "الصور";
+"items.detail.images.count" = "%d صورة";
+"items.detail.tags" = "الوسوم";
+"items.detaWatermark" = "";
+"watermark.settings" = "إعدادات العلامة المائية";
+"watermark.collapse" = "طي";
+"watermark.add" = "إضافة علامة مائية";
+"watermark.text" = "نص العلامة المائية (مثال: للاستخدام XX فقط)";
+"watermark.text.placeholder" = "مثال: للاستخدام XX فقط";
+"watermark.fontsize" = "حجم الخط";
+"watermark.spacing" = "المسافة بين الأسطر";
+"watermark.spacing.dense" = "مكثف";
+"watermark.spacing.normal" = "عادي";
+"watermark.spacing.sparse" = "متفرق";
+"watermark.opacity" = "العتامة";
+"watermark.preview" = "معاينة";
+"watermark.share" = "مشاركة";
+"watermark.scope" = "نطاق المشاركة";
+"watermark.scope.current" = "هذه الصورة فقط";
+"watermark.scope.all" = "كل الصور (%d صورة)";
+"watermark.hint" = "سيتم تكرار العلامة المائية مائلًا عبر الصورة";
+"watermark.sheet.title" = "مشاركة الصور";
+"watermark.preparing" = "جارٍ الإعداد...";
+
+"items.detail.share.text" = "مشاركة النص";
+"items.detail.share.images" = "مشاركة الصور";
+"items.delete.confirm" = "هل أنت متأكد أنك تريد حذف هذا العنصر؟";
+"items.delete.title" = "تأكيد الحذف";
+"items.delete.message" = "لا يمكن التراجع عن هذا الإجراء";
+"items.created.success" = "تم الإنشاء بنجاح";
+"items.updated.success" = "تم التحديث بنجاح";
+"items.deleted.success" = "تم الحذف بنجاح";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "أداة نقل الصور عبر الأنظمة. انقل الصور بسرعة بين Mac و iPhone بدون شبكة.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "حوّل iPhone إلى قرص محمول آمن";
+
+// MARK: - Settings: Clear Data
+"settings.security.cleardata" = "مسح كل البيانات";
+"settings.security.cleardata.footer" = "⚠️ سيؤدي هذا إلى حذف جميع البطاقات والصور والملفات نهائيًا. لا يمكن التراجع عن هذا الإجراء!";
+"settings.security.cleardata.confirm.title" = "تأكيد مسح جميع البيانات";
+"settings.security.cleardata.confirm.message" = "سيؤدي هذا إلى حذف كل البيانات نهائيًا ولا يمكن التراجع عنه. أدخل كلمة المرور لتأكيد العملية.";
+"settings.security.cleardata.confirm.password" = "أدخل كلمة المرور";
+"settings.security.cleardata.confirm.delete" = "حذف كل البيانات";
+"settings.security.cleardata.success" = "تم مسح كل البيانات";
+

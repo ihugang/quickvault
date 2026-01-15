@@ -1,0 +1,352 @@
+/* 
+  Localizable.strings (Magyar)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Mégse";
+"common.save" = "Mentés";
+"common.delete" = "Törlés";
+"common.edit" = "Szerkesztés";
+"common.done" = "Kész";
+"common.add" = "Hozzáadás";
+"common.close" = "Bezárás";
+"common.confirm" = "Megerősítés";
+"common.error" = "Hiba";
+"common.success" = "Sikeres";
+"common.loading" = "Betöltés...";
+"common.retry" = "Újra";
+"common.copy" = "Másolás";
+"common.share" = "Megosztás";
+"common.search" = "Keresés";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Védje digitális életét";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Üdvözöljük a QuickHoldban";
+"auth.welcome.subtitle" = "Állítsa be a fő jelszavát a kezdéshez";
+"auth.password.placeholder" = "Adja meg a jelszót";
+"auth.password.confirm" = "Jelszó megerősítése";
+"auth.password.hint" = "A jelszónak legalább 8 karakterből kell állnia";
+"auth.password.mismatch" = "A jelszavak nem egyeznek";
+"auth.password.weak" = "A jelszó túl gyenge";
+"auth.setup.button" = "Jelszó Beállítása";
+"auth.unlock.title" = "QuickHold Feloldása";
+"auth.unlock.button" = "Feloldás";
+"auth.unlock.biometric" = "Face ID / Touch ID használata";
+"auth.unlock.failed" = "Hitelesítés sikertelen";
+"auth.unlock.attempts" = "%d próbálkozás maradt";
+"auth.unlock.locked" = "Túl sok próbálkozás. Próbálja újra %d másodperc múlva";
+"auth.change.title" = "Jelszó Módosítása";
+"auth.change.current" = "Jelenlegi jelszó";
+"auth.change.new" = "Új jelszó";
+"auth.change.confirm" = "Új jelszó megerősítése";
+"auth.change.success" = "Jelszó sikeresen módosítva";
+"auth.change.failed" = "Jelszó módosítása sikertelen";
+
+// MARK: - Cards
+"cards.title" = "Kártyák";
+"cards.empty" = "Nincsenek kártyák";
+"cards.empty.subtitle" = "Koppintson a + gombra az első kártya hozzáadásához";
+"cards.add" = "Kártya Hozzáadása";
+"cards.edit" = "Kártya Szerkesztése";
+"cards.delete" = "Kártya Törlése";
+"cards.delete.confirm" = "Biztosan törölni szeretné ezt a kártyát?";
+"cards.pin" = "Rögzítés";
+"cards.unpin" = "Rögzítés Feloldása";
+"cards.pinned" = "Rögzített";
+"cards.all" = "Összes";
+"cards.field.add" = "Mező Hozzáadása";
+"cards.field.label" = "Címke";
+"cards.field.value" = "Érték";
+"cards.field.copyable" = "Másolható";
+"cards.copied" = "Vágólapra másolva";
+"cards.title.placeholder" = "Kártya Címe";
+"cards.group.placeholder" = "Csoport";
+"cards.type.general" = "Általános";
+"cards.type.login" = "Bejelentkezés";
+"cards.type.card" = "Hitelkártya";
+"cards.type.identity" = "Személyazonosság";
+"cards.type.note" = "Biztonságos Jegyzet";
+"cards.created" = "Létrehozva: ";
+"cards.updated" = "Frissítve: ";
+"cards.tags" = "Címkék";
+"cards.tags.add" = "Címke Hozzáadása";
+
+// MARK: - Attachments
+"attachments.title" = "Mellékletek";
+"attachments.add" = "Melléklet Hozzáadása";
+"attachments.delete" = "Melléklet Törlése";
+"attachments.delete.confirm" = "Biztosan törölni szeretné ezt a mellékletet?";
+"attachments.watermark" = "Vízjel";
+"attachments.watermark.add" = "Vízjel Hozzáadása";
+"attachments.watermark.remove" = "Vízjel Eltávolítása";
+"attachments.watermark.text" = "Vízjel Szövege";
+"attachments.share" = "Megosztás";
+"attachments.preview" = "Előnézet";
+"attachments.size" = "Méret: %@";
+"attachments.empty" = "Nincsenek mellékletek";
+"attachments.photo.library" = "Fotókönyvtár";
+"attachments.photo.camera" = "Kamera";
+
+// MARK: - Search
+"search.title" = "Keresés";
+"search.placeholder" = "Kártyák keresése...";
+"search.empty" = "Nincs találat";
+"search.recent" = "Legutóbbi Keresések";
+
+// MARK: - Settings
+"settings.title" = "Beállítások";
+"settings.security" = "Biztonság";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Biometrikus hitelesítés engedélyezése";
+"settings.security.autolock" = "Automatikus Zárolás";
+"settings.security.autolock.immediately" = "Azonnal";
+"settings.security.autolock.1min" = "1 perc után";
+"settings.security.autolock.5min" = "5 perc után";
+"settings.security.autolock.15min" = "15 perc után";
+"settings.security.autolock.never" = "Soha";
+"settings.security.changepassword" = "Jelszó Módosítása";
+"settings.language" = "Nyelv";
+"settings.language.title" = "Alkalmazás Nyelve";
+"settings.language.system" = "Rendszer Alapértelmezett";
+"settings.about" = "Névjegy";
+"settings.about.version" = "Verzió";
+"settings.about.privacy" = "Adatvédelmi Irányelvek";
+"settings.about.terms" = "Szolgáltatási Feltételek";
+"settings.data" = "Adatok";
+"settings.data.export" = "Adatok Exportálása";
+"settings.data.import" = "Adatok Importálása";
+"settings.data.reset" = "Összes Adat Visszaállítása";
+"settings.data.reset.confirm" = "Ez törli az összes kártyáját és beállítását. Ez a művelet nem vonható vissza.";
+
+// MARK: - Errors
+"error.generic" = "Valami hiba történt";
+"error.network" = "Hálózati hiba";
+"error.encryption" = "Titkosítási hiba";
+"error.decryption" = "Visszafejtési hiba";
+"error.storage" = "Tárolási hiba";
+"error.biometric.unavailable" = "A biometrikus hitelesítés nem érhető el";
+"error.biometric.notEnrolled" = "Nincs regisztrált biometrikus adat";
+
+// MARK: - Authentication Extras
+"auth.password.required" = "Kérjük, adja meg a jelszót";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Beillesztés és kitöltés";
+"invoice.paste.parse" = "Beillesztés automatikus kitöltéshez";
+"invoice.paste.hint" = "Illessze be a számla vagy fizetés adatait az űrlap automatikus kitöltéséhez";
+"invoice.paste.instruction" = "Illessze be a számla vagy fizetés adatait; a rendszer felismeri és automatikusan kitölti a mezőket";
+"invoice.paste.fromclipboard" = "Beillesztés a vágólapról";
+"invoice.parse.button" = "Elemzés és kitöltés";
+
+// MARK: - Fields
+"field.name" = "Név";
+"field.phone" = "Telefon";
+"field.province" = "Megye";
+"field.city" = "Város";
+"field.district" = "Kerület";
+"field.address" = "Cím";
+"field.postalcode" = "Irányítószám";
+"field.notes" = "Megjegyzések";
+"field.companyname" = "Cégnév";
+"field.taxid" = "Adószám";
+"field.bankname" = "Bank neve";
+"field.bankaccount" = "Bankszámla";
+"field.content" = "Tartalom";
+
+// MARK: - Card Types
+"cards.type.select" = "Válasszon típust";
+"cards.type.idcard" = "Személyi igazolvány";
+"cards.type.passport" = "Útlevél";
+"cards.type.businesslicense" = "Cégjegyzékszám";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Név";
+"field.idcard.gender" = "Nem";
+"field.idcard.nationality" = "Állampolgárság";
+"field.idcard.birthdate" = "Születési dátum";
+"field.idcard.number" = "Igazolványszám";
+"field.idcard.address" = "Cím";
+"field.idcard.issuer" = "Kibocsátó";
+"field.idcard.validperiod" = "Érvényességi idő";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Cégnév";
+"field.license.companytype" = "Cég típusa";
+"field.license.creditcode" = "Azonosító kód";
+"field.license.legalrep" = "Jogi képviselő";
+"field.license.capital" = "Jegyzett tőke";
+"field.license.address" = "Cím";
+"field.license.establishdate" = "Alapítás dátuma";
+"field.license.businessterm" = "Működési idő";
+"field.license.scope" = "Tevékenységi kör";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Név";
+"field.passport.nationality" = "Állampolgárság";
+"field.passport.birthdate" = "Születési dátum";
+"field.passport.gender" = "Nem";
+"field.passport.number" = "Útlevélszám";
+"field.passport.issuedate" = "Kiadás dátuma";
+"field.passport.expirydate" = "Lejárat dátuma";
+"field.passport.issueplace" = "Kiadás helye";
+"field.passport.issuer" = "Kibocsátó";
+
+// MARK: - OCR
+"ocr.section.title" = "Intelligens OCR";
+"ocr.scan.photo" = "Beolvasás képről";
+"ocr.section.footer" = "Válasszon dokumentumképet az adatok automatikus kinyeréséhez";
+"ocr.processing" = "Feldolgozás...";
+"ocr.photo.upload" = "Dokumentumkép feltöltése";
+"ocr.tap.upload" = "Koppintson a kép feltöltéséhez";
+"ocr.idcard.front" = "Személyi igazolvány elülső oldala";
+"ocr.idcard.back" = "Személyi igazolvány hátsó oldala";
+"ocr.passport.datapage" = "Útlevél adatoldal (kép)";
+"ocr.license.photo" = "Cégalapítási engedély képe";
+"ocr.photo.front" = "Elülső";
+"ocr.photo.back" = "Hátsó";
+"ocr.hint.idcard" = "Töltse fel a személyi igazolvány elülső és hátsó oldalát. Az adatok automatikusan kinyerésre kerülnek.";
+"ocr.hint.passport" = "Töltse fel az útlevél adatoldalát (kép).";
+"ocr.hint.license" = "Töltse fel a cégengedély képét.";
+
+// MARK: - Export
+"export.title" = "Exportálás";
+"export.action" = "Exportálás";
+"export.image" = "Kép exportálása";
+"export.images" = "Képek exportálása";
+"export.images.all" = "Az összes kép exportálása";
+"export.text" = "Szöveg exportálása";
+"export.add.watermark" = "Vízjel hozzáadása";
+"export.watermark.title" = "Vízjel beállítások";
+"export.watermark.text" = "Vízjel szöveg";
+"export.watermark.placeholder" = "Adja meg a vízjel szövegét";
+"export.watermark.hint" = "A vízjel ferdén lesz elhelyezve a képen";
+"export.watermark.fontsize" = "Betűméret";
+"export.watermark.spacing" = "Távolság";
+"export.watermark.spacing.dense" = "Sűrű";
+"export.watermark.spacing.normal" = "Normál";
+"export.watermark.spacing.sparse" = "Ritka";
+"export.watermark.opacity" = "Áttetszőség";
+"export.preview" = "Előnézet";
+"export.advanced.options" = "Speciális beállítások";
+"export.size.compression" = "Méret és tömörítés";
+"export.max.width" = "Max. szélesség";
+"export.max.height" = "Max. magasság";
+"export.max.filesize" = "Max. fájlméret";
+"export.pixel" = "Pixel";
+"export.hint.limits" = "Hagyja üresen korlátozás nélkül. A kép arányosan lesz átméretezve";
+"export.success" = "Export sikeres";
+"export.failed" = "Export sikertelen";
+"export.copied" = "Vágólapra másolva";
+"export.images.count" = "%d kép exportálva";
+
+// MARK: - Validation
+"validation.title.required" = "Cím kötelező";
+"validation.field.required" = "Ez a mező kötelező";
+"validation.phone.invalid" = "Érvénytelen telefonszám formátum";
+"validation.taxid.invalid" = "Az adószámnak 18 karakterből kell állnia";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Elemek";
+"items.search.placeholder" = "Keresés cím vagy címkék alapján...";
+"items.loading" = "Betöltés...";
+"items.empty" = "Nincsenek elemek még";
+"items.empty.subtitle" = "Koppintson a + gombra a jobb felső sarokban az első elem létrehozásához";
+"items.empty.search" = "Nincsenek találatok";
+"items.empty.search.subtitle" = "Próbáljon más keresőkifejezést";
+"items.pinned" = "Kitűzött";
+"items.all" = "Minden";
+"items.create.text" = "Szöveges elem létrehozása";
+"items.create.image" = "Képes elem létrehozása";
+"items.type.text" = "Szöveges elem";
+"items.type.image" = "Képes elem";
+"items.type.file" = "Fájl elem";
+"items.type.text.desc" = "Mentse el a szöveges információkat gyors megosztáshoz";
+"items.type.image.desc" = "Mentse el a képeket vízjeltámogatással";
+"items.type.file.desc" = "Mentse el különböző fájltípusokat PDF-előnézettel";
+
+// Items - Files
+"items.files.select" = "Fájlok kiválasztása";
+"items.files.count" = "%d fájl";
+"items.files.section" = "Fájlok";
+"items.files.limit" = "Legfeljebb 10 fájl, fájlonként max. 10 MB";
+
+// Items - Detail Files
+"items.detail.files" = "Fájlok";
+"items.detail.files.count" = "%d fájl";
+"items.create.title" = "Létrehozás %@";
+"items.create.selecttype" = "Válasszon típust";
+"items.create.button" = "Létrehozás";
+"items.info.basic" = "Alapinformációk";
+"items.info.title" = "Cím";
+"items.info.title.hint" = "Adjon meg egy egyértelmű címet az elemhez";
+"items.content" = "Tartalom";
+"items.content.characters" = "%d karakter";
+"items.images.select" = "Képek kiválasztása";
+"items.images.count" = "%d kép";
+"items.images.section" = "Képek";
+"items.images.limit" = "Akár 10 kép";
+"items.tags.section" = "Címkék";
+"items.tags.add" = "Címke hozzáadása";
+"items.tags.placeholder" = "Adja meg a címke nevét";
+"items.tags.hint" = "Használjon címkéket a rendszerezéshez és kereséshez";
+"items.detail.edit" = "Szerkesztés";
+"items.detail.delete" = "Törlés";
+"items.detail.pin" = "Kitűzés";
+"items.detail.created" = "Létrehozva";
+"items.detail.unpin" = "Kitűzés eltávolítása";
+"items.detail.pinned" = "Kitűzve";
+"items.detail.content" = "Tartalom";
+"items.detail.images" = "Képek";
+"items.detail.images.count" = "%d kép";
+"items.detail.tags" = "Címkék";
+"items.detaWatermark" = "";
+"watermark.settings" = "Vízjel beállítások";
+"watermark.collapse" = "Összecsukás";
+"watermark.add" = "Vízjel hozzáadása";
+"watermark.text" = "Vízjel szövege (pl.: Csak X használatra)";
+"watermark.text.placeholder" = "Pl.: Csak X használatra";
+"watermark.fontsize" = "Betűméret";
+"watermark.spacing" = "Sorköz";
+"watermark.spacing.dense" = "Sűrű";
+"watermark.spacing.normal" = "Normál";
+"watermark.spacing.sparse" = "Ritka";
+"watermark.opacity" = "Áttetszőség";
+"watermark.preview" = "Előnézet";
+"watermark.share" = "Megosztás";
+"watermark.scope" = "Megosztás hatóköre";
+"watermark.scope.current" = "Csak ez a kép";
+"watermark.scope.all" = "Minden kép (%d)";
+"watermark.hint" = "A vízjel ferde ismétlődésével jelenik meg a képen";
+"watermark.sheet.title" = "Képek megosztása";
+"watermark.preparing" = "Előkészítés...";
+
+"items.detail.share.text" = "Szöveg megosztása";
+"items.detail.share.images" = "Képek megosztása";
+"items.delete.confirm" = "Biztosan törölni szeretné ezt az elemet?";
+"items.delete.title" = "Törlés megerősítése";
+"items.delete.message" = "Ezt a műveletet nem lehet visszavonni";
+"items.created.success" = "Sikeresen létrehozva";
+"items.updated.success" = "Sikeresen frissítve";
+"items.deleted.success" = "Törölve";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Eszközök közötti fotóátviteli eszköz. Gyors képátvitel Mac és iPhone között hálózat nélkül.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Alakítsa iPhone-ját biztonságos hordozható meghajtóvá";
+
+// MARK: - Settings: Clear Data
+"settings.security.cleardata" = "Összes adat törlése";
+"settings.security.cleardata.footer" = "⚠️ Ez véglegesen törli az összes kártyát, képet és fájlt. Ezt a műveletet nem lehet visszavonni!";
+"settings.security.cleardata.confirm.title" = "Minden adat törlésének megerősítése";
+"settings.security.cleardata.confirm.message" = "Ez véglegesen törli az összes adatot, és nem lehet visszavonni. Adja meg a jelszót a megerősítéshez.";
+"settings.security.cleardata.confirm.password" = "Adja meg a jelszót";
+"settings.security.cleardata.confirm.delete" = "Összes adat törlése";
+"settings.security.cleardata.success" = "Minden adat törölve";
+

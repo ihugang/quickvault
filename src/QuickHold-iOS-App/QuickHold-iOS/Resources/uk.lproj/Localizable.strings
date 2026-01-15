@@ -1,0 +1,369 @@
+/* 
+  Localizable.strings (Українська)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Скасувати";
+"common.save" = "Зберегти";
+"common.delete" = "Видалити";
+"common.edit" = "Редагувати";
+"common.done" = "Готово";
+"common.add" = "Додати";
+"common.close" = "Закрити";
+"common.confirm" = "Підтвердити";
+"common.error" = "Помилка";
+"common.success" = "Успішно";
+"common.loading" = "Завантаження...";
+"common.retry" = "Повторити";
+"common.copy" = "Копіювати";
+"common.share" = "Поділитися";
+"common.search" = "Пошук";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Захистіть своє цифрове життя";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Ласкаво просимо до QuickHold";
+"auth.welcome.subtitle" = "Встановіть головний пароль, щоб почати";
+"auth.password.placeholder" = "Введіть пароль";
+"auth.password.confirm" = "Підтвердіть пароль";
+"auth.password.hint" = "Пароль повинен містити щонайменше 8 символів";
+"auth.password.mismatch" = "Паролі не збігаються";
+"auth.password.weak" = "Пароль занадто слабкий";
+"auth.setup.button" = "Встановити Пароль";
+"auth.unlock.title" = "Розблокувати QuickHold";
+"auth.unlock.button" = "Розблокувати";
+"auth.unlock.biometric" = "Використати Face ID / Touch ID";
+"auth.unlock.failed" = "Помилка автентифікації";
+"auth.unlock.attempts" = "Залишилось спроб: %d";
+"auth.unlock.locked" = "Забагато спроб. Спробуйте через %d секунд";
+"auth.change.title" = "Змінити Пароль";
+"auth.change.current" = "Поточний пароль";
+"auth.change.new" = "Новий пароль";
+"auth.change.confirm" = "Підтвердіть новий пароль";
+"auth.change.success" = "Пароль успішно змінено";
+"auth.change.failed" = "Не вдалося змінити пароль";
+
+// MARK: - Cards
+"cards.title" = "Картки";
+"cards.empty" = "Немає карток";
+"cards.empty.subtitle" = "Натисніть +, щоб додати першу картку";
+"cards.add" = "Додати Картку";
+"cards.edit" = "Редагувати Картку";
+"cards.delete" = "Видалити Картку";
+"cards.delete.confirm" = "Ви впевнені, що хочете видалити цю картку?";
+"cards.pin" = "Закріпити";
+"cards.unpin" = "Відкріпити";
+"cards.pinned" = "Закріплені";
+"cards.all" = "Усі";
+"cards.field.add" = "Додати Поле";
+"cards.field.label" = "Мітка";
+"cards.field.value" = "Значення";
+"cards.field.copyable" = "Можна копіювати";
+"cards.copied" = "Скопійовано до буфера обміну";
+"cards.title.placeholder" = "Назва Картки";
+"cards.group.placeholder" = "Група";
+"cards.type.general" = "Загальне";
+"cards.type.login" = "Вхід";
+"cards.type.card" = "Кредитна Картка";
+"cards.type.identity" = "Особистість";
+"cards.type.note" = "Захищена Нотатка";
+"cards.created" = "Створено: ";
+"cards.updated" = "Оновлено: ";
+"cards.tags" = "Теги";
+"cards.tags.add" = "Додати Тег";
+
+// MARK: - Attachments
+"attachments.title" = "Вкладення";
+"attachments.add" = "Додати Вкладення";
+"attachments.delete" = "Видалити Вкладення";
+"attachments.delete.confirm" = "Ви впевнені, що хочете видалити це вкладення?";
+"attachments.watermark" = "Водяний знак";
+"attachments.watermark.add" = "Додати Водяний Знак";
+"attachments.watermark.remove" = "Видалити Водяний Знак";
+"attachments.watermark.text" = "Текст Водяного Знаку";
+"attachments.share" = "Поділитися";
+"attachments.preview" = "Попередній перегляд";
+"attachments.size" = "Розмір: %@";
+"attachments.empty" = "Немає вкладень";
+"attachments.photo.library" = "Фотобібліотека";
+"attachments.photo.camera" = "Камера";
+
+// MARK: - Search
+"search.title" = "Пошук";
+"search.placeholder" = "Шукати картки...";
+"search.empty" = "Результатів не знайдено";
+"search.recent" = "Останні Пошуки";
+
+// MARK: - Settings
+"settings.title" = "Налаштування";
+"settings.security" = "Безпека";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Увімкнути біометричну автентифікацію";
+"settings.security.autolock" = "Автоблокування";
+"settings.security.autolock.immediately" = "Негайно";
+"settings.security.autolock.1min" = "Через 1 хвилину";
+"settings.security.autolock.5min" = "Через 5 хвилин";
+"settings.security.autolock.15min" = "Через 15 хвилин";
+"settings.security.autolock.never" = "Ніколи";
+"settings.security.changepassword" = "Змінити Пароль";
+"settings.language" = "Мова";
+"settings.language.title" = "Мова Додатку";
+"settings.language.system" = "Системна за замовчуванням";
+"settings.about" = "Про Додаток";
+"settings.about.version" = "Версія";
+"settings.about.privacy" = "Політика Конфіденційності";
+"settings.about.terms" = "Умови Використання";
+"settings.data" = "Дані";
+"settings.data.export" = "Експорт Даних";
+"settings.data.import" = "Імпорт Даних";
+"settings.data.reset" = "Скинути Всі Дані";
+"settings.data.reset.confirm" = "Це видалить усі ваші картки та налаштування. Цю дію неможливо скасувати.";
+
+// MARK: - Errors
+"error.generic" = "Щось пішло не так";
+"error.network" = "Помилка мережі";
+"error.encryption" = "Помилка шифрування";
+"error.decryption" = "Помилка розшифрування";
+"error.storage" = "Помилка сховища";
+"error.biometric.unavailable" = "Біометрична автентифікація недоступна";
+"error.biometric.notEnrolled" = "Біометричні дані не зареєстровані";
+
+/* Added from en.lproj (machine-translated) */
+
+"auth.password.required" = "Будь ласка, введіть ваш пароль";
+"auth.error.biometric.unavailable" = "Touch ID недоступен";
+"auth.error.biometric.failed" = "Помилка автентифікації Touch ID";
+"auth.error.biometric.password.not.stored" = "Будь ласка, спочатку увійдіть з паролем, щоб увімкнути Touch ID";
+"auth.error.password.incorrect" = "Неправильний пароль";
+"auth.error.password.too.short" = "Пароль повинен містити щонайменше 8 символів";
+"auth.error.no.password" = "Головний пароль не встановлено";
+"auth.error.rate.limited" = "Забагато невдалих спроб. Чекайте %d секунд";
+"auth.error.keychain" = "Помилка Keychain: %@";
+
+"cards.group.personal" = "Особистий";
+"cards.group.company" = "Компанія";
+"cards.type.address" = "Адреса";
+"cards.type.invoice" = "Інформація про рахунок";
+
+"invoice.paste.title" = "Вставити та розібрати";
+"invoice.paste.parse" = "Вставити для автозаповнення";
+"invoice.paste.hint" = "Вставте інформацію про рахунок або платіж для автоматичного заповнення форми";
+"invoice.paste.instruction" = "Вставте інформацію про рахунок або платіж, система автоматично розпізнає і заповнить поля";
+"invoice.paste.fromclipboard" = "Вставити з буфера обміну";
+"invoice.parse.button" = "Розібрати та заповнити";
+
+"field.name" = "Ім'я";
+"field.phone" = "Телефон";
+"field.province" = "Область/Провінція";
+"field.city" = "Місто";
+"field.district" = "Район";
+"field.address" = "Адреса";
+"field.postalcode" = "Поштовий індекс";
+"field.notes" = "Примітки";
+"field.companyname" = "Назва компанії";
+"field.taxid" = "Податковий номер";
+"field.bankname" = "Назва банку";
+"field.bankaccount" = "Банківський рахунок";
+"field.content" = "Вміст";
+
+"cards.type.select" = "Виберіть тип";
+"cards.type.idcard" = "Посвідчення особи";
+"cards.type.passport" = "Паспорт";
+"cards.type.businesslicense" = "Ліцензія на ведення бізнесу";
+
+"field.idcard.name" = "Ім'я";
+"field.idcard.gender" = "Стать";
+"field.idcard.nationality" = "Громадянство";
+"field.idcard.birthdate" = "Дата народження";
+"field.idcard.number" = "Номер посвідчення";
+"field.idcard.address" = "Адреса";
+"field.idcard.issuer" = "Орган, що видав";
+"field.idcard.validperiod" = "Період дії";
+
+"field.license.companyname" = "Назва компанії";
+"field.license.companytype" = "Тип компанії";
+"field.license.creditcode" = "Уніфікований соціальний кредитний код";
+"field.license.legalrep" = "Законний представник";
+"field.license.capital" = "Зареєстрований капітал";
+"field.license.address" = "Адреса";
+"field.license.establishdate" = "Дата заснування";
+"field.license.businessterm" = "Період діяльності";
+"field.license.scope" = "Сфера діяльності";
+
+"field.passport.name" = "Ім'я";
+"field.passport.nationality" = "Громадянство";
+"field.passport.birthdate" = "Дата народження";
+"field.passport.gender" = "Стать";
+"field.passport.number" = "Номер паспорта";
+"field.passport.issuedate" = "Дата видачі";
+"field.passport.expirydate" = "Дата закінчення";
+"field.passport.issueplace" = "Місце видачі";
+"field.passport.issuer" = "Орган, що видав";
+
+"attachment.idcard.front" = "Завантажте передню сторону посвідчення (фото і боку з номером)";
+"attachment.idcard.back" = "Завантажте задню сторону посвідчення (опційно)";
+"attachment.passport.datapage" = "Завантажте сторінку даних паспорта (сторінка з фото)";
+"attachment.license.photo" = "Завантажте фото ліцензії на ведення бізнесу";
+
+"ocr.section.title" = "Розумне розпізнавання";
+"ocr.scan.photo" = "Сканувати з фото";
+"ocr.section.footer" = "Виберіть фото документа для автоматичного вилучення інформації";
+"ocr.processing" = "Розпізнавання...";
+"ocr.photo.upload" = "Завантажити фото документа";
+"ocr.tap.upload" = "Натисніть для завантаження фото";
+"ocr.idcard.front" = "Посвідчення особи спереду (фото і боку з номером)";
+"ocr.idcard.back" = "Посвідчення особи ззаду (орган видачі та дійсність)";
+"ocr.passport.datapage" = "Паспорт сторінка даних (сторінка з фото)";
+"ocr.license.photo" = "Фото ліцензії на ведення бізнесу";
+"ocr.photo.front" = "Передня сторона";
+"ocr.photo.back" = "Задня сторона";
+"ocr.hint.idcard" = "Завантажте передню та задню сторони вашого посвідчення особи. Інформація буде автоматично вилучена.";
+"ocr.hint.passport" = "Завантажте сторінку даних (сторінку з фото) вашого паспорта.";
+"ocr.hint.license" = "Завантажте фото вашої ліцензії на ведення бізнесу.";
+"common.optional" = "опційно";
+"attachment.document.photos" = "Фото документів";
+"attachment.no.photo" = "Немає фото";
+"attachment.load.failed" = "Не вдалося завантажити зображення";
+"ocr.edit.photo.hint" = "Натисніть, щоб додати або замінити фото документів";
+
+"export.title" = "Експорт";
+"export.action" = "Експорт";
+"export.image" = "Експортувати зображення";
+"export.images" = "Експортувати зображення";
+"export.images.all" = "Експортувати всі зображення";
+"export.text" = "Експортувати текст";
+"export.add.watermark" = "Додати водяний знак";
+"export.watermark.title" = "Параметри водяного знака";
+"export.watermark.text" = "Текст водяного знака";
+"export.watermark.placeholder" = "Введіть текст водяного знака";
+"export.watermark.hint" = "Водяний знак буде накладено по діагоналі на зображення";
+"export.watermark.fontsize" = "Розмір шрифту";
+"export.watermark.spacing" = "Інтервал";
+"export.watermark.spacing.dense" = "Щільний";
+"export.watermark.spacing.normal" = "Звичайний";
+"export.watermark.spacing.sparse" = "Розріджений";
+"export.watermark.opacity" = "Прозорість";
+"export.preview" = "Попередній перегляд";
+"export.advanced.options" = "Додаткові параметри";
+"export.size.compression" = "Розмір і стиснення";
+"export.max.width" = "Максимальна ширина";
+"export.max.height" = "Максимальна висота";
+"export.max.filesize" = "Максимальний розмір файлу";
+"export.pixel" = "px";
+"export.hint.limits" = "Залиште пусто без обмежень. Зображення буде змінено пропорційно";
+"export.success" = "Експорт вдалась";
+"export.failed" = "Експорт не вдалась";
+"export.copied" = "Скопійовано до буфера обміну";
+"export.images.count" = "Експортовано %d зображень";
+
+"validation.title.required" = "Назва обов'язкова";
+"validation.field.required" = "Це поле обов'язкове";
+"validation.phone.invalid" = "Неправильний формат телефону";
+"validation.taxid.invalid" = "Податковий номер повинен мати 18 символів";
+
+"items.title" = "QuickHold";
+"items.tab" = "Елементи";
+"items.search.placeholder" = "Пошук назви або тегів...";
+"items.loading" = "Завантаження...";
+"items.empty" = "Немає елементів";
+"items.empty.subtitle" = "Натисніть + у верхньому правому куті для створення першого елемента";
+"items.empty.search" = "Результатів не знайдено";
+"items.empty.search.subtitle" = "Спробуйте інші ключові слова пошуку";
+"items.pinned" = "Закріплені";
+"items.all" = "Усі";
+"items.create.text" = "Створити текстовий елемент";
+"items.create.image" = "Створити елемент зображення";
+"items.type.text" = "Текстовий елемент";
+"items.type.image" = "Елемент зображення";
+"items.type.file" = "Файловий елемент";
+"items.type.text.desc" = "Зберігайте текстову інформацію для швидкого обміну";
+"items.type.image.desc" = "Збережіть зображення з підтримкою водяного знака";
+"items.type.file.desc" = "Зберігайте різні файли з підтримкою попереднього перегляду PDF";
+
+"items.files.select" = "Виберіть файли";
+"items.files.count" = "%d файлів";
+"items.files.section" = "Файли";
+"items.files.limit" = "До 10 файлів, кожен файл не більше 10 МБ";
+
+"items.detail.files" = "Файли";
+"items.detail.files.count" = "%d файлів";
+"items.create.title" = "Створити %@";
+"items.create.selecttype" = "Виберіть тип";
+"items.create.button" = "Створити";
+"items.info.basic" = "Основна інформація";
+"items.info.title" = "Назва";
+"items.info.title.hint" = "Встановіть чітку назву для елемента";
+"items.content" = "Вміст";
+"items.content.characters" = "%d символів";
+"items.images.select" = "Виберіть зображення";
+"items.images.count" = "%d зображень";
+"items.images.section" = "Зображення";
+"items.images.limit" = "Можна вибрати до 10 зображень";
+"items.tags.section" = "Теги";
+"items.tags.add" = "Додати тег";
+"items.tags.placeholder" = "Введіть назву тега";
+"items.tags.hint" = "Використовуйте теги для допомоги в категоризації та пошуку";
+"items.detail.edit" = "Редагувати";
+"items.detail.delete" = "Видалити";
+"items.detail.pin" = "Закріпити";
+"items.detail.created" = "Створено";
+"items.detail.unpin" = "Відкріпити";
+"items.detail.pinned" = "Закріплено";
+"items.detail.content" = "Вміст";
+"items.detail.images" = "Зображення";
+"items.detail.images.count" = "%d зображень";
+"items.detail.tags" = "Теги";
+"items.detaWatermark" = "";
+"watermark.settings" = "Параметри водяного знака";
+"watermark.collapse" = "Згорнути";
+"watermark.add" = "Додати водяний знак";
+"watermark.text" = "Текст водяного знака (наприклад: тільки для використання XX)";
+"watermark.text.placeholder" = "наприклад: тільки для використання XX";
+"watermark.fontsize" = "Розмір шрифту";
+"watermark.spacing" = "Інтервал між рядками";
+"watermark.spacing.dense" = "Щільний";
+"watermark.spacing.normal" = "Звичайний";
+"watermark.spacing.sparse" = "Розріджений";
+"watermark.opacity" = "Прозорість";
+"watermark.preview" = "Попередній перегляд";
+"watermark.share" = "Поділитися";
+"watermark.scope" = "Область обміну";
+"watermark.scope.current" = "Тільки це зображення";
+"watermark.scope.all" = "Усі зображення (%d зображень)";
+"watermark.hint" = "Водяний знак буде розташований по діагоналі по всьому зображенню";
+"watermark.sheet.title" = "Поділитися зображеннями";
+"watermark.preparing" = "Підготовка...";
+
+"items.detail.share.text" = "Поділитися текстом";
+"items.detail.share.images" = "Поділитися зображеннями";
+"items.delete.confirm" = "Ви впевнені, що хочете видалити цей елемент?";
+"items.delete.title" = "Підтвердити видалення";
+"items.delete.message" = "Цю дію неможливо скасувати";
+"items.created.success" = "Успішно створено";
+"items.updated.success" = "Успішно оновлено";
+"items.deleted.success" = "Успішно видалено";
+
+"settings.security.biometric.enabled" = "Біометрія ввімкнена";
+"settings.security.biometric.disabled" = "Біометрія вимкнена";
+"settings.security.cleardata" = "Очистити всі дані";
+"settings.security.cleardata.footer" = "⚠️ Це назавжди видалить усі картки, зображення та файли. Цю дію неможливо скасувати!";
+"settings.security.cleardata.confirm.title" = "Підтвердити очистку всіх даних";
+"settings.security.cleardata.confirm.message" = "Це назавжди видалить усі дані і не може бути скасовано. Введіть пароль для підтвердження.";
+"settings.security.cleardata.confirm.password" = "Введіть пароль";
+"settings.security.cleardata.confirm.delete" = "Видалити всі дані";
+"settings.security.cleardata.success" = "Усі дані були видалені";
+"settings.appearance" = "Зовнішній вигляд";
+"settings.appearance.title" = "Дисплей";
+"settings.appearance.auto" = "Автоматичні";
+"settings.appearance.light" = "Світлий";
+"settings.appearance.dark" = "Темний";
+"settings.tab" = "Налаштування";
+
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Інструмент для передачі фото на кількох платформах. Швидко передавайте фото між Mac і iPhone без мережі.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Перетворіть iPhone на захищений мобільний диск";

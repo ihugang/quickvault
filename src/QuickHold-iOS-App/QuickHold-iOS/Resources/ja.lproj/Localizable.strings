@@ -1,0 +1,379 @@
+/* 
+  Localizable.strings (日本語)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "キャンセル";
+"common.save" = "保存";
+"common.delete" = "削除";
+"common.edit" = "編集";
+"common.done" = "完了";
+"common.add" = "追加";
+"common.close" = "閉じる";
+"common.confirm" = "確認";
+"common.error" = "エラー";
+"common.success" = "成功";
+"common.loading" = "読み込み中...";
+"common.retry" = "再試行";
+"common.copy" = "コピー";
+"common.share" = "共有";
+"common.search" = "検索";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "デジタルライフを守る";
+
+// MARK: - Authentication
+"auth.welcome.title" = "QuickHoldへようこそ";
+"auth.welcome.subtitle" = "マスターパスワードを設定して始めましょう";
+"auth.password.placeholder" = "パスワードを入力";
+"auth.password.confirm" = "パスワードを確認";
+"auth.password.hint" = "パスワードは8文字以上必要です";
+"auth.password.required" = "パスワードを入力してください";
+"auth.password.mismatch" = "パスワードが一致しません";
+"auth.password.weak" = "パスワードが弱すぎます";
+"auth.setup.button" = "パスワードを設定";
+"auth.unlock.title" = "QuickHoldのロック解除";
+"auth.unlock.button" = "ロック解除";
+"auth.unlock.biometric" = "Face ID / Touch IDを使用";
+"auth.unlock.failed" = "認証に失敗しました";
+"auth.unlock.attempts" = "残り%d回";
+"auth.unlock.locked" = "試行回数が多すぎます。%d秒後に再試行してください";
+"auth.change.title" = "パスワードを変更";
+"auth.change.current" = "現在のパスワード";
+"auth.change.new" = "新しいパスワード";
+"auth.change.confirm" = "新しいパスワードを確認";
+"auth.change.success" = "パスワードが変更されました";
+"auth.change.failed" = "パスワードの変更に失敗しました";
+
+// MARK: - Authentication Errors
+"auth.error.biometric.unavailable" = "Touch IDは利用できません";
+"auth.error.biometric.failed" = "Touch ID認証に失敗しました";
+"auth.error.biometric.password.not.stored" = "Touch IDを有効にするには、まずパスワードでログインしてください";
+"auth.error.password.incorrect" = "パスワードが正しくありません";
+"auth.error.password.too.short" = "パスワードは8文字以上必要です";
+"auth.error.no.password" = "マスターパスワードが設定されていません";
+"auth.error.rate.limited" = "失敗回数が多すぎます。%d秒後に再試行してください";
+"auth.error.keychain" = "Keychainエラー: %@";
+
+// MARK: - Cards
+"cards.title" = "カード";
+"cards.empty" = "カードがありません";
+"cards.empty.subtitle" = "+をタップして最初のカードを追加";
+"cards.add" = "カードを追加";
+"cards.edit" = "カードを編集";
+"cards.delete" = "カードを削除";
+"cards.delete.confirm" = "このカードを削除してもよろしいですか？";
+"cards.pin" = "ピン留め";
+"cards.unpin" = "ピン留め解除";
+"cards.pinned" = "ピン留め済み";
+"cards.all" = "すべて";
+"cards.field.add" = "フィールドを追加";
+"cards.field.label" = "ラベル";
+"cards.field.value" = "値";
+"cards.field.copyable" = "コピー可能";
+"cards.copied" = "クリップボードにコピーしました";
+"cards.title.placeholder" = "カードタイトル";
+"cards.group.placeholder" = "グループ";
+"cards.type.general" = "一般";
+"cards.type.login" = "ログイン";
+"cards.type.card" = "クレジットカード";
+"cards.type.identity" = "ID";
+"cards.type.note" = "セキュアメモ";
+"cards.created" = "作成日: ";
+"cards.updated" = "更新日: ";
+"cards.tags" = "タグ";
+"cards.tags.add" = "タグを追加";
+"cards.type.address" = "住所";
+"cards.type.invoice" = "請求書情報";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "貼り付け＆解析";
+"invoice.paste.parse" = "貼り付けて自動入力";
+"invoice.paste.hint" = "請求書または支払い情報を貼り付けて、フォームを自動入力";
+"invoice.paste.instruction" = "請求書または支払い情報を貼り付けると、システムが自動的に認識してフィールドに入力します";
+"invoice.paste.fromclipboard" = "クリップボードから貼り付け";
+"invoice.parse.button" = "解析して入力";
+
+// MARK: - Fields
+"field.name" = "名前";
+"field.phone" = "電話番号";
+"field.province" = "都道府県";
+"field.city" = "市区町村";
+"field.district" = "地区";
+"field.address" = "住所";
+"field.postalcode" = "郵便番号";
+"field.notes" = "メモ";
+"field.companyname" = "会社名";
+"field.taxid" = "税ID";
+"field.bankname" = "銀行名";
+"field.bankaccount" = "銀行口座";
+"field.content" = "内容";
+
+// MARK: - Card Types
+"cards.type.select" = "タイプを選択";
+"cards.type.idcard" = "身分証明書";
+"cards.type.passport" = "パスポート";
+"cards.type.businesslicense" = "営業許可証";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "名前";
+"field.idcard.gender" = "性別";
+"field.idcard.nationality" = "国籍";
+"field.idcard.birthdate" = "生年月日";
+"field.idcard.number" = "ID番号";
+"field.idcard.address" = "住所";
+"field.idcard.issuer" = "発行機関";
+"field.idcard.validperiod" = "有効期間";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "会社名";
+"field.license.companytype" = "会社の種類";
+"field.license.creditcode" = "統一社会信用コード";
+"field.license.legalrep" = "法定代表者";
+"field.license.capital" = "資本金";
+"field.license.address" = "住所";
+"field.license.establishdate" = "設立日";
+"field.license.businessterm" = "営業期間";
+"field.license.scope" = "営業範囲";
+
+// MARK: - Passport Fields
+"field.passport.name" = "名前";
+"field.passport.nationality" = "国籍";
+"field.passport.birthdate" = "生年月日";
+"field.passport.gender" = "性別";
+"field.passport.number" = "パスポート番号";
+"field.passport.issuedate" = "発行日";
+"field.passport.expirydate" = "有効期限";
+"field.passport.issueplace" = "発行地";
+"field.passport.issuer" = "発行機関";
+
+// MARK: - Attachment Hints
+"attachment.idcard.front" = "ID前面をアップロード（写真＆番号側）";
+"attachment.idcard.back" = "ID裏面をアップロード（オプション）";
+"attachment.passport.datapage" = "パスポートデータページをアップロード（写真ページ）";
+"attachment.license.photo" = "営業許可証の写真をアップロード";
+
+// MARK: - OCR
+"ocr.section.title" = "スマート認識";
+"ocr.scan.photo" = "写真からスキャン";
+"ocr.section.footer" = "ドキュメントの写真を選択して、自動的に情報を抽出";
+"ocr.processing" = "認識中...";
+"ocr.photo.upload" = "ドキュメント写真をアップロード";
+"ocr.tap.upload" = "タップして写真をアップロード";
+"ocr.idcard.front" = "ID前面（写真＆番号側）";
+"ocr.idcard.back" = "ID裏面（発行者＆有効性）";
+"ocr.passport.datapage" = "パスポートデータページ（写真ページ）";
+"ocr.license.photo" = "営業許可証の写真";
+"ocr.photo.front" = "前面";
+"ocr.photo.back" = "裏面";
+"ocr.hint.idcard" = "IDカードの前面と背面をアップロードしてください。情報は自動的に抽出されます。";
+"ocr.hint.passport" = "パスポートのデータページ（写真ページ）をアップロードしてください。";
+"ocr.hint.license" = "営業許可証の写真をアップロードしてください。";
+"common.optional" = "オプション";
+"common.close" = "閉じる";
+"attachment.document.photos" = "ドキュメント写真";
+"attachment.no.photo" = "写真なし";
+"attachment.load.failed" = "画像の読み込みに失敗しました";
+"ocr.edit.photo.hint" = "クリックしてドキュメント写真を追加または置換";
+
+// MARK: - Export
+"export.title" = "エクスポート";
+"export.action" = "エクスポート";
+"export.image" = "画像をエクスポート";
+"export.images" = "画像をエクスポート";
+"export.images.all" = "すべての画像をエクスポート";
+"export.text" = "テキストをエクスポート";
+"export.add.watermark" = "透かしを追加";
+"export.watermark.title" = "透かし設定";
+"export.watermark.text" = "透かしテキスト";
+"export.watermark.placeholder" = "透かしテキストを入力";
+"export.watermark.hint" = "透かしは画像に斜めに重ねられます";
+"export.watermark.fontsize" = "フォントサイズ";
+"export.watermark.spacing" = "間隔";
+"export.watermark.spacing.dense" = "密";
+"export.watermark.spacing.normal" = "標準";
+"export.watermark.spacing.sparse" = "疎";
+"export.watermark.opacity" = "不透明度";
+"export.preview" = "プレビュー";
+"export.advanced.options" = "詳細オプション";
+"export.size.compression" = "サイズと圧縮";
+"export.max.width" = "最大幅";
+"export.max.height" = "最大高さ";
+"export.max.filesize" = "最大ファイルサイズ";
+"export.pixel" = "px";
+"export.hint.limits" = "制限なしの場合は空のままにしてください。画像は比例的にリサイズされます";
+"export.success" = "エクスポート成功";
+"export.failed" = "エクスポート失敗";
+"export.copied" = "クリップボードにコピーしました";
+"export.images.count" = "%d枚の画像をエクスポートしました";
+
+// MARK: - Validation
+"validation.title.required" = "タイトルは必須です";
+"validation.field.required" = "このフィールドは必須です";
+"validation.phone.invalid" = "無効な電話番号形式";
+"validation.taxid.invalid" = "税IDは18文字である必要があります";
+
+// MARK: - Attachments
+"attachments.title" = "添付ファイル";
+"attachments.add" = "添付ファイルを追加";
+"attachments.delete" = "添付ファイルを削除";
+"attachments.delete.confirm" = "この添付ファイルを削除してもよろしいですか？";
+"attachments.watermark" = "透かし";
+"attachments.watermark.add" = "透かしを追加";
+"attachments.watermark.remove" = "透かしを削除";
+"attachments.watermark.text" = "透かしテキスト";
+"attachments.share" = "共有";
+"attachments.preview" = "プレビュー";
+"attachments.size" = "サイズ: %@";
+"attachments.empty" = "添付ファイルがありません";
+"attachments.photo.library" = "フォトライブラリ";
+"attachments.photo.camera" = "カメラ";
+
+// MARK: - Search
+"search.title" = "検索";
+"search.placeholder" = "カードを検索...";
+"search.empty" = "結果が見つかりません";
+"search.recent" = "最近の検索";
+
+// MARK: - Settings
+"settings.title" = "設定";
+"settings.security" = "セキュリティ";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "生体認証を有効にする";
+"settings.security.autolock" = "自動ロック";
+"settings.security.autolock.immediately" = "即時";
+"settings.security.autolock.1min" = "1分後";
+"settings.security.autolock.5min" = "5分後";
+"settings.security.autolock.15min" = "15分後";
+"settings.security.autolock.never" = "なし";
+"settings.security.changepassword" = "パスワードを変更";
+"settings.security.cleardata" = "すべてのデータを消去";
+"settings.security.cleardata.footer" = "⚠️ これにより、すべてのカード、画像、ファイルが永久に削除されます。この操作は元に戻せません！";
+"settings.security.cleardata.confirm.title" = "すべてのデータの消去を確認";
+"settings.security.cleardata.confirm.message" = "これによりすべてのデータが永久に削除され、元に戻せません。確認するにはパスワードを入力してください。";
+"settings.security.cleardata.confirm.password" = "パスワードを入力";
+"settings.security.cleardata.confirm.delete" = "すべてのデータを削除";
+"settings.security.cleardata.success" = "すべてのデータが消去されました";
+"settings.security.biometric.enabled" = "生体認証が有効";
+"settings.security.biometric.disabled" = "生体認証が無効";
+"settings.tab" = "設定";
+"settings.appearance" = "外観";
+"settings.appearance.title" = "表示";
+"settings.appearance.auto" = "自動";
+"settings.appearance.light" = "ライト";
+"settings.appearance.dark" = "ダーク";
+"settings.language" = "言語";
+"settings.language.title" = "アプリの言語";
+"settings.language.system" = "システムのデフォルト";
+"settings.about" = "このアプリについて";
+"settings.about.version" = "バージョン";
+"settings.about.privacy" = "プライバシーポリシー";
+"settings.about.terms" = "利用規約";
+"settings.data" = "データ";
+"settings.data.export" = "データをエクスポート";
+"settings.data.import" = "データをインポート";
+"settings.data.reset" = "すべてのデータをリセット";
+"settings.data.reset.confirm" = "すべてのカードと設定が削除されます。この操作は元に戻せません。";
+
+// MARK: - Errors
+"error.generic" = "エラーが発生しました";
+"error.network" = "ネットワークエラー";
+"error.encryption" = "暗号化エラー";
+"error.decryption" = "復号化エラー";
+"error.storage" = "ストレージエラー";
+"error.biometric.unavailable" = "生体認証は利用できません";
+"error.biometric.notEnrolled" = "生体認証データが登録されていません";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "アイテム";
+"items.search.placeholder" = "タイトルまたはタグを検索...";
+"items.loading" = "読み込み中...";
+"items.empty" = "まだアイテムがありません";
+"items.empty.subtitle" = "右上の+をタップして最初のアイテムを作成";
+"items.empty.search" = "結果が見つかりません";
+"items.empty.search.subtitle" = "別の検索キーワードを試してください";
+"items.pinned" = "ピン留め済み";
+"items.all" = "すべて";
+"items.create.text" = "テキストアイテムを作成";
+"items.create.image" = "画像アイテムを作成";
+"items.type.text" = "テキストアイテム";
+"items.type.image" = "画像アイテム";
+"items.type.file" = "ファイルアイテム";
+"items.type.text.desc" = "テキスト情報を保存して簡単に共有";
+"items.type.image.desc" = "透かし共有サポート付きで画像を保存";
+"items.type.file.desc" = "PDFプレビューサポート付きで様々なファイルを保存";
+
+// Items - Files
+"items.files.select" = "ファイルを選択";
+"items.files.count" = "%d件のファイル";
+"items.files.section" = "ファイル";
+"items.files.limit" = "最大10ファイル、各ファイル10MB以下";
+
+// Items - Detail Files
+"items.detail.files" = "ファイル";
+"items.detail.files.count" = "%d件のファイル";
+"items.create.title" = "%@を作成";
+"items.create.selecttype" = "タイプを選択";
+"items.create.button" = "作成";
+"items.info.basic" = "基本情報";
+"items.info.title" = "タイトル";
+"items.info.title.hint" = "アイテムに明確なタイトルを設定";
+"items.content" = "内容";
+"items.content.characters" = "%d文字";
+"items.images.select" = "画像を選択";
+"items.images.count" = "%d枚の画像";
+"items.images.section" = "画像";
+"items.images.limit" = "最大10枚の画像を選択可能";
+"items.tags.section" = "タグ";
+"items.tags.add" = "タグを追加";
+"items.tags.placeholder" = "タグ名を入力";
+"items.tags.hint" = "タグを使用して分類と検索を支援";
+"items.detail.edit" = "編集";
+"items.detail.delete" = "削除";
+"items.detail.pin" = "ピン留め";
+"items.detail.created" = "作成日";
+"items.detail.unpin" = "ピン留め解除";
+"items.detail.pinned" = "ピン留め済み";
+"items.detail.content" = "内容";
+"items.detail.images" = "画像";
+"items.detail.images.count" = "%d枚の画像";
+"items.detail.tags" = "タグ";
+"items.detaWatermark" = "";
+"watermark.settings" = "透かし設定";
+"watermark.collapse" = "折りたたむ";
+"watermark.add" = "透かしを追加";
+"watermark.text" = "透かしテキスト（例：XX専用）";
+"watermark.text.placeholder" = "例：XX専用";
+"watermark.fontsize" = "フォントサイズ";
+"watermark.spacing" = "行間隔";
+"watermark.spacing.dense" = "密";
+"watermark.spacing.normal" = "標準";
+"watermark.spacing.sparse" = "疎";
+"watermark.opacity" = "不透明度";
+"watermark.preview" = "プレビュー";
+"watermark.share" = "共有";
+"watermark.scope" = "共有範囲";
+"watermark.scope.current" = "この画像のみ";
+"watermark.scope.all" = "すべての画像（%d枚の画像）";
+"watermark.hint" = "透かしは画像全体に斜めにタイル状に配置されます";
+"watermark.sheet.title" = "画像を共有";
+"watermark.preparing" = "準備中...";
+
+"items.detail.share.text" = "テキストを共有";
+"items.detail.share.images" = "画像を共有";
+"items.delete.confirm" = "このアイテムを削除してもよろしいですか？";
+"items.delete.title" = "削除の確認";
+"items.delete.message" = "この操作は元に戻せません";
+"items.created.success" = "正常に作成されました";
+"items.updated.success" = "正常に更新されました";
+"items.deleted.success" = "正常に削除されました";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "クロスプラットフォーム写真転送ツール。ネットワークなしでMacとiPhone間で写真を素早く転送。";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "iPhoneを安全なモバイルドライブに変える";

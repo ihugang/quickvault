@@ -1,0 +1,379 @@
+/* 
+  Localizable.strings (Deutsch)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Abbrechen";
+"common.save" = "Speichern";
+"common.delete" = "Löschen";
+"common.edit" = "Bearbeiten";
+"common.done" = "Fertig";
+"common.add" = "Hinzufügen";
+"common.close" = "Schließen";
+"common.confirm" = "Bestätigen";
+"common.error" = "Fehler";
+"common.success" = "Erfolg";
+"common.loading" = "Laden...";
+"common.retry" = "Wiederholen";
+"common.copy" = "Kopieren";
+"common.share" = "Teilen";
+"common.search" = "Suchen";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Schützen Sie Ihr digitales Leben";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Willkommen bei QuickHold";
+"auth.welcome.subtitle" = "Richten Sie Ihr Master-Passwort ein, um zu beginnen";
+"auth.password.placeholder" = "Passwort eingeben";
+"auth.password.confirm" = "Passwort bestätigen";
+"auth.password.hint" = "Das Passwort muss mindestens 8 Zeichen lang sein";
+"auth.password.required" = "Bitte geben Sie Ihr Passwort ein";
+"auth.password.mismatch" = "Passwörter stimmen nicht überein";
+"auth.password.weak" = "Passwort ist zu schwach";
+"auth.setup.button" = "Passwort Einrichten";
+"auth.unlock.title" = "QuickHold Entsperren";
+"auth.unlock.button" = "Entsperren";
+"auth.unlock.biometric" = "Face ID / Touch ID verwenden";
+"auth.unlock.failed" = "Authentifizierung fehlgeschlagen";
+"auth.unlock.attempts" = "%d Versuche übrig";
+"auth.unlock.locked" = "Zu viele Versuche. Versuchen Sie es in %d Sekunden erneut";
+"auth.change.title" = "Passwort Ändern";
+"auth.change.current" = "Aktuelles Passwort";
+"auth.change.new" = "Neues Passwort";
+"auth.change.confirm" = "Neues Passwort bestätigen";
+"auth.change.success" = "Passwort erfolgreich geändert";
+"auth.change.failed" = "Passwortänderung fehlgeschlagen";
+
+// MARK: - Authentication Errors
+"auth.error.biometric.unavailable" = "Touch ID ist nicht verfügbar";
+"auth.error.biometric.failed" = "Touch ID-Authentifizierung fehlgeschlagen";
+"auth.error.biometric.password.not.stored" = "Bitte melden Sie sich zuerst mit dem Passwort an, um Touch ID zu aktivieren";
+"auth.error.password.incorrect" = "Falsches Passwort";
+"auth.error.password.too.short" = "Passwort muss mindestens 8 Zeichen lang sein";
+"auth.error.no.password" = "Kein Master-Passwort festgelegt";
+"auth.error.rate.limited" = "Zu viele fehlgeschlagene Versuche. Bitte warten Sie %d Sekunden";
+"auth.error.keychain" = "Keychain-Fehler: %@";
+
+// MARK: - Cards
+"cards.title" = "Karten";
+"cards.empty" = "Keine Karten";
+"cards.empty.subtitle" = "Tippen Sie auf +, um Ihre erste Karte hinzuzufügen";
+"cards.add" = "Karte Hinzufügen";
+"cards.edit" = "Karte Bearbeiten";
+"cards.delete" = "Karte Löschen";
+"cards.delete.confirm" = "Sind Sie sicher, dass Sie diese Karte löschen möchten?";
+"cards.pin" = "Anheften";
+"cards.unpin" = "Lösen";
+"cards.pinned" = "Angeheftet";
+"cards.all" = "Alle";
+"cards.field.add" = "Feld Hinzufügen";
+"cards.field.label" = "Bezeichnung";
+"cards.field.value" = "Wert";
+"cards.field.copyable" = "Kopierbar";
+"cards.copied" = "In Zwischenablage kopiert";
+"cards.title.placeholder" = "Kartentitel";
+"cards.type.address" = "Adresse";
+"cards.type.invoice" = "Rechnungsinformationen";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Einfügen & Analysieren";
+"invoice.paste.parse" = "Einfügen zum automatischen Ausfüllen";
+"invoice.paste.hint" = "Rechnung oder Zahlungsinformationen einfügen, um das Formular automatisch auszufüllen";
+"invoice.paste.instruction" = "Rechnung oder Zahlungsinformationen einfügen, das System erkennt und füllt die Felder automatisch aus";
+"invoice.paste.fromclipboard" = "Aus Zwischenablage einfügen";
+"invoice.parse.button" = "Analysieren & Ausfüllen";
+
+// MARK: - Fields
+"field.name" = "Name";
+"field.phone" = "Telefon";
+"field.province" = "Bundesland";
+"field.city" = "Stadt";
+"field.district" = "Bezirk";
+"field.address" = "Adresse";
+"field.postalcode" = "Postleitzahl";
+"field.notes" = "Notizen";
+"field.companyname" = "Firmenname";
+"field.taxid" = "Steuernummer";
+"field.bankname" = "Bankname";
+"field.bankaccount" = "Bankkonto";
+"field.content" = "Inhalt";
+
+// MARK: - Card Types
+"cards.type.select" = "Typ auswählen";
+"cards.type.idcard" = "Personalausweis";
+"cards.type.passport" = "Reisepass";
+"cards.type.businesslicense" = "Gewerbeschein";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Name";
+"field.idcard.gender" = "Geschlecht";
+"field.idcsecurity.cleardata" = "Alle Daten Löschen";
+"settings.security.cleardata.footer" = "⚠️ Dies löscht dauerhaft alle Karten, Bilder und Dateien. Diese Aktion kann nicht rückgängig gemacht werden!";
+"settings.security.cleardata.confirm.title" = "Löschen aller Daten bestätigen";
+"settings.security.cleardata.confirm.message" = "Dies löscht alle Daten dauerhaft und kann nicht rückgängig gemacht werden. Geben Sie Ihr Passwort zur Bestätigung ein.";
+"settings.security.cleardata.confirm.password" = "Passwort eingeben";
+"settings.security.cleardata.confirm.delete" = "Alle Daten löschen";
+"settings.security.cleardata.success" = "Alle Daten wurden gelöscht";
+"settings.security.biometric.enabled" = "Biometrie aktiviert";
+"settings.security.biometric.disabled" = "Biometrie deaktiviert";
+"settings.tab" = "Einstellungen";
+"settings.appearance" = "Aussehen";
+"settings.appearance.title" = "Anzeige";
+"settings.appearance.auto" = "Auto";
+"settings.appearance.light" = "Hell";
+"settings.appearance.dark" = "Dunkel";
+"settings.ard.nationality" = "Staatsangehörigkeit";
+"field.idcard.birthdate" = "Geburtsdatum";
+"field.idcard.number" = "Ausweisnummer";
+"field.idcard.address" = "Adresse";
+"field.idcard.issuer" = "Ausstellende Behörde";
+"field.idcard.validperiod" = "Gültigkeitsdauer";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Firmenname";
+"field.license.companytype" = "Unternehmenstyp";
+"field.license.creditcode" = "Einheitliche Sozialkredit-Code";
+"field.license.legalrep" = "Gesetzlicher Vertreter";
+"field.license.capital" = "Stammkapital";
+"field.license.address" = "Adresse";
+"field.license.establishdate" = "Gründungsdatum";
+"field.license.businessterm" = "Geschäftsdauer";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Elemente";
+"items.search.placeholder" = "Titel oder Tags suchen...";
+"items.loading" = "Laden...";
+"items.empty" = "Noch keine Elemente";
+"items.empty.subtitle" = "Tippen Sie auf + oben rechts, um Ihr erstes Element zu erstellen";
+"items.empty.search" = "Keine Ergebnisse gefunden";
+"items.empty.search.subtitle" = "Versuchen Sie andere Suchbegriffe";
+"items.pinned" = "Angeheftet";
+"items.all" = "Alle";
+"items.create.text" = "Textelement erstellen";
+"items.create.image" = "Bildelement erstellen";
+"items.type.text" = "Textelement";
+"items.type.image" = "Bildelement";
+"items.type.file" = "Dateielement";
+"items.type.text.desc" = "Textinformationen zum schnellen Teilen speichern";
+"items.type.image.desc" = "Bilder mit Wasserzeichen-Freigabe speichern";
+"items.type.file.desc" = "Verschiedene Dateien mit PDF-Vorschau speichern";
+
+// Items - Files
+"items.files.select" = "Dateien auswählen";
+"items.files.count" = "%d Dateien";
+"items.files.section" = "Dateien";
+"items.files.limit" = "Bis zu 10 Dateien, jede Datei maximal 10MB";
+
+// Items - Detail Files
+"items.detail.files" = "Dateien";
+"items.detail.files.count" = "%d Dateien";
+"items.create.title" = "%@ erstellen";
+"items.create.selecttype" = "Typ auswählen";
+"items.create.button" = "Erstellen";
+"items.info.basic" = "Grundinformationen";
+"items.info.title" = "Titel";
+"items.info.title.hint" = "Legen Sie einen klaren Titel für das Element fest";
+"items.content" = "Inhalt";
+"items.content.characters" = "%d Zeichen";
+"items.images.select" = "Bilder auswählen";
+"items.images.count" = "%d Bilder";
+"items.images.section" = "Bilder";
+"items.images.limit" = "Bis zu 10 Bilder können ausgewählt werden";
+"items.tags.section" = "Tags";
+"items.tags.add" = "Tag hinzufügen";
+"items.tags.placeholder" = "Tag-Namen eingeben";
+"items.tags.hint" = "Verwenden Sie Tags zur Kategorisierung und Suche";
+"items.detail.edit" = "Bearbeiten";
+"items.detail.delete" = "Löschen";
+"items.detail.pin" = "Anheften";
+"items.detail.created" = "Erstellt";
+"items.detail.unpin" = "Lösen";
+"items.detail.pinned" = "Angeheftet";
+"items.detail.content" = "Inhalt";
+"items.detail.images" = "Bilder";
+"items.detail.images.count" = "%d Bilder";
+"items.detail.tags" = "Tags";
+"items.detaWatermark" = "";
+"watermark.settings" = "Wasserzeichen-Einstellungen";
+"watermark.collapse" = "Einklappen";
+"watermark.add" = "Wasserzeichen hinzufügen";
+"watermark.text" = "Wasserzeichen-Text (z.B.: Nur für XX)";
+"watermark.text.placeholder" = "z.B.: Nur für XX";
+"watermark.fontsize" = "Schriftgröße";
+"watermark.spacing" = "Zeilenabstand";
+"watermark.spacing.dense" = "Dicht";
+"watermark.spacing.normal" = "Normal";
+"watermark.spacing.sparse" = "Weit";
+"watermark.opacity" = "Deckkraft";
+"watermark.preview" = "Vorschau";
+"watermark.share" = "Teilen";
+"watermark.scope" = "Freigabebereich";
+"watermark.scope.current" = "Nur dieses Bild";
+"watermark.scope.all" = "Alle Bilder (%d Bilder)";
+"watermark.hint" = "Wasserzeichen wird diagonal über das Bild gekachelt";
+"watermark.sheet.title" = "Bilder teilen";
+"watermark.preparing" = "Wird vorbereitet...";
+
+"items.detail.share.text" = "Text teilen";
+"items.detail.share.images" = "Bilder teilen";
+"items.delete.confirm" = "Sind Sie sicher, dass Sie dieses Element löschen möchten?";
+"items.delete.title" = "Löschen bestätigen";
+"items.delete.message" = "Diese Aktion kann nicht rückgängig gemacht werden";
+"items.created.success" = "Erfolgreich erstellt";
+"items.updated.success" = "Erfolgreich aktualisiert";
+"items.deleted.success" = "Erfolgreich gelöscht";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Plattformübergreifendes Fotoübertragungstool. Übertragen Sie Fotos schnell zwischen Mac und iPhone ohne Netzwerk.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Verwandeln Sie Ihr iPhone in ein sicheres mobiles Laufwerk";
+"field.license.scope" = "Geschäftsumfang";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Name";
+"field.passport.nationality" = "Staatsangehörigkeit";
+"field.passport.birthdate" = "Geburtsdatum";
+"field.passport.gender" = "Geschlecht";
+"field.passport.number" = "Reisepassnummer";
+"field.passport.issuedate" = "Ausstellungsdatum";
+"field.passport.expirydate" = "Ablaufdatum";
+"field.passport.issueplace" = "Ausstellungsort";
+"field.passport.issuer" = "Ausstellende Behörde";
+
+// MARK: - Attachment Hints
+"attachment.idcard.front" = "Vorderseite des Ausweises hochladen (Foto & Nummer)";
+"attachment.idcard.back" = "Rückseite des Ausweises hochladen (optional)";
+"attachment.passport.datapage" = "Reisepass-Datenseite hochladen (Fotoseite)";
+"attachment.license.photo" = "Foto des Gewerbescheins hochladen";
+
+// MARK: - OCR
+"ocr.section.title" = "Intelligente Erkennung";
+"ocr.scan.photo" = "Von Foto scannen";
+"ocr.section.footer" = "Wählen Sie ein Foto Ihres Dokuments, um Informationen automatisch zu extrahieren";
+"ocr.processing" = "Wird erkannt...";
+"ocr.photo.upload" = "Dokumentfoto hochladen";
+"ocr.tap.upload" = "Tippen Sie, um Foto hochzuladen";
+"ocr.idcard.front" = "Ausweis Vorderseite (Foto & Nummer)";
+"ocr.idcard.back" = "Ausweis Rückseite (Aussteller & Gültigkeit)";
+"ocr.passport.datapage" = "Reisepass Datenseite (Fotoseite)";
+"ocr.license.photo" = "Gewerbeschein Foto";
+"ocr.photo.front" = "Vorderseite";
+"ocr.photo.back" = "Rückseite";
+"ocr.hint.idcard" = "Laden Sie Vorder- und Rückseite Ihres Ausweises hoch. Informationen werden automatisch extrahiert.";
+"ocr.hint.passport" = "Laden Sie die Datenseite (Fotoseite) Ihres Reisepasses hoch.";
+"ocr.hint.license" = "Laden Sie ein Foto Ihres Gewerbescheins hoch.";
+"common.optional" = "optional";
+"common.close" = "Schließen";
+"attachment.document.photos" = "Dokumentfotos";
+"attachment.no.photo" = "Kein Foto";
+"attachment.load.failed" = "Laden des Bildes fehlgeschlagen";
+"ocr.edit.photo.hint" = "Klicken Sie, um Dokumentfotos hinzuzufügen oder zu ersetzen";
+
+// MARK: - Export
+"export.title" = "Exportieren";
+"export.action" = "Exportieren";
+"export.image" = "Bild exportieren";
+"export.images" = "Bilder exportieren";
+"export.images.all" = "Alle Bilder exportieren";
+"export.text" = "Text exportieren";
+"export.add.watermark" = "Wasserzeichen hinzufügen";
+"export.watermark.title" = "Wasserzeichen-Einstellungen";
+"export.watermark.text" = "Wasserzeichen-Text";
+"export.watermark.placeholder" = "Wasserzeichen-Text eingeben";
+"export.watermark.hint" = "Wasserzeichen wird diagonal über das Bild gelegt";
+"export.watermark.fontsize" = "Schriftgröße";
+"export.watermark.spacing" = "Abstand";
+"export.watermark.spacing.dense" = "Dicht";
+"export.watermark.spacing.normal" = "Normal";
+"export.watermark.spacing.sparse" = "Weit";
+"export.watermark.opacity" = "Deckkraft";
+"export.preview" = "Vorschau";
+"export.advanced.options" = "Erweiterte Optionen";
+"export.size.compression" = "Größe & Komprimierung";
+"export.max.width" = "Max. Breite";
+"export.max.height" = "Max. Höhe";
+"export.max.filesize" = "Max. Dateigröße";
+"export.pixel" = "px";
+"export.hint.limits" = "Leer lassen für keine Begrenzung. Bild wird proportional skaliert";
+"export.success" = "Export erfolgreich";
+"export.failed" = "Export fehlgeschlagen";
+"export.copied" = "In Zwischenablage kopiert";
+"export.images.count" = "%d Bilder exportiert";
+
+// MARK: - Validation
+"validation.title.required" = "Titel ist erforderlich";
+"validation.field.required" = "Dieses Feld ist erforderlich";
+"validation.phone.invalid" = "Ungültiges Telefonformat";
+"validation.taxid.invalid" = "Steuernummer muss 18 Zeichen lang sein";
+"cards.group.placeholder" = "Gruppe";
+"cards.type.general" = "Allgemein";
+"cards.type.login" = "Anmeldung";
+"cards.type.card" = "Kreditkarte";
+"cards.type.identity" = "Identität";
+"cards.type.note" = "Sichere Notiz";
+"cards.created" = "Erstellt: ";
+"cards.updated" = "Aktualisiert: ";
+"cards.tags" = "Tags";
+"cards.tags.add" = "Tag Hinzufügen";
+
+// MARK: - Attachments
+"attachments.title" = "Anhänge";
+"attachments.add" = "Anhang Hinzufügen";
+"attachments.delete" = "Anhang Löschen";
+"attachments.delete.confirm" = "Sind Sie sicher, dass Sie diesen Anhang löschen möchten?";
+"attachments.watermark" = "Wasserzeichen";
+"attachments.watermark.add" = "Wasserzeichen Hinzufügen";
+"attachments.watermark.remove" = "Wasserzeichen Entfernen";
+"attachments.watermark.text" = "Wasserzeichen-Text";
+"attachments.share" = "Teilen";
+"attachments.preview" = "Vorschau";
+"attachments.size" = "Größe: %@";
+"attachments.empty" = "Keine Anhänge";
+"attachments.photo.library" = "Fotobibliothek";
+"attachments.photo.camera" = "Kamera";
+
+// MARK: - Search
+"search.title" = "Suche";
+"search.placeholder" = "Karten suchen...";
+"search.empty" = "Keine Ergebnisse gefunden";
+"search.recent" = "Letzte Suchen";
+
+// MARK: - Settings
+"settings.title" = "Einstellungen";
+"settings.security" = "Sicherheit";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Biometrische Authentifizierung aktivieren";
+"settings.security.autolock" = "Automatische Sperre";
+"settings.security.autolock.immediately" = "Sofort";
+"settings.security.autolock.1min" = "Nach 1 Minute";
+"settings.security.autolock.5min" = "Nach 5 Minuten";
+"settings.security.autolock.15min" = "Nach 15 Minuten";
+"settings.security.autolock.never" = "Nie";
+"settings.security.changepassword" = "Passwort Ändern";
+"settings.language" = "Sprache";
+"settings.language.title" = "App-Sprache";
+"settings.language.system" = "Systemstandard";
+"settings.about" = "Über";
+"settings.about.version" = "Version";
+"settings.about.privacy" = "Datenschutzrichtlinie";
+"settings.about.terms" = "Nutzungsbedingungen";
+"settings.data" = "Daten";
+"settings.data.export" = "Daten Exportieren";
+"settings.data.import" = "Daten Importieren";
+"settings.data.reset" = "Alle Daten Zurücksetzen";
+"settings.data.reset.confirm" = "Dies löscht alle Ihre Karten und Einstellungen. Diese Aktion kann nicht rückgängig gemacht werden.";
+
+// MARK: - Errors
+"error.generic" = "Etwas ist schiefgelaufen";
+"error.network" = "Netzwerkfehler";
+"error.encryption" = "Verschlüsselungsfehler";
+"error.decryption" = "Entschlüsselungsfehler";
+"error.storage" = "Speicherfehler";
+"error.biometric.unavailable" = "Biometrische Authentifizierung ist nicht verfügbar";
+"error.biometric.notEnrolled" = "Keine biometrischen Daten registriert";

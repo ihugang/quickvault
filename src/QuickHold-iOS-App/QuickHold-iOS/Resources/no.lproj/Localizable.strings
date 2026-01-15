@@ -1,0 +1,352 @@
+/* 
+  Localizable.strings (Norsk)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Avbryt";
+"common.save" = "Lagre";
+"common.delete" = "Slett";
+"common.edit" = "Rediger";
+"common.done" = "Ferdig";
+"common.add" = "Legg til";
+"common.close" = "Lukk";
+"common.confirm" = "Bekreft";
+"common.error" = "Feil";
+"common.success" = "Suksess";
+"common.loading" = "Laster...";
+"common.retry" = "Prøv igjen";
+"common.copy" = "Kopier";
+"common.share" = "Del";
+"common.search" = "Søk";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Beskytt ditt digitale liv";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Velkommen til QuickHold";
+"auth.welcome.subtitle" = "Sett opp hovedpassordet ditt for å komme i gang";
+"auth.password.placeholder" = "Skriv inn passord";
+"auth.password.confirm" = "Bekreft passord";
+"auth.password.hint" = "Passordet må være minst 8 tegn";
+"auth.password.mismatch" = "Passordene samsvarer ikke";
+"auth.password.weak" = "Passordet er for svakt";
+"auth.setup.button" = "Sett opp Passord";
+"auth.unlock.title" = "Lås opp QuickHold";
+"auth.unlock.button" = "Lås opp";
+"auth.unlock.biometric" = "Bruk Face ID / Touch ID";
+"auth.unlock.failed" = "Autentisering mislyktes";
+"auth.unlock.attempts" = "%d forsøk igjen";
+"auth.unlock.locked" = "For mange forsøk. Prøv igjen om %d sekunder";
+"auth.change.title" = "Endre Passord";
+"auth.change.current" = "Nåværende passord";
+"auth.change.new" = "Nytt passord";
+"auth.change.confirm" = "Bekreft nytt passord";
+"auth.change.success" = "Passord endret";
+"auth.change.failed" = "Kunne ikke endre passord";
+
+// MARK: - Cards
+"cards.title" = "Kort";
+"cards.empty" = "Ingen kort";
+"cards.empty.subtitle" = "Trykk på + for å legge til ditt første kort";
+"cards.add" = "Legg til Kort";
+"cards.edit" = "Rediger Kort";
+"cards.delete" = "Slett Kort";
+"cards.delete.confirm" = "Er du sikker på at du vil slette dette kortet?";
+"cards.pin" = "Fest";
+"cards.unpin" = "Løsne";
+"cards.pinned" = "Festede";
+"cards.all" = "Alle";
+"cards.field.add" = "Legg til Felt";
+"cards.field.label" = "Etikett";
+"cards.field.value" = "Verdi";
+"cards.field.copyable" = "Kopierbar";
+"cards.copied" = "Kopiert til utklippstavle";
+"cards.title.placeholder" = "Korttittel";
+"cards.group.placeholder" = "Gruppe";
+"cards.type.general" = "Generelt";
+"cards.type.login" = "Innlogging";
+"cards.type.card" = "Kredittkort";
+"cards.type.identity" = "Identitet";
+"cards.type.note" = "Sikker Notat";
+"cards.created" = "Opprettet: ";
+"cards.updated" = "Oppdatert: ";
+"cards.tags" = "Tagger";
+"cards.tags.add" = "Legg til Tagg";
+
+// MARK: - Attachments
+"attachments.title" = "Vedlegg";
+"attachments.add" = "Legg til Vedlegg";
+"attachments.delete" = "Slett Vedlegg";
+"attachments.delete.confirm" = "Er du sikker på at du vil slette dette vedlegget?";
+"attachments.watermark" = "Vannmerke";
+"attachments.watermark.add" = "Legg til Vannmerke";
+"attachments.watermark.remove" = "Fjern Vannmerke";
+"attachments.watermark.text" = "Vannmerketekst";
+"attachments.share" = "Del";
+"attachments.preview" = "Forhåndsvisning";
+"attachments.size" = "Størrelse: %@";
+"attachments.empty" = "Ingen vedlegg";
+"attachments.photo.library" = "Fotobibliotek";
+"attachments.photo.camera" = "Kamera";
+
+// MARK: - Search
+"search.title" = "Søk";
+"search.placeholder" = "Søk kort...";
+"search.empty" = "Ingen resultater funnet";
+"search.recent" = "Nylige Søk";
+
+// MARK: - Settings
+"settings.title" = "Innstillinger";
+"settings.security" = "Sikkerhet";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Aktiver biometrisk autentisering";
+"settings.security.autolock" = "Automatisk Lås";
+"settings.security.autolock.immediately" = "Umiddelbart";
+"settings.security.autolock.1min" = "Etter 1 minutt";
+"settings.security.autolock.5min" = "Etter 5 minutter";
+"settings.security.autolock.15min" = "Etter 15 minutter";
+"settings.security.autolock.never" = "Aldri";
+"settings.security.changepassword" = "Endre Passord";
+"settings.language" = "Språk";
+"settings.language.title" = "App-språk";
+"settings.language.system" = "Systemstandard";
+"settings.about" = "Om";
+"settings.about.version" = "Versjon";
+"settings.about.privacy" = "Personvernpolicy";
+"settings.about.terms" = "Tjenestevilkår";
+"settings.data" = "Data";
+"settings.data.export" = "Eksporter Data";
+"settings.data.import" = "Importer Data";
+"settings.data.reset" = "Tilbakestill Alle Data";
+"settings.data.reset.confirm" = "Dette sletter alle kortene og innstillingene dine. Denne handlingen kan ikke angres.";
+
+// MARK: - Errors
+"error.generic" = "Noe gikk galt";
+"error.network" = "Nettverksfeil";
+"error.encryption" = "Krypteringsfeil";
+"error.decryption" = "Dekrypteringsfeil";
+"error.storage" = "Lagringsfeil";
+"error.biometric.unavailable" = "Biometrisk autentisering er ikke tilgjengelig";
+"error.biometric.notEnrolled" = "Ingen biometriske data registrert";
+
+// MARK: - Authentication Extras
+"auth.password.required" = "Vennligst oppgi passordet";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Lim inn og fyll ut";
+"invoice.paste.parse" = "Lim inn for automatisk utfylling";
+"invoice.paste.hint" = "Lim inn faktura- eller betalingsinformasjon for automatisk utfylling av skjemaet";
+"invoice.paste.instruction" = "Lim inn faktura- eller betalingsinformasjon; systemet kjenner det igjen og fyller feltene automatisk";
+"invoice.paste.fromclipboard" = "Lim inn fra utklippstavlen";
+"invoice.parse.button" = "Analyser og fyll ut";
+
+// MARK: - Fields
+"field.name" = "Navn";
+"field.phone" = "Telefon";
+"field.province" = "Fylke";
+"field.city" = "By";
+"field.district" = "Distrikt";
+"field.address" = "Adresse";
+"field.postalcode" = "Postnummer";
+"field.notes" = "Notater";
+"field.companyname" = "Firmanavn";
+"field.taxid" = "Org.nr";
+"field.bankname" = "Banknavn";
+"field.bankaccount" = "Bankkonto";
+"field.content" = "Innhold";
+
+// MARK: - Card Types
+"cards.type.select" = "Velg type";
+"cards.type.idcard" = "ID-kort";
+"cards.type.passport" = "Pass";
+"cards.type.businesslicense" = "Forretningslisens";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Navn";
+"field.idcard.gender" = "Kjønn";
+"field.idcard.nationality" = "Nasjonalitet";
+"field.idcard.birthdate" = "Fødselsdato";
+"field.idcard.number" = "ID-nummer";
+"field.idcard.address" = "Adresse";
+"field.idcard.issuer" = "Utsteder";
+"field.idcard.validperiod" = "Gyldighetsperiode";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Firmanavn";
+"field.license.companytype" = "Firma type";
+"field.license.creditcode" = "Kreditkode";
+"field.license.legalrep" = "Juridisk representant";
+"field.license.capital" = "Registrert kapital";
+"field.license.address" = "Adresse";
+"field.license.establishdate" = "Etableringsdato";
+"field.license.businessterm" = "Driftstid";
+"field.license.scope" = "Virkeområde";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Navn";
+"field.passport.nationality" = "Nasjonalitet";
+"field.passport.birthdate" = "Fødselsdato";
+"field.passport.gender" = "Kjønn";
+"field.passport.number" = "Passnummer";
+"field.passport.issuedate" = "Utstedelsesdato";
+"field.passport.expirydate" = "Utløpsdato";
+"field.passport.issueplace" = "Utstedelsessted";
+"field.passport.issuer" = "Utsteder";
+
+// MARK: - OCR
+"ocr.section.title" = "Intelligent OCR";
+"ocr.scan.photo" = "Skann fra bilde";
+"ocr.section.footer" = "Velg et dokumentbilde for automatisk å trekke ut informasjon";
+"ocr.processing" = "Behandler...";
+"ocr.photo.upload" = "Last opp dokumentbilde";
+"ocr.tap.upload" = "Trykk for å laste opp bilde";
+"ocr.idcard.front" = "Forside ID-kort";
+"ocr.idcard.back" = "Bakside ID-kort";
+"ocr.passport.datapage" = "Passets dataside (bilde)";
+"ocr.license.photo" = "Forretningslisensbilde";
+"ocr.photo.front" = "Forside";
+"ocr.photo.back" = "Bakside";
+"ocr.hint.idcard" = "Last opp for- og bakside av ID-kort. Informasjonen vil bli hentet automatisk.";
+"ocr.hint.passport" = "Last opp passets dataside (bilde).";
+"ocr.hint.license" = "Last opp bilde av forretningslisensen.";
+
+// MARK: - Export
+"export.title" = "Eksporter";
+"export.action" = "Eksporter";
+"export.image" = "Eksporter bilde";
+"export.images" = "Eksporter bilder";
+"export.images.all" = "Eksporter alle bilder";
+"export.text" = "Eksporter tekst";
+"export.add.watermark" = "Legg til vannmerke";
+"export.watermark.title" = "Vannmerkeinnstillinger";
+"export.watermark.text" = "Vannmerketekst";
+"export.watermark.placeholder" = "Skriv inn vannmerketekst";
+"export.watermark.hint" = "Vannmerket vil bli lagt diagonalt over bildet";
+"export.watermark.fontsize" = "Skriftstørrelse";
+"export.watermark.spacing" = "Avstand";
+"export.watermark.spacing.dense" = "Tett";
+"export.watermark.spacing.normal" = "Normal";
+"export.watermark.spacing.sparse" = "Sparsom";
+"export.watermark.opacity" = "Opasitet";
+"export.preview" = "Forhåndsvisning";
+"export.advanced.options" = "Avanserte alternativer";
+"export.size.compression" = "Størrelse og komprimering";
+"export.max.width" = "Maks. bredde";
+"export.max.height" = "Maks. høyde";
+"export.max.filesize" = "Maks. filstørrelse";
+"export.pixel" = "Piksel";
+"export.hint.limits" = "La stå tomt for ingen begrensning. Bildet vil skaleres relativt";
+"export.success" = "Eksport vellykket";
+"export.failed" = "Eksport mislyktes";
+"export.copied" = "Kopiert til utklippstavlen";
+"export.images.count" = "%d bilder eksportert";
+
+// MARK: - Validation
+"validation.title.required" = "Tittel kreves";
+"validation.field.required" = "Dette feltet kreves";
+"validation.phone.invalid" = "Ugyldig telefonformat";
+"validation.taxid.invalid" = "Skattenummer må være 18 tegn";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Elementer";
+"items.search.placeholder" = "Søk i tittel eller tagger...";
+"items.loading" = "Laster...";
+"items.empty" = "Ingen elementer enda";
+"items.empty.subtitle" = "Trykk + øverst til høyre for å opprette ditt første element";
+"items.empty.search" = "Ingen resultater";
+"items.empty.search.subtitle" = "Prøv andre søkeord";
+"items.pinned" = "Festet";
+"items.all" = "Alle";
+"items.create.text" = "Opprett tekst-element";
+"items.create.image" = "Opprett bilde-element";
+"items.type.text" = "Tekst-element";
+"items.type.image" = "Bilde-element";
+"items.type.file" = "Fil-element";
+"items.type.text.desc" = "Lagre tekstinformasjon for rask deling";
+"items.type.image.desc" = "Lagre bilder med støtte for vannmerke";
+"items.type.file.desc" = "Lagre forskjellige filtyper med PDF-forhåndsvisning";
+
+// Items - Files
+"items.files.select" = "Velg filer";
+"items.files.count" = "%d filer";
+"items.files.section" = "Filer";
+"items.files.limit" = "Opptil 10 filer, hver under 10MB";
+
+// Items - Detail Files
+"items.detail.files" = "Filer";
+"items.detail.files.count" = "%d filer";
+"items.create.title" = "Opprett %@";
+"items.create.selecttype" = "Velg type";
+"items.create.button" = "Opprett";
+"items.info.basic" = "Grunnleggende info";
+"items.info.title" = "Tittel";
+"items.info.title.hint" = "Velg en tydelig tittel for elementet";
+"items.content" = "Innhold";
+"items.content.characters" = "%d tegn";
+"items.images.select" = "Velg bilder";
+"items.images.count" = "%d bilder";
+"items.images.section" = "Bilder";
+"items.images.limit" = "Opptil 10 bilder";
+"items.tags.section" = "Tagger";
+"items.tags.add" = "Legg til tagg";
+"items.tags.placeholder" = "Skriv inn tagg-navn";
+"items.tags.hint" = "Bruk tagger for å hjelpe med organisering og søk";
+"items.detail.edit" = "Rediger";
+"items.detail.delete" = "Slett";
+"items.detail.pin" = "Fest";
+"items.detail.created" = "Opprettet";
+"items.detail.unpin" = "Fjern festing";
+"items.detail.pinned" = "Festet";
+"items.detail.content" = "Innhold";
+"items.detail.images" = "Bilder";
+"items.detail.images.count" = "%d bilde";
+"items.detail.tags" = "Tagger";
+"items.detaWatermark" = "";
+"watermark.settings" = "Vannmerkeinnstillinger";
+"watermark.collapse" = "Kollaps";
+"watermark.add" = "Legg til vannmerke";
+"watermark.text" = "Vannmerketekst (f.eks: Kun for X)";
+"watermark.text.placeholder" = "F.eks.: Kun for X";
+"watermark.fontsize" = "Skriftstørrelse";
+"watermark.spacing" = "Linjeavstand";
+"watermark.spacing.dense" = "Tett";
+"watermark.spacing.normal" = "Normal";
+"watermark.spacing.sparse" = "Sparsom";
+"watermark.opacity" = "Opasitet";
+"watermark.preview" = "Forhåndsvisning";
+"watermark.share" = "Del";
+"watermark.scope" = "Delingsområde";
+"watermark.scope.current" = "Kun dette bildet";
+"watermark.scope.all" = "Alle bilder (%d)";
+"watermark.hint" = "Vannmerket vil gjentas diagonalt over bildet";
+"watermark.sheet.title" = "Del bilder";
+"watermark.preparing" = "Forbereder...";
+
+"items.detail.share.text" = "Del tekst";
+"items.detail.share.images" = "Del bilder";
+"items.delete.confirm" = "Er du sikker på at du vil slette dette elementet?";
+"items.delete.title" = "Bekreft sletting";
+"items.delete.message" = "Denne handlingen kan ikke angres";
+"items.created.success" = "Opprettet";
+"items.updated.success" = "Oppdatert";
+"items.deleted.success" = "Slettet";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Verktøy for å overføre bilder mellom enheter. Flytt bilder raskt mellom Mac og iPhone uten nettverk.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Gjør iPhone til en sikker bærbar stasjon";
+
+// MARK: - Settings: Clear Data
+"settings.security.cleardata" = "Slett alle data";
+"settings.security.cleardata.footer" = "⚠️ Dette vil permanent slette alle kort, bilder og filer. Denne handlingen kan ikke angres!";
+"settings.security.cleardata.confirm.title" = "Bekreft sletting av alle data";
+"settings.security.cleardata.confirm.message" = "Dette vil permanent slette alle data og kan ikke angres. Skriv inn passordet for å bekrefte.";
+"settings.security.cleardata.confirm.password" = "Skriv inn passord";
+"settings.security.cleardata.confirm.delete" = "Slett alle data";
+"settings.security.cleardata.success" = "Alle data er slettet";
+

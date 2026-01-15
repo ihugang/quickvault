@@ -1,0 +1,352 @@
+/* 
+  Localizable.strings (Suomi)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Peruuta";
+"common.save" = "Tallenna";
+"common.delete" = "Poista";
+"common.edit" = "Muokkaa";
+"common.done" = "Valmis";
+"common.add" = "Lisää";
+"common.close" = "Sulje";
+"common.confirm" = "Vahvista";
+"common.error" = "Virhe";
+"common.success" = "Onnistui";
+"common.loading" = "Ladataan...";
+"common.retry" = "Yritä uudelleen";
+"common.copy" = "Kopioi";
+"common.share" = "Jaa";
+"common.search" = "Hae";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Suojaa digitaalinen elämäsi";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Tervetuloa QuickHoldiin";
+"auth.welcome.subtitle" = "Aseta pääsalasanasi aloittaaksesi";
+"auth.password.placeholder" = "Syötä salasana";
+"auth.password.confirm" = "Vahvista salasana";
+"auth.password.hint" = "Salasanan on oltava vähintään 8 merkkiä";
+"auth.password.mismatch" = "Salasanat eivät täsmää";
+"auth.password.weak" = "Salasana on liian heikko";
+"auth.setup.button" = "Aseta Salasana";
+"auth.unlock.title" = "Avaa QuickHold";
+"auth.unlock.button" = "Avaa";
+"auth.unlock.biometric" = "Käytä Face ID / Touch ID";
+"auth.unlock.failed" = "Todennus epäonnistui";
+"auth.unlock.attempts" = "%d yritystä jäljellä";
+"auth.unlock.locked" = "Liian monta yritystä. Yritä uudelleen %d sekunnin kuluttua";
+"auth.change.title" = "Vaihda Salasana";
+"auth.change.current" = "Nykyinen salasana";
+"auth.change.new" = "Uusi salasana";
+"auth.change.confirm" = "Vahvista uusi salasana";
+"auth.change.success" = "Salasana vaihdettu";
+"auth.change.failed" = "Salasanan vaihto epäonnistui";
+
+// MARK: - Cards
+"cards.title" = "Kortit";
+"cards.empty" = "Ei kortteja";
+"cards.empty.subtitle" = "Napauta + lisätäksesi ensimmäisen kortin";
+"cards.add" = "Lisää Kortti";
+"cards.edit" = "Muokkaa Korttia";
+"cards.delete" = "Poista Kortti";
+"cards.delete.confirm" = "Haluatko varmasti poistaa tämän kortin?";
+"cards.pin" = "Kiinnitä";
+"cards.unpin" = "Irrota";
+"cards.pinned" = "Kiinnitetyt";
+"cards.all" = "Kaikki";
+"cards.field.add" = "Lisää Kenttä";
+"cards.field.label" = "Otsikko";
+"cards.field.value" = "Arvo";
+"cards.field.copyable" = "Kopioitavissa";
+"cards.copied" = "Kopioitu leikepöydälle";
+"cards.title.placeholder" = "Kortin Otsikko";
+"cards.group.placeholder" = "Ryhmä";
+"cards.type.general" = "Yleinen";
+"cards.type.login" = "Kirjautuminen";
+"cards.type.card" = "Luottokortti";
+"cards.type.identity" = "Henkilöllisyys";
+"cards.type.note" = "Suojattu Muistiinpano";
+"cards.created" = "Luotu: ";
+"cards.updated" = "Päivitetty: ";
+"cards.tags" = "Tunnisteet";
+"cards.tags.add" = "Lisää Tunniste";
+
+// MARK: - Attachments
+"attachments.title" = "Liitteet";
+"attachments.add" = "Lisää Liite";
+"attachments.delete" = "Poista Liite";
+"attachments.delete.confirm" = "Haluatko varmasti poistaa tämän liitteen?";
+"attachments.watermark" = "Vesileima";
+"attachments.watermark.add" = "Lisää Vesileima";
+"attachments.watermark.remove" = "Poista Vesileima";
+"attachments.watermark.text" = "Vesileiman Teksti";
+"attachments.share" = "Jaa";
+"attachments.preview" = "Esikatselu";
+"attachments.size" = "Koko: %@";
+"attachments.empty" = "Ei liitteitä";
+"attachments.photo.library" = "Kuvakirjasto";
+"attachments.photo.camera" = "Kamera";
+
+// MARK: - Search
+"search.title" = "Haku";
+"search.placeholder" = "Hae kortteja...";
+"search.empty" = "Tuloksia ei löytynyt";
+"search.recent" = "Viimeisimmät Haut";
+
+// MARK: - Settings
+"settings.title" = "Asetukset";
+"settings.security" = "Turvallisuus";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Ota biometrinen todennus käyttöön";
+"settings.security.autolock" = "Automaattinen Lukitus";
+"settings.security.autolock.immediately" = "Heti";
+"settings.security.autolock.1min" = "1 minuutin jälkeen";
+"settings.security.autolock.5min" = "5 minuutin jälkeen";
+"settings.security.autolock.15min" = "15 minuutin jälkeen";
+"settings.security.autolock.never" = "Ei koskaan";
+"settings.security.changepassword" = "Vaihda Salasana";
+"settings.language" = "Kieli";
+"settings.language.title" = "Sovelluksen Kieli";
+"settings.language.system" = "Järjestelmän Oletus";
+"settings.about" = "Tietoja";
+"settings.about.version" = "Versio";
+"settings.about.privacy" = "Tietosuojakäytäntö";
+"settings.about.terms" = "Käyttöehdot";
+"settings.data" = "Tiedot";
+"settings.data.export" = "Vie Tiedot";
+"settings.data.import" = "Tuo Tiedot";
+"settings.data.reset" = "Nollaa Kaikki Tiedot";
+"settings.data.reset.confirm" = "Tämä poistaa kaikki korttisi ja asetuksesi. Tätä toimintoa ei voi kumota.";
+
+// MARK: - Errors
+"error.generic" = "Jotain meni pieleen";
+"error.network" = "Verkkovirhe";
+"error.encryption" = "Salausvirhe";
+"error.decryption" = "Purkuvirhe";
+"error.storage" = "Tallennusvirhe";
+"error.biometric.unavailable" = "Biometrinen todennus ei ole käytettävissä";
+"error.biometric.notEnrolled" = "Biometrisiä tietoja ei ole rekisteröity";
+
+// MARK: - Authentication Extras
+"auth.password.required" = "Syötä salasana";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Liitä ja täytä";
+"invoice.paste.parse" = "Liitä automaattiseen täyttöön";
+"invoice.paste.hint" = "Liitä laskun tai maksun tiedot lomakkeen automaattista täyttöä varten";
+"invoice.paste.instruction" = "Liitä laskun tai maksun tiedot; järjestelmä tunnistaa ne ja täyttää kentät automaattisesti";
+"invoice.paste.fromclipboard" = "Liitä leikepöydältä";
+"invoice.parse.button" = "Analysoi ja täytä";
+
+// MARK: - Fields
+"field.name" = "Nimi";
+"field.phone" = "Puhelin";
+"field.province" = "Alue";
+"field.city" = "Kaupunki";
+"field.district" = "Piiri";
+"field.address" = "Osoite";
+"field.postalcode" = "Postinumero";
+"field.notes" = "Muistiinpanot";
+"field.companyname" = "Yrityksen nimi";
+"field.taxid" = "Y-tunnus";
+"field.bankname" = "Pankin nimi";
+"field.bankaccount" = "Pankkitili";
+"field.content" = "Sisältö";
+
+// MARK: - Card Types
+"cards.type.select" = "Valitse tyyppi";
+"cards.type.idcard" = "Henkilökortti";
+"cards.type.passport" = "Passi";
+"cards.type.businesslicense" = "Toimilupa";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Nimi";
+"field.idcard.gender" = "Sukupuoli";
+"field.idcard.nationality" = "Kansalaisuus";
+"field.idcard.birthdate" = "Syntymäaika";
+"field.idcard.number" = "Kortin numero";
+"field.idcard.address" = "Osoite";
+"field.idcard.issuer" = "Myöntäjä";
+"field.idcard.validperiod" = "Voimassaoloaika";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Yrityksen nimi";
+"field.license.companytype" = "Yritystyyppi";
+"field.license.creditcode" = "Tunnuskoodi";
+"field.license.legalrep" = "Laillinen edustaja";
+"field.license.capital" = "Rekisteröity pääoma";
+"field.license.address" = "Osoite";
+"field.license.establishdate" = "Perustamispäivä";
+"field.license.businessterm" = "Toimintakausi";
+"field.license.scope" = "Toimiala";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Nimi";
+"field.passport.nationality" = "Kansalaisuus";
+"field.passport.birthdate" = "Syntymäaika";
+"field.passport.gender" = "Sukupuoli";
+"field.passport.number" = "Passinumero";
+"field.passport.issuedate" = "Myöntämispäivä";
+"field.passport.expirydate" = "Voimassaolo päättyy";
+"field.passport.issueplace" = "Myöntöpaikka";
+"field.passport.issuer" = "Myöntäjä";
+
+// MARK: - OCR
+"ocr.section.title" = "Älykäs OCR";
+"ocr.scan.photo" = "Skannaa kuvasta";
+"ocr.section.footer" = "Valitse asiakirjan kuva tietojen automaattista poimintaa varten";
+"ocr.processing" = "Käsitellään...";
+"ocr.photo.upload" = "Lataa asiakirjakuva";
+"ocr.tap.upload" = "Napauta ladataksesi kuvan";
+"ocr.idcard.front" = "Henkilökortin etupuoli";
+"ocr.idcard.back" = "Henkilökortin takapuoli";
+"ocr.passport.datapage" = "Passin tietosivu (kuva)";
+"ocr.license.photo" = "Toimilupakuva";
+"ocr.photo.front" = "Etupuoli";
+"ocr.photo.back" = "Takapuoli";
+"ocr.hint.idcard" = "Lataa henkilökortin etu- ja takapuoli. Tiedot poimitaan automaattisesti.";
+"ocr.hint.passport" = "Lataa passin tietosivu (kuva).";
+"ocr.hint.license" = "Lataa kuva toimiluvasta.";
+
+// MARK: - Export
+"export.title" = "Vie";
+"export.action" = "Viedä";
+"export.image" = "Vie kuva";
+"export.images" = "Vie kuvat";
+"export.images.all" = "Vie kaikki kuvat";
+"export.text" = "Vie teksti";
+"export.add.watermark" = "Lisää vesileima";
+"export.watermark.title" = "Vesileiman asetukset";
+"export.watermark.text" = "Vesileiman teksti";
+"export.watermark.placeholder" = "Anna vesileiman teksti";
+"export.watermark.hint" = "Vesileima lisätään vinosti kuvan päälle";
+"export.watermark.fontsize" = "Kirjasinkoko";
+"export.watermark.spacing" = "Riviväli";
+"export.watermark.spacing.dense" = "Tiheä";
+"export.watermark.spacing.normal" = "Normaali";
+"export.watermark.spacing.sparse" = "Harva";
+"export.watermark.opacity" = "Läpinäkyvyys";
+"export.preview" = "Esikatselu";
+"export.advanced.options" = "Lisäasetukset";
+"export.size.compression" = "Koko ja pakkaus";
+"export.max.width" = "Maks. leveys";
+"export.max.height" = "Maks. korkeus";
+"export.max.filesize" = "Maks. tiedostokoko";
+"export.pixel" = "Pikseli";
+"export.hint.limits" = "Jätä tyhjäksi, jos ei rajoitusta. Kuvaa muutetaan suhteellisesti";
+"export.success" = "Vienti onnistui";
+"export.failed" = "Vienti epäonnistui";
+"export.copied" = "Kopioitu leikepöydälle";
+"export.images.count" = "%d kuvaa viety";
+
+// MARK: - Validation
+"validation.title.required" = "Otsikko vaaditaan";
+"validation.field.required" = "Tämä kenttä on pakollinen";
+"validation.phone.invalid" = "Virheellinen puhelinnumeron muoto";
+"validation.taxid.invalid" = "Verotunnuksen on oltava 18 merkkiä";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Kohteet";
+"items.search.placeholder" = "Hae otsikolla tai tageilla...";
+"items.loading" = "Ladataan...";
+"items.empty" = "Ei kohteita";
+"items.empty.subtitle" = "Napauta + oikeassa yläkulmassa luodaksesi ensimmäisen kohteen";
+"items.empty.search" = "Ei tuloksia";
+"items.empty.search.subtitle" = "Kokeile eri hakusanoja";
+"items.pinned" = "Kiinnitetyt";
+"items.all" = "Kaikki";
+"items.create.text" = "Luo tekstikohde";
+"items.create.image" = "Luo kuvakohde";
+"items.type.text" = "Tekstikohde";
+"items.type.image" = "Kuvakohde";
+"items.type.file" = "Tiedostokohde";
+"items.type.text.desc" = "Tallenna tekstitiedot nopeaa jakamista varten";
+"items.type.image.desc" = "Tallenna kuvat vesileima-tuella";
+"items.type.file.desc" = "Tallenna eri tiedostotyyppejä PDF-esikatselulla";
+
+// Items - Files
+"items.files.select" = "Valitse tiedostot";
+"items.files.count" = "%d tiedostoa";
+"items.files.section" = "Tiedostot";
+"items.files.limit" = "Enintään 10 tiedostoa, kukin alle 10 Mt";
+
+// Items - Detail Files
+"items.detail.files" = "Tiedostot";
+"items.detail.files.count" = "%d tiedostoa";
+"items.create.title" = "Luo %@";
+"items.create.selecttype" = "Valitse tyyppi";
+"items.create.button" = "Luo";
+"items.info.basic" = "Perustiedot";
+"items.info.title" = "Otsikko";
+"items.info.title.hint" = "Valitse selkeä otsikko kohteelle";
+"items.content" = "Sisältö";
+"items.content.characters" = "%d merkkiä";
+"items.images.select" = "Valitse kuvat";
+"items.images.count" = "%d kuvaa";
+"items.images.section" = "Kuvat";
+"items.images.limit" = "Enintään 10 kuvaa";
+"items.tags.section" = "Tagit";
+"items.tags.add" = "Lisää tagi";
+"items.tags.placeholder" = "Anna tagin nimi";
+"items.tags.hint" = "Käytä tageja järjestämiseen ja hakuun";
+"items.detail.edit" = "Muokkaa";
+"items.detail.delete" = "Poista";
+"items.detail.pin" = "Kiinnitä";
+"items.detail.created" = "Luotu";
+"items.detail.unpin" = "Poista kiinnitys";
+"items.detail.pinned" = "Kiinnitetty";
+"items.detail.content" = "Sisältö";
+"items.detail.images" = "Kuvat";
+"items.detail.images.count" = "%d kuva";
+"items.detail.tags" = "Tagit";
+"items.detaWatermark" = "";
+"watermark.settings" = "Vesileima-asetukset";
+"watermark.collapse" = "Taita";
+"watermark.add" = "Lisää vesileima";
+"watermark.text" = "Vesileiman teksti (esim. Vain X:lle)";
+"watermark.text.placeholder" = "Esim.: Vain X:lle";
+"watermark.fontsize" = "Fonttikoko";
+"watermark.spacing" = "Riviväli";
+"watermark.spacing.dense" = "Tiheä";
+"watermark.spacing.normal" = "Normaali";
+"watermark.spacing.sparse" = "Harva";
+"watermark.opacity" = "Läpinäkyvyys";
+"watermark.preview" = "Esikatselu";
+"watermark.share" = "Jaa";
+"watermark.scope" = "Jakoalue";
+"watermark.scope.current" = "Vain tämä kuva";
+"watermark.scope.all" = "Kaikki kuvat (%d)";
+"watermark.hint" = "Vesileima toistetaan vinosti kuvan yli";
+"watermark.sheet.title" = "Jaa kuvat";
+"watermark.preparing" = "Valmistellaan...";
+
+"items.detail.share.text" = "Jaa teksti";
+"items.detail.share.images" = "Jaa kuvat";
+"items.delete.confirm" = "Haluatko varmasti poistaa tämän kohteen?";
+"items.delete.title" = "Vahvista poisto";
+"items.delete.message" = "Tätä toimintoa ei voi kumota";
+"items.created.success" = "Luotu onnistuneesti";
+"items.updated.success" = "Päivitetty onnistuneesti";
+"items.deleted.success" = "Poistettu";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Työkalu valokuvien siirtämiseen laitteiden välillä. Siirrä kuvat nopeasti Macin ja iPhonen välillä ilman verkkoa.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Muuta iPhone turvalliseksi kannettavaksi asemaksi";
+
+// MARK: - Settings: Clear Data
+"settings.security.cleardata" = "Poista kaikki tiedot";
+"settings.security.cleardata.footer" = "⚠️ Tämä poistaa pysyvästi kaikki kortit, kuvat ja tiedostot. Tätä toimintoa ei voi kumota!";
+"settings.security.cleardata.confirm.title" = "Vahvista kaikkien tietojen poisto";
+"settings.security.cleardata.confirm.message" = "Tämä poistaa pysyvästi kaikki tiedot eikä sitä voi kumota. Syötä salasana vahvistaaksesi.";
+"settings.security.cleardata.confirm.password" = "Syötä salasana";
+"settings.security.cleardata.confirm.delete" = "Poista kaikki tiedot";
+"settings.security.cleardata.success" = "Kaikki tiedot on poistettu";
+

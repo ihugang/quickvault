@@ -1,0 +1,352 @@
+/* 
+  Localizable.strings (Nederlands)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Annuleren";
+"common.save" = "Opslaan";
+"common.delete" = "Verwijderen";
+"common.edit" = "Bewerken";
+"common.done" = "Gereed";
+"common.add" = "Toevoegen";
+"common.close" = "Sluiten";
+"common.confirm" = "Bevestigen";
+"common.error" = "Fout";
+"common.success" = "Succes";
+"common.loading" = "Laden...";
+"common.retry" = "Opnieuw proberen";
+"common.copy" = "Kopiëren";
+"common.share" = "Delen";
+"common.search" = "Zoeken";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Beveilig uw digitale leven";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Welkom bij QuickHold";
+"auth.welcome.subtitle" = "Stel uw hoofdwachtwoord in om te beginnen";
+"auth.password.placeholder" = "Wachtwoord invoeren";
+"auth.password.confirm" = "Wachtwoord bevestigen";
+"auth.password.hint" = "Wachtwoord moet minimaal 8 tekens bevatten";
+"auth.password.mismatch" = "Wachtwoorden komen niet overeen";
+"auth.password.weak" = "Wachtwoord is te zwak";
+"auth.setup.button" = "Wachtwoord Instellen";
+"auth.unlock.title" = "QuickHold Ontgrendelen";
+"auth.unlock.button" = "Ontgrendelen";
+"auth.unlock.biometric" = "Face ID / Touch ID gebruiken";
+"auth.unlock.failed" = "Authenticatie mislukt";
+"auth.unlock.attempts" = "%d pogingen over";
+"auth.unlock.locked" = "Te veel pogingen. Probeer opnieuw over %d seconden";
+"auth.change.title" = "Wachtwoord Wijzigen";
+"auth.change.current" = "Huidig wachtwoord";
+"auth.change.new" = "Nieuw wachtwoord";
+"auth.change.confirm" = "Nieuw wachtwoord bevestigen";
+"auth.change.success" = "Wachtwoord succesvol gewijzigd";
+"auth.change.failed" = "Wachtwoord wijzigen mislukt";
+
+// MARK: - Cards
+"cards.title" = "Kaarten";
+"cards.empty" = "Geen kaarten";
+"cards.empty.subtitle" = "Tik op + om uw eerste kaart toe te voegen";
+"cards.add" = "Kaart Toevoegen";
+"cards.edit" = "Kaart Bewerken";
+"cards.delete" = "Kaart Verwijderen";
+"cards.delete.confirm" = "Weet u zeker dat u deze kaart wilt verwijderen?";
+"cards.pin" = "Vastmaken";
+"cards.unpin" = "Losmaken";
+"cards.pinned" = "Vastgemaakt";
+"cards.all" = "Alle";
+"cards.field.add" = "Veld Toevoegen";
+"cards.field.label" = "Label";
+"cards.field.value" = "Waarde";
+"cards.field.copyable" = "Kopieerbaar";
+"cards.copied" = "Gekopieerd naar klembord";
+"cards.title.placeholder" = "Kaarttitel";
+"cards.group.placeholder" = "Groep";
+"cards.type.general" = "Algemeen";
+"cards.type.login" = "Inloggen";
+"cards.type.card" = "Creditcard";
+"cards.type.identity" = "Identiteit";
+"cards.type.note" = "Beveiligde Notitie";
+"cards.created" = "Aangemaakt: ";
+"cards.updated" = "Bijgewerkt: ";
+"cards.tags" = "Tags";
+"cards.tags.add" = "Tag Toevoegen";
+
+// MARK: - Attachments
+"attachments.title" = "Bijlagen";
+"attachments.add" = "Bijlage Toevoegen";
+"attachments.delete" = "Bijlage Verwijderen";
+"attachments.delete.confirm" = "Weet u zeker dat u deze bijlage wilt verwijderen?";
+"attachments.watermark" = "Watermerk";
+"attachments.watermark.add" = "Watermerk Toevoegen";
+"attachments.watermark.remove" = "Watermerk Verwijderen";
+"attachments.watermark.text" = "Watermerktekst";
+"attachments.share" = "Delen";
+"attachments.preview" = "Voorbeeld";
+"attachments.size" = "Grootte: %@";
+"attachments.empty" = "Geen bijlagen";
+"attachments.photo.library" = "Fotobibliotheek";
+"attachments.photo.camera" = "Camera";
+
+// MARK: - Search
+"search.title" = "Zoeken";
+"search.placeholder" = "Kaarten zoeken...";
+"search.empty" = "Geen resultaten gevonden";
+"search.recent" = "Recente Zoekopdrachten";
+
+// MARK: - Settings
+"settings.title" = "Instellingen";
+"settings.security" = "Beveiliging";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Biometrische authenticatie inschakelen";
+"settings.security.autolock" = "Automatisch Vergrendelen";
+"settings.security.autolock.immediately" = "Onmiddellijk";
+"settings.security.autolock.1min" = "Na 1 minuut";
+"settings.security.autolock.5min" = "Na 5 minuten";
+"settings.security.autolock.15min" = "Na 15 minuten";
+"settings.security.autolock.never" = "Nooit";
+"settings.security.changepassword" = "Wachtwoord Wijzigen";
+"settings.language" = "Taal";
+"settings.language.title" = "App-taal";
+"settings.language.system" = "Systeemstandaard";
+"settings.about" = "Over";
+"settings.about.version" = "Versie";
+"settings.about.privacy" = "Privacybeleid";
+"settings.about.terms" = "Servicevoorwaarden";
+"settings.data" = "Gegevens";
+"settings.data.export" = "Gegevens Exporteren";
+"settings.data.import" = "Gegevens Importeren";
+"settings.data.reset" = "Alle Gegevens Resetten";
+"settings.data.reset.confirm" = "Dit verwijdert al uw kaarten en instellingen. Deze actie kan niet ongedaan worden gemaakt.";
+
+// MARK: - Errors
+"error.generic" = "Er is iets misgegaan";
+"error.network" = "Netwerkfout";
+"error.encryption" = "Versleutelingsfout";
+"error.decryption" = "Ontsleutelingsfout";
+"error.storage" = "Opslagfout";
+"error.biometric.unavailable" = "Biometrische authenticatie is niet beschikbaar";
+"error.biometric.notEnrolled" = "Geen biometrische gegevens geregistreerd";
+
+// MARK: - Authentication Extras
+"auth.password.required" = "Voer alstublieft het wachtwoord in";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Plakken en invullen";
+"invoice.paste.parse" = "Plakken voor automatisch invullen";
+"invoice.paste.hint" = "Plak factuur- of betalingsgegevens om het formulier automatisch in te vullen";
+"invoice.paste.instruction" = "Plak factuur- of betalingsgegevens; het systeem zal ze herkennen en velden automatisch invullen";
+"invoice.paste.fromclipboard" = "Plakken uit klembord";
+"invoice.parse.button" = "Analyseren en invullen";
+
+// MARK: - Fields
+"field.name" = "Naam";
+"field.phone" = "Telefoon";
+"field.province" = "Provincie";
+"field.city" = "Stad";
+"field.district" = "District";
+"field.address" = "Adres";
+"field.postalcode" = "Postcode";
+"field.notes" = "Notities";
+"field.companyname" = "Bedrijfsnaam";
+"field.taxid" = "BTW / KvK";
+"field.bankname" = "Banknaam";
+"field.bankaccount" = "Bankrekening";
+"field.content" = "Inhoud";
+
+// MARK: - Card Types
+"cards.type.select" = "Selecteer type";
+"cards.type.idcard" = "ID-kaart";
+"cards.type.passport" = "Paspoort";
+"cards.type.businesslicense" = "Bedrijfslocatie";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Naam";
+"field.idcard.gender" = "Geslacht";
+"field.idcard.nationality" = "Nationaliteit";
+"field.idcard.birthdate" = "Geboortedatum";
+"field.idcard.number" = "ID-nummer";
+"field.idcard.address" = "Adres";
+"field.idcard.issuer" = "Uitgever";
+"field.idcard.validperiod" = "Geldigheidsperiode";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Bedrijfsnaam";
+"field.license.companytype" = "Bedrijfstype";
+"field.license.creditcode" = "Identificatiecode";
+"field.license.legalrep" = "Wettige vertegenwoordiger";
+"field.license.capital" = "Geregistreerd kapitaal";
+"field.license.address" = "Adres";
+"field.license.establishdate" = "Oprichtingsdatum";
+"field.license.businessterm" = "Activiteitsperiode";
+"field.license.scope" = "Activiteiten";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Naam";
+"field.passport.nationality" = "Nationaliteit";
+"field.passport.birthdate" = "Geboortedatum";
+"field.passport.gender" = "Geslacht";
+"field.passport.number" = "Paspoortnummer";
+"field.passport.issuedate" = "Uitgiftedatum";
+"field.passport.expirydate" = "Vervaldatum";
+"field.passport.issueplace" = "Uitgifteplaats";
+"field.passport.issuer" = "Uitgever";
+
+// MARK: - OCR
+"ocr.section.title" = "Slim OCR";
+"ocr.scan.photo" = "Scannen vanaf afbeelding";
+"ocr.section.footer" = "Selecteer een documentafbeelding om automatisch informatie te extraheren";
+"ocr.processing" = "Bezig met herkennen...";
+"ocr.photo.upload" = "Documentafbeelding uploaden";
+"ocr.tap.upload" = "Tik om afbeelding te uploaden";
+"ocr.idcard.front" = "Voorkant ID-kaart";
+"ocr.idcard.back" = "Achterkant ID-kaart";
+"ocr.passport.datapage" = "Datapagina paspoort (foto)";
+"ocr.license.photo" = "Bedrijfslocatie afbeelding";
+"ocr.photo.front" = "Voorkant";
+"ocr.photo.back" = "Achterkant";
+"ocr.hint.idcard" = "Upload voorkant en achterkant van het ID. Gegevens worden automatisch geëxtraheerd.";
+"ocr.hint.passport" = "Upload de datapuntenpagina van het paspoort (foto).";
+"ocr.hint.license" = "Upload een afbeelding van de bedrijfslicentie.";
+
+// MARK: - Export
+"export.title" = "Export";
+"export.action" = "Exporteren";
+"export.image" = "Afbeelding exporteren";
+"export.images" = "Afbeeldingen exporteren";
+"export.images.all" = "Alle afbeeldingen exporteren";
+"export.text" = "Tekst exporteren";
+"export.add.watermark" = "Watermerk toevoegen";
+"export.watermark.title" = "Watermerk instellingen";
+"export.watermark.text" = "Watermerk tekst";
+"export.watermark.placeholder" = "Voer watermerktekst in";
+"export.watermark.hint" = "Het watermerk wordt schuin over de afbeelding geplaatst";
+"export.watermark.fontsize" = "Lettergrootte";
+"export.watermark.spacing" = "Afstand";
+"export.watermark.spacing.dense" = "Dicht";
+"export.watermark.spacing.normal" = "Normaal";
+"export.watermark.spacing.sparse" = "Schaars";
+"export.watermark.opacity" = "Doorzichtigheid";
+"export.preview" = "Voorbeeld";
+"export.advanced.options" = "Geavanceerde opties";
+"export.size.compression" = "Grootte en compressie";
+"export.max.width" = "Max. breedte";
+"export.max.height" = "Max. hoogte";
+"export.max.filesize" = "Max. bestandsgrootte";
+"export.pixel" = "Pixel";
+"export.hint.limits" = "Laat leeg voor geen limiet. Afbeelding wordt relatief geschaald";
+"export.success" = "Export succesvol";
+"export.failed" = "Export mislukt";
+"export.copied" = "Gekopieerd naar klembord";
+"export.images.count" = "%d afbeeldingen geëxporteerd";
+
+// MARK: - Validation
+"validation.title.required" = "Titel vereist";
+"validation.field.required" = "Dit veld is verplicht";
+"validation.phone.invalid" = "Ongeldig telefoonnummerformaat";
+"validation.taxid.invalid" = "Het belastingnummer moet 18 tekens zijn";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Items";
+"items.search.placeholder" = "Zoek op titel of tags...";
+"items.loading" = "Bezig met laden...";
+"items.empty" = "Nog geen items";
+"items.empty.subtitle" = "Tik op + rechtsboven om uw eerste item te maken";
+"items.empty.search" = "Geen resultaten";
+"items.empty.search.subtitle" = "Probeer andere zoekwoorden";
+"items.pinned" = "Vastgezet";
+"items.all" = "Alle";
+"items.create.text" = "Maak tekstitem";
+"items.create.image" = "Maak afbeeldingitem";
+"items.type.text" = "Tekstitem";
+"items.type.image" = "Afbeeldingsitem";
+"items.type.file" = "Bestandsitem";
+"items.type.text.desc" = "Sla tekstinformatie op voor snelle deling";
+"items.type.image.desc" = "Sla afbeeldingen op met watermerkondersteuning";
+"items.type.file.desc" = "Sla verschillende bestandstypen op met PDF-voorvertoning";
+
+// Items - Files
+"items.files.select" = "Selecteer bestanden";
+"items.files.count" = "%d bestanden";
+"items.files.section" = "Bestanden";
+"items.files.limit" = "Tot 10 bestanden, elk onder 10 MB";
+
+// Items - Detail Files
+"items.detail.files" = "Bestanden";
+"items.detail.files.count" = "%d bestanden";
+"items.create.title" = "Maak %@";
+"items.create.selecttype" = "Kies type";
+"items.create.button" = "Maak";
+"items.info.basic" = "Basisinformatie";
+"items.info.title" = "Titel";
+"items.info.title.hint" = "Kies een duidelijke titel voor het item";
+"items.content" = "Inhoud";
+"items.content.characters" = "%d tekens";
+"items.images.select" = "Selecteer afbeeldingen";
+"items.images.count" = "%d afbeeldingen";
+"items.images.section" = "Afbeeldingen";
+"items.images.limit" = "Maximaal 10 afbeeldingen";
+"items.tags.section" = "Tags";
+"items.tags.add" = "Tag toevoegen";
+"items.tags.placeholder" = "Voer tag-naam in";
+"items.tags.hint" = "Gebruik tags om te helpen bij ordening en zoeken";
+"items.detail.edit" = "Bewerken";
+"items.detail.delete" = "Verwijderen";
+"items.detail.pin" = "Vastzetten";
+"items.detail.created" = "Gemaakt";
+"items.detail.unpin" = "Losmaken";
+"items.detail.pinned" = "Vastgezet";
+"items.detail.content" = "Inhoud";
+"items.detail.images" = "Afbeeldingen";
+"items.detail.images.count" = "%d afbeelding";
+"items.detail.tags" = "Tags";
+"items.detaWatermark" = "";
+"watermark.settings" = "Watermerk instellingen";
+"watermark.collapse" = "Samenvouwen";
+"watermark.add" = "Watermerk toevoegen";
+"watermark.text" = "Watermerk tekst (bv: Alleen voor X)";
+"watermark.text.placeholder" = "Bijv.: Alleen voor X";
+"watermark.fontsize" = "Lettergrootte";
+"watermark.spacing" = "Regelafstand";
+"watermark.spacing.dense" = "Dicht";
+"watermark.spacing.normal" = "Normaal";
+"watermark.spacing.sparse" = "Schaars";
+"watermark.opacity" = "Doorzichtigheid";
+"watermark.preview" = "Voorbeeld";
+"watermark.share" = "Delen";
+"watermark.scope" = "Deelbereik";
+"watermark.scope.current" = "Alleen deze afbeelding";
+"watermark.scope.all" = "Alle afbeeldingen (%d)";
+"watermark.hint" = "Watermerk wordt diagonaal herhaald over de afbeelding";
+"watermark.sheet.title" = "Afbeeldingen delen";
+"watermark.preparing" = "Voorbereiden...";
+
+"items.detail.share.text" = "Tekst delen";
+"items.detail.share.images" = "Afbeeldingen delen";
+"items.delete.confirm" = "Weet u zeker dat u dit item wilt verwijderen?";
+"items.delete.title" = "Bevestig verwijderen";
+"items.delete.message" = "Deze actie kan niet ongedaan worden gemaakt";
+"items.created.success" = "Succesvol aangemaakt";
+"items.updated.success" = "Succesvol bijgewerkt";
+"items.deleted.success" = "Verwijderd";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Tool voor het overdragen van foto's tussen apparaten. Verplaats foto's snel tussen Mac en iPhone zonder netwerk.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Maak van je iPhone een veilige draagbare schijf";
+
+// MARK: - Settings: Clear Data
+"settings.security.cleardata" = "Alles wissen";
+"settings.security.cleardata.footer" = "⚠️ Dit zal permanent alle kaarten, afbeeldingen en bestanden verwijderen. Deze actie kan niet ongedaan worden gemaakt!";
+"settings.security.cleardata.confirm.title" = "Bevestig alles wissen";
+"settings.security.cleardata.confirm.message" = "Dit zal permanent alle gegevens verwijderen en kan niet ongedaan worden gemaakt. Voer het wachtwoord in om te bevestigen.";
+"settings.security.cleardata.confirm.password" = "Voer wachtwoord in";
+"settings.security.cleardata.confirm.delete" = "Alles wissen";
+"settings.security.cleardata.success" = "Alle gegevens zijn gewist";
+

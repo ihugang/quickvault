@@ -1,0 +1,372 @@
+/* 
+  Localizable.strings (Română)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Anulează";
+"common.save" = "Salvează";
+"common.delete" = "Șterge";
+"common.edit" = "Editează";
+"common.done" = "Gata";
+"common.add" = "Adaugă";
+"common.close" = "Închide";
+"common.confirm" = "Confirmă";
+"common.error" = "Eroare";
+"common.success" = "Succes";
+"common.loading" = "Se încarcă...";
+"common.retry" = "Reîncearcă";
+"common.copy" = "Copiază";
+"common.share" = "Partajează";
+"common.search" = "Caută";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Protejează-ți viața digitală";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Bine ați venit la QuickHold";
+"auth.welcome.subtitle" = "Setați parola principală pentru a începe";
+"auth.password.placeholder" = "Introduceți parola";
+"auth.password.confirm" = "Confirmați parola";
+"auth.password.hint" = "Parola trebuie să aibă cel puțin 8 caractere";
+"auth.password.mismatch" = "Parolele nu se potrivesc";
+"auth.password.weak" = "Parola este prea slabă";
+"auth.setup.button" = "Setează Parola";
+"auth.unlock.title" = "Deblochează QuickHold";
+"auth.unlock.button" = "Deblochează";
+"auth.unlock.biometric" = "Folosește Face ID / Touch ID";
+"auth.unlock.failed" = "Autentificare eșuată";
+"auth.unlock.attempts" = "%d încercări rămase";
+"auth.unlock.locked" = "Prea multe încercări. Încercați din nou în %d secunde";
+"auth.change.title" = "Schimbă Parola";
+"auth.change.current" = "Parola curentă";
+"auth.change.new" = "Parola nouă";
+"auth.change.confirm" = "Confirmă parola nouă";
+"auth.change.success" = "Parola a fost schimbată";
+"auth.change.failed" = "Schimbarea parolei a eșuat";
+
+// MARK: - Cards
+"cards.title" = "Carduri";
+"cards.empty" = "Niciun card";
+"cards.empty.subtitle" = "Apăsați + pentru a adăuga primul card";
+"cards.add" = "Adaugă Card";
+"cards.edit" = "Editează Card";
+"cards.delete" = "Șterge Card";
+"cards.delete.confirm" = "Sigur doriți să ștergeți acest card?";
+"cards.pin" = "Fixează";
+"cards.unpin" = "Anulează fixarea";
+"cards.pinned" = "Fixate";
+"cards.all" = "Toate";
+"cards.field.add" = "Adaugă Câmp";
+"cards.field.label" = "Etichetă";
+"cards.field.value" = "Valoare";
+"cards.field.copyable" = "Copiabil";
+"cards.copied" = "Copiat în clipboard";
+"cards.title.placeholder" = "Titlu Card";
+"cards.group.placeholder" = "Grup";
+"cards.type.general" = "General";
+"cards.type.login" = "Autentificare";
+"cards.type.card" = "Card de Credit";
+"cards.type.identity" = "Identitate";
+"cards.type.note" = "Notă Securizată";
+"cards.created" = "Creat: ";
+"cards.updated" = "Actualizat: ";
+"cards.tags" = "Etichete";
+"cards.tags.add" = "Adaugă Etichetă";
+
+// MARK: - Attachments
+"attachments.title" = "Atașamente";
+"attachments.add" = "Adaugă Atașament";
+"attachments.delete" = "Șterge Atașament";
+"attachments.delete.confirm" = "Sigur doriți să ștergeți acest atașament?";
+"attachments.watermark" = "Filigran";
+"attachments.watermark.add" = "Adaugă Filigran";
+"attachments.watermark.remove" = "Elimină Filigran";
+"attachments.watermark.text" = "Text Filigran";
+"attachments.share" = "Partajează";
+"attachments.preview" = "Previzualizare";
+"attachments.size" = "Dimensiune: %@";
+"attachments.empty" = "Niciun atașament";
+"attachments.photo.library" = "Biblioteca Foto";
+"attachments.photo.camera" = "Cameră";
+
+// MARK: - Search
+"search.title" = "Caută";
+"search.placeholder" = "Caută carduri...";
+"search.empty" = "Niciun rezultat găsit";
+"search.recent" = "Căutări Recente";
+
+// MARK: - Settings
+"settings.title" = "Setări";
+"settings.security" = "Securitate";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Activează autentificarea biometrică";
+"settings.security.autolock" = "Blocare Automată";
+"settings.security.autolock.immediately" = "Imediat";
+"settings.security.autolock.1min" = "După 1 minut";
+"settings.security.autolock.5min" = "După 5 minute";
+"settings.security.autolock.15min" = "După 15 minute";
+"settings.security.autolock.never" = "Niciodată";
+"settings.security.changepassword" = "Schimbă Parola";
+"settings.language" = "Limbă";
+"settings.language.title" = "Limba Aplicației";
+"settings.language.system" = "Implicit Sistem";
+"settings.about" = "Despre";
+"settings.about.version" = "Versiune";
+"settings.about.privacy" = "Politica de Confidențialitate";
+"settings.about.terms" = "Termeni și Condiții";
+"settings.data" = "Date";
+"settings.data.export" = "Exportă Date";
+"settings.data.import" = "Importă Date";
+"settings.data.reset" = "Resetează Toate Datele";
+"settings.data.reset.confirm" = "Aceasta va șterge toate cardurile și setările. Această acțiune nu poate fi anulată.";
+
+// MARK: - Errors
+"error.generic" = "Ceva nu a funcționat";
+"error.network" = "Eroare de rețea";
+"error.encryption" = "Eroare de criptare";
+"error.decryption" = "Eroare de decriptare";
+"error.storage" = "Eroare de stocare";
+"error.biometric.unavailable" = "Autentificarea biometrică nu este disponibilă";
+"error.biometric.notEnrolled" = "Nu există date biometrice înregistrate";
+
+/* Added from en.lproj (machine-translated) */
+
+"cards.group.personal" = "Personal";
+"cards.group.company" = "Companie";
+"cards.type.address" = "Adresă";
+"cards.type.invoice" = "Informații Factură";
+
+// Invoice Paste
+"invoice.paste.title" = "Lipește & Parsează";
+"invoice.paste.parse" = "Lipește pentru completare automată";
+"invoice.paste.hint" = "Lipește informații despre factură sau plată pentru a completa automat formularul";
+"invoice.paste.instruction" = "Lipește informațiile despre factură sau plată, sistemul le va recunoaște și completa automat";
+"invoice.paste.fromclipboard" = "Lipește din Clipboard";
+"invoice.parse.button" = "Parsează & Completează";
+
+// Fields
+"field.name" = "Nume";
+"field.phone" = "Telefon";
+"field.province" = "Județ/Provincie";
+"field.city" = "Oraș";
+"field.district" = "Sector/District";
+"field.address" = "Adresă";
+"field.postalcode" = "Cod Poștal";
+"field.notes" = "Note";
+"field.companyname" = "Nume Companie";
+"field.taxid" = "Cod Fiscal";
+"field.bankname" = "Nume Banca";
+"field.bankaccount" = "Cont Bancar";
+"field.content" = "Conținut";
+
+// Card Types
+"cards.type.select" = "Selectează Tip";
+"cards.type.idcard" = "Carte de Identitate";
+"cards.type.passport" = "Pașaport";
+"cards.type.businesslicense" = "Licență Comercială";
+
+// ID Card Fields
+"field.idcard.name" = "Nume";
+"field.idcard.gender" = "Gen";
+"field.idcard.nationality" = "Naționalitate";
+"field.idcard.birthdate" = "Dată Naștere";
+"field.idcard.number" = "Număr ID";
+"field.idcard.address" = "Adresă";
+"field.idcard.issuer" = "Autoritate Emitentă";
+"field.idcard.validperiod" = "Perioadă Valabilitate";
+
+// Business License Fields
+"field.license.companyname" = "Nume Companie";
+"field.license.companytype" = "Tip Companie";
+"field.license.creditcode" = "Cod Unic de Credit Social";
+"field.license.legalrep" = "Reprezentant Legal";
+"field.license.capital" = "Capital Înregistrat";
+"field.license.address" = "Adresă";
+"field.license.establishdate" = "Data Înființării";
+"field.license.businessterm" = "Perioadă Activitate";
+"field.license.scope" = "Domeniu Activitate";
+
+// Passport Fields
+"field.passport.name" = "Nume";
+"field.passport.nationality" = "Naționalitate";
+"field.passport.birthdate" = "Dată Naștere";
+"field.passport.gender" = "Gen";
+"field.passport.number" = "Număr Pașaport";
+"field.passport.issuedate" = "Data Emiterii";
+"field.passport.expirydate" = "Data Expirării";
+"field.passport.issueplace" = "Locul Emiterii";
+"field.passport.issuer" = "Autoritate Emitentă";
+
+// Attachment Hints
+"attachment.idcard.front" = "Încarcă fața ID (foto & partea cu numărul)";
+"attachment.idcard.back" = "Încarcă spatele ID (opțional)";
+"attachment.passport.datapage" = "Încarcă pagina de date a pașaportului (pagina cu foto)";
+"attachment.license.photo" = "Încarcă poza licenței comerciale";
+
+// OCR
+"ocr.section.title" = "Recunoaștere Inteligentă";
+"ocr.scan.photo" = "Scanare din Foto";
+"ocr.section.footer" = "Selectați o poză a documentului pentru a extrage automat informațiile";
+"ocr.processing" = "Se recunoaște...";
+"ocr.photo.upload" = "Încarcă Fotografia Documentului";
+"ocr.tap.upload" = "Apăsați pentru a încărca o fotografie";
+"ocr.idcard.front" = "ID Card Față (foto & partea cu numărul)";
+"ocr.idcard.back" = "ID Card Spate (emitent & valabilitate)";
+"ocr.passport.datapage" = "Pașaport Pagina de Date (pagina cu foto)";
+"ocr.license.photo" = "Poza Licență Comercială";
+"ocr.photo.front" = "Partea Față";
+"ocr.photo.back" = "Partea Spate";
+"ocr.hint.idcard" = "Încarcă fața și spatele cărții de identitate. Informațiile vor fi extrase automat.";
+"ocr.hint.passport" = "Încarcă pagina de date (pagina cu foto) a pașaportului.";
+"ocr.hint.license" = "Încarcă o poză a licenței comerciale.";
+"common.optional" = "opțional";
+"attachment.document.photos" = "Poze Document";
+"attachment.no.photo" = "Nicio poză";
+"attachment.load.failed" = "Încărcarea imaginii a eșuat";
+"ocr.edit.photo.hint" = "Click pentru a adăuga sau înlocui pozele documentului";
+
+// Export
+"export.title" = "Export";
+"export.action" = "Export";
+"export.image" = "Exportă Imagine";
+"export.images" = "Exportă Imagini";
+"export.images.all" = "Exportă Toate Imaginile";
+"export.text" = "Exportă Text";
+"export.add.watermark" = "Adaugă Filigran";
+"export.watermark.title" = "Setări Filigran";
+"export.watermark.text" = "Text Filigran";
+"export.watermark.placeholder" = "Introduceți textul filigran";
+"export.watermark.hint" = "Filigranul va fi suprapus în diagonală pe imagine";
+"export.watermark.fontsize" = "Dimensiune Font";
+"export.watermark.spacing" = "Spațiere";
+"export.watermark.spacing.dense" = "Dens";
+"export.watermark.spacing.normal" = "Normal";
+"export.watermark.spacing.sparse" = "Rărit";
+"export.watermark.opacity" = "Opacitate";
+"export.preview" = "Previzualizare";
+"export.advanced.options" = "Opțiuni Avansate";
+"export.size.compression" = "Dimensiune & Compresie";
+"export.max.width" = "Lățime Max";
+"export.max.height" = "Înălțime Max";
+"export.max.filesize" = "Dimensiune Max Fișier";
+"export.pixel" = "px";
+"export.hint.limits" = "Lăsați gol pentru fără limită. Imaginea va fi redimensionată proporțional";
+"export.success" = "Export reușit";
+"export.failed" = "Export eșuat";
+"export.copied" = "Copiat în clipboard";
+"export.images.count" = "%d imagini exportate";
+
+// Validation
+"validation.title.required" = "Titlul este obligatoriu";
+"validation.field.required" = "Acest câmp este obligatoriu";
+"validation.phone.invalid" = "Formatul telefonului nu este valid";
+"validation.taxid.invalid" = "Codul fiscal trebuie să aibă 18 caractere";
+
+// Attachments (duplicates safe)
+"attachments.title" = "Atașamente";
+"attachments.add" = "Adaugă Atașament";
+"attachments.delete" = "Șterge Atașament";
+"attachments.delete.confirm" = "Sigur doriți să ștergeți acest atașament?";
+"attachments.watermark" = "Filigran";
+"attachments.watermark.add" = "Adaugă Filigran";
+"attachments.watermark.remove" = "Elimină Filigran";
+"attachments.watermark.text" = "Text Filigran";
+"attachments.share" = "Partajează";
+"attachments.preview" = "Previzualizare";
+"attachments.size" = "Dimensiune: %@";
+"attachments.empty" = "Niciun atașament";
+"attachments.photo.library" = "Biblioteca Foto";
+"attachments.photo.camera" = "Cameră";
+
+// Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Elemente";
+"items.search.placeholder" = "Caută titlu sau etichete...";
+"items.loading" = "Se încarcă...";
+"items.empty" = "Niciun element încă";
+"items.empty.subtitle" = "Apăsați + în dreapta sus pentru a crea primul element";
+"items.empty.search" = "Niciun rezultat";
+"items.empty.search.subtitle" = "Încercați cu alte cuvinte cheie";
+"items.pinned" = "Fixate";
+"items.all" = "Toate";
+"items.create.text" = "Creează element text";
+"items.create.image" = "Creează element imagine";
+"items.type.text" = "Element text";
+"items.type.image" = "Element imagine";
+"items.type.file" = "Element fișier";
+"items.type.text.desc" = "Stochează text pentru partajare rapidă";
+"items.type.image.desc" = "Salvează imagini cu suport filigran";
+"items.type.file.desc" = "Stochează diverse fișiere cu previzualizare PDF";
+
+"items.files.select" = "Selectează Fișiere";
+"items.files.count" = "%d fișiere";
+"items.files.section" = "Fișiere";
+"items.files.limit" = "Până la 10 fișiere, fiecare nu mai mult de 10MB";
+
+"items.detail.files" = "Fișiere";
+"items.detail.files.count" = "%d fișiere";
+"items.create.title" = "Creează %@";
+"items.create.selecttype" = "Selectează Tip";
+"items.create.button" = "Creează";
+"items.info.basic" = "Informații de bază";
+"items.info.title" = "Titlu";
+"items.info.title.hint" = "Stabiliți un titlu clar pentru element";
+"items.content" = "Conținut";
+"items.content.characters" = "%d caractere";
+"items.images.select" = "Selectează Imagini";
+"items.images.count" = "%d imagini";
+"items.images.section" = "Imagini";
+"items.images.limit" = "Până la 10 imagini pot fi selectate";
+"items.tags.section" = "Etichete";
+"items.tags.add" = "Adaugă Etichetă";
+"items.tags.placeholder" = "Introduceți numele etichetei";
+"items.tags.hint" = "Folosiți etichete pentru a ajuta la categorisire și căutare";
+"items.detail.edit" = "Editează";
+"items.detail.delete" = "Șterge";
+"items.detail.pin" = "Fixează";
+"items.detail.created" = "Creat";
+"items.detail.unpin" = "Anulează fixarea";
+"items.detail.pinned" = "Fixat";
+"items.detail.content" = "Conținut";
+"items.detail.images" = "Imagini";
+"items.detail.images.count" = "%d imagini";
+"items.detail.tags" = "Etichete";
+"items.detaWatermark" = "";
+"watermark.settings" = "Setări Filigran";
+"watermark.collapse" = "Restrânge";
+"watermark.add" = "Adaugă Filigran";
+"watermark.text" = "Text Filigran (ex: Pentru Folosire Exclusivă XX)";
+"watermark.text.placeholder" = "ex: Pentru Folosire Exclusivă XX";
+"watermark.fontsize" = "Dimensiune Font";
+"watermark.spacing" = "Spațiere Linie";
+"watermark.spacing.dense" = "Dens";
+"watermark.spacing.normal" = "Normal";
+"watermark.spacing.sparse" = "Rărit";
+"watermark.opacity" = "Opacitate";
+"watermark.preview" = "Previzualizare";
+"watermark.share" = "Partajează";
+"watermark.scope" = "Domeniu Partajare";
+"watermark.scope.current" = "Doar această imagine";
+"watermark.scope.all" = "Toate imaginile (%d imagini)";
+"watermark.hint" = "Filigranul va fi repetat în diagonală peste imagine";
+"watermark.sheet.title" = "Partajează Imagini";
+"watermark.preparing" = "Se pregătește...";
+
+"items.detail.share.text" = "Partajează Text";
+"items.detail.share.images" = "Partajează Imagini";
+"items.delete.confirm" = "Sigur doriți să ștergeți acest element?";
+"items.delete.title" = "Confirmă Ștergerea";
+"items.delete.message" = "Această acțiune nu poate fi anulată";
+"items.created.success" = "Creat cu succes";
+"items.updated.success" = "Actualizat cu succes";
+"items.deleted.success" = "Șters cu succes";
+
+// App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Instrument de transfer foto cross-platform. Transfer rapid între Mac și iPhone fără rețea.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Transformă iPhone-ul într-un drive mobil securizat";
+

@@ -1,0 +1,352 @@
+/* 
+  Localizable.strings (Čeština)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Zrušit";
+"common.save" = "Uložit";
+"common.delete" = "Smazat";
+"common.edit" = "Upravit";
+"common.done" = "Hotovo";
+"common.add" = "Přidat";
+"common.close" = "Zavřít";
+"common.confirm" = "Potvrdit";
+"common.error" = "Chyba";
+"common.success" = "Úspěch";
+"common.loading" = "Načítání...";
+"common.retry" = "Zkusit znovu";
+"common.copy" = "Kopírovat";
+"common.share" = "Sdílet";
+"common.search" = "Hledat";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Zabezpečte svůj digitální život";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Vítejte v QuickHold";
+"auth.welcome.subtitle" = "Nastavte si hlavní heslo pro začátek";
+"auth.password.placeholder" = "Zadejte heslo";
+"auth.password.confirm" = "Potvrďte heslo";
+"auth.password.hint" = "Heslo musí mít alespoň 8 znaků";
+"auth.password.mismatch" = "Hesla se neshodují";
+"auth.password.weak" = "Heslo je příliš slabé";
+"auth.setup.button" = "Nastavit Heslo";
+"auth.unlock.title" = "Odemknout QuickHold";
+"auth.unlock.button" = "Odemknout";
+"auth.unlock.biometric" = "Použít Face ID / Touch ID";
+"auth.unlock.failed" = "Ověření selhalo";
+"auth.unlock.attempts" = "Zbývá %d pokusů";
+"auth.unlock.locked" = "Příliš mnoho pokusů. Zkuste to znovu za %d sekund";
+"auth.change.title" = "Změnit Heslo";
+"auth.change.current" = "Současné heslo";
+"auth.change.new" = "Nové heslo";
+"auth.change.confirm" = "Potvrďte nové heslo";
+"auth.change.success" = "Heslo bylo změněno";
+"auth.change.failed" = "Změna hesla selhala";
+
+// MARK: - Cards
+"cards.title" = "Karty";
+"cards.empty" = "Žádné karty";
+"cards.empty.subtitle" = "Klepněte na + pro přidání první karty";
+"cards.add" = "Přidat Kartu";
+"cards.edit" = "Upravit Kartu";
+"cards.delete" = "Smazat Kartu";
+"cards.delete.confirm" = "Opravdu chcete smazat tuto kartu?";
+"cards.pin" = "Připnout";
+"cards.unpin" = "Odepnout";
+"cards.pinned" = "Připnuté";
+"cards.all" = "Všechny";
+"cards.field.add" = "Přidat Pole";
+"cards.field.label" = "Popisek";
+"cards.field.value" = "Hodnota";
+"cards.field.copyable" = "Kopírovatelné";
+"cards.copied" = "Zkopírováno do schránky";
+"cards.title.placeholder" = "Název Karty";
+"cards.group.placeholder" = "Skupina";
+"cards.type.general" = "Obecné";
+"cards.type.login" = "Přihlášení";
+"cards.type.card" = "Kreditní Karta";
+"cards.type.identity" = "Identita";
+"cards.type.note" = "Zabezpečená Poznámka";
+"cards.created" = "Vytvořeno: ";
+"cards.updated" = "Aktualizováno: ";
+"cards.tags" = "Štítky";
+"cards.tags.add" = "Přidat Štítek";
+
+// MARK: - Attachments
+"attachments.title" = "Přílohy";
+"attachments.add" = "Přidat Přílohu";
+"attachments.delete" = "Smazat Přílohu";
+"attachments.delete.confirm" = "Opravdu chcete smazat tuto přílohu?";
+"attachments.watermark" = "Vodoznak";
+"attachments.watermark.add" = "Přidat Vodoznak";
+"attachments.watermark.remove" = "Odstranit Vodoznak";
+"attachments.watermark.text" = "Text Vodoznaku";
+"attachments.share" = "Sdílet";
+"attachments.preview" = "Náhled";
+"attachments.size" = "Velikost: %@";
+"attachments.empty" = "Žádné přílohy";
+"attachments.photo.library" = "Knihovna Fotek";
+"attachments.photo.camera" = "Fotoaparát";
+
+// MARK: - Search
+"search.title" = "Hledat";
+"search.placeholder" = "Hledat karty...";
+"search.empty" = "Žádné výsledky";
+"search.recent" = "Nedávná Hledání";
+
+// MARK: - Settings
+"settings.title" = "Nastavení";
+"settings.security" = "Zabezpečení";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Povolit biometrické ověření";
+"settings.security.autolock" = "Automatický Zámek";
+"settings.security.autolock.immediately" = "Okamžitě";
+"settings.security.autolock.1min" = "Po 1 minutě";
+"settings.security.autolock.5min" = "Po 5 minutách";
+"settings.security.autolock.15min" = "Po 15 minutách";
+"settings.security.autolock.never" = "Nikdy";
+"settings.security.changepassword" = "Změnit Heslo";
+"settings.language" = "Jazyk";
+"settings.language.title" = "Jazyk Aplikace";
+"settings.language.system" = "Výchozí Systémový";
+"settings.about" = "O Aplikaci";
+"settings.about.version" = "Verze";
+"settings.about.privacy" = "Zásady Ochrany Soukromí";
+"settings.about.terms" = "Podmínky Služby";
+"settings.data" = "Data";
+"settings.data.export" = "Exportovat Data";
+"settings.data.import" = "Importovat Data";
+"settings.data.reset" = "Resetovat Všechna Data";
+"settings.data.reset.confirm" = "Tím smažete všechny karty a nastavení. Tuto akci nelze vrátit zpět.";
+
+// MARK: - Errors
+"error.generic" = "Něco se pokazilo";
+"error.network" = "Chyba sítě";
+"error.encryption" = "Chyba šifrování";
+"error.decryption" = "Chyba dešifrování";
+"error.storage" = "Chyba úložiště";
+"error.biometric.unavailable" = "Biometrické ověření není dostupné";
+"error.biometric.notEnrolled" = "Žádná biometrická data nejsou zaregistrována";
+
+// MARK: - Authentication Extras
+"auth.password.required" = "Zadejte prosím heslo";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Vložit a vyplnit";
+"invoice.paste.parse" = "Vložit pro automatické vyplnění";
+"invoice.paste.hint" = "Vložte informace o faktuře nebo platbě pro automatické vyplnění formuláře";
+"invoice.paste.instruction" = "Vložte informace o faktuře nebo platbě; systém je rozpozná a automaticky vyplní pole";
+"invoice.paste.fromclipboard" = "Vložit ze schránky";
+"invoice.parse.button" = "Analyzovat a vyplnit";
+
+// MARK: - Fields
+"field.name" = "Jméno";
+"field.phone" = "Telefon";
+"field.province" = "Kraj";
+"field.city" = "Město";
+"field.district" = "Okres";
+"field.address" = "Adresa";
+"field.postalcode" = "PSČ";
+"field.notes" = "Poznámky";
+"field.companyname" = "Název společnosti";
+"field.taxid" = "DIČ";
+"field.bankname" = "Název banky";
+"field.bankaccount" = "Bankovní účet";
+"field.content" = "Obsah";
+
+// MARK: - Card Types
+"cards.type.select" = "Vyberte typ";
+"cards.type.idcard" = "Občanský průkaz";
+"cards.type.passport" = "Cestovní pas";
+"cards.type.businesslicense" = "Živnostenské oprávnění";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Jméno";
+"field.idcard.gender" = "Pohlaví";
+"field.idcard.nationality" = "Státní příslušnost";
+"field.idcard.birthdate" = "Datum narození";
+"field.idcard.number" = "Číslo průkazu";
+"field.idcard.address" = "Adresa";
+"field.idcard.issuer" = "Vydal";
+"field.idcard.validperiod" = "Doba platnosti";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Název společnosti";
+"field.license.companytype" = "Typ společnosti";
+"field.license.creditcode" = "Identifikační kód";
+"field.license.legalrep" = "Zákonný zástupce";
+"field.license.capital" = "Základní kapitál";
+"field.license.address" = "Adresa";
+"field.license.establishdate" = "Datum založení";
+"field.license.businessterm" = "Období podnikání";
+"field.license.scope" = "Předmět podnikání";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Jméno";
+"field.passport.nationality" = "Státní příslušnost";
+"field.passport.birthdate" = "Datum narození";
+"field.passport.gender" = "Pohlaví";
+"field.passport.number" = "Číslo pasu";
+"field.passport.issuedate" = "Datum vydání";
+"field.passport.expirydate" = "Datum vypršení";
+"field.passport.issueplace" = "Místo vydání";
+"field.passport.issuer" = "Vydal";
+
+// MARK: - OCR
+"ocr.section.title" = "Inteligentní OCR";
+"ocr.scan.photo" = "Sken z obrázku";
+"ocr.section.footer" = "Vyberte obrázek dokumentu pro automatické vytažení informací";
+"ocr.processing" = "Probíhá rozpoznávání...";
+"ocr.photo.upload" = "Nahrát obrázek dokumentu";
+"ocr.tap.upload" = "Klepněte pro nahrání obrázku";
+"ocr.idcard.front" = "Přední strana občanského průkazu";
+"ocr.idcard.back" = "Zadní strana občanského průkazu";
+"ocr.passport.datapage" = "Datová stránka pasu (fotografie)";
+"ocr.license.photo" = "Obrázek živnostenského oprávnění";
+"ocr.photo.front" = "Předek";
+"ocr.photo.back" = "Zadek";
+"ocr.hint.idcard" = "Nahrajte přední i zadní stranu průkazu. Informace budou extrahovány automaticky.";
+"ocr.hint.passport" = "Nahrajte datovou stránku pasu (fotografie).";
+"ocr.hint.license" = "Nahrajte obrázek živnostenského oprávnění.";
+
+// MARK: - Export
+"export.title" = "Export";
+"export.action" = "Exportovat";
+"export.image" = "Exportovat obrázek";
+"export.images" = "Exportovat obrázky";
+"export.images.all" = "Exportovat všechny obrázky";
+"export.text" = "Exportovat text";
+"export.add.watermark" = "Přidat vodoznak";
+"export.watermark.title" = "Nastavení vodoznaku";
+"export.watermark.text" = "Text vodoznaku";
+"export.watermark.placeholder" = "Zadejte text vodoznaku";
+"export.watermark.hint" = "Vodoznak bude nakloněn přes obrázek";
+"export.watermark.fontsize" = "Velikost písma";
+"export.watermark.spacing" = "Mezera";
+"export.watermark.spacing.dense" = "Hustě";
+"export.watermark.spacing.normal" = "Normálně";
+"export.watermark.spacing.sparse" = "Řídce";
+"export.watermark.opacity" = "Průhlednost";
+"export.preview" = "Náhled";
+"export.advanced.options" = "Pokročilé možnosti";
+"export.size.compression" = "Velikost a komprese";
+"export.max.width" = "Max. šířka";
+"export.max.height" = "Max. výška";
+"export.max.filesize" = "Max. velikost souboru";
+"export.pixel" = "Pixel";
+"export.hint.limits" = "Nechte prázdné pro žádné omezení. Obrázek bude změněn relativně";
+"export.success" = "Export úspěšný";
+"export.failed" = "Export selhal";
+"export.copied" = "Zkopírováno do schránky";
+"export.images.count" = "%d obrázků exportováno";
+
+// MARK: - Validation
+"validation.title.required" = "Nadpis je povinný";
+"validation.field.required" = "Toto pole je povinné";
+"validation.phone.invalid" = "Neplatný formát telefonního čísla";
+"validation.taxid.invalid" = "DIČ musí mít 18 znaků";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Položky";
+"items.search.placeholder" = "Hledejte podle názvu nebo tagů...";
+"items.loading" = "Načítání...";
+"items.empty" = "Žádné položky";
+"items.empty.subtitle" = "Klepněte na + vpravo nahoře pro vytvoření první položky";
+"items.empty.search" = "Žádné výsledky";
+"items.empty.search.subtitle" = "Zkuste jiné vyhledávací dotazy";
+"items.pinned" = "Připnuté";
+"items.all" = "Vše";
+"items.create.text" = "Vytvořit textovou položku";
+"items.create.image" = "Vytvořit položku s obrázkem";
+"items.type.text" = "Textová položka";
+"items.type.image" = "Obrázková položka";
+"items.type.file" = "Souborová položka";
+"items.type.text.desc" = "Uložte textové informace pro rychlé sdílení";
+"items.type.image.desc" = "Uložte obrázky s podporou vodoznaků";
+"items.type.file.desc" = "Uložte různé typy souborů s podporou náhledu PDF";
+
+// Items - Files
+"items.files.select" = "Vyberte soubory";
+"items.files.count" = "%d souborů";
+"items.files.section" = "Soubory";
+"items.files.limit" = "Až 10 souborů, každý do 10 MB";
+
+// Items - Detail Files
+"items.detail.files" = "Soubory";
+"items.detail.files.count" = "%d souborů";
+"items.create.title" = "Vytvořit %@";
+"items.create.selecttype" = "Vyberte typ";
+"items.create.button" = "Vytvořit";
+"items.info.basic" = "Základní informace";
+"items.info.title" = "Název";
+"items.info.title.hint" = "Zvolte jasný název";
+"items.content" = "Obsah";
+"items.content.characters" = "%d znaků";
+"items.images.select" = "Vybrat obrázky";
+"items.images.count" = "%d obrázků";
+"items.images.section" = "Obrázky";
+"items.images.limit" = "Maximálně 10 obrázků";
+"items.tags.section" = "Štítky";
+"items.tags.add" = "Přidat štítek";
+"items.tags.placeholder" = "Zadejte název štítku";
+"items.tags.hint" = "Použijte štítky pro lepší organizaci a vyhledávání";
+"items.detail.edit" = "Upravit";
+"items.detail.delete" = "Smazat";
+"items.detail.pin" = "Připnout";
+"items.detail.created" = "Vytvořeno";
+"items.detail.unpin" = "Odepnout";
+"items.detail.pinned" = "Připnuto";
+"items.detail.content" = "Obsah";
+"items.detail.images" = "Obrázky";
+"items.detail.images.count" = "%d obrázek";
+"items.detail.tags" = "Štítky";
+"items.detaWatermark" = "";
+"watermark.settings" = "Nastavení vodoznaku";
+"watermark.collapse" = "Sbalit";
+"watermark.add" = "Přidat vodoznak";
+"watermark.text" = "Text vodoznaku (např. Pouze pro X)";
+"watermark.text.placeholder" = "Např.: Pouze pro X";
+"watermark.fontsize" = "Velikost písma";
+"watermark.spacing" = "Mezera mezi řádky";
+"watermark.spacing.dense" = "Hustě";
+"watermark.spacing.normal" = "Normálně";
+"watermark.spacing.sparse" = "Řídce";
+"watermark.opacity" = "Průhlednost";
+"watermark.preview" = "Náhled";
+"watermark.share" = "Sdílet";
+"watermark.scope" = "Rozsah sdílení";
+"watermark.scope.current" = "Pouze tento obrázek";
+"watermark.scope.all" = "Všechny obrázky (%d)";
+"watermark.hint" = "Vodoznak bude opakován šikmo přes obrázek";
+"watermark.sheet.title" = "Sdílet obrázky";
+"watermark.preparing" = "Příprava...";
+
+"items.detail.share.text" = "Sdílet text";
+"items.detail.share.images" = "Sdílet obrázky";
+"items.delete.confirm" = "Opravdu chcete tuto položku smazat?";
+"items.delete.title" = "Potvrzení smazání";
+"items.delete.message" = "Tuto akci nelze vrátit zpět";
+"items.created.success" = "Vytvořeno úspěšně";
+"items.updated.success" = "Aktualizováno úspěšně";
+"items.deleted.success" = "Smazáno";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Nástroj pro přenos fotografií mezi zařízeními. Rychlý přenos mezi Macem a iPhonem bez sítě.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Proměňte iPhone na bezpečný přenosný disk";
+
+// MARK: - Settings: Clear Data
+"settings.security.cleardata" = "Vymazat všechna data";
+"settings.security.cleardata.footer" = "⚠️ Tímto se trvale odstraní všechny karty, obrázky a soubory. Tuto akci nelze vrátit!";
+"settings.security.cleardata.confirm.title" = "Potvrdit vymazání všech dat";
+"settings.security.cleardata.confirm.message" = "Tímto se trvale odstraní všechna data. Nelze vrátit. Zadejte heslo pro potvrzení.";
+"settings.security.cleardata.confirm.password" = "Zadejte heslo";
+"settings.security.cleardata.confirm.delete" = "Vymazat všechna data";
+"settings.security.cleardata.success" = "Všechna data byla vymazána";
+

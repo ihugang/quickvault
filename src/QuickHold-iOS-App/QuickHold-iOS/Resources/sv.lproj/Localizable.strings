@@ -1,0 +1,369 @@
+/* 
+  Localizable.strings (Svenska)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Avbryt";
+"common.save" = "Spara";
+"common.delete" = "Radera";
+"common.edit" = "Redigera";
+"common.done" = "Klar";
+"common.add" = "Lägg till";
+"common.close" = "Stäng";
+"common.confirm" = "Bekräfta";
+"common.error" = "Fel";
+"common.success" = "Lyckades";
+"common.loading" = "Laddar...";
+"common.retry" = "Försök igen";
+"common.copy" = "Kopiera";
+"common.share" = "Dela";
+"common.search" = "Sök";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Skydda ditt digitala liv";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Välkommen till QuickHold";
+"auth.welcome.subtitle" = "Ställ in ditt huvudlösenord för att börja";
+"auth.password.placeholder" = "Ange lösenord";
+"auth.password.confirm" = "Bekräfta lösenord";
+"auth.password.hint" = "Lösenordet måste vara minst 8 tecken";
+"auth.password.mismatch" = "Lösenorden matchar inte";
+"auth.password.weak" = "Lösenordet är för svagt";
+"auth.setup.button" = "Ställ in Lösenord";
+"auth.unlock.title" = "Lås upp QuickHold";
+"auth.unlock.button" = "Lås upp";
+"auth.unlock.biometric" = "Använd Face ID / Touch ID";
+"auth.unlock.failed" = "Autentisering misslyckades";
+"auth.unlock.attempts" = "%d försök kvar";
+"auth.unlock.locked" = "För många försök. Försök igen om %d sekunder";
+"auth.change.title" = "Ändra Lösenord";
+"auth.change.current" = "Nuvarande lösenord";
+"auth.change.new" = "Nytt lösenord";
+"auth.change.confirm" = "Bekräfta nytt lösenord";
+"auth.change.success" = "Lösenordet har ändrats";
+"auth.change.failed" = "Kunde inte ändra lösenord";
+
+// MARK: - Cards
+"cards.title" = "Kort";
+"cards.empty" = "Inga kort";
+"cards.empty.subtitle" = "Tryck på + för att lägga till ditt första kort";
+"cards.add" = "Lägg till Kort";
+"cards.edit" = "Redigera Kort";
+"cards.delete" = "Radera Kort";
+"cards.delete.confirm" = "Är du säker på att du vill radera detta kort?";
+"cards.pin" = "Fäst";
+"cards.unpin" = "Lossa";
+"cards.pinned" = "Fästa";
+"cards.all" = "Alla";
+"cards.field.add" = "Lägg till Fält";
+"cards.field.label" = "Etikett";
+"cards.field.value" = "Värde";
+"cards.field.copyable" = "Kopierbar";
+"cards.copied" = "Kopierat till urklipp";
+"cards.title.placeholder" = "Korttitel";
+"cards.group.placeholder" = "Grupp";
+"cards.type.general" = "Allmänt";
+"cards.type.login" = "Inloggning";
+"cards.type.card" = "Kreditkort";
+"cards.type.identity" = "Identitet";
+"cards.type.note" = "Säker Anteckning";
+"cards.created" = "Skapad: ";
+"cards.updated" = "Uppdaterad: ";
+"cards.tags" = "Taggar";
+"cards.tags.add" = "Lägg till Tagg";
+
+// MARK: - Attachments
+"attachments.title" = "Bilagor";
+"attachments.add" = "Lägg till Bilaga";
+"attachments.delete" = "Radera Bilaga";
+"attachments.delete.confirm" = "Är du säker på att du vill radera denna bilaga?";
+"attachments.watermark" = "Vattenstämpel";
+"attachments.watermark.add" = "Lägg till Vattenstämpel";
+"attachments.watermark.remove" = "Ta bort Vattenstämpel";
+"attachments.watermark.text" = "Vattenstämpeltext";
+"attachments.share" = "Dela";
+"attachments.preview" = "Förhandsgranska";
+"attachments.size" = "Storlek: %@";
+"attachments.empty" = "Inga bilagor";
+"attachments.photo.library" = "Fotobibliotek";
+"attachments.photo.camera" = "Kamera";
+
+// MARK: - Search
+"search.title" = "Sök";
+"search.placeholder" = "Sök kort...";
+"search.empty" = "Inga resultat hittades";
+"search.recent" = "Senaste Sökningar";
+
+// MARK: - Settings
+"settings.title" = "Inställningar";
+"settings.security" = "Säkerhet";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Aktivera biometrisk autentisering";
+"settings.security.autolock" = "Autolås";
+"settings.security.autolock.immediately" = "Omedelbart";
+"settings.security.autolock.1min" = "Efter 1 minut";
+"settings.security.autolock.5min" = "Efter 5 minuter";
+"settings.security.autolock.15min" = "Efter 15 minuter";
+"settings.security.autolock.never" = "Aldrig";
+"settings.security.changepassword" = "Ändra Lösenord";
+"settings.language" = "Språk";
+"settings.language.title" = "Appspråk";
+"settings.language.system" = "Systemstandard";
+"settings.about" = "Om";
+"settings.about.version" = "Version";
+"settings.about.privacy" = "Integritetspolicy";
+"settings.about.terms" = "Användarvillkor";
+"settings.data" = "Data";
+"settings.data.export" = "Exportera Data";
+"settings.data.import" = "Importera Data";
+"settings.data.reset" = "Återställ All Data";
+"settings.data.reset.confirm" = "Detta raderar alla dina kort och inställningar. Denna åtgärd kan inte ångras.";
+
+// MARK: - Errors
+"error.generic" = "Något gick fel";
+"error.network" = "Nätverksfel";
+"error.encryption" = "Krypteringsfel";
+"error.decryption" = "Dekrypteringsfel";
+"error.storage" = "Lagringsfel";
+"error.biometric.unavailable" = "Biometrisk autentisering är inte tillgänglig";
+"error.biometric.notEnrolled" = "Ingen biometrisk data registrerad";
+
+/* Added from en.lproj (machine-translated) */
+
+"auth.password.required" = "Vänligen ange ditt lösenord";
+"auth.error.biometric.unavailable" = "Touch ID är inte tillgänglig";
+"auth.error.biometric.failed" = "Touch ID-autentisering misslyckades";
+"auth.error.biometric.password.not.stored" = "Vänligen logga in med lösenord först för att aktivera Touch ID";
+"auth.error.password.incorrect" = "Felaktigt lösenord";
+"auth.error.password.too.short" = "Lösenordet måste vara minst 8 tecken";
+"auth.error.no.password" = "Inget huvudlösenord är inställt";
+"auth.error.rate.limited" = "För många misslyckade försök. Vänta %d sekunder";
+"auth.error.keychain" = "Keychain-fel: %@";
+
+"cards.group.personal" = "Personligt";
+"cards.group.company" = "Företag";
+"cards.type.address" = "Adress";
+"cards.type.invoice" = "Fakturainformation";
+
+"invoice.paste.title" = "Klistra in & Tolka";
+"invoice.paste.parse" = "Klistra in för autofyll";
+"invoice.paste.hint" = "Klistra in faktura- eller betalningsinformation för att autofylla formuläret";
+"invoice.paste.instruction" = "Klistra in faktura- eller betalningsinformation, systemet kommer automatiskt att känna igen och fylla i fälten";
+"invoice.paste.fromclipboard" = "Klistra in från urklipp";
+"invoice.parse.button" = "Tolka & Fyll";
+
+"field.name" = "Namn";
+"field.phone" = "Telefon";
+"field.province" = "Provinser/Landsdel";
+"field.city" = "Stad";
+"field.district" = "Distrikt";
+"field.address" = "Adress";
+"field.postalcode" = "Postnummer";
+"field.notes" = "Anteckningar";
+"field.companyname" = "Företagsnamn";
+"field.taxid" = "Skatteidentifieringsnummer";
+"field.bankname" = "Banknamn";
+"field.bankaccount" = "Bankkonto";
+"field.content" = "Innehål";
+
+"cards.type.select" = "Välj typ";
+"cards.type.idcard" = "ID-kort";
+"cards.type.passport" = "Pass";
+"cards.type.businesslicense" = "Företagslicens";
+
+"field.idcard.name" = "Namn";
+"field.idcard.gender" = "Kön";
+"field.idcard.nationality" = "Nationalitet";
+"field.idcard.birthdate" = "Födelsedatum";
+"field.idcard.number" = "ID-nummer";
+"field.idcard.address" = "Adress";
+"field.idcard.issuer" = "Utfärdande myndighet";
+"field.idcard.validperiod" = "Giltighetsperiod";
+
+"field.license.companyname" = "Företagsnamn";
+"field.license.companytype" = "Företagstyp";
+"field.license.creditcode" = "Enhetlig social kreditkod";
+"field.license.legalrep" = "Juridisk representant";
+"field.license.capital" = "Registrerat kapital";
+"field.license.address" = "Adress";
+"field.license.establishdate" = "Upprättandedatum";
+"field.license.businessterm" = "Affärsperiod";
+"field.license.scope" = "Affärsomfattning";
+
+"field.passport.name" = "Namn";
+"field.passport.nationality" = "Nationalitet";
+"field.passport.birthdate" = "Födelsedatum";
+"field.passport.gender" = "Kön";
+"field.passport.number" = "Passnummer";
+"field.passport.issuedate" = "Utfärdandedatum";
+"field.passport.expirydate" = "Utgångsdatum";
+"field.passport.issueplace" = "Utfärdningsplats";
+"field.passport.issuer" = "Utfärdande myndighet";
+
+"attachment.idcard.front" = "Ladda upp ID fram (foto & nummersida)";
+"attachment.idcard.back" = "Ladda upp ID bak (valfritt)";
+"attachment.passport.datapage" = "Ladda upp passdatasida (fotosida)";
+"attachment.license.photo" = "Ladda upp företagslicensfoto";
+
+"ocr.section.title" = "Smart igenkänning";
+"ocr.scan.photo" = "Skanna från foto";
+"ocr.section.footer" = "Välj ett foto av ditt dokument för att automatiskt extrahera information";
+"ocr.processing" = "Igenkänner...";
+"ocr.photo.upload" = "Ladda upp dokumentfoto";
+"ocr.tap.upload" = "Tryck för att ladda upp foto";
+"ocr.idcard.front" = "ID fram (foto & nummersida)";
+"ocr.idcard.back" = "ID bak (utfärdare & giltighet)";
+"ocr.passport.datapage" = "Passdatasida (fotosida)";
+"ocr.license.photo" = "Företagslicensfoto";
+"ocr.photo.front" = "Framsida";
+"ocr.photo.back" = "Baksida";
+"ocr.hint.idcard" = "Ladda upp fram- och baksida av ditt ID-kort. Informationen kommer att extraheras automatiskt.";
+"ocr.hint.passport" = "Ladda upp datasidan (fotosidan) på ditt pass.";
+"ocr.hint.license" = "Ladda upp ett foto av din företagslicens.";
+"common.optional" = "valfritt";
+"attachment.document.photos" = "Dokumentfoton";
+"attachment.no.photo" = "Inget foto";
+"attachment.load.failed" = "Det gick inte att ladda bilden";
+"ocr.edit.photo.hint" = "Klicka för att lägga till eller ersätta dokumentfoton";
+
+"export.title" = "Exportera";
+"export.action" = "Exportera";
+"export.image" = "Exportera bild";
+"export.images" = "Exportera bilder";
+"export.images.all" = "Exportera alla bilder";
+"export.text" = "Exportera text";
+"export.add.watermark" = "Lägg till vattenstämpel";
+"export.watermark.title" = "Vattenstämpelinstallningar";
+"export.watermark.text" = "Vattenstämpeltext";
+"export.watermark.placeholder" = "Ange vattenstämpeltext";
+"export.watermark.hint" = "Vattenstämpeln läggs över diagonalt på bilden";
+"export.watermark.fontsize" = "Teckenstorlek";
+"export.watermark.spacing" = "Avstånd";
+"export.watermark.spacing.dense" = "Tätt";
+"export.watermark.spacing.normal" = "Normal";
+"export.watermark.spacing.sparse" = "Gles";
+"export.watermark.opacity" = "Opacitet";
+"export.preview" = "Förhandsgranska";
+"export.advanced.options" = "Avancerade alternativ";
+"export.size.compression" = "Storlek & komprimering";
+"export.max.width" = "Max bredd";
+"export.max.height" = "Max höjd";
+"export.max.filesize" = "Max filstorlek";
+"export.pixel" = "px";
+"export.hint.limits" = "Lämna tomt för ingen gräns. Bilden ändras proportionellt";
+"export.success" = "Export lyckades";
+"export.failed" = "Export misslyckades";
+"export.copied" = "Kopierat till urklipp";
+"export.images.count" = "Exporterade %d bilder";
+
+"validation.title.required" = "Titeln krävs";
+"validation.field.required" = "Det här fältet är obligatoriskt";
+"validation.phone.invalid" = "Ogiltigt telefonformat";
+"validation.taxid.invalid" = "Skatteidentifieringsnumret måste vara 18 tecken";
+
+"items.title" = "QuickHold";
+"items.tab" = "Artiklar";
+"items.search.placeholder" = "Sök titel eller taggar...";
+"items.loading" = "Laddar...";
+"items.empty" = "Inga artiklar än";
+"items.empty.subtitle" = "Tryck + i övre höger för att skapa din första artikel";
+"items.empty.search" = "Inga resultat hittades";
+"items.empty.search.subtitle" = "Prova andra sökord";
+"items.pinned" = "Fästa";
+"items.all" = "Alla";
+"items.create.text" = "Skapa textartikel";
+"items.create.image" = "Skapa bildartikel";
+"items.type.text" = "Textartikel";
+"items.type.image" = "Bildartikel";
+"items.type.file" = "Filartikel";
+"items.type.text.desc" = "Lagra textinformation för snabb delning";
+"items.type.image.desc" = "Spara bilder med vattenstämpeldelning";
+"items.type.file.desc" = "Lagra olika filer med PDF-förhandsgranskningsstöd";
+
+"items.files.select" = "Välj filer";
+"items.files.count" = "%d filer";
+"items.files.section" = "Filer";
+"items.files.limit" = "Upp till 10 filer, varje fil högst 10MB";
+
+"items.detail.files" = "Filer";
+"items.detail.files.count" = "%d filer";
+"items.create.title" = "Skapa %@";
+"items.create.selecttype" = "Välj typ";
+"items.create.button" = "Skapa";
+"items.info.basic" = "Grundläggande information";
+"items.info.title" = "Titel";
+"items.info.title.hint" = "Ange en tydlig titel för artikeln";
+"items.content" = "Innehål";
+"items.content.characters" = "%d tecken";
+"items.images.select" = "Välj bilder";
+"items.images.count" = "%d bilder";
+"items.images.section" = "Bilder";
+"items.images.limit" = "Upp till 10 bilder kan väljas";
+"items.tags.section" = "Taggar";
+"items.tags.add" = "Lägg till tagg";
+"items.tags.placeholder" = "Ange taggnamn";
+"items.tags.hint" = "Använd taggar för att hjälpa till med kategorisering och sökning";
+"items.detail.edit" = "Redigera";
+"items.detail.delete" = "Radera";
+"items.detail.pin" = "Fäst";
+"items.detail.created" = "Skapad";
+"items.detail.unpin" = "Lossa";
+"items.detail.pinned" = "Fäst";
+"items.detail.content" = "Innehål";
+"items.detail.images" = "Bilder";
+"items.detail.images.count" = "%d bilder";
+"items.detail.tags" = "Taggar";
+"items.detaWatermark" = "";
+"watermark.settings" = "Vattenstämpelinstallningar";
+"watermark.collapse" = "Dölj";
+"watermark.add" = "Lägg till vattenstämpel";
+"watermark.text" = "Vattenstämpeltext (t.ex.: För XX endast)";
+"watermark.text.placeholder" = "t.ex.: För XX endast";
+"watermark.fontsize" = "Teckenstorlek";
+"watermark.spacing" = "Radavstånd";
+"watermark.spacing.dense" = "Tätt";
+"watermark.spacing.normal" = "Normal";
+"watermark.spacing.sparse" = "Gles";
+"watermark.opacity" = "Opacitet";
+"watermark.preview" = "Förhandsgranska";
+"watermark.share" = "Dela";
+"watermark.scope" = "Delningsomfattning";
+"watermark.scope.current" = "Bara denna bild";
+"watermark.scope.all" = "Alla bilder (%d bilder)";
+"watermark.hint" = "Vattenstämpeln kommer att placeras diagonalt över bilden";
+"watermark.sheet.title" = "Dela bilder";
+"watermark.preparing" = "Förbereder...";
+
+"items.detail.share.text" = "Dela text";
+"items.detail.share.images" = "Dela bilder";
+"items.delete.confirm" = "Är du säker på att du vill radera den här artikeln?";
+"items.delete.title" = "Bekräfta radering";
+"items.delete.message" = "Denna åtgärd kan inte ångras";
+"items.created.success" = "Skapad framgångsrikt";
+"items.updated.success" = "Uppdaterad framgångsrikt";
+"items.deleted.success" = "Raderad framgångsrikt";
+
+"settings.security.biometric.enabled" = "Biometri aktiverad";
+"settings.security.biometric.disabled" = "Biometri inaktiverad";
+"settings.security.cleardata" = "Rensa all data";
+"settings.security.cleardata.footer" = "⚠️ Detta raderar permanent alla kort, bilder och filer. Denna åtgärd kan inte ångras!";
+"settings.security.cleardata.confirm.title" = "Bekräfta rensa all data";
+"settings.security.cleardata.confirm.message" = "Detta raderar permanent all data och kan inte ångras. Ange ditt lösenord för att bekräfta.";
+"settings.security.cleardata.confirm.password" = "Ange lösenord";
+"settings.security.cleardata.confirm.delete" = "Radera all data";
+"settings.security.cleardata.success" = "All data har raderats";
+"settings.appearance" = "Utseende";
+"settings.appearance.title" = "Skärm";
+"settings.appearance.auto" = "Automatisk";
+"settings.appearance.light" = "Ljus";
+"settings.appearance.dark" = "Mörk";
+"settings.tab" = "Inställningar";
+
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Verktyg för överföring av foton över flera plattformar. Överför foton snabbt mellan Mac och iPhone utan nätverk.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Förvandla din iPhone till en säker mobil enhet";

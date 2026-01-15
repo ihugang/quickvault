@@ -1,0 +1,352 @@
+/* 
+  Localizable.strings (Dansk)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Annuller";
+"common.save" = "Gem";
+"common.delete" = "Slet";
+"common.edit" = "Rediger";
+"common.done" = "Færdig";
+"common.add" = "Tilføj";
+"common.close" = "Luk";
+"common.confirm" = "Bekræft";
+"common.error" = "Fejl";
+"common.success" = "Succes";
+"common.loading" = "Indlæser...";
+"common.retry" = "Prøv igen";
+"common.copy" = "Kopier";
+"common.share" = "Del";
+"common.search" = "Søg";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Beskyt dit digitale liv";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Velkommen til QuickHold";
+"auth.welcome.subtitle" = "Indstil din hovedadgangskode for at komme i gang";
+"auth.password.placeholder" = "Indtast adgangskode";
+"auth.password.confirm" = "Bekræft adgangskode";
+"auth.password.hint" = "Adgangskoden skal være mindst 8 tegn";
+"auth.password.mismatch" = "Adgangskoderne matcher ikke";
+"auth.password.weak" = "Adgangskoden er for svag";
+"auth.setup.button" = "Indstil Adgangskode";
+"auth.unlock.title" = "Lås QuickHold op";
+"auth.unlock.button" = "Lås op";
+"auth.unlock.biometric" = "Brug Face ID / Touch ID";
+"auth.unlock.failed" = "Godkendelse mislykkedes";
+"auth.unlock.attempts" = "%d forsøg tilbage";
+"auth.unlock.locked" = "For mange forsøg. Prøv igen om %d sekunder";
+"auth.change.title" = "Skift Adgangskode";
+"auth.change.current" = "Nuværende adgangskode";
+"auth.change.new" = "Ny adgangskode";
+"auth.change.confirm" = "Bekræft ny adgangskode";
+"auth.change.success" = "Adgangskode ændret";
+"auth.change.failed" = "Kunne ikke ændre adgangskode";
+
+// MARK: - Cards
+"cards.title" = "Kort";
+"cards.empty" = "Ingen kort";
+"cards.empty.subtitle" = "Tryk på + for at tilføje dit første kort";
+"cards.add" = "Tilføj Kort";
+"cards.edit" = "Rediger Kort";
+"cards.delete" = "Slet Kort";
+"cards.delete.confirm" = "Er du sikker på, at du vil slette dette kort?";
+"cards.pin" = "Fastgør";
+"cards.unpin" = "Frigør";
+"cards.pinned" = "Fastgjorte";
+"cards.all" = "Alle";
+"cards.field.add" = "Tilføj Felt";
+"cards.field.label" = "Etiket";
+"cards.field.value" = "Værdi";
+"cards.field.copyable" = "Kopierbar";
+"cards.copied" = "Kopieret til udklipsholder";
+"cards.title.placeholder" = "Korttitel";
+"cards.group.placeholder" = "Gruppe";
+"cards.type.general" = "Generelt";
+"cards.type.login" = "Login";
+"cards.type.card" = "Kreditkort";
+"cards.type.identity" = "Identitet";
+"cards.type.note" = "Sikker Note";
+"cards.created" = "Oprettet: ";
+"cards.updated" = "Opdateret: ";
+"cards.tags" = "Tags";
+"cards.tags.add" = "Tilføj Tag";
+
+// MARK: - Attachments
+"attachments.title" = "Vedhæftninger";
+"attachments.add" = "Tilføj Vedhæftning";
+"attachments.delete" = "Slet Vedhæftning";
+"attachments.delete.confirm" = "Er du sikker på, at du vil slette denne vedhæftning?";
+"attachments.watermark" = "Vandmærke";
+"attachments.watermark.add" = "Tilføj Vandmærke";
+"attachments.watermark.remove" = "Fjern Vandmærke";
+"attachments.watermark.text" = "Vandmærketekst";
+"attachments.share" = "Del";
+"attachments.preview" = "Forhåndsvisning";
+"attachments.size" = "Størrelse: %@";
+"attachments.empty" = "Ingen vedhæftninger";
+"attachments.photo.library" = "Fotobibliotek";
+"attachments.photo.camera" = "Kamera";
+
+// MARK: - Search
+"search.title" = "Søg";
+"search.placeholder" = "Søg kort...";
+"search.empty" = "Ingen resultater fundet";
+"search.recent" = "Seneste Søgninger";
+
+// MARK: - Settings
+"settings.title" = "Indstillinger";
+"settings.security" = "Sikkerhed";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Aktiver biometrisk godkendelse";
+"settings.security.autolock" = "Automatisk Lås";
+"settings.security.autolock.immediately" = "Straks";
+"settings.security.autolock.1min" = "Efter 1 minut";
+"settings.security.autolock.5min" = "Efter 5 minutter";
+"settings.security.autolock.15min" = "Efter 15 minutter";
+"settings.security.autolock.never" = "Aldrig";
+"settings.security.changepassword" = "Skift Adgangskode";
+"settings.language" = "Sprog";
+"settings.language.title" = "App-sprog";
+"settings.language.system" = "Systemstandard";
+"settings.about" = "Om";
+"settings.about.version" = "Version";
+"settings.about.privacy" = "Privatlivspolitik";
+"settings.about.terms" = "Servicevilkår";
+"settings.data" = "Data";
+"settings.data.export" = "Eksporter Data";
+"settings.data.import" = "Importer Data";
+"settings.data.reset" = "Nulstil Alle Data";
+"settings.data.reset.confirm" = "Dette sletter alle dine kort og indstillinger. Denne handling kan ikke fortrydes.";
+
+// MARK: - Errors
+"error.generic" = "Noget gik galt";
+"error.network" = "Netværksfejl";
+"error.encryption" = "Krypteringsfejl";
+"error.decryption" = "Dekrypteringsfejl";
+"error.storage" = "Lagringsfejl";
+"error.biometric.unavailable" = "Biometrisk godkendelse er ikke tilgængelig";
+"error.biometric.notEnrolled" = "Ingen biometriske data registreret";
+
+// MARK: - Authentication Extras
+"auth.password.required" = "Indtast venligst adgangskode";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Indsæt og udfyld";
+"invoice.paste.parse" = "Indsæt for automatisk udfyldning";
+"invoice.paste.hint" = "Indsæt faktura- eller betalingsoplysninger for automatisk at udfylde formularen";
+"invoice.paste.instruction" = "Indsæt faktura- eller betalingsoplysninger; systemet genkender og udfylder felterne automatisk";
+"invoice.paste.fromclipboard" = "Indsæt fra udklipsholder";
+"invoice.parse.button" = "Analyser og udfyld";
+
+// MARK: - Fields
+"field.name" = "Navn";
+"field.phone" = "Telefon";
+"field.province" = "Region";
+"field.city" = "By";
+"field.district" = "Distrikt";
+"field.address" = "Adresse";
+"field.postalcode" = "Postnummer";
+"field.notes" = "Noter";
+"field.companyname" = "Firmanavn";
+"field.taxid" = "CVR / Momsnr";
+"field.bankname" = "Banknavn";
+"field.bankaccount" = "Bankkonto";
+"field.content" = "Indhold";
+
+// MARK: - Card Types
+"cards.type.select" = "Vælg type";
+"cards.type.idcard" = "ID-kort";
+"cards.type.passport" = "Pas";
+"cards.type.businesslicense" = "Forretningslicens";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Navn";
+"field.idcard.gender" = "Køn";
+"field.idcard.nationality" = "Nationalitet";
+"field.idcard.birthdate" = "Fødselsdato";
+"field.idcard.number" = "ID-nummer";
+"field.idcard.address" = "Adresse";
+"field.idcard.issuer" = "Udsteder";
+"field.idcard.validperiod" = "Gyldighedsperiode";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Firmanavn";
+"field.license.companytype" = "Firmatype";
+"field.license.creditcode" = "Kreditkode";
+"field.license.legalrep" = "Lovlig repræsentant";
+"field.license.capital" = "Registreret kapital";
+"field.license.address" = "Adresse";
+"field.license.establishdate" = "Etableringsdato";
+"field.license.businessterm" = "Virksomhedsperiode";
+"field.license.scope" = "Forretningsområde";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Navn";
+"field.passport.nationality" = "Nationalitet";
+"field.passport.birthdate" = "Fødselsdato";
+"field.passport.gender" = "Køn";
+"field.passport.number" = "Pasnummer";
+"field.passport.issuedate" = "Udstedelsesdato";
+"field.passport.expirydate" = "Udløbsdato";
+"field.passport.issueplace" = "Udstedelsessted";
+"field.passport.issuer" = "Udsteder";
+
+// MARK: - OCR
+"ocr.section.title" = "Intelligent OCR";
+"ocr.scan.photo" = "Scan fra billede";
+"ocr.section.footer" = "Vælg et dokumentbillede for automatisk at udtrække oplysninger";
+"ocr.processing" = "Behandler...";
+"ocr.photo.upload" = "Upload dokumentbillede";
+"ocr.tap.upload" = "Tryk for at uploade billede";
+"ocr.idcard.front" = "Forside af ID-kort";
+"ocr.idcard.back" = "Bagside af ID-kort";
+"ocr.passport.datapage" = "Pasets datapage (foto)";
+"ocr.license.photo" = "Forretningslicensbillede";
+"ocr.photo.front" = "For";
+"ocr.photo.back" = "Bag";
+"ocr.hint.idcard" = "Upload for- og bagside af ID-kort. Oplysninger vil blive udtrukket automatisk.";
+"ocr.hint.passport" = "Upload pasets datapage (foto).";
+"ocr.hint.license" = "Upload et billede af forretningslicensen.";
+
+// MARK: - Export
+"export.title" = "Eksport";
+"export.action" = "Eksporter";
+"export.image" = "Eksporter billede";
+"export.images" = "Eksporter billeder";
+"export.images.all" = "Eksporter alle billeder";
+"export.text" = "Eksporter tekst";
+"export.add.watermark" = "Tilføj vandmærke";
+"export.watermark.title" = "Vandmærkeindstillinger";
+"export.watermark.text" = "Vandmærketekst";
+"export.watermark.placeholder" = "Indtast vandmærketekst";
+"export.watermark.hint" = "Vandmærket vil blive påført diagonalt over billedet";
+"export.watermark.fontsize" = "Skriftstørrelse";
+"export.watermark.spacing" = "Mellemrum";
+"export.watermark.spacing.dense" = "Tæt";
+"export.watermark.spacing.normal" = "Normal";
+"export.watermark.spacing.sparse" = "Sparsom";
+"export.watermark.opacity" = "Opacitet";
+"export.preview" = "Forhåndsvisning";
+"export.advanced.options" = "Avancerede indstillinger";
+"export.size.compression" = "Størrelse og kompression";
+"export.max.width" = "Maks. bredde";
+"export.max.height" = "Maks. højde";
+"export.max.filesize" = "Maks. filstørrelse";
+"export.pixel" = "Pixel";
+"export.hint.limits" = "Efterlad tomt for ingen begrænsning. Billedet vil blive skaleret relativt";
+"export.success" = "Eksport gennemført";
+"export.failed" = "Eksport fejlede";
+"export.copied" = "Kopieret til udklipsholder";
+"export.images.count" = "%d billeder eksporteret";
+
+// MARK: - Validation
+"validation.title.required" = "Titel er påkrævet";
+"validation.field.required" = "Dette felt er påkrævet";
+"validation.phone.invalid" = "Ugyldigt telefonnummerformat";
+"validation.taxid.invalid" = "Skattenummer skal være 18 tegn";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Elementer";
+"items.search.placeholder" = "Søg i titel eller tags...";
+"items.loading" = "Indlæser...";
+"items.empty" = "Ingen elementer endnu";
+"items.empty.subtitle" = "Tryk på + øverst til højre for at oprette dit første element";
+"items.empty.search" = "Ingen resultater";
+"items.empty.search.subtitle" = "Prøv andre søgeord";
+"items.pinned" = "Fastgjort";
+"items.all" = "Alle";
+"items.create.text" = "Opret tekst-element";
+"items.create.image" = "Opret billede-element";
+"items.type.text" = "Tekst-element";
+"items.type.image" = "Billede-element";
+"items.type.file" = "Fil-element";
+"items.type.text.desc" = "Gem tekstinformationer til hurtig deling";
+"items.type.image.desc" = "Gem billeder med vandmærke-support";
+"items.type.file.desc" = "Gem forskellige filtyper med PDF-forhåndsvisning";
+
+// Items - Files
+"items.files.select" = "Vælg filer";
+"items.files.count" = "%d filer";
+"items.files.section" = "Filer";
+"items.files.limit" = "Op til 10 filer, hver under 10MB";
+
+// Items - Detail Files
+"items.detail.files" = "Filer";
+"items.detail.files.count" = "%d filer";
+"items.create.title" = "Opret %@";
+"items.create.selecttype" = "Vælg type";
+"items.create.button" = "Opret";
+"items.info.basic" = "Grundlæggende info";
+"items.info.title" = "Titel";
+"items.info.title.hint" = "Vælg en klar titel til elementet";
+"items.content" = "Indhold";
+"items.content.characters" = "%d tegn";
+"items.images.select" = "Vælg billeder";
+"items.images.count" = "%d billeder";
+"items.images.section" = "Billeder";
+"items.images.limit" = "Op til 10 billeder";
+"items.tags.section" = "Tags";
+"items.tags.add" = "Tilføj tag";
+"items.tags.placeholder" = "Indtast tag-navn";
+"items.tags.hint" = "Brug tags til at organisere og søge";
+"items.detail.edit" = "Rediger";
+"items.detail.delete" = "Slet";
+"items.detail.pin" = "Fastgør";
+"items.detail.created" = "Oprettet";
+"items.detail.unpin" = "Fjern fastgørelse";
+"items.detail.pinned" = "Fastgjort";
+"items.detail.content" = "Indhold";
+"items.detail.images" = "Billeder";
+"items.detail.images.count" = "%d billede";
+"items.detail.tags" = "Tags";
+"items.detaWatermark" = "";
+"watermark.settings" = "Vandmærkeindstillinger";
+"watermark.collapse" = "Skjul";
+"watermark.add" = "Tilføj vandmærke";
+"watermark.text" = "Vandmærketekst (f.eks. Kun til X)";
+"watermark.text.placeholder" = "Fx: Kun til X";
+"watermark.fontsize" = "Skriftstørrelse";
+"watermark.spacing" = "Linjeafstand";
+"watermark.spacing.dense" = "Tæt";
+"watermark.spacing.normal" = "Normal";
+"watermark.spacing.sparse" = "Sparsom";
+"watermark.opacity" = "Opacitet";
+"watermark.preview" = "Forhåndsvisning";
+"watermark.share" = "Del";
+"watermark.scope" = "Delingsområde";
+"watermark.scope.current" = "Kun dette billede";
+"watermark.scope.all" = "Alle billeder (%d)";
+"watermark.hint" = "Vandmærket vil blive gentaget skråt over billedet";
+"watermark.sheet.title" = "Del billeder";
+"watermark.preparing" = "Forbereder...";
+
+"items.detail.share.text" = "Del tekst";
+"items.detail.share.images" = "Del billeder";
+"items.delete.confirm" = "Er du sikker på, at du vil slette dette element?";
+"items.delete.title" = "Bekræft sletning";
+"items.delete.message" = "Denne handling kan ikke fortrydes";
+"items.created.success" = "Oprettet";
+"items.updated.success" = "Opdateret";
+"items.deleted.success" = "Slettet";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Værktøj til at overføre fotos på tværs af enheder. Flyt billeder mellem Mac og iPhone uden netværk.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Forvandl din iPhone til et sikkert, bærbart drev";
+
+// MARK: - Settings: Clear Data
+"settings.security.cleardata" = "Slet alle data";
+"settings.security.cleardata.footer" = "⚠️ Dette vil permanent slette alle kort, billeder og filer. Denne handling kan ikke fortrydes!";
+"settings.security.cleardata.confirm.title" = "Bekræft sletning af alle data";
+"settings.security.cleardata.confirm.message" = "Dette vil permanent slette alle data og kan ikke fortrydes. Indtast adgangskoden for at bekræfte.";
+"settings.security.cleardata.confirm.password" = "Indtast adgangskode";
+"settings.security.cleardata.confirm.delete" = "Slet alle data";
+"settings.security.cleardata.success" = "Alle data er slettet";
+

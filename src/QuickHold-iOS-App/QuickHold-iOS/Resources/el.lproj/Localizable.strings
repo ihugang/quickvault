@@ -1,0 +1,352 @@
+/* 
+  Localizable.strings (Ελληνικά)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Ακύρωση";
+"common.save" = "Αποθήκευση";
+"common.delete" = "Διαγραφή";
+"common.edit" = "Επεξεργασία";
+"common.done" = "Τέλος";
+"common.add" = "Προσθήκη";
+"common.close" = "Κλείσιμο";
+"common.confirm" = "Επιβεβαίωση";
+"common.error" = "Σφάλμα";
+"common.success" = "Επιτυχία";
+"common.loading" = "Φόρτωση...";
+"common.retry" = "Επανάληψη";
+"common.copy" = "Αντιγραφή";
+"common.share" = "Κοινοποίηση";
+"common.search" = "Αναζήτηση";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Προστατέψτε την ψηφιακή σας ζωή";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Καλώς ήρθατε στο QuickHold";
+"auth.welcome.subtitle" = "Ορίστε τον κύριο κωδικό σας για να ξεκινήσετε";
+"auth.password.placeholder" = "Εισάγετε κωδικό";
+"auth.password.confirm" = "Επιβεβαίωση κωδικού";
+"auth.password.hint" = "Ο κωδικός πρέπει να έχει τουλάχιστον 8 χαρακτήρες";
+"auth.password.mismatch" = "Οι κωδικοί δεν ταιριάζουν";
+"auth.password.weak" = "Ο κωδικός είναι πολύ αδύναμος";
+"auth.setup.button" = "Ορισμός Κωδικού";
+"auth.unlock.title" = "Ξεκλείδωμα QuickHold";
+"auth.unlock.button" = "Ξεκλείδωμα";
+"auth.unlock.biometric" = "Χρήση Face ID / Touch ID";
+"auth.unlock.failed" = "Η ταυτοποίηση απέτυχε";
+"auth.unlock.attempts" = "Απομένουν %d προσπάθειες";
+"auth.unlock.locked" = "Πολλές προσπάθειες. Δοκιμάστε ξανά σε %d δευτερόλεπτα";
+"auth.change.title" = "Αλλαγή Κωδικού";
+"auth.change.current" = "Τρέχων κωδικός";
+"auth.change.new" = "Νέος κωδικός";
+"auth.change.confirm" = "Επιβεβαίωση νέου κωδικού";
+"auth.change.success" = "Ο κωδικός άλλαξε επιτυχώς";
+"auth.change.failed" = "Αποτυχία αλλαγής κωδικού";
+
+// MARK: - Cards
+"cards.title" = "Κάρτες";
+"cards.empty" = "Δεν υπάρχουν κάρτες";
+"cards.empty.subtitle" = "Πατήστε + για να προσθέσετε την πρώτη κάρτα";
+"cards.add" = "Προσθήκη Κάρτας";
+"cards.edit" = "Επεξεργασία Κάρτας";
+"cards.delete" = "Διαγραφή Κάρτας";
+"cards.delete.confirm" = "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή την κάρτα;";
+"cards.pin" = "Καρφίτσωμα";
+"cards.unpin" = "Ξεκαρφίτσωμα";
+"cards.pinned" = "Καρφιτσωμένες";
+"cards.all" = "Όλες";
+"cards.field.add" = "Προσθήκη Πεδίου";
+"cards.field.label" = "Ετικέτα";
+"cards.field.value" = "Τιμή";
+"cards.field.copyable" = "Αντιγράψιμο";
+"cards.copied" = "Αντιγράφηκε στο πρόχειρο";
+"cards.title.placeholder" = "Τίτλος Κάρτας";
+"cards.group.placeholder" = "Ομάδα";
+"cards.type.general" = "Γενικό";
+"cards.type.login" = "Σύνδεση";
+"cards.type.card" = "Πιστωτική Κάρτα";
+"cards.type.identity" = "Ταυτότητα";
+"cards.type.note" = "Ασφαλής Σημείωση";
+"cards.created" = "Δημιουργήθηκε: ";
+"cards.updated" = "Ενημερώθηκε: ";
+"cards.tags" = "Ετικέτες";
+"cards.tags.add" = "Προσθήκη Ετικέτας";
+
+// MARK: - Attachments
+"attachments.title" = "Συνημμένα";
+"attachments.add" = "Προσθήκη Συνημμένου";
+"attachments.delete" = "Διαγραφή Συνημμένου";
+"attachments.delete.confirm" = "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το συνημμένο;";
+"attachments.watermark" = "Υδατογράφημα";
+"attachments.watermark.add" = "Προσθήκη Υδατογραφήματος";
+"attachments.watermark.remove" = "Αφαίρεση Υδατογραφήματος";
+"attachments.watermark.text" = "Κείμενο Υδατογραφήματος";
+"attachments.share" = "Κοινοποίηση";
+"attachments.preview" = "Προεπισκόπηση";
+"attachments.size" = "Μέγεθος: %@";
+"attachments.empty" = "Δεν υπάρχουν συνημμένα";
+"attachments.photo.library" = "Βιβλιοθήκη Φωτογραφιών";
+"attachments.photo.camera" = "Κάμερα";
+
+// MARK: - Search
+"search.title" = "Αναζήτηση";
+"search.placeholder" = "Αναζήτηση καρτών...";
+"search.empty" = "Δεν βρέθηκαν αποτελέσματα";
+"search.recent" = "Πρόσφατες Αναζητήσεις";
+
+// MARK: - Settings
+"settings.title" = "Ρυθμίσεις";
+"settings.security" = "Ασφάλεια";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Ενεργοποίηση βιομετρικής ταυτοποίησης";
+"settings.security.autolock" = "Αυτόματο Κλείδωμα";
+"settings.security.autolock.immediately" = "Αμέσως";
+"settings.security.autolock.1min" = "Μετά από 1 λεπτό";
+"settings.security.autolock.5min" = "Μετά από 5 λεπτά";
+"settings.security.autolock.15min" = "Μετά από 15 λεπτά";
+"settings.security.autolock.never" = "Ποτέ";
+"settings.security.changepassword" = "Αλλαγή Κωδικού";
+"settings.language" = "Γλώσσα";
+"settings.language.title" = "Γλώσσα Εφαρμογής";
+"settings.language.system" = "Προεπιλογή Συστήματος";
+"settings.about" = "Σχετικά";
+"settings.about.version" = "Έκδοση";
+"settings.about.privacy" = "Πολιτική Απορρήτου";
+"settings.about.terms" = "Όροι Χρήσης";
+"settings.data" = "Δεδομένα";
+"settings.data.export" = "Εξαγωγή Δεδομένων";
+"settings.data.import" = "Εισαγωγή Δεδομένων";
+"settings.data.reset" = "Επαναφορά Όλων των Δεδομένων";
+"settings.data.reset.confirm" = "Αυτό θα διαγράψει όλες τις κάρτες και τις ρυθμίσεις σας. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.";
+
+// MARK: - Errors
+"error.generic" = "Κάτι πήγε στραβά";
+"error.network" = "Σφάλμα δικτύου";
+"error.encryption" = "Σφάλμα κρυπτογράφησης";
+"error.decryption" = "Σφάλμα αποκρυπτογράφησης";
+"error.storage" = "Σφάλμα αποθήκευσης";
+"error.biometric.unavailable" = "Η βιομετρική ταυτοποίηση δεν είναι διαθέσιμη";
+"error.biometric.notEnrolled" = "Δεν έχουν καταχωρηθεί βιομετρικά δεδομένα";
+
+// MARK: - Authentication Extras
+"auth.password.required" = "Παρακαλώ εισάγετε τον κωδικό";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Επικόλληση και συμπλήρωση";
+"invoice.paste.parse" = "Επικόλληση για αυτόματη συμπλήρωση";
+"invoice.paste.hint" = "Επικολλήστε πληροφορίες τιμολογίου ή πληρωμής για αυτόματη συμπλήρωση της φόρμας";
+"invoice.paste.instruction" = "Επικολλήστε τις πληροφορίες τιμολογίου ή πληρωμής· το σύστημα θα τις αναγνωρίσει και θα συμπληρώσει αυτόματα τα πεδία";
+"invoice.paste.fromclipboard" = "Επικόλληση από πρόχειρο";
+"invoice.parse.button" = "Ανάλυση και συμπλήρωση";
+
+// MARK: - Fields
+"field.name" = "Όνομα";
+"field.phone" = "Τηλέφωνο";
+"field.province" = "Νομός";
+"field.city" = "Πόλη";
+"field.district" = "Περιοχή";
+"field.address" = "Διεύθυνση";
+"field.postalcode" = "Τ.Κ.";
+"field.notes" = "Σημειώσεις";
+"field.companyname" = "Όνομα εταιρείας";
+"field.taxid" = "Α.Φ.Μ.";
+"field.bankname" = "Όνομα τράπεζας";
+"field.bankaccount" = "Τραπεζικός λογαριασμός";
+"field.content" = "Περιεχόμενο";
+
+// MARK: - Card Types
+"cards.type.select" = "Επιλέξτε τύπο";
+"cards.type.idcard" = "Δελτίο ταυτότητας";
+"cards.type.passport" = "Διαβατήριο";
+"cards.type.businesslicense" = "Επαγγελματική άδεια";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Όνομα";
+"field.idcard.gender" = "Φύλο";
+"field.idcard.nationality" = "Ιθαγένεια";
+"field.idcard.birthdate" = "Ημ. γέννησης";
+"field.idcard.number" = "Αρ. ταυτότητας";
+"field.idcard.address" = "Διεύθυνση";
+"field.idcard.issuer" = "Εκδότης";
+"field.idcard.validperiod" = "Περίοδος ισχύος";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Όνομα εταιρείας";
+"field.license.companytype" = "Τύπος εταιρείας";
+"field.license.creditcode" = "Κωδικός";
+"field.license.legalrep" = "Νομικός εκπρόσωπος";
+"field.license.capital" = "Καταβεβλημένο κεφάλαιο";
+"field.license.address" = "Διεύθυνση";
+"field.license.establishdate" = "Ημερομηνία ίδρυσης";
+"field.license.businessterm" = "Διάρκεια δραστηριότητας";
+"field.license.scope" = "Αντικείμενο δραστηριότητας";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Όνομα";
+"field.passport.nationality" = "Ιθαγένεια";
+"field.passport.birthdate" = "Ημ. γέννησης";
+"field.passport.gender" = "Φύλο";
+"field.passport.number" = "Αρ. διαβατηρίου";
+"field.passport.issuedate" = "Ημ. έκδοσης";
+"field.passport.expirydate" = "Ημ. λήξης";
+"field.passport.issueplace" = "Τόπος έκδοσης";
+"field.passport.issuer" = "Εκδότης";
+
+// MARK: - OCR
+"ocr.section.title" = "Έξυπνο OCR";
+"ocr.scan.photo" = "Σάρωση από εικόνα";
+"ocr.section.footer" = "Επιλέξτε εικόνα εγγράφου για αυτόματη εξαγωγή πληροφοριών";
+"ocr.processing" = "Επεξεργασία...";
+"ocr.photo.upload" = "Ανέβασμα εικόνας εγγράφου";
+"ocr.tap.upload" = "Πατήστε για ανέβασμα εικόνας";
+"ocr.idcard.front" = "Εμπρόσθια όψη δελτίου";
+"ocr.idcard.back" = "Πίσω όψη δελτίου";
+"ocr.passport.datapage" = "Σελίδα δεδομένων διαβατηρίου (φωτογραφία)";
+"ocr.license.photo" = "Εικόνα επαγγελματικής άδειας";
+"ocr.photo.front" = "Μπροστά";
+"ocr.photo.back" = "Πίσω";
+"ocr.hint.idcard" = "Ανεβάστε μπροστινή και πίσω όψη του δελτίου. Οι πληροφορίες θα εξαχθούν αυτόματα.";
+"ocr.hint.passport" = "Ανεβάστε τη σελίδα δεδομένων του διαβατηρίου (φωτογραφία).";
+"ocr.hint.license" = "Ανεβάστε εικόνα της επαγγελματικής άδειας.";
+
+// MARK: - Export
+"export.title" = "Εξαγωγή";
+"export.action" = "Εξαγωγή";
+"export.image" = "Εξαγωγή εικόνας";
+"export.images" = "Εξαγωγή εικόνων";
+"export.images.all" = "Εξαγωγή όλων των εικόνων";
+"export.text" = "Εξαγωγή κειμένου";
+"export.add.watermark" = "Προσθήκη υδατογραφήματος";
+"export.watermark.title" = "Ρυθμίσεις υδατογραφήματος";
+"export.watermark.text" = "Κείμενο υδατογραφήματος";
+"export.watermark.placeholder" = "Εισάγετε κείμενο υδατογραφήματος";
+"export.watermark.hint" = "Το υδατογράφημα θα τοποθετηθεί διαγώνια πάνω στην εικόνα";
+"export.watermark.fontsize" = "Μέγεθος γραμματοσειράς";
+"export.watermark.spacing" = "Διάκενο";
+"export.watermark.spacing.dense" = "Σφικτά";
+"export.watermark.spacing.normal" = "Κανονικά";
+"export.watermark.spacing.sparse" = "Αραιά";
+"export.watermark.opacity" = "Αδιαφάνεια";
+"export.preview" = "Προεπισκόπηση";
+"export.advanced.options" = "Προχωρημένες επιλογές";
+"export.size.compression" = "Μέγεθος και συμπίεση";
+"export.max.width" = "Μέγ. πλάτος";
+"export.max.height" = "Μέγ. ύψος";
+"export.max.filesize" = "Μέγ. μέγεθος αρχείου";
+"export.pixel" = "Εικονοστοιχείο";
+"export.hint.limits" = "Αφήστε κενό για κανέναν περιορισμό. Η εικόνα θα κλιμακωθεί σχετικώς";
+"export.success" = "Η εξαγωγή ολοκληρώθηκε";
+"export.failed" = "Η εξαγωγή απέτυχε";
+"export.copied" = "Αντιγράφηκε στο πρόχειρο";
+"export.images.count" = "%d εικόνες εξήχθησαν";
+
+// MARK: - Validation
+"validation.title.required" = "Απαιτείται τίτλος";
+"validation.field.required" = "Αυτό το πεδίο είναι υποχρεωτικό";
+"validation.phone.invalid" = "Μη έγκυρη μορφή τηλεφώνου";
+"validation.taxid.invalid" = "Ο αριθμός φορολογικού μητρώου πρέπει να έχει 18 χαρακτήρες";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Στοιχεία";
+"items.search.placeholder" = "Αναζητήστε με τίτλο ή ετικέτες...";
+"items.loading" = "Φόρτωση...";
+"items.empty" = "Δεν υπάρχουν στοιχεία ακόμα";
+"items.empty.subtitle" = "Πατήστε + πάνω δεξιά για να δημιουργήσετε το πρώτο στοιχείο";
+"items.empty.search" = "Δεν βρέθηκαν αποτελέσματα";
+"items.empty.search.subtitle" = "Δοκιμάστε διαφορετικές λέξεις αναζήτησης";
+"items.pinned" = "Καρφιτσωμένα";
+"items.all" = "Όλα";
+"items.create.text" = "Δημιουργία κειμενικού στοιχείου";
+"items.create.image" = "Δημιουργία στοιχείου εικόνας";
+"items.type.text" = "Κειμενικό στοιχείο";
+"items.type.image" = "Στοιχείο εικόνας";
+"items.type.file" = "Στοιχείο αρχείου";
+"items.type.text.desc" = "Αποθηκεύστε κείμενο για γρήγορη κοινή χρήση";
+"items.type.image.desc" = "Αποθηκεύστε εικόνες με υποστήριξη υδατογραφήματος";
+"items.type.file.desc" = "Αποθηκεύστε αρχεία με προεπισκόπηση PDF";
+
+// Items - Files
+"items.files.select" = "Επιλέξτε αρχεία";
+"items.files.count" = "%d αρχεία";
+"items.files.section" = "Αρχεία";
+"items.files.limit" = "Μέχρι 10 αρχεία, κάθε αρχείο έως 10MB";
+
+// Items - Detail Files
+"items.detail.files" = "Αρχεία";
+"items.detail.files.count" = "%d αρχεία";
+"items.create.title" = "Δημιουργία %@";
+"items.create.selecttype" = "Επιλέξτε τύπο";
+"items.create.button" = "Δημιουργία";
+"items.info.basic" = "Βασικές πληροφορίες";
+"items.info.title" = "Τίτλος";
+"items.info.title.hint" = "Επιλέξτε έναν σαφή τίτλο για το στοιχείο";
+"items.content" = "Περιεχόμενο";
+"items.content.characters" = "%d χαρακτήρες";
+"items.images.select" = "Επιλέξτε εικόνες";
+"items.images.count" = "%d εικόνες";
+"items.images.section" = "Εικόνες";
+"items.images.limit" = "Έως 10 εικόνες";
+"items.tags.section" = "Ετικέτες";
+"items.tags.add" = "Προσθήκη ετικέτας";
+"items.tags.placeholder" = "Εισάγετε όνομα ετικέτας";
+"items.tags.hint" = "Χρησιμοποιήστε ετικέτες για οργάνωση και αναζήτηση";
+"items.detail.edit" = "Επεξεργασία";
+"items.detail.delete" = "Διαγραφή";
+"items.detail.pin" = "Καρφίτσωμα";
+"items.detail.created" = "Δημιουργήθηκε";
+"items.detail.unpin" = "Αποκαρφίτσωμα";
+"items.detail.pinned" = "Καρφιτσωμένο";
+"items.detail.content" = "Περιεχόμενο";
+"items.detail.images" = "Εικόνες";
+"items.detail.images.count" = "%d εικόνα";
+"items.detail.tags" = "Ετικέτες";
+"items.detaWatermark" = "";
+"watermark.settings" = "Ρυθμίσεις υδατογραφήματος";
+"watermark.collapse" = "Σύμπτυξη";
+"watermark.add" = "Προσθήκη υδατογραφήματος";
+"watermark.text" = "Κείμενο υδατογραφήματος (π.χ. Για χρήση X μόνο)";
+"watermark.text.placeholder" = "Π.χ.: Για χρήση X μόνο";
+"watermark.fontsize" = "Μέγεθος γραμματοσειράς";
+"watermark.spacing" = "Διάκενο";
+"watermark.spacing.dense" = "Σφικτό";
+"watermark.spacing.normal" = "Κανονικό";
+"watermark.spacing.sparse" = "Αραιό";
+"watermark.opacity" = "Διαφάνεια";
+"watermark.preview" = "Προεπισκόπηση";
+"watermark.share" = "Κοινοποίηση";
+"watermark.scope" = "Εύρος κοινοποίησης";
+"watermark.scope.current" = "Αυτή η εικόνα μόνο";
+"watermark.scope.all" = "Όλες οι εικόνες (%d)";
+"watermark.hint" = "Το υδατογράφημα θα επαναληφθεί διαγώνια πάνω στην εικόνα";
+"watermark.sheet.title" = "Κοινοποίηση εικόνων";
+"watermark.preparing" = "Προετοιμασία...";
+
+"items.detail.share.text" = "Κοινοποίηση κειμένου";
+"items.detail.share.images" = "Κοινοποίηση εικόνων";
+"items.delete.confirm" = "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτό το στοιχείο;";
+"items.delete.title" = "Επιβεβαίωση διαγραφής";
+"items.delete.message" = "Αυτή η ενέργεια δεν μπορεί να αναιρεθεί";
+"items.created.success" = "Δημιουργήθηκε με επιτυχία";
+"items.updated.success" = "Ενημερώθηκε με επιτυχία";
+"items.deleted.success" = "Διαγράφηκε";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Εργαλείο μεταφοράς φωτογραφιών μεταξύ συσκευών. Μεταφέρετε εικόνες μεταξύ Mac και iPhone χωρίς δίκτυο.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Μετατρέψτε το iPhone σε ασφαλές φορητό δίσκο";
+
+// MARK: - Settings: Clear Data
+"settings.security.cleardata" = "Διαγραφή όλων των δεδομένων";
+"settings.security.cleardata.footer" = "⚠️ Αυτό θα διαγράψει μόνιμα όλες τις κάρτες, εικόνες και αρχεία. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί!";
+"settings.security.cleardata.confirm.title" = "Επιβεβαίωση διαγραφής όλων των δεδομένων";
+"settings.security.cleardata.confirm.message" = "Αυτό θα διαγράψει μόνιμα όλα τα δεδομένα και δεν μπορεί να αναιρεθεί. Εισάγετε τον κωδικό για επιβεβαίωση.";
+"settings.security.cleardata.confirm.password" = "Εισάγετε κωδικό";
+"settings.security.cleardata.confirm.delete" = "Διαγραφή όλων των δεδομένων";
+"settings.security.cleardata.success" = "Όλα τα δεδομένα διαγράφηκαν";
+

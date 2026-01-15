@@ -1,0 +1,381 @@
+/* 
+  Localizable.strings (简体中文)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "确定";
+"common.cancel" = "取消";
+"common.save" = "保存";
+"common.delete" = "删除";
+"common.edit" = "编辑";
+"common.done" = "完成";
+"common.add" = "添加";
+"common.close" = "关闭";
+"common.confirm" = "确认";
+"common.error" = "错误";
+"common.success" = "成功";
+"common.loading" = "加载中...";
+"common.retry" = "重试";
+"common.copy" = "复制";
+"common.share" = "分享";
+"common.search" = "搜索";
+
+// MARK: - App
+"app.name" = "随取";
+"app.tagline" = "守护您的数字生活";
+
+// MARK: - Authentication
+"auth.welcome.title" = "欢迎使用随取";
+"auth.welcome.subtitle" = "设置主密码以开始使用";
+"auth.password.placeholder" = "输入密码";
+"auth.password.confirm" = "确认密码";
+"auth.password.hint" = "密码至少需要8个字符";
+"auth.password.required" = "请输入密码";
+"auth.password.mismatch" = "两次输入的密码不一致";
+"auth.password.weak" = "密码强度太弱";
+"auth.setup.button" = "设置密码";
+"auth.unlock.title" = "解锁随取";
+"auth.unlock.button" = "解锁";
+"auth.unlock.biometric" = "使用面容ID / 触控ID";
+"auth.unlock.failed" = "认证失败";
+"auth.unlock.attempts" = "剩余 %d 次尝试机会";
+"auth.unlock.locked" = "尝试次数过多，请在 %d 秒后重试";
+"auth.change.title" = "更改密码";
+"auth.change.current" = "当前密码";
+"auth.change.new" = "新密码";
+"auth.change.confirm" = "确认新密码";
+"auth.change.success" = "密码修改成功";
+"auth.change.failed" = "密码修改失败";
+
+// MARK: - Authentication Errors
+"auth.error.biometric.unavailable" = "触控 ID 不可用";
+"auth.error.biometric.failed" = "触控 ID 认证失败";
+"auth.error.biometric.password.not.stored" = "请先使用密码登录以启用触控 ID";
+"auth.error.password.incorrect" = "密码错误";
+"auth.error.password.too.short" = "密码必须至少 8 个字符";
+"auth.error.no.password" = "未设置主密码";
+"auth.error.rate.limited" = "失败次数过多，请等待 %d 秒";
+"auth.error.keychain" = "钥匙串错误：%@";
+
+// MARK: - Cards
+"cards.title" = "卡片";
+"cards.empty" = "暂无卡片";
+"cards.empty.subtitle" = "点击 + 添加您的第一张卡片";
+"cards.add" = "添加卡片";
+"cards.edit" = "编辑卡片";
+"cards.delete" = "删除卡片";
+"cards.delete.confirm" = "确定要删除这张卡片吗？";
+"cards.pin" = "置顶";
+"cards.unpin" = "取消置顶";
+"cards.pinned" = "已置顶";
+"cards.all" = "全部";
+"cards.field.add" = "添加字段";
+"cards.field.label" = "标签";
+"cards.field.value" = "值";
+"cards.field.copyable" = "可复制";
+"cards.copied" = "已复制到剪贴板";
+"cards.title.placeholder" = "卡片标题";
+"cards.group.placeholder" = "分组";
+"cards.group.personal" = "个人";
+"cards.group.company" = "公司";
+"cards.type.general" = "通用";
+"cards.type.login" = "登录信息";
+"cards.type.card" = "信用卡";
+"cards.type.identity" = "身份信息";
+"cards.type.note" = "安全笔记";
+"cards.created" = "创建时间";
+"cards.updated" = "更新时间";
+"cards.tags" = "标签";
+"cards.tags.add" = "添加标签";
+"cards.type.address" = "地址";
+"cards.type.invoice" = "开票信息";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "粘贴解析";
+"invoice.paste.parse" = "粘贴信息自动填写";
+"invoice.paste.hint" = "粘贴开票信息或收款信息，自动解析填写表单";
+"invoice.paste.instruction" = "请粘贴开票信息或收款信息，系统将自动识别并填写相应字段";
+"invoice.paste.fromclipboard" = "从剪贴板粘贴";
+"invoice.parse.button" = "解析填写";
+
+// MARK: - Fields
+"field.name" = "姓名";
+"field.phone" = "电话";
+"field.province" = "省份";
+"field.city" = "城市";
+"field.district" = "区县";
+"field.address" = "详细地址";
+"field.postalcode" = "邮编";
+"field.notes" = "备注";
+"field.companyname" = "公司名称";
+"field.taxid" = "税号";
+"field.bankname" = "开户银行";
+"field.bankaccount" = "银行账号";
+"field.content" = "内容";
+
+// MARK: - Card Types
+"cards.type.select" = "选择类型";
+"cards.type.idcard" = "身份证";
+"cards.type.passport" = "护照";
+"cards.type.businesslicense" = "营业执照";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "姓名";
+"field.idcard.gender" = "性别";
+"field.idcard.nationality" = "民族";
+"field.idcard.birthdate" = "出生日期";
+"field.idcard.number" = "身份证号";
+"field.idcard.address" = "住址";
+"field.idcard.issuer" = "签发机关";
+"field.idcard.validperiod" = "有效期限";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "企业名称";
+"field.license.companytype" = "类型";
+"field.license.creditcode" = "统一社会信用代码";
+"field.license.legalrep" = "法定代表人";
+"field.license.capital" = "注册资本";
+"field.license.address" = "住所";
+"field.license.establishdate" = "成立日期";
+"field.license.businessterm" = "营业期限";
+"field.license.scope" = "经营范围";
+
+// MARK: - Passport Fields
+"field.passport.name" = "姓名";
+"field.passport.nationality" = "国籍";
+"field.passport.birthdate" = "出生日期";
+"field.passport.gender" = "性别";
+"field.passport.number" = "护照号码";
+"field.passport.issuedate" = "签发日期";
+"field.passport.expirydate" = "有效期至";
+"field.passport.issueplace" = "签发地点";
+"field.passport.issuer" = "签发机关";
+
+// MARK: - Attachment Hints
+"attachment.idcard.front" = "上传证件正面（含头像与号码）";
+"attachment.idcard.back" = "上传证件背面（可选）";
+"attachment.passport.datapage" = "上传护照信息页（含照片页）";
+"attachment.license.photo" = "上传营业执照照片";
+
+// MARK: - OCR
+"ocr.section.title" = "智能识别";
+"ocr.scan.photo" = "从照片识别";
+"ocr.section.footer" = "选择证件照片，自动提取信息填写表单";
+"ocr.processing" = "识别中...";
+"ocr.photo.upload" = "上传证件照片";
+"ocr.tap.upload" = "点击上传照片";
+"ocr.idcard.front" = "身份证正面（含头像与号码）";
+"ocr.idcard.back" = "身份证背面（含签发机关与有效期）";
+"ocr.passport.datapage" = "护照信息页（含照片页）";
+"ocr.license.photo" = "营业执照照片";
+"ocr.photo.front" = "正面";
+"ocr.photo.back" = "背面";
+"ocr.hint.idcard" = "上传身份证正反面照片，系统将自动识别并填写信息。";
+"ocr.hint.passport" = "上传护照信息页（含照片的一页）。";
+"ocr.hint.license" = "上传营业执照照片。";
+"common.optional" = "可选";
+"common.close" = "关闭";
+"attachment.document.photos" = "证件照片";
+"attachment.no.photo" = "暂无照片";
+"attachment.load.failed" = "加载图片失败";
+"ocr.edit.photo.hint" = "点击添加或替换证件照片";
+
+// MARK: - Export
+"export.title" = "导出";
+"export.action" = "导出";
+"export.image" = "导出图片";
+"export.images" = "导出图片";
+"export.images.all" = "导出全部图片";
+"export.text" = "导出文本";
+"export.add.watermark" = "添加水印";
+"export.watermark.title" = "水印设置";
+"export.watermark.text" = "水印文字";
+"export.watermark.placeholder" = "输入水印文字";
+"export.watermark.hint" = "水印将以半透明对角线方式覆盖在图片上";
+"export.watermark.fontsize" = "字号大小";
+"export.watermark.spacing" = "行间距";
+"export.watermark.spacing.dense" = "密集";
+"export.watermark.spacing.normal" = "正常";
+"export.watermark.spacing.sparse" = "稀疏";
+"export.watermark.opacity" = "透明度";
+"export.preview" = "预览";
+"export.advanced.options" = "高级选项";
+"export.size.compression" = "尺寸与压缩";
+"export.max.width" = "最大宽度";
+"export.max.height" = "最大高度";
+"export.max.filesize" = "最大文件大小";
+"export.pixel" = "像素";
+"export.hint.limits" = "留空表示不限制。图片会等比例缩放以适应尺寸限制";
+"export.success" = "导出成功";
+"export.failed" = "导出失败";
+"export.copied" = "已复制到剪贴板";
+"export.images.count" = "已导出 %d 张图片";
+
+// MARK: - Validation
+"validation.title.required" = "标题不能为空";
+"validation.field.required" = "此字段不能为空";
+"validation.phone.invalid" = "电话格式无效";
+"validation.taxid.invalid" = "税号必须为18位";
+
+// MARK: - Attachments
+"attachments.title" = "附件";
+"attachments.add" = "添加附件";
+"attachments.delete" = "删除附件";
+"attachments.delete.confirm" = "确定要删除这个附件吗？";
+"attachments.watermark" = "水印";
+"attachments.watermark.add" = "添加水印";
+"attachments.watermark.remove" = "移除水印";
+"attachments.watermark.text" = "水印文字";
+"attachments.share" = "分享";
+"attachments.preview" = "预览";
+"attachments.size" = "大小：%@";
+"attachments.empty" = "暂无附件";
+"attachments.photo.library" = "照片图库";
+"attachments.photo.camera" = "相机";
+
+// MARK: - Search
+"search.title" = "搜索";
+"search.placeholder" = "搜索卡片...";
+"search.empty" = "未找到结果";
+"search.recent" = "最近搜索";
+
+// MARK: - Settings
+"settings.title" = "设置";
+"settings.tab" = "设置";
+"settings.security" = "安全";
+"settings.security.biometric" = "面容ID / 触控ID";
+"settings.security.biometric.enable" = "启用生物识别认证";
+"settings.security.biometric.enabled" = "已启用生物识别";
+"settings.security.biometric.disabled" = "已禁用生物识别";
+"settings.security.autolock" = "自动锁定";
+"settings.security.autolock.immediately" = "立即";
+"settings.security.autolock.1min" = "1分钟后";
+"settings.security.autolock.5min" = "5分钟后";
+"settings.security.autolock.15min" = "15分钟后";
+"settings.security.autolock.never" = "从不";
+"settings.security.changepassword" = "更改密码";
+"settings.security.cleardata" = "删除所有数据";
+"settings.security.cleardata.footer" = "⚠️ 此操作将永久删除所有卡片、图片和文件，且无法恢复！";
+"settings.security.cleardata.confirm.title" = "确认删除所有数据";
+"settings.security.cleardata.confirm.message" = "此操作将永久删除所有数据，且无法恢复。请输入密码以确认。";
+"settings.security.cleardata.confirm.password" = "输入密码";
+"settings.security.cleardata.confirm.delete" = "删除所有数据";
+"settings.security.cleardata.success" = "已删除所有数据";
+"settings.appearance" = "外观";
+"settings.appearance.title" = "显示";
+"settings.appearance.auto" = "自动";
+"settings.appearance.light" = "浅色";
+"settings.appearance.dark" = "深色";
+"settings.language" = "语言";
+"settings.language.title" = "应用语言";
+"settings.language.system" = "跟随系统";
+"settings.about" = "关于";
+"settings.about.version" = "版本";
+"settings.about.privacy" = "隐私政策";
+"settings.about.terms" = "服务条款";
+"settings.data" = "数据";
+"settings.data.export" = "导出数据";
+"settings.data.import" = "导入数据";
+"settings.data.reset" = "重置所有数据";
+"settings.data.reset.confirm" = "这将删除您的所有卡片和设置。此操作无法撤销。";
+
+// MARK: - Items (New Design)
+"items.title" = "随取 QuickHold";
+"items.tab" = "卡片";
+"items.search.placeholder" = "搜索标题或标签...";
+"items.loading" = "加载中...";
+"items.empty" = "还没有卡片";
+"items.empty.subtitle" = "点击右上角 + 创建第一张卡片";
+"items.empty.search" = "未找到结果";
+"items.empty.search.subtitle" = "试试其他搜索关键词";
+"items.pinned" = "置顶";
+"items.all" = "全部";
+"items.create.text" = "创建文本卡片";
+"items.create.image" = "创建图片卡片";
+"items.type.text" = "文本卡片";
+"items.type.image" = "图片卡片";
+"items.type.file" = "文件卡片";
+"items.type.text.desc" = "存储文本信息，便于快速分享";
+"items.type.image.desc" = "保存图片，支持添加水印分享";
+"items.type.file.desc" = "存储各种文件，支持PDF预览";
+
+// Items - Files
+"items.files.select" = "选择文件";
+"items.files.count" = "%d 个文件";
+"items.files.section" = "文件";
+"items.files.limit" = "最多可选择 10 个文件，单个文件不超过 10MB";
+
+// Items - Detail Files
+"items.detail.files" = "文件";
+"items.detail.files.count" = "%d 个文件";
+"items.create.title" = "创建%@";
+"items.create.selecttype" = "选择类型";
+"items.create.button" = "创建";
+"items.info.basic" = "基本信息";
+"items.info.title" = "标题";
+"items.info.title.hint" = "为卡片设置一个清晰的标题";
+"items.content" = "内容";
+"items.content.characters" = "%d 字符";
+"items.images.select" = "选择图片";
+"items.images.count" = "%d 张";
+"items.images.section" = "图片";
+"items.images.limit" = "最多可选择 10 张图片";
+"items.tags.section" = "标签";
+"items.tags.add" = "添加标签";
+"items.tags.placeholder" = "输入标签名称";
+"items.tags.hint" = "使用标签帮助分类和搜索";
+"items.detail.edit" = "编辑";
+"items.detail.delete" = "删除";
+"items.detail.pin" = "置顶";
+"items.detail.created" = "创建于";
+"items.detail.unpin" = "取消置顶";
+"items.detail.pinned" = "已置顶";
+"items.detail.content" = "内容";
+"items.detail.images" = "图片";
+"items.detail.images.count" = "%d 张";
+"items.detail.tags" = "标签";
+"items.detail.share.text" = "分享文本";
+"items.detail.share.images" = "分享图片";
+"items.delete.confirm" = "确定要删除这张卡片吗?";
+"items.delete.title" = "确认删除";
+"items.delete.message" = "此操作不可恢复";
+"items.created.success" = "创建成功";
+"items.updated.success" = "更新成功";
+"items.deleted.success" = "删除成功";
+
+// MARK: - Watermark
+"watermark.settings" = "水印设置";
+"watermark.collapse" = "收起";
+"watermark.add" = "添加水印";
+"watermark.text" = "水印文字（例如：仅供XX使用）";
+"watermark.text.placeholder" = "例如：仅供XX使用";
+"watermark.fontsize" = "字体大小";
+"watermark.spacing" = "行间距";
+"watermark.spacing.dense" = "密集";
+"watermark.spacing.normal" = "正常";
+"watermark.spacing.sparse" = "稀疏";
+"watermark.opacity" = "透明度";
+"watermark.preview" = "预览";
+"watermark.share" = "分享";
+"watermark.scope" = "分享范围";
+"watermark.scope.current" = "仅此图片";
+"watermark.scope.all" = "全部图片（%d张）";
+"watermark.hint" = "水印将以对角线平铺方式覆盖在图片上";
+"watermark.sheet.title" = "分享图片";
+"watermark.preparing" = "准备中...";
+
+// MARK: - Errors
+"error.generic" = "出现错误";
+"error.network" = "网络错误";
+"error.encryption" = "加密错误";
+"error.decryption" = "解密错误";
+"error.storage" = "存储错误";
+"error.biometric.unavailable" = "生物识别认证不可用";
+"error.biometric.notEnrolled" = "未设置生物识别数据";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "跨平台照片传输工具，无需网络，Mac和iPhone之间快速传输照片。";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "iPhone做U盘，私密文件保险箱，安全加密存储您的隐私文件和照片。";

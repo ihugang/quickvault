@@ -1,0 +1,378 @@
+/* 
+  Localizable.strings (Français)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Annuler";
+"common.save" = "Enregistrer";
+"common.delete" = "Supprimer";
+"common.edit" = "Modifier";
+"common.done" = "Terminé";
+"common.add" = "Ajouter";
+"common.close" = "Fermer";
+"common.confirm" = "Confirmer";
+"common.error" = "Erreur";
+"common.success" = "Succès";
+"common.loading" = "Chargement...";
+"common.retry" = "Réessayer";
+"common.copy" = "Copier";
+"common.share" = "Partager";
+"common.search" = "Rechercher";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Sécurisez votre vie numérique";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Bienvenue sur QuickHold";
+"auth.welcome.subtitle" = "Configurez votre mot de passe principal pour commencer";
+"auth.password.placeholder" = "Entrer le mot de passe";
+"auth.password.confirm" = "Confirmer le mot de passe";
+"auth.password.hint" = "Le mot de passe doit contenir au moins 8 caractères";
+"auth.password.required" = "Veuillez entrer votre mot de passe";
+"auth.password.mismatch" = "Les mots de passe ne correspondent pas";
+"auth.password.weak" = "Le mot de passe est trop faible";
+"auth.setup.button" = "Configurer le Mot de Passe";
+"auth.unlock.title" = "Déverrouiller QuickHold";
+"auth.unlock.button" = "Déverrouiller";
+"auth.unlock.biometric" = "Utiliser Face ID / Touch ID";
+"auth.unlock.failed" = "Échec de l'authentification";
+"auth.unlock.attempts" = "%d tentatives restantes";
+"auth.unlock.locked" = "Trop de tentatives. Réessayez dans %d secondes";
+"auth.change.title" = "Changer le Mot de Passe";
+"auth.change.current" = "Mot de passe actuel";
+"auth.change.new" = "Nouveau mot de passe";
+"auth.change.confirm" = "Confirmer le nouveau mot de passe";
+"auth.change.success" = "Mot de passe modifié avec succès";
+"auth.change.failed" = "Échec du changement de mot de passe";
+
+// MARK: - Authentication Errors
+"auth.error.biometric.unavailable" = "Touch ID n'est pas disponible";
+"auth.error.biometric.failed" = "L'authentification Touch ID a échoué";
+"auth.error.biometric.password.not.stored" = "Veuillez vous connecter avec votre mot de passe d'abord pour activer Touch ID";
+"auth.error.password.incorrect" = "Mot de passe incorrect";
+"auth.error.password.too.short" = "Le mot de passe doit contenir au moins 8 caractères";
+"auth.error.no.password" = "Aucun mot de passe principal défini";
+"auth.error.rate.limited" = "Trop de tentatives échouées. Veuillez patienter %d secondes";
+"auth.error.keychain" = "Erreur Keychain : %@";
+
+// MARK: - Cards
+"cards.title" = "Cartes";
+"cards.empty" = "Aucune carte";
+"cards.empty.subtitle" = "Appuyez sur + pour ajouter votre première carte";
+"cards.add" = "Ajouter une Carte";
+"cards.edit" = "Modifier la Carte";
+"cards.delete" = "Supprimer la Carte";
+"cards.delete.confirm" = "Êtes-vous sûr de vouloir supprimer cette carte ?";
+"cards.pin" = "Épingler";
+"cards.unpin" = "Désépingler";
+"cards.pinned" = "Épinglées";
+"cards.all" = "Toutes";
+"cards.field.add" = "Ajouter un Champ";
+"cards.field.label" = "Libellé";
+"cards.field.value" = "Valeur";
+"cards.field.copyable" = "Copiable";
+"cards.copied" = "Copié dans le presse-papiers";
+"cards.title.placeholder" = "Titre de la Carte";
+"cards.group.placeholder" = "Groupe";
+"cards.type.general" = "Général";
+"cards.type.login" = "Connexion";
+"cards.type.card" = "Carte de Crédit";
+"cards.type.identity" = "Identité";
+"cards.type.note" = "Note Sécurisée";
+"cards.created" = "Créé : ";
+"cards.updated" = "Mis à jour : ";
+"cards.tags" = "Tags";
+"cards.tags.add" = "Ajouter un Tag";
+"cards.type.address" = "Adresse";
+"cards.type.invoice" = "Informations de Facturation";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Coller et Analyser";
+"invoice.paste.parse" = "Coller pour Remplissage Automatique";
+"invoice.paste.hint" = "Collez les informations de facture ou de paiement pour remplir automatiquement le formulaire";
+"invoice.paste.instruction" = "Collez les informations de facture ou de paiement, le système reconnaîtra et remplira automatiquement les champs";
+"invoice.paste.fromclipboard" = "Coller depuis le Presse-papiers";
+"invoice.parse.button" = "Analyser et Remplir";
+
+// MARK: - Fields
+"field.name" = "Nom";
+"field.phone" = "Téléphone";
+"field.province" = "Province";
+"field.city" = "Ville";
+"field.district" = "District";
+"field.address" = "Adresse";
+"field.postalcode" = "Code Postal";
+"field.notes" = "Notes";
+"field.companyname" = "Nom de l'Entreprise";
+"field.taxid" = "Numéro de TVA";
+"field.bankname" = "Nom de la Banque";
+"field.bankaccount" = "Compte Bancaire";
+"field.content" = "Contenu";
+
+// MARK: - Card Types
+"cards.type.select" = "Sélectionner le Type";
+"cards.type.idcard" = "Carte d'Identité";
+"cards.type.passport" = "Passeport";
+"cards.type.businesslicense" = "Licence Commerciale";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Nom";
+"field.idcard.gender" = "Genre";
+"field.idcard.nationality" = "Nationalité";
+"field.idcard.birthdate" = "Date de Naissance";
+"field.idcard.number" = "Numéro d'Identité";
+"field.idcard.address" = "Adresse";
+"field.idcard.issuer" = "Autorité Émettrice";
+"field.idcard.validperiod" = "Période de Validité";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Nom de l'Entreprise";
+"field.license.companytype" = "Type d'Entreprise";
+"field.license.creditcode" = "Code de Crédit Social Unifié";
+"field.license.legalrep" = "Représentant Légal";
+"field.license.capital" = "Capital Enregistré";
+"field.license.address" = "Adresse";
+"field.license.establishdate" = "Date de Création";
+"field.license.businessterm" = "Durée Commerciale";
+"field.license.scope" = "Portée Commerciale";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Nom";
+"field.passport.nationality" = "Nationalité";
+"field.passport.birthdate" = "Date de Naissance";
+"field.passport.gender" = "Genre";
+"field.passport.number" = "Numéro de Passeport";
+"field.passport.issuedate" = "Date d'Émission";
+"field.passport.expirydate" = "Date d'Expiration";
+"field.passport.issueplace" = "Lieu d'Émission";
+"field.passport.issuer" = "Autorité Émettrice";
+
+// MARK: - Attachment Hints
+"attachment.idcard.front" = "Télécharger le recto de la carte d'identité (photo et numéro)";
+"attachment.idcard.back" = "Télécharger le verso de la carte d'identité (optionnel)";
+"attachment.passport.datapage" = "Télécharger la page de données du passeport (page photo)";
+"attachment.license.photo" = "Télécharger la photo de la licence commerciale";
+
+// MARK: - OCR
+"ocr.section.title" = "Reconnaissance Intelligente";
+"ocr.scan.photo" = "Scanner depuis une Photo";
+"ocr.section.footer" = "Sélectionnez une photo de votre document pour extraire automatiquement les informations";
+"ocr.processing" = "Reconnaissance en cours...";
+"ocr.photo.upload" = "Télécharger une Photo de Document";
+"ocr.tap.upload" = "Appuyez pour télécharger une photo";
+"ocr.idcard.front" = "Carte d'identité Recto (photo et numéro)";
+"ocr.idcard.back" = "Carte d'identité Verso (émetteur et validité)";
+"ocr.passport.datapage" = "Page de Données du Passeport (page photo)";
+"ocr.license.photo" = "Photo de Licence Commerciale";
+"ocr.photo.front" = "Recto";
+"ocr.photo.back" = "Verso";
+"ocr.hint.idcard" = "Téléchargez le recto et le verso de votre carte d'identité. Les informations seront automatiquement extraites.";
+"ocr.hint.passport" = "Téléchargez la page de données (page photo) de votre passeport.";
+"ocr.hint.license" = "Téléchargez une photo de votre licence commerciale.";
+"common.optional" = "optionnel";
+"attachment.document.photos" = "Photos de Document";
+"attachment.no.photo" = "Aucune photo";
+"attachment.load.failed" = "Échec du chargement de l'image";
+"ocr.edit.photo.hint" = "Cliquez pour ajouter ou remplacer des photos de document";
+
+// MARK: - Export
+"export.title" = "Exporter";
+"export.action" = "Exporter";
+"export.image" = "Exporter l'Image";
+"export.images" = "Exporter les Images";
+"export.images.all" = "Exporter Toutes les Images";
+"export.text" = "Exporter le Texte";
+"export.add.watermark" = "Ajouter un Filigrane";
+"export.watermark.title" = "Paramètres du Filigrane";
+"export.watermark.text" = "Texte du Filigrane";
+"export.watermark.placeholder" = "Entrer le texte du filigrane";
+"export.watermark.hint" = "Le filigrane sera superposé en diagonale sur l'image";
+"export.watermark.fontsize" = "Taille de Police";
+"export.watermark.spacing" = "Espacement";
+"export.watermark.spacing.dense" = "Dense";
+"export.watermark.spacing.normal" = "Normal";
+"export.watermark.spacing.sparse" = "Éparse";
+"export.watermark.opacity" = "Opacité";
+"export.preview" = "Aperçu";
+"export.advanced.options" = "Options Avancées";
+"export.size.compression" = "Taille et Compression";
+"export.max.width" = "Largeur Max";
+"export.max.height" = "Hauteur Max";
+"export.max.filesize" = "Taille de Fichier Max";
+"export.pixel" = "px";
+"export.hint.limits" = "Laisser vide pour aucune limite. L'image sera redimensionnée proportionnellement";
+"export.success" = "Export Réussi";
+"export.failed" = "Échec de l'Export";
+"export.copied" = "Copié dans le presse-papiers";
+"export.images.count" = "%d images exportées";
+
+// MARK: - Validation
+"validation.title.required" = "Le titre est requis";
+"validation.field.required" = "Ce champ est requis";
+"validation.phone.invalid" = "Format de téléphone invalide";
+"validation.taxid.invalid" = "Le numéro de TVA doit contenir 18 caractères";
+
+// MARK: - Attachments
+"attachments.title" = "Pièces Jointes";
+"attachments.add" = "Ajouter une Pièce Jointe";
+"attachments.delete" = "Supprimer la Pièce Jointe";
+"attachments.delete.confirm" = "Êtes-vous sûr de vouloir supprimer cette pièce jointe ?";
+"attachments.watermark" = "Filigrane";
+"attachments.watermark.add" = "Ajouter un Filigrane";
+"attachments.watermark.remove" = "Supprimer le Filigrane";
+"attachments.watermark.text" = "Texte du Filigrane";
+"attachments.share" = "Partager";
+"attachments.preview" = "Aperçu";
+"attachments.size" = "Taille : %@";
+"attachments.empty" = "Aucune pièce jointe";
+"attachments.photo.library" = "Photothèque";
+"attachments.photo.camera" = "Appareil Photo";
+
+// MARK: - Search
+"search.title" = "Recherche";
+"search.placeholder" = "Rechercher des cartes...";
+"search.empty" = "Aucun résultat trouvé";
+"search.recent" = "Recherches Récentes";
+
+// MARK: - Settings
+"settings.title" = "Paramètres";
+"settings.security" = "Sécurité";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Activer l'authentification biométrique";
+"settings.security.autolock" = "Verrouillage Automatique";
+"settings.security.autolock.immediately" = "Immédiatement";
+"settings.security.autolock.1min" = "Après 1 minute";
+"settings.security.autolock.5min" = "Après 5 minutes";
+"settings.security.autolock.15min" = "Après 15 minutes";
+"settings.security.autolock.never" = "Jamais";
+"settings.security.changepassword" = "Changer le Mot de Passe";
+"settings.security.cleardata" = "Effacer Toutes les Données";
+"settings.security.cleardata.footer" = "⚠️ Cela supprimera définitivement toutes les cartes, images et fichiers. Cette action est irréversible !";
+"settings.security.cleardata.confirm.title" = "Confirmer l'Effacement de Toutes les Données";
+"settings.security.cleardata.confirm.message" = "Cela supprimera définitivement toutes les données et ne peut être annulé. Entrez votre mot de passe pour confirmer.";
+"settings.security.cleardata.confirm.password" = "Entrer le Mot de Passe";
+"settings.security.cleardata.confirm.delete" = "Supprimer Toutes les Données";
+"settings.security.cleardata.success" = "Toutes les données ont été effacées";
+"settings.security.biometric.enabled" = "Biométrie activée";
+"settings.security.biometric.disabled" = "Biométrie désactivée";
+"settings.tab" = "Paramètres";
+"settings.appearance" = "Apparence";
+"settings.appearance.title" = "Affichage";
+"settings.appearance.auto" = "Auto";
+"settings.appearance.light" = "Clair";
+"settings.appearance.dark" = "Sombre";
+"settings.language" = "Langue";
+"settings.language.title" = "Langue de l'Application";
+"settings.language.system" = "Par Défaut du Système";
+"settings.about" = "À Propos";
+"settings.about.version" = "Version";
+"settings.about.privacy" = "Politique de Confidentialité";
+"settings.about.terms" = "Conditions d'Utilisation";
+"settings.data" = "Données";
+"settings.data.export" = "Exporter les Données";
+"settings.data.import" = "Importer les Données";
+"settings.data.reset" = "Réinitialiser Toutes les Données";
+"settings.data.reset.confirm" = "Cela supprimera toutes vos cartes et paramètres. Cette action est irréversible.";
+
+// MARK: - Errors
+"error.generic" = "Une erreur s'est produite";
+"error.network" = "Erreur réseau";
+"error.encryption" = "Erreur de chiffrement";
+"error.decryption" = "Erreur de déchiffrement";
+"error.storage" = "Erreur de stockage";
+"error.biometric.unavailable" = "L'authentification biométrique n'est pas disponible";
+"error.biometric.notEnrolled" = "Aucune donnée biométrique enregistrée";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Éléments";
+"items.search.placeholder" = "Rechercher titre ou tags...";
+"items.loading" = "Chargement...";
+"items.empty" = "Aucun élément";
+"items.empty.subtitle" = "Appuyez sur + en haut à droite pour créer votre premier élément";
+"items.empty.search" = "Aucun résultat trouvé";
+"items.empty.search.subtitle" = "Essayez différents mots-clés de recherche";
+"items.pinned" = "Épinglé";
+"items.all" = "Tous";
+"items.create.text" = "Créer un Élément Texte";
+"items.create.image" = "Créer un Élément Image";
+"items.type.text" = "Élément Texte";
+"items.type.image" = "Élément Image";
+"items.type.file" = "Élément Fichier";
+"items.type.text.desc" = "Stocker des informations textuelles pour un partage rapide";
+"items.type.image.desc" = "Enregistrer des images avec support de partage de filigrane";
+"items.type.file.desc" = "Stocker divers fichiers avec aperçu PDF";
+
+// Items - Files
+"items.files.select" = "Sélectionner les Fichiers";
+"items.files.count" = "%d fichiers";
+"items.files.section" = "Fichiers";
+"items.files.limit" = "Jusqu'à 10 fichiers, chaque fichier ne dépassant pas 10 Mo";
+
+// Items - Detail Files
+"items.detail.files" = "Fichiers";
+"items.detail.files.count" = "%d fichiers";
+"items.create.title" = "Créer %@";
+"items.create.selecttype" = "Sélectionner le Type";
+"items.create.button" = "Créer";
+"items.info.basic" = "Informations de Base";
+"items.info.title" = "Titre";
+"items.info.title.hint" = "Définir un titre clair pour l'élément";
+"items.content" = "Contenu";
+"items.content.characters" = "%d caractères";
+"items.images.select" = "Sélectionner les Images";
+"items.images.count" = "%d images";
+"items.images.section" = "Images";
+"items.images.limit" = "Jusqu'à 10 images peuvent être sélectionnées";
+"items.tags.section" = "Tags";
+"items.tags.add" = "Ajouter un Tag";
+"items.tags.placeholder" = "Entrer le nom du tag";
+"items.tags.hint" = "Utiliser des tags pour faciliter la catégorisation et la recherche";
+"items.detail.edit" = "Modifier";
+"items.detail.delete" = "Supprimer";
+"items.detail.pin" = "Épingler";
+"items.detail.created" = "Créé";
+"items.detail.unpin" = "Désépingler";
+"items.detail.pinned" = "Épinglé";
+"items.detail.content" = "Contenu";
+"items.detail.images" = "Images";
+"items.detail.images.count" = "%d images";
+"items.detail.tags" = "Tags";
+"items.detaWatermark" = "";
+"watermark.settings" = "Paramètres du Filigrane";
+"watermark.collapse" = "Réduire";
+"watermark.add" = "Ajouter un Filigrane";
+"watermark.text" = "Texte du Filigrane (ex : Pour Utilisation XX Uniquement)";
+"watermark.text.placeholder" = "ex : Pour Utilisation XX Uniquement";
+"watermark.fontsize" = "Taille de Police";
+"watermark.spacing" = "Espacement des Lignes";
+"watermark.spacing.dense" = "Dense";
+"watermark.spacing.normal" = "Normal";
+"watermark.spacing.sparse" = "Éparse";
+"watermark.opacity" = "Opacité";
+"watermark.preview" = "Aperçu";
+"watermark.share" = "Partager";
+"watermark.scope" = "Portée du Partage";
+"watermark.scope.current" = "Cette Image Uniquement";
+"watermark.scope.all" = "Toutes les Images (%d images)";
+"watermark.hint" = "Le filigrane sera disposé en diagonale sur l'image";
+"watermark.sheet.title" = "Partager les Images";
+"watermark.preparing" = "Préparation...";
+
+"items.detail.share.text" = "Partager le Texte";
+"items.detail.share.images" = "Partager les Images";
+"items.delete.confirm" = "Êtes-vous sûr de vouloir supprimer cet élément ?";
+"items.delete.title" = "Confirmer la Suppression";
+"items.delete.message" = "Cette action ne peut être annulée";
+"items.created.success" = "Créé avec succès";
+"items.updated.success" = "Mis à jour avec succès";
+"items.deleted.success" = "Supprimé avec succès";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Outil de transfert de photos multiplateforme. Transférez rapidement des photos entre Mac et iPhone sans réseau.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Transformez votre iPhone en disque mobile sécurisé";

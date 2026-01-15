@@ -1,0 +1,352 @@
+/* 
+  Localizable.strings (Português - Brasil)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "OK";
+"common.cancel" = "Cancelar";
+"common.save" = "Salvar";
+"common.delete" = "Excluir";
+"common.edit" = "Editar";
+"common.done" = "Concluído";
+"common.add" = "Adicionar";
+"common.close" = "Fechar";
+"common.confirm" = "Confirmar";
+"common.error" = "Erro";
+"common.success" = "Sucesso";
+"common.loading" = "Carregando...";
+"common.retry" = "Tentar novamente";
+"common.copy" = "Copiar";
+"common.share" = "Compartilhar";
+"common.search" = "Buscar";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Proteja sua vida digital";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Bem-vindo ao QuickHold";
+"auth.welcome.subtitle" = "Configure sua senha mestra para começar";
+"auth.password.placeholder" = "Digite a senha";
+"auth.password.confirm" = "Confirmar senha";
+"auth.password.hint" = "A senha deve ter pelo menos 8 caracteres";
+"auth.password.mismatch" = "As senhas não coincidem";
+"auth.password.weak" = "A senha é muito fraca";
+"auth.setup.button" = "Configurar Senha";
+"auth.unlock.title" = "Desbloquear QuickHold";
+"auth.unlock.button" = "Desbloquear";
+"auth.unlock.biometric" = "Usar Face ID / Touch ID";
+"auth.unlock.failed" = "Autenticação falhou";
+"auth.unlock.attempts" = "%d tentativas restantes";
+"auth.unlock.locked" = "Muitas tentativas. Tente novamente em %d segundos";
+"auth.change.title" = "Alterar Senha";
+"auth.change.current" = "Senha atual";
+"auth.change.new" = "Nova senha";
+"auth.change.confirm" = "Confirmar nova senha";
+"auth.change.success" = "Senha alterada com sucesso";
+"auth.change.failed" = "Falha ao alterar senha";
+
+// MARK: - Cards
+"cards.title" = "Cartões";
+"cards.empty" = "Sem cartões";
+"cards.empty.subtitle" = "Toque em + para adicionar seu primeiro cartão";
+"cards.add" = "Adicionar Cartão";
+"cards.edit" = "Editar Cartão";
+"cards.delete" = "Excluir Cartão";
+"cards.delete.confirm" = "Tem certeza de que deseja excluir este cartão?";
+"cards.pin" = "Fixar";
+"cards.unpin" = "Desafixar";
+"cards.pinned" = "Fixados";
+"cards.all" = "Todos";
+"cards.field.add" = "Adicionar Campo";
+"cards.field.label" = "Rótulo";
+"cards.field.value" = "Valor";
+"cards.field.copyable" = "Copiável";
+"cards.copied" = "Copiado para a área de transferência";
+"cards.title.placeholder" = "Título do Cartão";
+"cards.group.placeholder" = "Grupo";
+"cards.type.general" = "Geral";
+"cards.type.login" = "Login";
+"cards.type.card" = "Cartão de Crédito";
+"cards.type.identity" = "Identidade";
+"cards.type.note" = "Nota Segura";
+"cards.created" = "Criado: ";
+"cards.updated" = "Atualizado: ";
+"cards.tags" = "Tags";
+"cards.tags.add" = "Adicionar Tag";
+
+// MARK: - Attachments
+"attachments.title" = "Anexos";
+"attachments.add" = "Adicionar Anexo";
+"attachments.delete" = "Excluir Anexo";
+"attachments.delete.confirm" = "Tem certeza de que deseja excluir este anexo?";
+"attachments.watermark" = "Marca d'água";
+"attachments.watermark.add" = "Adicionar Marca d'água";
+"attachments.watermark.remove" = "Remover Marca d'água";
+"attachments.watermark.text" = "Texto da Marca d'água";
+"attachments.share" = "Compartilhar";
+"attachments.preview" = "Visualizar";
+"attachments.size" = "Tamanho: %@";
+"attachments.empty" = "Sem anexos";
+"attachments.photo.library" = "Biblioteca de Fotos";
+"attachments.photo.camera" = "Câmera";
+
+// MARK: - Search
+"search.title" = "Buscar";
+"search.placeholder" = "Buscar cartões...";
+"search.empty" = "Nenhum resultado encontrado";
+"search.recent" = "Buscas Recentes";
+
+// MARK: - Settings
+"settings.title" = "Configurações";
+"settings.security" = "Segurança";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Ativar autenticação biométrica";
+"settings.security.autolock" = "Bloqueio Automático";
+"settings.security.autolock.immediately" = "Imediatamente";
+"settings.security.autolock.1min" = "Após 1 minuto";
+"settings.security.autolock.5min" = "Após 5 minutos";
+"settings.security.autolock.15min" = "Após 15 minutos";
+"settings.security.autolock.never" = "Nunca";
+"settings.security.changepassword" = "Alterar Senha";
+"settings.language" = "Idioma";
+"settings.language.title" = "Idioma do App";
+"settings.language.system" = "Padrão do Sistema";
+"settings.about" = "Sobre";
+"settings.about.version" = "Versão";
+"settings.about.privacy" = "Política de Privacidade";
+"settings.about.terms" = "Termos de Serviço";
+"settings.data" = "Dados";
+"settings.data.export" = "Exportar Dados";
+"settings.data.import" = "Importar Dados";
+"settings.data.reset" = "Redefinir Todos os Dados";
+"settings.data.reset.confirm" = "Isso excluirá todos os seus cartões e configurações. Esta ação não pode ser desfeita.";
+
+// MARK: - Errors
+"error.generic" = "Algo deu errado";
+"error.network" = "Erro de rede";
+"error.encryption" = "Erro de criptografia";
+"error.decryption" = "Erro de descriptografia";
+"error.storage" = "Erro de armazenamento";
+"error.biometric.unavailable" = "A autenticação biométrica não está disponível";
+"error.biometric.notEnrolled" = "Nenhum dado biométrico cadastrado";
+
+// MARK: - Authentication Extras
+"auth.password.required" = "Por favor, insira a senha";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "Colar e preencher";
+"invoice.paste.parse" = "Colar para preenchimento automático";
+"invoice.paste.hint" = "Cole informações da fatura ou pagamento para preencher o formulário automaticamente";
+"invoice.paste.instruction" = "Cole as informações da fatura ou pagamento; o sistema irá reconhecê-las e preencher os campos automaticamente";
+"invoice.paste.fromclipboard" = "Colar da área de transferência";
+"invoice.parse.button" = "Analisar e preencher";
+
+// MARK: - Fields
+"field.name" = "Nome";
+"field.phone" = "Telefone";
+"field.province" = "Estado/Província";
+"field.city" = "Cidade";
+"field.district" = "Distrito";
+"field.address" = "Endereço";
+"field.postalcode" = "CEP";
+"field.notes" = "Notas";
+"field.companyname" = "Nome da Empresa";
+"field.taxid" = "CNPJ/CPF";
+"field.bankname" = "Nome do Banco";
+"field.bankaccount" = "Conta Bancária";
+"field.content" = "Conteúdo";
+
+// MARK: - Card Types
+"cards.type.select" = "Selecione o tipo";
+"cards.type.idcard" = "Documento de Identidade";
+"cards.type.passport" = "Passaporte";
+"cards.type.businesslicense" = "Licença Comercial";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "Nome";
+"field.idcard.gender" = "Gênero";
+"field.idcard.nationality" = "Nacionalidade";
+"field.idcard.birthdate" = "Data de Nascimento";
+"field.idcard.number" = "Número do Documento";
+"field.idcard.address" = "Endereço";
+"field.idcard.issuer" = "Emitido por";
+"field.idcard.validperiod" = "Período de Validade";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "Nome da Empresa";
+"field.license.companytype" = "Tipo de Empresa";
+"field.license.creditcode" = "Código de Identificação";
+"field.license.legalrep" = "Representante Legal";
+"field.license.capital" = "Capital Registrado";
+"field.license.address" = "Endereço";
+"field.license.establishdate" = "Data de Fundação";
+"field.license.businessterm" = "Prazo de Atividade";
+"field.license.scope" = "Escopo do Negócio";
+
+// MARK: - Passport Fields
+"field.passport.name" = "Nome";
+"field.passport.nationality" = "Nacionalidade";
+"field.passport.birthdate" = "Data de Nascimento";
+"field.passport.gender" = "Gênero";
+"field.passport.number" = "Número do Passaporte";
+"field.passport.issuedate" = "Data de Emissão";
+"field.passport.expirydate" = "Data de Validade";
+"field.passport.issueplace" = "Local de Emissão";
+"field.passport.issuer" = "Emitido por";
+
+// MARK: - OCR
+"ocr.section.title" = "OCR Inteligente";
+"ocr.scan.photo" = "Digitalizar a partir da imagem";
+"ocr.section.footer" = "Selecione uma imagem do documento para extrair informações automaticamente";
+"ocr.processing" = "Processando...";
+"ocr.photo.upload" = "Enviar imagem do documento";
+"ocr.tap.upload" = "Toque para enviar imagem";
+"ocr.idcard.front" = "Frente do documento";
+"ocr.idcard.back" = "Verso do documento";
+"ocr.passport.datapage" = "Página de dados do passaporte (foto)";
+"ocr.license.photo" = "Imagem da licença comercial";
+"ocr.photo.front" = "Frente";
+"ocr.photo.back" = "Verso";
+"ocr.hint.idcard" = "Envie frente e verso do documento. As informações serão extraídas automaticamente.";
+"ocr.hint.passport" = "Envie a página de dados do passaporte (foto).";
+"ocr.hint.license" = "Envie a imagem da licença comercial.";
+
+// MARK: - Export
+"export.title" = "Exportar";
+"export.action" = "Exportar";
+"export.image" = "Exportar imagem";
+"export.images" = "Exportar imagens";
+"export.images.all" = "Exportar todas as imagens";
+"export.text" = "Exportar texto";
+"export.add.watermark" = "Adicionar marca d'água";
+"export.watermark.title" = "Configurações da marca d'água";
+"export.watermark.text" = "Texto da marca d'água";
+"export.watermark.placeholder" = "Insira o texto da marca d'água";
+"export.watermark.hint" = "A marca d'água será aplicada diagonalmente sobre a imagem";
+"export.watermark.fontsize" = "Tamanho da fonte";
+"export.watermark.spacing" = "Espaçamento";
+"export.watermark.spacing.dense" = "Denso";
+"export.watermark.spacing.normal" = "Normal";
+"export.watermark.spacing.sparse" = "Raro";
+"export.watermark.opacity" = "Opacidade";
+"export.preview" = "Visualizar";
+"export.advanced.options" = "Opções avançadas";
+"export.size.compression" = "Tamanho e compactação";
+"export.max.width" = "Largura máx.";
+"export.max.height" = "Altura máx.";
+"export.max.filesize" = "Tamanho máximo do arquivo";
+"export.pixel" = "Pixel";
+"export.hint.limits" = "Deixe em branco para sem limite. A imagem será redimensionada proporcionalmente";
+"export.success" = "Exportação concluída";
+"export.failed" = "Falha na exportação";
+"export.copied" = "Copiado para a área de transferência";
+"export.images.count" = "%d imagens exportadas";
+
+// MARK: - Validation
+"validation.title.required" = "Título obrigatório";
+"validation.field.required" = "Este campo é obrigatório";
+"validation.phone.invalid" = "Formato de telefone inválido";
+"validation.taxid.invalid" = "O CPF/CNPJ deve conter 11/14 caracteres";
+
+// MARK: - Items (New Design)
+"items.title" = "QuickHold";
+"items.tab" = "Itens";
+"items.search.placeholder" = "Pesquisar por título ou tags...";
+"items.loading" = "Carregando...";
+"items.empty" = "Nenhum item ainda";
+"items.empty.subtitle" = "Toque em + no canto superior direito para criar seu primeiro item";
+"items.empty.search" = "Nenhum resultado";
+"items.empty.search.subtitle" = "Tente palavras-chave diferentes";
+"items.pinned" = "Fixado";
+"items.all" = "Todos";
+"items.create.text" = "Criar item de texto";
+"items.create.image" = "Criar item de imagem";
+"items.type.text" = "Item de texto";
+"items.type.image" = "Item de imagem";
+"items.type.file" = "Item de arquivo";
+"items.type.text.desc" = "Salve informações de texto para compartilhamento rápido";
+"items.type.image.desc" = "Salve imagens com suporte a marca d'água";
+"items.type.file.desc" = "Salve vários tipos de arquivo com visualização em PDF";
+
+// Items - Files
+"items.files.select" = "Selecionar arquivos";
+"items.files.count" = "%d arquivos";
+"items.files.section" = "Arquivos";
+"items.files.limit" = "Até 10 arquivos, cada um até 10MB";
+
+// Items - Detail Files
+"items.detail.files" = "Arquivos";
+"items.detail.files.count" = "%d arquivos";
+"items.create.title" = "Criar %@";
+"items.create.selecttype" = "Selecionar tipo";
+"items.create.button" = "Criar";
+"items.info.basic" = "Informações básicas";
+"items.info.title" = "Título";
+"items.info.title.hint" = "Escolha um título claro para o item";
+"items.content" = "Conteúdo";
+"items.content.characters" = "%d caracteres";
+"items.images.select" = "Selecionar imagens";
+"items.images.count" = "%d imagens";
+"items.images.section" = "Imagens";
+"items.images.limit" = "Até 10 imagens";
+"items.tags.section" = "Tags";
+"items.tags.add" = "Adicionar tag";
+"items.tags.placeholder" = "Insira o nome da tag";
+"items.tags.hint" = "Use tags para ajudar na organização e pesquisa";
+"items.detail.edit" = "Editar";
+"items.detail.delete" = "Excluir";
+"items.detail.pin" = "Fixar";
+"items.detail.created" = "Criado";
+"items.detail.unpin" = "Desafixar";
+"items.detail.pinned" = "Fixado";
+"items.detail.content" = "Conteúdo";
+"items.detail.images" = "Imagens";
+"items.detail.images.count" = "%d imagem";
+"items.detail.tags" = "Tags";
+"items.detaWatermark" = "";
+"watermark.settings" = "Configurações da marca d'água";
+"watermark.collapse" = "Recolher";
+"watermark.add" = "Adicionar marca d'água";
+"watermark.text" = "Texto da marca d'água (ex: Apenas para X)";
+"watermark.text.placeholder" = "Ex: Apenas para X";
+"watermark.fontsize" = "Tamanho da fonte";
+"watermark.spacing" = "Espaçamento entre linhas";
+"watermark.spacing.dense" = "Denso";
+"watermark.spacing.normal" = "Normal";
+"watermark.spacing.sparse" = "Escasso";
+"watermark.opacity" = "Opacidade";
+"watermark.preview" = "Visualizar";
+"watermark.share" = "Compartilhar";
+"watermark.scope" = "Escopo de compartilhamento";
+"watermark.scope.current" = "Apenas esta imagem";
+"watermark.scope.all" = "Todas as imagens (%d)";
+"watermark.hint" = "A marca d'água será repetida diagonalmente na imagem";
+"watermark.sheet.title" = "Compartilhar imagens";
+"watermark.preparing" = "Preparando...";
+
+"items.detail.share.text" = "Compartilhar texto";
+"items.detail.share.images" = "Compartilhar imagens";
+"items.delete.confirm" = "Tem certeza de que deseja excluir este item?";
+"items.delete.title" = "Confirmar exclusão";
+"items.delete.message" = "Esta ação não pode ser desfeita";
+"items.created.success" = "Criado com sucesso";
+"items.updated.success" = "Atualizado com sucesso";
+"items.deleted.success" = "Excluído";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Ferramenta de transferência de fotos entre dispositivos. Transfira fotos rapidamente entre Mac e iPhone sem rede.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Transforme o iPhone em um disco portátil seguro";
+
+// MARK: - Settings: Clear Data
+"settings.security.cleardata" = "Limpar todos os dados";
+"settings.security.cleardata.footer" = "⚠️ Isso excluirá permanentemente todos os cartões, imagens e arquivos. Esta ação não pode ser desfeita!";
+"settings.security.cleardata.confirm.title" = "Confirmar limpeza de todos os dados";
+"settings.security.cleardata.confirm.message" = "Isso excluirá permanentemente todos os dados e não pode ser desfeito. Insira a senha para confirmar.";
+"settings.security.cleardata.confirm.password" = "Digite a senha";
+"settings.security.cleardata.confirm.delete" = "Limpar todos os dados";
+"settings.security.cleardata.success" = "Todos os dados foram limpos";
+

@@ -1,0 +1,369 @@
+/* 
+  Localizable.strings (Русский)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "ОК";
+"common.cancel" = "Отмена";
+"common.save" = "Сохранить";
+"common.delete" = "Удалить";
+"common.edit" = "Редактировать";
+"common.done" = "Готово";
+"common.add" = "Добавить";
+"common.close" = "Закрыть";
+"common.confirm" = "Подтвердить";
+"common.error" = "Ошибка";
+"common.success" = "Успешно";
+"common.loading" = "Загрузка...";
+"common.retry" = "Повторить";
+"common.copy" = "Копировать";
+"common.share" = "Поделиться";
+"common.search" = "Поиск";
+
+// MARK: - App
+"app.name" = "QuickHold";
+"app.tagline" = "Защитите свою цифровую жизнь";
+
+// MARK: - Authentication
+"auth.welcome.title" = "Добро пожаловать в QuickHold";
+"auth.welcome.subtitle" = "Установите мастер-пароль, чтобы начать";
+"auth.password.placeholder" = "Введите пароль";
+"auth.password.confirm" = "Подтвердите пароль";
+"auth.password.hint" = "Пароль должен содержать не менее 8 символов";
+"auth.password.mismatch" = "Пароли не совпадают";
+"auth.password.weak" = "Пароль слишком слабый";
+"auth.setup.button" = "Установить Пароль";
+"auth.unlock.title" = "Разблокировать QuickHold";
+"auth.unlock.button" = "Разблокировать";
+"auth.unlock.biometric" = "Использовать Face ID / Touch ID";
+"auth.unlock.failed" = "Ошибка аутентификации";
+"auth.unlock.attempts" = "Осталось попыток: %d";
+"auth.unlock.locked" = "Слишком много попыток. Повторите через %d секунд";
+"auth.change.title" = "Изменить Пароль";
+"auth.change.current" = "Текущий пароль";
+"auth.change.new" = "Новый пароль";
+"auth.change.confirm" = "Подтвердите новый пароль";
+"auth.change.success" = "Пароль успешно изменён";
+"auth.change.failed" = "Не удалось изменить пароль";
+
+// MARK: - Cards
+"cards.title" = "Карточки";
+"cards.empty" = "Нет карточек";
+"cards.empty.subtitle" = "Нажмите +, чтобы добавить первую карточку";
+"cards.add" = "Добавить Карточку";
+"cards.edit" = "Редактировать Карточку";
+"cards.delete" = "Удалить Карточку";
+"cards.delete.confirm" = "Вы уверены, что хотите удалить эту карточку?";
+"cards.pin" = "Закрепить";
+"cards.unpin" = "Открепить";
+"cards.pinned" = "Закреплённые";
+"cards.all" = "Все";
+"cards.field.add" = "Добавить Поле";
+"cards.field.label" = "Метка";
+"cards.field.value" = "Значение";
+"cards.field.copyable" = "Можно копировать";
+"cards.copied" = "Скопировано в буфер обмена";
+"cards.title.placeholder" = "Название Карточки";
+"cards.group.placeholder" = "Группа";
+"cards.type.general" = "Общее";
+"cards.type.login" = "Логин";
+"cards.type.card" = "Кредитная Карта";
+"cards.type.identity" = "Личность";
+"cards.type.note" = "Защищённая Заметка";
+"cards.created" = "Создано: ";
+"cards.updated" = "Обновлено: ";
+"cards.tags" = "Теги";
+"cards.tags.add" = "Добавить Тег";
+
+// MARK: - Attachments
+"attachments.title" = "Вложения";
+"attachments.add" = "Добавить Вложение";
+"attachments.delete" = "Удалить Вложение";
+"attachments.delete.confirm" = "Вы уверены, что хотите удалить это вложение?";
+"attachments.watermark" = "Водяной знак";
+"attachments.watermark.add" = "Добавить Водяной Знак";
+"attachments.watermark.remove" = "Удалить Водяной Знак";
+"attachments.watermark.text" = "Текст Водяного Знака";
+"attachments.share" = "Поделиться";
+"attachments.preview" = "Предпросмотр";
+"attachments.size" = "Размер: %@";
+"attachments.empty" = "Нет вложений";
+"attachments.photo.library" = "Фотобиблиотека";
+"attachments.photo.camera" = "Камера";
+
+// MARK: - Search
+"search.title" = "Поиск";
+"search.placeholder" = "Поиск карточек...";
+"search.empty" = "Результаты не найдены";
+"search.recent" = "Недавние Поиски";
+
+// MARK: - Settings
+"settings.title" = "Настройки";
+"settings.security" = "Безопасность";
+"settings.security.biometric" = "Face ID / Touch ID";
+"settings.security.biometric.enable" = "Включить биометрическую аутентификацию";
+"settings.security.autolock" = "Автоблокировка";
+"settings.security.autolock.immediately" = "Немедленно";
+"settings.security.autolock.1min" = "Через 1 минуту";
+"settings.security.autolock.5min" = "Через 5 минут";
+"settings.security.autolock.15min" = "Через 15 минут";
+"settings.security.autolock.never" = "Никогда";
+"settings.security.changepassword" = "Изменить Пароль";
+"settings.language" = "Язык";
+"settings.language.title" = "Язык Приложения";
+"settings.language.system" = "Системный по умолчанию";
+"settings.about" = "О Приложении";
+"settings.about.version" = "Версия";
+"settings.about.privacy" = "Политика Конфиденциальности";
+"settings.about.terms" = "Условия Использования";
+"settings.data" = "Данные";
+"settings.data.export" = "Экспорт Данных";
+"settings.data.import" = "Импорт Данных";
+"settings.data.reset" = "Сбросить Все Данные";
+"settings.data.reset.confirm" = "Это удалит все ваши карточки и настройки. Это действие нельзя отменить.";
+
+// MARK: - Errors
+"error.generic" = "Что-то пошло не так";
+"error.network" = "Ошибка сети";
+"error.encryption" = "Ошибка шифрования";
+"error.decryption" = "Ошибка расшифровки";
+"error.storage" = "Ошибка хранилища";
+"error.biometric.unavailable" = "Биометрическая аутентификация недоступна";
+"error.biometric.notEnrolled" = "Биометрические данные не зарегистрированы";
+
+/* Added from en.lproj (machine-translated) */
+
+"auth.password.required" = "Пожалуйста, введите ваш пароль";
+"auth.error.biometric.unavailable" = "Touch ID недоступен";
+"auth.error.biometric.failed" = "Ошибка аутентификации Touch ID";
+"auth.error.biometric.password.not.stored" = "Пожалуйста, сначала войдите с паролем, чтобы включить Touch ID";
+"auth.error.password.incorrect" = "Неверный пароль";
+"auth.error.password.too.short" = "Пароль должен содержать не менее 8 символов";
+"auth.error.no.password" = "Мастер-пароль не установлен";
+"auth.error.rate.limited" = "Слишком много неудачных попыток. Пожалуйста, ждите %d секунд";
+"auth.error.keychain" = "Ошибка Keychain: %@";
+
+"cards.group.personal" = "Личное";
+"cards.group.company" = "Компания";
+"cards.type.address" = "Адрес";
+"cards.type.invoice" = "Информация Счёта";
+
+"invoice.paste.title" = "Вставить & Разобрать";
+"invoice.paste.parse" = "Вставить для автозаполнения";
+"invoice.paste.hint" = "Вставьте информацию счёта или платежа для автозаполнения формы";
+"invoice.paste.instruction" = "Вставьте информацию счёта или платежа, система автоматически распознает и заполнит поля";
+"invoice.paste.fromclipboard" = "Вставить из буфера обмена";
+"invoice.parse.button" = "Разобрать & Заполнить";
+
+"field.name" = "Имя";
+"field.phone" = "Телефон";
+"field.province" = "Область/Провинция";
+"field.city" = "Город";
+"field.district" = "Район";
+"field.address" = "Адрес";
+"field.postalcode" = "Почтовый индекс";
+"field.notes" = "Примечания";
+"field.companyname" = "Название компании";
+"field.taxid" = "Идентификационный номер налогоплательщика";
+"field.bankname" = "Название банка";
+"field.bankaccount" = "Банковский счёт";
+"field.content" = "Содержание";
+
+"cards.type.select" = "Выберите тип";
+"cards.type.idcard" = "Удостоверение личности";
+"cards.type.passport" = "Паспорт";
+"cards.type.businesslicense" = "Свидетельство о регистрации";
+
+"field.idcard.name" = "Имя";
+"field.idcard.gender" = "Пол";
+"field.idcard.nationality" = "Национальность";
+"field.idcard.birthdate" = "Дата рождения";
+"field.idcard.number" = "Номер удостоверения";
+"field.idcard.address" = "Адрес";
+"field.idcard.issuer" = "Выдавший орган";
+"field.idcard.validperiod" = "Период действия";
+
+"field.license.companyname" = "Название компании";
+"field.license.companytype" = "Тип компании";
+"field.license.creditcode" = "Унифицированный код социального кредита";
+"field.license.legalrep" = "Юридический представитель";
+"field.license.capital" = "Зарегистрированный капитал";
+"field.license.address" = "Адрес";
+"field.license.establishdate" = "Дата учреждения";
+"field.license.businessterm" = "Период деятельности";
+"field.license.scope" = "Сфера деятельности";
+
+"field.passport.name" = "Имя";
+"field.passport.nationality" = "Национальность";
+"field.passport.birthdate" = "Дата рождения";
+"field.passport.gender" = "Пол";
+"field.passport.number" = "Номер паспорта";
+"field.passport.issuedate" = "Дата выдачи";
+"field.passport.expirydate" = "Дата истечения";
+"field.passport.issueplace" = "Место выдачи";
+"field.passport.issuer" = "Выдавший орган";
+
+"attachment.idcard.front" = "Загрузите переднюю часть удостоверения (фото & сторона с номером)";
+"attachment.idcard.back" = "Загрузите обратную сторону удостоверения (опционально)";
+"attachment.passport.datapage" = "Загрузите страницу данных паспорта (страница с фото)";
+"attachment.license.photo" = "Загрузите фото свидетельства о регистрации";
+
+"ocr.section.title" = "Интеллектуальное распознавание";
+"ocr.scan.photo" = "Сканировать из фотографии";
+"ocr.section.footer" = "Выберите фотографию документа для автоматического извлечения информации";
+"ocr.processing" = "Распознавание...";
+"ocr.photo.upload" = "Загрузить фотографию документа";
+"ocr.tap.upload" = "Нажмите для загрузки фотографии";
+"ocr.idcard.front" = "Удостоверение личности спереди (фото & сторона с номером)";
+"ocr.idcard.back" = "Удостоверение личности сзади (выдавший & действительность)";
+"ocr.passport.datapage" = "Паспорт страница данных (страница с фото)";
+"ocr.license.photo" = "Фото свидетельства о регистрации";
+"ocr.photo.front" = "Передняя сторона";
+"ocr.photo.back" = "Задняя сторона";
+"ocr.hint.idcard" = "Загрузите переднюю и обратную стороны удостоверения личности. Информация будет автоматически извлечена.";
+"ocr.hint.passport" = "Загрузите страницу данных (страница с фото) паспорта.";
+"ocr.hint.license" = "Загрузите фото свидетельства о регистрации.";
+"common.optional" = "опционально";
+"attachment.document.photos" = "Фотографии документов";
+"attachment.no.photo" = "Нет фотографии";
+"attachment.load.failed" = "Ошибка загрузки изображения";
+"ocr.edit.photo.hint" = "Нажмите для добавления или замены фотографий документов";
+
+"export.title" = "Экспорт";
+"export.action" = "Экспорт";
+"export.image" = "Экспортировать изображение";
+"export.images" = "Экспортировать изображения";
+"export.images.all" = "Экспортировать все изображения";
+"export.text" = "Экспортировать текст";
+"export.add.watermark" = "Добавить водяной знак";
+"export.watermark.title" = "Параметры водяного знака";
+"export.watermark.text" = "Текст водяного знака";
+"export.watermark.placeholder" = "Введите текст водяного знака";
+"export.watermark.hint" = "Водяной знак будет наложен по диагонали на изображение";
+"export.watermark.fontsize" = "Размер шрифта";
+"export.watermark.spacing" = "Расстояние";
+"export.watermark.spacing.dense" = "Плотное";
+"export.watermark.spacing.normal" = "Нормальное";
+"export.watermark.spacing.sparse" = "Редкое";
+"export.watermark.opacity" = "Прозрачность";
+"export.preview" = "Предпросмотр";
+"export.advanced.options" = "Дополнительные параметры";
+"export.size.compression" = "Размер и сжатие";
+"export.max.width" = "Максимальная ширина";
+"export.max.height" = "Максимальная высота";
+"export.max.filesize" = "Максимальный размер файла";
+"export.pixel" = "пк";
+"export.hint.limits" = "Оставьте пусто без ограничений. Изображение будет пропорционально изменено";
+"export.success" = "Экспорт успешен";
+"export.failed" = "Экспорт не удался";
+"export.copied" = "Скопировано в буфер обмена";
+"export.images.count" = "Экспортировано %d изображений";
+
+"validation.title.required" = "Требуется название";
+"validation.field.required" = "Это поле обязательно";
+"validation.phone.invalid" = "Неверный формат телефона";
+"validation.taxid.invalid" = "Идентификационный номер налогоплательщика должен содержать 18 символов";
+
+"items.title" = "QuickHold";
+"items.tab" = "Элементы";
+"items.search.placeholder" = "Поиск по названию или тегам...";
+"items.loading" = "Загрузка...";
+"items.empty" = "Нет элементов";
+"items.empty.subtitle" = "Нажмите + в правом верхнем углу для создания первого элемента";
+"items.empty.search" = "Результаты не найдены";
+"items.empty.search.subtitle" = "Попробуйте другие ключевые слова поиска";
+"items.pinned" = "Закреплённые";
+"items.all" = "Все";
+"items.create.text" = "Создать текстовый элемент";
+"items.create.image" = "Создать элемент с изображением";
+"items.type.text" = "Текстовый элемент";
+"items.type.image" = "Элемент с изображением";
+"items.type.file" = "Файловый элемент";
+"items.type.text.desc" = "Сохраняйте текстовую информацию для быстрого обмена";
+"items.type.image.desc" = "Сохраняйте изображения с поддержкой водяного знака";
+"items.type.file.desc" = "Сохраняйте различные файлы с поддержкой предпросмотра PDF";
+
+"items.files.select" = "Выберите файлы";
+"items.files.count" = "%d файлов";
+"items.files.section" = "Файлы";
+"items.files.limit" = "До 10 файлов, каждый файл не более 10 МБ";
+
+"items.detail.files" = "Файлы";
+"items.detail.files.count" = "%d файлов";
+"items.create.title" = "Создать %@";
+"items.create.selecttype" = "Выберите тип";
+"items.create.button" = "Создать";
+"items.info.basic" = "Основная информация";
+"items.info.title" = "Название";
+"items.info.title.hint" = "Установите чёткое название элемента";
+"items.content" = "Содержание";
+"items.content.characters" = "%d символов";
+"items.images.select" = "Выберите изображения";
+"items.images.count" = "%d изображений";
+"items.images.section" = "Изображения";
+"items.images.limit" = "Можно выбрать до 10 изображений";
+"items.tags.section" = "Теги";
+"items.tags.add" = "Добавить тег";
+"items.tags.placeholder" = "Введите имя тега";
+"items.tags.hint" = "Используйте теги для помощи в категоризации и поиске";
+"items.detail.edit" = "Редактировать";
+"items.detail.delete" = "Удалить";
+"items.detail.pin" = "Закрепить";
+"items.detail.created" = "Создано";
+"items.detail.unpin" = "Открепить";
+"items.detail.pinned" = "Закреплено";
+"items.detail.content" = "Содержание";
+"items.detail.images" = "Изображения";
+"items.detail.images.count" = "%d изображений";
+"items.detail.tags" = "Теги";
+"items.detaWatermark" = "";
+"watermark.settings" = "Параметры водяного знака";
+"watermark.collapse" = "Свернуть";
+"watermark.add" = "Добавить водяной знак";
+"watermark.text" = "Текст водяного знака (например: для использования XX только)";
+"watermark.text.placeholder" = "например: для использования XX только";
+"watermark.fontsize" = "Размер шрифта";
+"watermark.spacing" = "Интервал между строками";
+"watermark.spacing.dense" = "Плотный";
+"watermark.spacing.normal" = "Нормальный";
+"watermark.spacing.sparse" = "Разреженный";
+"watermark.opacity" = "Прозрачность";
+"watermark.preview" = "Предпросмотр";
+"watermark.share" = "Поделиться";
+"watermark.scope" = "Сфера обмена";
+"watermark.scope.current" = "Только это изображение";
+"watermark.scope.all" = "Все изображения (%d изображений)";
+"watermark.hint" = "Водяной знак будет расположен по диагонали по всему изображению";
+"watermark.sheet.title" = "Поделиться изображениями";
+"watermark.preparing" = "Подготовка...";
+
+"items.detail.share.text" = "Поделиться текстом";
+"items.detail.share.images" = "Поделиться изображениями";
+"items.delete.confirm" = "Вы уверены, что хотите удалить этот элемент?";
+"items.delete.title" = "Подтвердить удаление";
+"items.delete.message" = "Это действие нельзя отменить";
+"items.created.success" = "Успешно создано";
+"items.updated.success" = "Успешно обновлено";
+"items.deleted.success" = "Успешно удалено";
+
+"settings.security.biometric.enabled" = "Биометрия включена";
+"settings.security.biometric.disabled" = "Биометрия отключена";
+"settings.security.cleardata" = "Очистить все данные";
+"settings.security.cleardata.footer" = "⚠️ Это навсегда удалит все карточки, изображения и файлы. Это действие нельзя отменить!";
+"settings.security.cleardata.confirm.title" = "Подтвердить очистку всех данных";
+"settings.security.cleardata.confirm.message" = "Это навсегда удалит все данные и не может быть отменено. Введите пароль для подтверждения.";
+"settings.security.cleardata.confirm.password" = "Введите пароль";
+"settings.security.cleardata.confirm.delete" = "Удалить все данные";
+"settings.security.cleardata.success" = "Все данные были удалены";
+"settings.appearance" = "Внешний вид";
+"settings.appearance.title" = "Дисплей";
+"settings.appearance.auto" = "Автоматически";
+"settings.appearance.light" = "Светлый";
+"settings.appearance.dark" = "Тёмный";
+"settings.tab" = "Настройки";
+
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Инструмент для кросс-платформенной передачи фотографий. Быстрый обмен фотографиями между Mac и iPhone без интернета.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Превратите iPhone в защищённый мобильный диск";
