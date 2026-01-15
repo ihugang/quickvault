@@ -79,8 +79,8 @@ class SettingsViewModel: ObservableObject {
     
     // MARK: - Keys
     
-    private let autoLockTimeoutKey = "com.quickhold.autoLockTimeout"
-    private let appearanceModeKey = "com.quickhold.appearanceMode"
+    private let autoLockTimeoutKey = QuickHoldConstants.UserDefaultsKeys.autoLockTimeout
+    private let appearanceModeKey = QuickHoldConstants.UserDefaultsKeys.appearanceMode
     
     // MARK: - Initialization
     

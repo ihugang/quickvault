@@ -13,7 +13,7 @@ public struct PersistenceController: Sendable {
 
   /// CloudKit container identifier - must match in both macOS and iOS apps
   /// CloudKit 容器标识符 - 必须在 macOS 和 iOS 应用中保持一致
-  public static let cloudKitContainerIdentifier = "iCloud.com.QuickHold.app"
+  public static let cloudKitContainerIdentifier = QuickHoldConstants.CloudKit.containerIdentifier
 
   public let container: NSPersistentCloudKitContainer
   

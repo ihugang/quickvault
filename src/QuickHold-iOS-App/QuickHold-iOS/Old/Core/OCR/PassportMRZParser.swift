@@ -40,7 +40,7 @@ final class PassportMRZParser {
         add("expiry_date", "有效期至", expiryDate)
         add("sex", "性别", sex)
 
-        let docType: DocumentType = fields.isEmpty ? .unknown : .passportMRZ
+        let docType: DocumentType0 = fields.isEmpty ? .unknown : .passportMRZ
         return .init(docType: docType, fields: fields, rawText: raw)
     }
 

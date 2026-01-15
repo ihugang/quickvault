@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "2600"
+   LastUpgradeVersion = "1430"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "13E9787B7AADB096C4E69195"
-               BuildableName = "QuickVault.app"
-               BlueprintName = "QuickVault-iOS"
-               ReferencedContainer = "container:QuickVault-iOS.xcodeproj">
+               BlueprintIdentifier = "5962C5E93DED7EDE8A9E0E7B"
+               BuildableName = "QuickHold.app"
+               BlueprintName = "QuickHold-iOS"
+               ReferencedContainer = "container:QuickHold-iOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,10 +31,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13E9787B7AADB096C4E69195"
-            BuildableName = "QuickVault.app"
-            BlueprintName = "QuickVault-iOS"
-            ReferencedContainer = "container:QuickVault-iOS.xcodeproj">
+            BlueprintIdentifier = "5962C5E93DED7EDE8A9E0E7B"
+            BuildableName = "QuickHold.app"
+            BlueprintName = "QuickHold-iOS"
+            ReferencedContainer = "container:QuickHold-iOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -43,10 +43,10 @@
             parallelizable = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F76F977D2040E406EE1AA915"
-               BuildableName = "QuickVault-iOSTests.xctest"
-               BlueprintName = "QuickVault-iOSTests"
-               ReferencedContainer = "container:QuickVault-iOS.xcodeproj">
+               BlueprintIdentifier = "8080705196EE57E27AFA9CA9"
+               BuildableName = "QuickHold-iOSTests.xctest"
+               BlueprintName = "QuickHold-iOSTests"
+               ReferencedContainer = "container:QuickHold-iOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -65,10 +65,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13E9787B7AADB096C4E69195"
-            BuildableName = "QuickVault.app"
-            BlueprintName = "QuickVault-iOS"
-            ReferencedContainer = "container:QuickVault-iOS.xcodeproj">
+            BlueprintIdentifier = "5962C5E93DED7EDE8A9E0E7B"
+            BuildableName = "QuickHold.app"
+            BlueprintName = "QuickHold-iOS"
+            ReferencedContainer = "container:QuickHold-iOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -82,10 +82,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13E9787B7AADB096C4E69195"
-            BuildableName = "QuickVault.app"
-            BlueprintName = "QuickVault-iOS"
-            ReferencedContainer = "container:QuickVault-iOS.xcodeproj">
+            BlueprintIdentifier = "5962C5E93DED7EDE8A9E0E7B"
+            BuildableName = "QuickHold.app"
+            BlueprintName = "QuickHold-iOS"
+            ReferencedContainer = "container:QuickHold-iOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

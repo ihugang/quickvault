@@ -6,6 +6,7 @@
 //
 //  设备报告服务 - 向云端报告设备信息
 
+import CoreData
 import Foundation
 
 #if canImport(UIKit)
@@ -16,10 +17,10 @@ import UIKit
 
 enum DeviceReportAPI {
   private static let baseURL = URL(string: "https://api.apiandlogs.com/api")!
-  private static let applicationId = UUID(uuidString: "DD8CCB23-85C7-429A-A9D7-CCD1D7A28E8F")!
+  public static let applicationId = UUID(uuidString: "DD8CCB23-85C7-429A-A9D7-CCD1D7A28E8F")!
 
   static func reportDevice(_ payload: DeviceReportRequestData) async throws -> RemoteInvokeResults<RemoteHosts> {
-    let url = baseURL.appendingPathComponent("Device/ReportQuickHold")
+    let url = baseURL.appendingPathComponent("Device/ReportDevice")
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -55,6 +56,7 @@ enum DeviceReportAPI {
 // MARK: - Data Models
 
 struct DeviceReportRequestData: Codable {
+  let applicationId: UUID
   let deviceId: UUID
   let name: String
   let os: Int8
@@ -68,6 +70,7 @@ struct DeviceReportRequestData: Codable {
   let catType: String
   let photoNum: Int32
   let videoNum: Int32
+  let docNum: Int32
   let vipLevel: Int8
 }
 
@@ -128,8 +131,9 @@ enum DeviceReportError: LocalizedError {
 public class DeviceReportService: ObservableObject {
   public static let shared = DeviceReportService()
 
-  private let reportDeviceIdKey = "com.quickhold.reportDeviceId"
+  private let reportDeviceIdKey = QuickHoldConstants.UserDefaultsKeys.reportDeviceId
   private var hasReportedDevice = false
+  private let persistenceController = PersistenceController.shared
 
   private init() {}
 
@@ -146,6 +150,7 @@ public class DeviceReportService: ObservableObject {
   /// 执行设备报告
   private func reportDeviceToCloud(itemCount: Int) async {
     let deviceId = getReportDeviceId()
+    let itemCounts = await fetchItemCounts()
 
     #if canImport(UIKit)
     let deviceName = UIDevice.current.name
@@ -164,6 +169,7 @@ public class DeviceReportService: ObservableObject {
     let appVersion = Bundle.main.appVersion
 
     let payload = DeviceReportRequestData(
+      applicationId: DeviceReportAPI.applicationId,
       deviceId: deviceId,
       name: deviceName,
       os: os,
@@ -175,8 +181,9 @@ public class DeviceReportService: ObservableObject {
       appVersion: appVersion,
       catId: "",
       catType: "",
-      photoNum: 0,
-      videoNum: 0,
+      photoNum: itemCounts.image,
+      videoNum: itemCounts.text,
+      docNum: itemCounts.file,
       vipLevel: 0
     )
 
@@ -209,6 +216,28 @@ public class DeviceReportService: ObservableObject {
   /// 重置报告状态(用于测试)
   public func resetReportStatus() {
     hasReportedDevice = false
+  }
+
+  private func fetchItemCounts() async -> (text: Int32, image: Int32, file: Int32) {
+    let context = persistenceController.container.viewContext
+    return await context.perform {
+      let textCount = self.countItems(of: .text, in: context)
+      let imageCount = self.countItems(of: .image, in: context)
+      let fileCount = self.countItems(of: .file, in: context)
+      return (Int32(textCount), Int32(imageCount), Int32(fileCount))
+    }
+  }
+
+  private func countItems(of type: ItemType, in context: NSManagedObjectContext) -> Int {
+    let request = Item.fetchRequest()
+    request.predicate = NSPredicate(format: "type == %@", type.rawValue)
+    do {
+      let count = try context.count(for: request)
+      return count == NSNotFound ? 0 : count
+    } catch {
+      print("⚠️ Failed to count \(type.rawValue) items: \(error.localizedDescription)")
+      return 0
+    }
   }
 }
 

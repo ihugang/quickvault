@@ -1,4 +1,4 @@
-name: QuickVault-iOS
+name: QuickHold-iOS
 options:
   bundleIdPrefix: com.quickvault
   deploymentTarget:
@@ -6,26 +6,26 @@ options:
   developmentLanguage: zh-Hans
 
 packages:
-  QuickVaultKit:
-    path: ../QuickVaultKit
+  QuickHoldKit:
+    path: ../QuickHoldKit
 
 targets:
-  QuickVault-iOS:
+  QuickHold-iOS:
     type: application
     platform: iOS
     deploymentTarget: "17.0"
 
     sources:
-      - path: QuickVault-iOS
+      - path: QuickHold-iOS
         excludes:
           - "*.md"
 
     settings:
       base:
-        PRODUCT_NAME: QuickVault
+        PRODUCT_NAME: QuickHold
         PRODUCT_BUNDLE_IDENTIFIER: com.quickvault.ios
-        INFOPLIST_FILE: QuickVault-iOS/Resources/Info.plist
-        CODE_SIGN_ENTITLEMENTS: QuickVault-iOS/Resources/QuickVault.entitlements
+        INFOPLIST_FILE: QuickHold-iOS/Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: QuickHold-iOS/Resources/QuickHold.entitlements
         CODE_SIGN_STYLE: Automatic
         CODE_SIGN_IDENTITY: "-"
         IPHONEOS_DEPLOYMENT_TARGET: "17.0"
@@ -36,8 +36,8 @@ targets:
         DEVELOPMENT_TEAM: ""
 
     dependencies:
-      - package: QuickVaultKit
-        product: QuickVaultCore
+      - package: QuickHoldKit
+        product: QuickHoldCore
       - sdk: UIKit.framework
       - sdk: SwiftUI.framework
       - sdk: Security.framework
@@ -45,24 +45,24 @@ targets:
 
     scheme:
       testTargets:
-        - QuickVault-iOSTests
+        - QuickHold-iOSTests
       gatherCoverageData: true
 
     prebuildScripts:
       - script: |
-          echo "Building QuickVault iOS App"
+          echo "Building QuickHold iOS App"
         name: "Pre-build Info"
         basedOnDependencyAnalysis: false
 
-  QuickVault-iOSTests:
+  QuickHold-iOSTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - QuickVault-iOSTests
+      - QuickHold-iOSTests
     dependencies:
-      - target: QuickVault-iOS
-      - package: QuickVaultKit
-        product: QuickVaultCore
+      - target: QuickHold-iOS
+      - package: QuickHoldKit
+        product: QuickHoldCore
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.quickvault.ios.tests

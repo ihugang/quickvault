@@ -18,7 +18,7 @@ class AutoLockManager: ObservableObject {
     private let lockAction: () -> Void
     private let authService: AuthenticationService
     private let userDefaults = UserDefaults.standard
-    private let autoLockTimeoutKey = "com.quickhold.autoLockTimeout"
+    private let autoLockTimeoutKey = QuickHoldConstants.UserDefaultsKeys.autoLockTimeout
 
     // 短暂切换豁免时间(秒): 如果切换时间少于此值,不触发锁定
     // Brief switch exemption: don't lock if background time is less than this

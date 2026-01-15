@@ -55,7 +55,7 @@ public final class CryptoServiceImpl: CryptoService, @unchecked Sendable {
   private var encryptionKey: SymmetricKey?
   private let keychainService: KeychainService
 
-  private let saltKey = "crypto.salt"
+  private let saltKey = QuickHoldConstants.KeychainKeys.cryptoSalt
   private let keyKey = "crypto.key"
 
   public init(keychainService: KeychainService = KeychainServiceImpl()) {

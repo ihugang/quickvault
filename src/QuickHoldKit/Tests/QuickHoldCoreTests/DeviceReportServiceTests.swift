@@ -21,7 +21,7 @@ final class DeviceReportServiceTests: XCTestCase {
     let service = DeviceReportService.shared
 
     // 清除之前的ID
-    UserDefaults.standard.removeObject(forKey: "com.quickhold.reportDeviceId")
+    UserDefaults.standard.removeObject(forKey: QuickHoldConstants.UserDefaultsKeys.reportDeviceId)
 
     // 重置报告状态
     service.resetReportStatus()
@@ -46,6 +46,7 @@ final class DeviceReportServiceTests: XCTestCase {
   func testDeviceReportRequestDataEncoding() throws {
     let deviceId = UUID()
     let requestData = DeviceReportRequestData(
+      applicationId: UUID(),
       deviceId: deviceId,
       name: "Test Device",
       os: 1,
@@ -59,6 +60,8 @@ final class DeviceReportServiceTests: XCTestCase {
       catType: "",
       photoNum: 0,
       videoNum: 0,
+      imageNum: 0,
+      docNum: 0,
       vipLevel: 0
     )
 

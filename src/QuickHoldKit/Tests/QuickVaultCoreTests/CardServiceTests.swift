@@ -29,7 +29,7 @@ final class CardServiceTests: XCTestCase {
   }
 
   override func tearDown() async throws {
-    try? keychainService.delete(key: "crypto.salt")
+    try? keychainService.delete(key: QuickHoldConstants.KeychainKeys.cryptoSalt)
     try await super.tearDown()
   }
 

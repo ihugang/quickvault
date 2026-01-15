@@ -25,7 +25,7 @@ public class FileStorageManager {
   private let storageLocation: StorageLocation
   
   // iCloud container identifier
-  private let iCloudContainerIdentifier = "iCloud.com.QuickHold.app"
+  private let iCloudContainerIdentifier = QuickHoldConstants.CloudKit.containerIdentifier
 
   /// 文件存储根目录 / File storage root directory
   /// 根据配置，可能位于本地或 iCloud

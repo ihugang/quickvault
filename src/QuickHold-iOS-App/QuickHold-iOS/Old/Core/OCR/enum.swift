@@ -1,7 +1,7 @@
 import Foundation
 import CoreGraphics
 
-enum DocumentType: String {
+enum DocumentType0: String, Codable {
     case cnResidentIDFront
     case passportMRZ
     case unknown
@@ -15,7 +15,7 @@ struct ExtractedField: Codable, Hashable {
 }
 
 struct DocumentExtractionResult: Codable {
-    let docType: DocumentType
+    let docType: DocumentType0
     let fields: [ExtractedField]
     let rawText: String
 }

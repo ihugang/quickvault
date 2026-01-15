@@ -1,3 +1,4 @@
+import UIKit
 
 final class DocumentExtractor {
     private let ocr = VisionOCR()

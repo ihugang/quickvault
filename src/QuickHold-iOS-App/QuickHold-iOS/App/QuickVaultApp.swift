@@ -72,7 +72,7 @@ struct QuickHoldSimpleApp: App {
 /// Simple root view for the new architecture
 struct SimpleRootView: View {
     @ObservedObject var authViewModel: AuthViewModel
-    @AppStorage("com.quickhold.appearanceMode") private var appearanceModeRaw: Int = 0
+    @AppStorage(QuickHoldConstants.UserDefaultsKeys.appearanceMode) private var appearanceModeRaw: Int = 0
     
     private var preferredColorScheme: ColorScheme? {
         // 0 = system, 1 = light, 2 = dark

@@ -40,7 +40,7 @@ final class CNResidentIDFrontParser {
         add("address", "住址", p.address, conf: 0.75)
         add("id_number", "公民身份号码", p.idNumber, conf: 0.95)
 
-        let docType: DocumentType = fields.isEmpty ? .unknown : .cnResidentIDFront
+        let docType: DocumentType0 = fields.isEmpty ? .unknown : .cnResidentIDFront
         return .init(docType: docType, fields: fields, rawText: raw)
     }
 

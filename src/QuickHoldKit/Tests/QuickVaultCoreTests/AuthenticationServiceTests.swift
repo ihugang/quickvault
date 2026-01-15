@@ -19,15 +19,15 @@ final class AuthenticationServiceTests: XCTestCase {
     )
 
     // Clean up any existing test data
-    try? keychainService.delete(key: "com.quickhold.masterPassword")
+    try? keychainService.delete(key: QuickHoldConstants.KeychainKeys.masterPassword)
   }
 
   override func tearDown() {
     // Clean up test data
-    try? keychainService.delete(key: "com.quickhold.masterPassword")
-    UserDefaults.standard.removeObject(forKey: "com.quickhold.biometricEnabled")
-    UserDefaults.standard.removeObject(forKey: "com.quickhold.failedAttempts")
-    UserDefaults.standard.removeObject(forKey: "com.quickhold.lastFailedAttempt")
+    try? keychainService.delete(key: QuickHoldConstants.KeychainKeys.masterPassword)
+    UserDefaults.standard.removeObject(forKey: QuickHoldConstants.UserDefaultsKeys.biometricEnabled)
+    UserDefaults.standard.removeObject(forKey: QuickHoldConstants.UserDefaultsKeys.failedAttempts)
+    UserDefaults.standard.removeObject(forKey: QuickHoldConstants.UserDefaultsKeys.lastFailedAttempt)
     super.tearDown()
   }
 
@@ -40,7 +40,7 @@ final class AuthenticationServiceTests: XCTestCase {
     try await authService.setupMasterPassword(password)
 
     XCTAssertEqual(authService.authenticationState, .unlocked)
-    XCTAssertTrue(keychainService.exists(key: "com.QuickHold.masterPassword"))
+    XCTAssertTrue(keychainService.exists(key: QuickHoldConstants.KeychainKeys.masterPassword))
   }
 
   func testSetupMasterPasswordTooShort() async {

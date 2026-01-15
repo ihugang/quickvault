@@ -115,11 +115,11 @@ public class AuthenticationServiceImpl: AuthenticationService {
     CryptoServiceImpl.shared
   }
 
-  private let masterPasswordKey = "com.quickhold.masterPassword"
-  private let biometricPasswordKey = "com.quickhold.biometricPassword"
-  private let biometricEnabledKey = "com.quickhold.biometricEnabled"
-  private let failedAttemptsKey = "com.quickhold.failedAttempts"
-  private let lastFailedAttemptKey = "com.quickhold.lastFailedAttempt"
+  private let masterPasswordKey = QuickHoldConstants.KeychainKeys.masterPassword
+  private let biometricPasswordKey = QuickHoldConstants.KeychainKeys.biometricPassword
+  private let biometricEnabledKey = QuickHoldConstants.UserDefaultsKeys.biometricEnabled
+  private let failedAttemptsKey = QuickHoldConstants.UserDefaultsKeys.failedAttempts
+  private let lastFailedAttemptKey = QuickHoldConstants.UserDefaultsKeys.lastFailedAttempt
 
   private let maxFailedAttempts = 3
   private let rateLimitDuration: TimeInterval = 30  // 30 seconds
@@ -371,7 +371,7 @@ public class AuthenticationServiceImpl: AuthenticationService {
     // 3. Delete all keychain data
     try? keychainService.delete(key: masterPasswordKey)
     try? keychainService.delete(key: biometricPasswordKey)
-    try? keychainService.delete(key: "crypto.salt")
+    try? keychainService.delete(key: QuickHoldConstants.KeychainKeys.cryptoSalt)
     
     // 4. Clear encryption key from CryptoService
     cryptoService.clearKey()
