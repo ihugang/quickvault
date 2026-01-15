@@ -1143,6 +1143,15 @@ struct WatermarkConfigSheet: View {
     }
 }
 
+// MARK: - File Data Wrapper
+
+struct FileDataWrapper: Identifiable {
+    let id = UUID()
+    let data: Data
+    let fileName: String
+    let mimeType: String
+}
+
 // MARK: - File Thumbnail View
 
 struct FileThumbnailView: View {
@@ -1150,7 +1159,6 @@ struct FileThumbnailView: View {
     let itemService: ItemService
     let item: ItemDTO
     
-    @State private var isSharing = false
     @State private var isPreviewing = false
     @State private var fileDataToShare: Data?
     @State private var previewURL: URL?
@@ -1228,10 +1236,19 @@ struct FileThumbnailView: View {
         }
         .disabled(isPreviewing)
         .opacity(isPreviewing ? 0.6 : 1.0)
-        .sheet(isPresented: $isSharing) {
-            if let data = fileDataToShare {
-                ShareSheet(items: [ShareableFile(data: data, fileName: file.fileName, mimeType: file.mimeType)])
+        .sheet(item: Binding(
+            get: { fileDataToShare.map { FileDataWrapper(data: $0, fileName: file.fileName, mimeType: file.mimeType) } },
+            set: { newValue in
+                if newValue == nil {
+                    print("📤 [File Share] Share sheet dismissed")
+                    fileDataToShare = nil
+                }
             }
+        )) { wrapper in
+            ShareSheet(items: [ShareableFile(data: wrapper.data, fileName: wrapper.fileName, mimeType: wrapper.mimeType)])
+                .onAppear {
+                    print("📤 [File Share] Showing share sheet with \(wrapper.data.count) bytes")
+                }
         }
         .sheet(isPresented: $isPreviewing) {
             if let url = previewURL {
@@ -1264,16 +1281,19 @@ struct FileThumbnailView: View {
     }
     
     private func loadAndShareFile() async {
-        isSharing = true
-        defer { isSharing = false }
+        print("📤 [File Share] Starting file share for: \(file.fileName)")
         
         do {
+            print("📤 [File Share] Loading decrypted file data...")
             let data = try await itemService.getDecryptedFile(fileId: file.id)
+            print("📤 [File Share] Successfully loaded \(data.count) bytes")
+            
             await MainActor.run {
                 self.fileDataToShare = data
+                print("📤 [File Share] Set fileDataToShare, size: \(data.count)")
             }
         } catch {
-            print("Error loading file: \(error)")
+            print("❌ [File Share] Error loading file: \(error)")
         }
     }
     
@@ -1537,19 +1557,24 @@ struct ShareSheet: UIViewControllerRepresentable {
     let items: [ShareableFile]
     
     func makeUIViewController(context: Context) -> UIActivityViewController {
+        print("📤 [ShareSheet] Creating activity view controller for \(items.count) file(s)")
+        
         // 创建临时 URL 来共享文件
         var itemsToShare: [Any] = []
         
         for file in items {
+            print("📤 [ShareSheet] Processing file: \(file.fileName), size: \(file.data.count) bytes")
             let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(file.fileName)
             do {
                 try file.data.write(to: tempURL)
                 itemsToShare.append(tempURL)
+                print("✅ [ShareSheet] Successfully wrote file to temp: \(tempURL.path)")
             } catch {
-                print("Error writing file to temp directory: \(error)")
+                print("❌ [ShareSheet] Error writing file to temp directory: \(error)")
             }
         }
         
+        print("📤 [ShareSheet] Creating UIActivityViewController with \(itemsToShare.count) item(s)")
         let activityVC = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
         return activityVC
     }

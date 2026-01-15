@@ -124,14 +124,27 @@ public class FileStorageManager {
   /// - Parameter relativePath: 相对文件路径 / Relative file path
   /// - Returns: 解密后的文件数据 / Decrypted file data
   public func readFile(relativePath: String) throws -> Data {
+    print("📂 [FileStorageManager] Reading file: \(relativePath)")
+    
     let baseDir = try filesDirectory
     let fileURL = baseDir.appendingPathComponent(relativePath)
     
+    print("📂 [FileStorageManager] Full path: \(fileURL.path)")
+    
+    // 检查文件是否存在
+    guard fileManager.fileExists(atPath: fileURL.path) else {
+      print("❌ [FileStorageManager] File does not exist at path: \(fileURL.path)")
+      throw NSError(domain: "FileStorageManager", code: 404, userInfo: [NSLocalizedDescriptionKey: "File not found"])
+    }
+    
     // 读取加密数据 / Read encrypted data
     let encryptedData = try Data(contentsOf: fileURL)
+    print("📂 [FileStorageManager] Read encrypted data: \(encryptedData.count) bytes")
     
     // 解密 / Decrypt
-    return try cryptoService.decryptFile(encryptedData)
+    let decryptedData = try cryptoService.decryptFile(encryptedData)
+    print("✅ [FileStorageManager] Successfully decrypted file: \(decryptedData.count) bytes")
+    return decryptedData
   }
   
   /// 删除文件 / Delete file

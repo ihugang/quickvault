@@ -821,21 +821,29 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
   }
   
   public func getDecryptedFile(fileId: UUID) async throws -> Data {
+    print("📁 [ItemService] Getting decrypted file for ID: \(fileId)")
+    
     return try await context.perform {
       let fetchRequest = FileContent.fetchRequest()
       fetchRequest.predicate = NSPredicate(format: "id == %@", fileId as CVarArg)
       fetchRequest.fetchLimit = 1
       
       guard let fileContent = try self.context.fetch(fetchRequest).first else {
+        print("❌ [ItemService] File not found in CoreData for ID: \(fileId)")
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "File not found"])
       }
       
       guard let fileURL = fileContent.fileURL else {
+        print("❌ [ItemService] File path not found for ID: \(fileId)")
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "File path not found"])
       }
       
+      print("📁 [ItemService] Reading file from path: \(fileURL)")
+      
       // 从文件系统读取解密后的文件 / Read decrypted file from file system
-      return try self.fileStorageManager.readFile(relativePath: fileURL)
+      let data = try self.fileStorageManager.readFile(relativePath: fileURL)
+      print("✅ [ItemService] Successfully read and decrypted file, size: \(data.count) bytes")
+      return data
     }
   }
 }
