@@ -51,6 +51,27 @@ This project uses:
 -   Sparkle 进行自动更新
 -   SwiftCheck 进行基于属性的测试
 
+### Code Organization / 代码组织
+
+The project follows a centralized constants management system for better maintainability:
+
+项目采用集中式常量管理系统以提高可维护性：
+
+-   📁 **Constants** - Centralized constant definitions / 集中的常量定义
+    -   `AppConstants.swift` - App-level constants (IDs, icons, validation rules) / 应用级常量
+    -   `LocalizationKeys.swift` - Localization string keys / 本地化字符串键
+-   📚 **Documentation** - Comprehensive guides / 完整指南
+    -   [CONSTANTS_GUIDE.md](CONSTANTS_GUIDE.md) - Usage guide / 使用指南
+    -   [CONSTANTS_MIGRATION_PLAN.md](CONSTANTS_MIGRATION_PLAN.md) - Migration tracking / 迁移跟踪
+-   🔧 **Tools** - Development utilities / 开发工具
+    -   `scripts/find_hardcoded_strings.sh` - Find hardcoded strings / 查找硬编码字符串
+
+For more details, see [CONSTANTS_IMPLEMENTATION_SUMMARY.md](CONSTANTS_IMPLEMENTATION_SUMMARY.md).
+
+详情请参阅 [CONSTANTS_IMPLEMENTATION_SUMMARY.md](CONSTANTS_IMPLEMENTATION_SUMMARY.md)。
+-   Sparkle 进行自动更新
+-   SwiftCheck 进行基于属性的测试
+
 ## Testing / 测试
 
 ```bash
