@@ -82,7 +82,9 @@ class LocalizationManager: ObservableObject {
       updateLayoutDirection()
     }
   }
-  
+
+  @Published var isUsingSystemLanguage: Bool = false
+
   @Published var layoutDirection: LayoutDirection = .leftToRight
   
   private var bundle: Bundle?
@@ -91,21 +93,36 @@ class LocalizationManager: ObservableObject {
     if let savedLanguage = UserDefaults.standard.string(forKey: languageKey),
        let language = AppLanguage(rawValue: savedLanguage) {
       self.currentLanguage = language
+      self.isUsingSystemLanguage = false
     } else {
-      // Default to system language or English
+      // Default to system language
       let preferredLanguage = Locale.preferredLanguages.first ?? "en"
       if let language = AppLanguage.allCases.first(where: { preferredLanguage.hasPrefix($0.rawValue) }) {
         self.currentLanguage = language
       } else {
         self.currentLanguage = .english
       }
+      self.isUsingSystemLanguage = true
     }
     updateBundle()
     updateLayoutDirection()
   }
-  
+
   func setLanguage(_ language: AppLanguage) {
     currentLanguage = language
+    isUsingSystemLanguage = false
+    updateBundle()
+  }
+
+  func useSystemLanguage() {
+    UserDefaults.standard.removeObject(forKey: languageKey)
+    let preferredLanguage = Locale.preferredLanguages.first ?? "en"
+    if let language = AppLanguage.allCases.first(where: { preferredLanguage.hasPrefix($0.rawValue) }) {
+      currentLanguage = language
+    } else {
+      currentLanguage = .english
+    }
+    isUsingSystemLanguage = true
     updateBundle()
   }
   

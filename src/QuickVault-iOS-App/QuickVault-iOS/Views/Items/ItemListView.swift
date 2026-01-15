@@ -14,12 +14,12 @@ private enum ListPalette {
     static let primary = Color(red: 0.20, green: 0.40, blue: 0.70)       // #3366B3
     static let secondary = Color(red: 0.15, green: 0.65, blue: 0.60)     // #26A699 青绿色
     static let accent = Color(red: 0.95, green: 0.70, blue: 0.20)        // #F2B333 金色
-    
-    // Neutral
-    static let canvasTop = Color(red: 0.965, green: 0.975, blue: 0.985)  // light gray-blue
-    static let canvasBottom = Color(red: 0.95, green: 0.96, blue: 0.97)
-    static let card = Color.white
-    static let border = Color(red: 0.88, green: 0.90, blue: 0.92)        // #E0E5EB
+
+    // Neutral - 自适应颜色（支持 Dark Mode）
+    static let canvasTop = Color(.systemGroupedBackground)
+    static let canvasBottom = Color(.systemGroupedBackground)
+    static let card = Color(.secondarySystemGroupedBackground)
+    static let border = Color(.separator)
 }
 
 struct ItemListView: View {
@@ -56,9 +56,6 @@ struct ItemListView: View {
             .navigationTitle(localizationManager.localizedString("items.title"))
             .navigationBarTitleDisplayMode(.large)
             .environment(\.layoutDirection, localizationManager.layoutDirection)
-            .toolbarBackground(Color.white.opacity(0.94), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.light, for: .navigationBar)
             .tint(ListPalette.primary)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -148,6 +145,13 @@ struct ItemListView: View {
                 showingCreateSheet = true
             } label: {
                 Label(localizationManager.localizedString("items.type.image"), systemImage: "photo")
+            }
+            
+            Button {
+                selectedItemType = .file
+                showingCreateSheet = true
+            } label: {
+                Label(localizationManager.localizedString("items.type.file"), systemImage: "folder.fill")
             }
         } label: {
             Image(systemName: "plus.circle.fill")
@@ -322,8 +326,8 @@ struct ItemCard: View {
             // 内容预览
             contentPreview
             
-            // 标签
-            if !item.tags.isEmpty {
+            // 标签和数量
+            if !item.tags.isEmpty || item.type == .image || item.type == .file {
                 tagsView
             }
         }
@@ -389,20 +393,45 @@ struct ItemCard: View {
         }
     }
     
+    private func formatTotalFileSize(_ files: [FileDTO]) -> String {
+        let totalBytes = files.reduce(0) { $0 + $1.fileSize }
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = [.useKB, .useMB, .useGB]
+        formatter.countStyle = .file
+        return formatter.string(fromByteCount: totalBytes)
+    }
+    
     private var tagsView: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 6) {
-                ForEach(item.tags, id: \.self) { tag in
-                    Text(tag)
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(.secondary)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .background(
-                            Capsule()
-                                .fill(Color(.systemGray6))
-                        )
+        HStack(spacing: 8) {
+            if !item.tags.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 6) {
+                        ForEach(item.tags, id: \.self) { tag in
+                            Text(tag)
+                                .font(.caption.weight(.medium))
+                                .foregroundStyle(.secondary)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(
+                                    Capsule()
+                                        .fill(Color(.systemGray6))
+                                )
+                        }
+                    }
                 }
+            }
+            
+            Spacer()
+            
+            // 数量显示
+            if item.type == .image, let images = item.images, !images.isEmpty {
+                Text("\(images.count) \(images.count == 1 ? "image" : "images")")
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.tertiary)
+            } else if item.type == .file, let files = item.files, !files.isEmpty {
+                Text("\(files.count) \(files.count == 1 ? "file" : "files")")
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.tertiary)
             }
         }
     }

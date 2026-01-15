@@ -14,11 +14,11 @@ private enum DetailPalette {
     static let primary = Color(red: 0.20, green: 0.40, blue: 0.70)       // #3366B3
     static let secondary = Color(red: 0.15, green: 0.65, blue: 0.60)     // #26A699 青绿色
     static let accent = Color(red: 0.95, green: 0.70, blue: 0.20)        // #F2B333 金色
-    
-    // Neutral
-    static let canvas = Color(red: 0.965, green: 0.975, blue: 0.985)
-    static let card = Color.white
-    static let border = Color(red: 0.88, green: 0.90, blue: 0.92)        // #E0E5EB
+
+    // Neutral - 自适应颜色（支持 Dark Mode）
+    static let canvas = Color(.systemGroupedBackground)
+    static let card = Color(.secondarySystemGroupedBackground)
+    static let border = Color(.separator)
 }
 
 struct ItemDetailView: View {
@@ -56,9 +56,6 @@ struct ItemDetailView: View {
         }
         .background(DetailPalette.canvas)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(Color.white.opacity(0.94), for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarColorScheme(.light, for: .navigationBar)
         .tint(DetailPalette.primary)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -149,8 +146,10 @@ struct ItemDetailView: View {
         VStack(alignment: .leading, spacing: 12) {
             if item.type == .text {
                 textContentView
-            } else {
+            } else if item.type == .image {
                 imageContentView
+            } else if item.type == .file {
+                fileContentView
             }
         }
     }
@@ -204,6 +203,31 @@ struct ItemDetailView: View {
                 VStack(spacing: 12) {
                     ForEach(images) { image in
                         ImageThumbnailView(image: image, itemService: itemService, item: item)
+                    }
+                }
+            }
+        }
+    }
+    
+    private var fileContentView: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: "folder.fill")
+                    .font(.caption)
+                    .foregroundStyle(Color.orange)
+                Text(localizationManager.localizedString("items.detail.files"))
+                    .font(.subheadline.weight(.semibold))
+                Spacer()
+                Text(String(format: localizationManager.localizedString("items.detail.files.count"), item.files?.count ?? 0))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .foregroundStyle(.secondary)
+            
+            if let files = item.files, !files.isEmpty {
+                VStack(spacing: 8) {
+                    ForEach(files) { file in
+                        FileThumbnailView(file: file, itemService: itemService, item: item)
                     }
                 }
             }
@@ -1119,6 +1143,248 @@ struct WatermarkConfigSheet: View {
     }
 }
 
+// MARK: - File Thumbnail View
+
+struct FileThumbnailView: View {
+    let file: FileDTO
+    let itemService: ItemService
+    let item: ItemDTO
+    
+    @State private var isSharing = false
+    @State private var isPreviewing = false
+    @State private var fileDataToShare: Data?
+    @State private var previewURL: URL?
+    
+    var body: some View {
+        Button {
+            Task { await loadAndPreviewFile() }
+        } label: {
+            HStack(spacing: 12) {
+                // 文件图标或缩略图
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(Color.orange.opacity(0.1))
+                        .frame(width: 60, height: 60)
+                    
+                    if let thumbnailData = file.thumbnailData,
+                       let uiImage = UIImage(data: thumbnailData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 60, height: 60)
+                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    } else {
+                        Image(systemName: fileIcon(for: file.mimeType))
+                            .font(.title2)
+                            .foregroundStyle(Color.orange)
+                    }
+                }
+                
+                // 文件信息
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(file.fileName)
+                        .font(.body.weight(.medium))
+                        .foregroundStyle(.primary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                    
+                    HStack {
+                        Text(friendlyFileType(for: file.mimeType))
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Color.orange, in: Capsule())
+                        
+                        Text(formatFileSize(Int(file.fileSize)))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                
+                Spacer()
+                
+                // 分享按钮
+                Button {
+                    Task { await loadAndShareFile() }
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.body)
+                        .foregroundStyle(.blue)
+                        .padding(8)
+                        .background(Color.blue.opacity(0.1), in: Circle())
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
+            .background(DetailPalette.card)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .stroke(DetailPalette.border, lineWidth: 1)
+            )
+            .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
+        }
+        .disabled(isPreviewing)
+        .opacity(isPreviewing ? 0.6 : 1.0)
+        .sheet(isPresented: $isSharing) {
+            if let data = fileDataToShare {
+                ShareSheet(items: [ShareableFile(data: data, fileName: file.fileName, mimeType: file.mimeType)])
+            }
+        }
+        .sheet(isPresented: $isPreviewing) {
+            if let url = previewURL {
+                QuickLookPreview(url: url)
+            }
+        }
+    }
+    
+    private func loadAndPreviewFile() async {
+        isPreviewing = true
+        
+        do {
+            let data = try await itemService.getDecryptedFile(fileId: file.id)
+            
+            // 创建临时文件用于预览
+            let tempDir = FileManager.default.temporaryDirectory
+            let tempFile = tempDir.appendingPathComponent(file.fileName)
+            
+            try data.write(to: tempFile)
+            
+            await MainActor.run {
+                self.previewURL = tempFile
+            }
+        } catch {
+            print("Error loading file for preview: \(error)")
+            await MainActor.run {
+                isPreviewing = false
+            }
+        }
+    }
+    
+    private func loadAndShareFile() async {
+        isSharing = true
+        defer { isSharing = false }
+        
+        do {
+            let data = try await itemService.getDecryptedFile(fileId: file.id)
+            await MainActor.run {
+                self.fileDataToShare = data
+            }
+        } catch {
+            print("Error loading file: \(error)")
+        }
+    }
+    
+    private func fileIcon(for mimeType: String) -> String {
+        if mimeType.hasPrefix("application/pdf") {
+            return "doc.fill"
+        } else if mimeType.hasPrefix("text/") {
+            return "doc.text.fill"
+        } else if mimeType.hasPrefix("application/zip") || mimeType.hasPrefix("application/vnd.rar") {
+            return "doc.zipper"
+        } else if mimeType.contains("word") {
+            return "doc.richtext.fill"
+        } else if mimeType.contains("excel") || mimeType.contains("spreadsheet") {
+            return "tablecells.fill"
+        } else {
+            return "doc.fill"
+        }
+    }
+    
+    /// 获取友好的文件类型名称 / Get friendly file type name
+    private func friendlyFileType(for mimeType: String) -> String {
+        // PDF
+        if mimeType == "application/pdf" {
+            return "PDF"
+        }
+        
+        // Microsoft Word
+        if mimeType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" {
+            return "Word"
+        }
+        if mimeType == "application/msword" {
+            return "Word"
+        }
+        
+        // Microsoft Excel
+        if mimeType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" {
+            return "Excel"
+        }
+        if mimeType == "application/vnd.ms-excel" {
+            return "Excel"
+        }
+        
+        // Microsoft PowerPoint
+        if mimeType == "application/vnd.openxmlformats-officedocument.presentationml.presentation" {
+            return "PPT"
+        }
+        if mimeType == "application/vnd.ms-powerpoint" {
+            return "PPT"
+        }
+        
+        // Apple iWork
+        if mimeType == "application/vnd.apple.pages" {
+            return "Pages"
+        }
+        if mimeType == "application/vnd.apple.numbers" {
+            return "Numbers"
+        }
+        if mimeType == "application/vnd.apple.keynote" {
+            return "Keynote"
+        }
+        
+        // 压缩文件 / Archive files
+        if mimeType == "application/zip" {
+            return "ZIP"
+        }
+        if mimeType.contains("rar") {
+            return "RAR"
+        }
+        if mimeType == "application/x-7z-compressed" {
+            return "7Z"
+        }
+        
+        // 文本文件 / Text files
+        if mimeType == "text/plain" {
+            return "TXT"
+        }
+        if mimeType == "text/html" {
+            return "HTML"
+        }
+        if mimeType == "text/csv" {
+            return "CSV"
+        }
+        
+        // 图片文件 / Image files
+        if mimeType.hasPrefix("image/") {
+            return mimeType.components(separatedBy: "/").last?.uppercased() ?? "Image"
+        }
+        
+        // 视频文件 / Video files
+        if mimeType.hasPrefix("video/") {
+            return mimeType.components(separatedBy: "/").last?.uppercased() ?? "Video"
+        }
+        
+        // 音频文件 / Audio files
+        if mimeType.hasPrefix("audio/") {
+            return mimeType.components(separatedBy: "/").last?.uppercased() ?? "Audio"
+        }
+        
+        // 默认 / Default - 从扩展名获取
+        return "FILE"
+    }
+
+    
+    private func formatFileSize(_ bytes: Int) -> String {
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = [.useKB, .useMB, .useGB]
+        formatter.countStyle = .file
+        return formatter.string(fromByteCount: Int64(bytes))
+    }
+}
+
 // MARK: - Helper Views
 
 fileprivate struct FlowLayout: Layout {
@@ -1218,5 +1484,77 @@ fileprivate struct ZoomableScrollView<Content: View>: UIViewRepresentable {
         func viewForZooming(in scrollView: UIScrollView) -> UIView? {
             return hostingController.view
         }
+    }
+}
+
+// MARK: - QuickLook Preview
+
+import QuickLook
+
+struct QuickLookPreview: UIViewControllerRepresentable {
+    let url: URL
+    
+    func makeUIViewController(context: Context) -> QLPreviewController {
+        let controller = QLPreviewController()
+        controller.dataSource = context.coordinator
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: QLPreviewController, context: Context) {
+        // No updates needed
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(url: url)
+    }
+    
+    class Coordinator: NSObject, QLPreviewControllerDataSource {
+        let url: URL
+        
+        init(url: URL) {
+            self.url = url
+        }
+        
+        func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+            return 1
+        }
+        
+        func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+            return url as QLPreviewItem
+        }
+    }
+}
+
+// MARK: - Share Sheet for Files
+
+struct ShareableFile {
+    let data: Data
+    let fileName: String
+    let mimeType: String
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let items: [ShareableFile]
+    
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        // 创建临时 URL 来共享文件
+        var itemsToShare: [Any] = []
+        
+        for file in items {
+            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(file.fileName)
+            do {
+                try file.data.write(to: tempURL)
+                itemsToShare.append(tempURL)
+            } catch {
+                print("Error writing file to temp directory: \(error)")
+            }
+        }
+        
+        let activityVC = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
+        return activityVC
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
+        // No update needed
     }
 }

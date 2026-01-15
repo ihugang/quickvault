@@ -31,6 +31,7 @@
 "auth.password.placeholder" = "Enter password";
 "auth.password.confirm" = "Confirm password";
 "auth.password.hint" = "Password must be at least 8 characters";
+"auth.password.required" = "Please enter your password";
 "auth.password.mismatch" = "Passwords do not match";
 "auth.password.weak" = "Password is too weak";
 "auth.setup.button" = "Set Up Password";
@@ -254,6 +255,13 @@
 "settings.security.autolock.15min" = "After 15 minutes";
 "settings.security.autolock.never" = "Never";
 "settings.security.changepassword" = "Change Password";
+"settings.security.cleardata" = "Clear All Data";
+"settings.security.cleardata.footer" = "⚠️ This will permanently delete all cards, images, and files. This action cannot be undone!";
+"settings.security.cleardata.confirm.title" = "Confirm Clear All Data";
+"settings.security.cleardata.confirm.message" = "This will permanently delete all data and cannot be undone. Enter your password to confirm.";
+"settings.security.cleardata.confirm.password" = "Enter Password";
+"settings.security.cleardata.confirm.delete" = "Delete All Data";
+"settings.security.cleardata.success" = "All data has been cleared";
 "settings.appearance" = "Appearance";
 "settings.appearance.title" = "Display";
 "settings.appearance.auto" = "Auto";
@@ -287,8 +295,20 @@
 "items.create.image" = "Create Image Item";
 "items.type.text" = "Text Item";
 "items.type.image" = "Image Item";
+"items.type.file" = "File Item";
 "items.type.text.desc" = "Store text information for quick sharing";
 "items.type.image.desc" = "Save images with watermark sharing support";
+"items.type.file.desc" = "Store various files with PDF preview support";
+
+// Items - Files
+"items.files.select" = "Select Files";
+"items.files.count" = "%d files";
+"items.files.section" = "Files";
+"items.files.limit" = "Up to 10 files, each file no more than 10MB";
+
+// Items - Detail Files
+"items.detail.files" = "Files";
+"items.detail.files.count" = "%d files";
 "items.create.title" = "Create %@";
 "items.create.selecttype" = "Select Type";
 "items.create.button" = "Create";
@@ -353,3 +373,9 @@
 "error.storage" = "Storage error";
 "error.biometric.unavailable" = "Biometric authentication is not available";
 "error.biometric.notEnrolled" = "No biometric data enrolled";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "Cross-platform photo transfer tool. Transfer photos quickly between Mac and iPhone without network.";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "Turn your iPhone into a secure mobile drive";

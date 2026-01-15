@@ -24,10 +24,11 @@ struct QuickVaultSimpleApp: App {
     init() {
         let keychainService = KeychainServiceImpl()
         let cryptoService = CryptoServiceImpl.shared
-        let _ = PersistenceController.shared
+        let persistenceController = PersistenceController.shared
         
         let authService = AuthenticationServiceImpl(
             keychainService: keychainService,
+            persistenceController: persistenceController,
             cryptoService: cryptoService
         )
         
@@ -47,7 +48,18 @@ struct QuickVaultSimpleApp: App {
         WindowGroup {
             SimpleRootView(authViewModel: authViewModel)
                 .privacyScreen()
+                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
+                    handleUniversalLink(userActivity)
+                }
         }
+    }
+
+    // MARK: - Universal Links Handler
+
+    private func handleUniversalLink(_ userActivity: NSUserActivity) {
+        guard let url = userActivity.webpageURL else { return }
+        print("📱 收到 Universal Link: \(url.absoluteString)")
+        // 应用会自动打开到卡片列表
     }
 }
 
@@ -121,6 +133,7 @@ struct SettingsTabView: View {
     init() {
         let authService = AuthenticationServiceImpl(
             keychainService: KeychainServiceImpl(),
+            persistenceController: PersistenceController.shared,
             cryptoService: CryptoServiceImpl.shared
         )
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(authService: authService))

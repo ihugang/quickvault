@@ -10,11 +10,13 @@ import Foundation
 public enum ItemType: String, CaseIterable, Sendable, Identifiable {
   case text
   case image
+  case file
 
-  public var displayName: String {
+  public var localizationKey: String {
     switch self {
-    case .text: return "文本 / Text"
-    case .image: return "图片 / Image"
+    case .text: return "items.type.text"
+    case .image: return "items.type.image"
+    case .file: return "items.type.file"
     }
   }
 
@@ -22,6 +24,7 @@ public enum ItemType: String, CaseIterable, Sendable, Identifiable {
     switch self {
     case .text: return "doc.text"
     case .image: return "photo"
+    case .file: return "folder.fill"
     }
   }
 

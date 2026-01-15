@@ -22,6 +22,7 @@ public struct ItemDTO: Hashable, Identifiable, Sendable {
   public let updatedAt: Date
   public let textContent: String?
   public let images: [ImageDTO]?
+  public let files: [FileDTO]?
 
   public init(
     id: UUID,
@@ -32,7 +33,8 @@ public struct ItemDTO: Hashable, Identifiable, Sendable {
     createdAt: Date,
     updatedAt: Date,
     textContent: String?,
-    images: [ImageDTO]?
+    images: [ImageDTO]?,
+    files: [FileDTO]? = nil
   ) {
     self.id = id
     self.title = title
@@ -43,6 +45,7 @@ public struct ItemDTO: Hashable, Identifiable, Sendable {
     self.updatedAt = updatedAt
     self.textContent = textContent
     self.images = images
+    self.files = files
   }
 }
 
@@ -62,6 +65,24 @@ public struct ImageDTO: Hashable, Identifiable, Sendable {
   }
 }
 
+public struct FileDTO: Hashable, Identifiable, Sendable {
+  public let id: UUID
+  public let fileName: String
+  public let fileSize: Int64
+  public let mimeType: String
+  public let displayOrder: Int16
+  public let thumbnailData: Data?
+
+  public init(id: UUID, fileName: String, fileSize: Int64, mimeType: String, displayOrder: Int16, thumbnailData: Data?) {
+    self.id = id
+    self.fileName = fileName
+    self.fileSize = fileSize
+    self.mimeType = mimeType
+    self.displayOrder = displayOrder
+    self.thumbnailData = thumbnailData
+  }
+}
+
 public struct ImageData: Sendable {
   public let data: Data
   public let fileName: String
@@ -72,12 +93,25 @@ public struct ImageData: Sendable {
   }
 }
 
+public struct FileData: Sendable {
+  public let data: Data
+  public let fileName: String
+  public let mimeType: String
+
+  public init(data: Data, fileName: String, mimeType: String) {
+    self.data = data
+    self.fileName = fileName
+    self.mimeType = mimeType
+  }
+}
+
 // MARK: - Item Service Protocol / 服务协议
 
 public protocol ItemService {
   // Create
   func createTextItem(title: String, content: String, tags: [String]) async throws -> ItemDTO
   func createImageItem(title: String, images: [ImageData], tags: [String]) async throws -> ItemDTO
+  func createFileItem(title: String, files: [FileData], tags: [String]) async throws -> ItemDTO
 
   // Read
   func fetchAllItems() async throws -> [ItemDTO]
@@ -87,8 +121,11 @@ public protocol ItemService {
   // Update
   func updateTextItem(id: UUID, title: String?, content: String?, tags: [String]?) async throws -> ItemDTO
   func updateImageItem(id: UUID, title: String?, tags: [String]?) async throws -> ItemDTO
+  func updateFileItem(id: UUID, title: String?, tags: [String]?) async throws -> ItemDTO
   func addImages(to itemId: UUID, images: [ImageData]) async throws
+  func addFiles(to itemId: UUID, files: [FileData]) async throws
   func removeImage(id: UUID) async throws
+  func removeFile(id: UUID) async throws
 
   // Delete
   func deleteItem(id: UUID) async throws
@@ -99,7 +136,9 @@ public protocol ItemService {
   // Share
   func getShareableText(id: UUID) async throws -> String
   func getShareableImages(id: UUID, withWatermark: Bool, watermarkText: String?) async throws -> [Data]
+  func getShareableFiles(id: UUID) async throws -> [(data: Data, fileName: String, mimeType: String)]
   func getDecryptedImage(imageId: UUID) async throws -> Data
+  func getDecryptedFile(fileId: UUID) async throws -> Data
 }
 
 // MARK: - Item Service Implementation / 服务实现
@@ -111,10 +150,14 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
     CryptoServiceImpl.shared
   }
   private let context: NSManagedObjectContext
+  private let fileStorageManager: FileStorageManager
 
   public init(persistenceController: PersistenceController, cryptoService: CryptoService? = nil) {
     self.persistenceController = persistenceController
     self.context = persistenceController.container.viewContext
+    // 使用本地存储而非 iCloud，避免卸载后数据残留
+    // Use local storage instead of iCloud to avoid data persistence after uninstall
+    self.fileStorageManager = FileStorageManager(cryptoService: CryptoServiceImpl.shared, storageLocation: .local)
   }
 
   // MARK: - Create
@@ -170,6 +213,48 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
         #endif
         
         imageContent.item = item
+      }
+
+      try self.context.save()
+      return try self.mapToDTO(item)
+    }
+  }
+
+  public func createFileItem(title: String, files: [FileData], tags: [String]) async throws -> ItemDTO {
+    return try await context.perform {
+      let item = Item(context: self.context)
+      item.id = UUID()
+      item.title = title
+      item.type = ItemType.file.rawValue
+      item.tags = tags
+      item.isPinned = false
+      item.createdAt = Date()
+      item.updatedAt = Date()
+
+      // Add files
+      for (index, fileData) in files.enumerated() {
+        let fileContent = FileContent(context: self.context)
+        fileContent.id = UUID()
+        fileContent.fileName = fileData.fileName
+        fileContent.mimeType = fileData.mimeType
+        
+        // 保存文件到文件系统（已加密）/ Save file to file system (encrypted)
+        let relativePath = try self.fileStorageManager.saveFile(data: fileData.data, fileName: fileData.fileName)
+        fileContent.fileURL = relativePath
+        fileContent.fileSize = Int64(fileData.data.count)
+        fileContent.displayOrder = Int16(index)
+        fileContent.createdAt = Date()
+        
+        // Generate thumbnail for PDFs if possible
+        #if canImport(UIKit)
+        if fileData.mimeType == "application/pdf" {
+          if let thumbnail = self.generatePDFThumbnail(from: fileData.data) {
+            fileContent.thumbnailData = try self.cryptoService.encryptFile(thumbnail)
+          }
+        }
+        #endif
+        
+        fileContent.item = item
       }
 
       try self.context.save()
@@ -340,6 +425,15 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Item not found"])
       }
 
+      // 如果是文件类型，删除所有关联的文件 / If file type, delete all associated files
+      if item.type == ItemType.file.rawValue, let fileSet = item.files {
+        for case let fileContent as FileContent in fileSet {
+          if let fileURL = fileContent.fileURL {
+            try? self.fileStorageManager.deleteFile(relativePath: fileURL)
+          }
+        }
+      }
+
       self.context.delete(item)
       try self.context.save()
     }
@@ -443,6 +537,7 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
 
     var textContent: String?
     var images: [ImageDTO]?
+    var files: [FileDTO]?
 
     if itemType == .text, let tc = item.textContent, let encData = tc.encryptedContent {
       textContent = try cryptoService.decrypt(encData)
@@ -466,6 +561,28 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
           thumbnailData: thumbnailData
         )
       }
+    } else if itemType == .file, let fileSet = item.files {
+      let sortedFiles = (fileSet.allObjects as! [FileContent]).sorted { $0.displayOrder < $1.displayOrder }
+      files = sortedFiles.compactMap { file in
+        guard let id = file.id,
+              let fileName = file.fileName,
+              let mimeType = file.mimeType,
+              let _ = file.fileURL else {
+          return nil
+        }
+        var thumbnailData: Data?
+        if let encryptedThumbnail = file.thumbnailData {
+          thumbnailData = try? cryptoService.decryptFile(encryptedThumbnail)
+        }
+        return FileDTO(
+          id: id,
+          fileName: fileName,
+          fileSize: file.fileSize,
+          mimeType: mimeType,
+          displayOrder: file.displayOrder,
+          thumbnailData: thumbnailData
+        )
+      }
     }
 
     return ItemDTO(
@@ -477,7 +594,8 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
       createdAt: item.createdAt ?? Date(),
       updatedAt: item.updatedAt ?? Date(),
       textContent: textContent,
-      images: images
+      images: images,
+      files: files
     )
   }
 
@@ -497,6 +615,36 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
     
     UIGraphicsBeginImageContextWithOptions(scaledSize, false, 1.0)
     image.draw(in: CGRect(origin: .zero, size: scaledSize))
+    let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return thumbnail?.jpegData(compressionQuality: 0.7)
+  }
+  
+  private func generatePDFThumbnail(from pdfData: Data) -> Data? {
+    guard let dataProvider = CGDataProvider(data: pdfData as CFData),
+          let pdfDocument = CGPDFDocument(dataProvider),
+          let firstPage = pdfDocument.page(at: 1) else {
+      return nil
+    }
+    
+    let targetSize = CGSize(width: 200, height: 200)
+    let pageRect = firstPage.getBoxRect(.mediaBox)
+    let scale = min(targetSize.width / pageRect.width, targetSize.height / pageRect.height)
+    let scaledSize = CGSize(width: pageRect.width * scale, height: pageRect.height * scale)
+    
+    UIGraphicsBeginImageContextWithOptions(scaledSize, true, 1.0)
+    guard let context = UIGraphicsGetCurrentContext() else {
+      UIGraphicsEndImageContext()
+      return nil
+    }
+    
+    context.setFillColor(UIColor.white.cgColor)
+    context.fill(CGRect(origin: .zero, size: scaledSize))
+    context.translateBy(x: 0, y: scaledSize.height)
+    context.scaleBy(x: scale, y: -scale)
+    context.drawPDFPage(firstPage)
+    
     let thumbnail = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     
@@ -542,4 +690,152 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
     return resultData
   }
   #endif
+  
+  // MARK: - File Operations
+  
+  public func updateFileItem(id: UUID, title: String?, tags: [String]?) async throws -> ItemDTO {
+    return try await context.perform {
+      let fetchRequest = Item.fetchRequest()
+      fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+      fetchRequest.fetchLimit = 1
+      
+      guard let item = try self.context.fetch(fetchRequest).first else {
+        throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Item not found"])
+      }
+      
+      if let newTitle = title {
+        item.title = newTitle
+      }
+      if let newTags = tags {
+        item.tags = newTags
+      }
+      item.updatedAt = Date()
+      
+      try self.context.save()
+      return try self.mapToDTO(item)
+    }
+  }
+  
+  public func addFiles(to itemId: UUID, files: [FileData]) async throws {
+    try await context.perform {
+      let fetchRequest = Item.fetchRequest()
+      fetchRequest.predicate = NSPredicate(format: "id == %@", itemId as CVarArg)
+      fetchRequest.fetchLimit = 1
+      
+      guard let item = try self.context.fetch(fetchRequest).first else {
+        throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Item not found"])
+      }
+      
+      guard item.type == ItemType.file.rawValue else {
+        throw NSError(domain: "ItemService", code: 400, userInfo: [NSLocalizedDescriptionKey: "Cannot add files to non-file item"])
+      }
+      
+      let currentCount = (item.files?.count ?? 0)
+      
+      for (index, fileData) in files.enumerated() {
+        let fileContent = FileContent(context: self.context)
+        fileContent.id = UUID()
+        fileContent.fileName = fileData.fileName
+        fileContent.mimeType = fileData.mimeType
+        
+        // 保存文件到文件系统（已加密）/ Save file to file system (encrypted)
+        let relativePath = try self.fileStorageManager.saveFile(data: fileData.data, fileName: fileData.fileName)
+        fileContent.fileURL = relativePath
+        fileContent.fileSize = Int64(fileData.data.count)
+        fileContent.displayOrder = Int16(currentCount + index)
+        fileContent.createdAt = Date()
+        
+        // Generate thumbnail for PDFs if possible
+        #if canImport(UIKit)
+        if fileData.mimeType == "application/pdf" {
+          if let thumbnail = self.generatePDFThumbnail(from: fileData.data) {
+            fileContent.thumbnailData = try self.cryptoService.encryptFile(thumbnail)
+          }
+        }
+        #endif
+        
+        fileContent.item = item
+      }
+      
+      item.updatedAt = Date()
+      try self.context.save()
+    }
+  }
+  
+  public func removeFile(id: UUID) async throws {
+    try await context.perform {
+      let fetchRequest = FileContent.fetchRequest()
+      fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+      fetchRequest.fetchLimit = 1
+      
+      guard let fileContent = try self.context.fetch(fetchRequest).first else {
+        throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "File not found"])
+      }
+      
+      // 删除文件系统中的文件 / Delete file from file system
+      if let fileURL = fileContent.fileURL {
+        try? self.fileStorageManager.deleteFile(relativePath: fileURL)
+      }
+      
+      fileContent.item?.updatedAt = Date()
+      self.context.delete(fileContent)
+      try self.context.save()
+    }
+  }
+  
+  public func getShareableFiles(id: UUID) async throws -> [(data: Data, fileName: String, mimeType: String)] {
+    return try await context.perform {
+      let fetchRequest = Item.fetchRequest()
+      fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+      fetchRequest.fetchLimit = 1
+      
+      guard let item = try self.context.fetch(fetchRequest).first else {
+        throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Item not found"])
+      }
+      
+      guard item.type == ItemType.file.rawValue else {
+        throw NSError(domain: "ItemService", code: 400, userInfo: [NSLocalizedDescriptionKey: "Item is not a file type"])
+      }
+      
+      guard let fileSet = item.files, fileSet.count > 0 else {
+        throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "No files found"])
+      }
+      
+      let sortedFiles = (fileSet.allObjects as! [FileContent]).sorted { $0.displayOrder < $1.displayOrder }
+      
+      var result: [(data: Data, fileName: String, mimeType: String)] = []
+      for fileContent in sortedFiles {
+        guard let fileName = fileContent.fileName,
+              let mimeType = fileContent.mimeType,
+              let fileURL = fileContent.fileURL else {
+          continue
+        }
+        
+        // 从文件系统读取解密后的文件 / Read decrypted file from file system
+        let decryptedData = try self.fileStorageManager.readFile(relativePath: fileURL)
+        result.append((data: decryptedData, fileName: fileName, mimeType: mimeType))
+      }
+      
+      return result
+    }
+  }
+  
+  public func getDecryptedFile(fileId: UUID) async throws -> Data {
+    return try await context.perform {
+      let fetchRequest = FileContent.fetchRequest()
+      fetchRequest.predicate = NSPredicate(format: "id == %@", fileId as CVarArg)
+      fetchRequest.fetchLimit = 1
+      
+      guard let fileContent = try self.context.fetch(fetchRequest).first else {
+        throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "File not found"])
+      }
+      
+      guard let fileURL = fileContent.fileURL else {
+        throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "File path not found"])
+      }
+      
+      // 从文件系统读取解密后的文件 / Read decrypted file from file system
+      return try self.fileStorageManager.readFile(relativePath: fileURL)
+    }
+  }
 }

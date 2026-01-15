@@ -20,6 +20,7 @@ extension Item {
   @NSManaged public var updatedAt: Date?
   @NSManaged public var textContent: TextContent?
   @NSManaged public var images: NSSet?
+  @NSManaged public var files: NSSet?
 }
 
 // MARK: Generated accessors for images
@@ -35,6 +36,21 @@ extension Item {
 
   @objc(removeImages:)
   @NSManaged public func removeFromImages(_ values: NSSet)
+}
+
+// MARK: Generated accessors for files
+extension Item {
+  @objc(addFilesObject:)
+  @NSManaged public func addToFiles(_ value: FileContent)
+
+  @objc(removeFilesObject:)
+  @NSManaged public func removeFromFiles(_ value: FileContent)
+
+  @objc(addFiles:)
+  @NSManaged public func addToFiles(_ values: NSSet)
+
+  @objc(removeFiles:)
+  @NSManaged public func removeFromFiles(_ values: NSSet)
 }
 
 extension Item: Identifiable {

@@ -14,6 +14,7 @@ final class AuthenticationServiceTests: XCTestCase {
     cryptoService = CryptoServiceImpl(keychainService: keychainService)
     authService = AuthenticationServiceImpl(
       keychainService: keychainService,
+      persistenceController: PersistenceController.shared,
       cryptoService: cryptoService
     )
 
@@ -60,6 +61,7 @@ final class AuthenticationServiceTests: XCTestCase {
     // Test that initial state is setupRequired when no password exists
     let freshAuthService = AuthenticationServiceImpl(
       keychainService: keychainService,
+      persistenceController: PersistenceController.shared,
       cryptoService: cryptoService
     )
 
@@ -73,6 +75,7 @@ final class AuthenticationServiceTests: XCTestCase {
     // Create new instance to simulate app restart
     let newAuthService = AuthenticationServiceImpl(
       keychainService: keychainService,
+      persistenceController: PersistenceController.shared,
       cryptoService: cryptoService
     )
 

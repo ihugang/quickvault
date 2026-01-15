@@ -43,6 +43,7 @@
         <attribute name="title" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="type" optional="YES" attributeType="String" defaultValueString="text"/>
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FileContent" inverseName="item" inverseEntity="FileContent"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ImageContent" inverseName="item" inverseEntity="ImageContent"/>
         <relationship name="textContent" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TextContent" inverseName="item" inverseEntity="TextContent"/>
     </entity>
@@ -60,5 +61,16 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="thumbnailData" optional="YES" attributeType="Binary"/>
         <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="images" inverseEntity="Item"/>
+    </entity>
+    <entity name="FileContent" representedClassName="FileContent" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="displayOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fileName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="fileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fileURL" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="mimeType" optional="YES" attributeType="String"/>
+        <attribute name="thumbnailData" optional="YES" attributeType="Binary"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="files" inverseEntity="Item"/>
     </entity>
 </model>

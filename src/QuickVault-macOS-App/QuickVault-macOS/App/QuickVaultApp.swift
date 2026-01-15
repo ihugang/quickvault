@@ -31,6 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let cryptoService = CryptoServiceImpl(keychainService: keychainService)
     let authService = AuthenticationServiceImpl(
       keychainService: keychainService,
+      persistenceController: PersistenceController.shared,
       cryptoService: cryptoService
     )
     let cardService = CardServiceImpl(

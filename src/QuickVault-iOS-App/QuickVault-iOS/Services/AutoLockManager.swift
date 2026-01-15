@@ -160,9 +160,10 @@ struct PrivacyScreenView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 16) {
-                Image(systemName: "lock.shield.fill")
-                    .font(.system(size: 60))
-                    .foregroundStyle(.blue)
+                Image("center-logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 60, height: 60)
                 
                 Text("随取 / QuickVault")
                     .font(.title2)

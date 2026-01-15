@@ -32,9 +32,10 @@ struct SetupView: View {
             )
             .frame(width: 80, height: 80)
           
-          Image(systemName: "lock.shield.fill")
-            .font(.system(size: 40))
-            .foregroundColor(.white)
+          Image("center-logo")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 40, height: 40)
         }
         
         Text("欢迎使用 QuickVault")
@@ -189,6 +190,7 @@ struct SetupView_Previews: PreviewProvider {
     SetupView(
       authService: AuthenticationServiceImpl(
         keychainService: KeychainServiceImpl(),
+        persistenceController: PersistenceController.shared,
         cryptoService: CryptoServiceImpl()
       ),
       onComplete: {}

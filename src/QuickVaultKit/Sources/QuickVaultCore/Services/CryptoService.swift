@@ -42,7 +42,9 @@ public protocol CryptoService {
   func decryptFile(_ data: Data) throws -> Data
   func deriveKey(from password: String, salt: Data) throws -> SymmetricKey
   func generateSalt() -> Data
+  func getSalt() throws -> Data
   func initializeKey(password: String, salt: Data?) throws
+  func clearKey()  // 清除加密密钥 / Clear encryption key
   func hashPassword(_ password: String) -> String
 }
 
@@ -104,6 +106,20 @@ public final class CryptoServiceImpl: CryptoService, @unchecked Sendable {
       SecRandomCopyBytes(kSecRandomDefault, 32, bytes.baseAddress!)
     }
     return salt
+  }
+  
+  public func getSalt() throws -> Data {
+    guard keychainService.exists(key: saltKey) else {
+      throw CryptoError.keyNotAvailable
+    }
+    return try keychainService.load(key: saltKey)
+  }
+  
+  /// 清除加密密钥（用于登出或清除所有数据）
+  /// Clear encryption key (for logout or clearing all data)
+  public func clearKey() {
+    encryptionKey = nil
+    cryptoLogger.info("[CryptoService] Encryption key cleared")
   }
 
   // MARK: - String Encryption/Decryption

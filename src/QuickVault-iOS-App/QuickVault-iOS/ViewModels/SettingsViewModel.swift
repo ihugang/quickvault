@@ -176,6 +176,28 @@ class SettingsViewModel: ObservableObject {
         confirmNewPassword = ""
     }
     
+    // MARK: - Clear All Data
+    
+    /// 清除所有数据（需要密码确认）/ Clear all data (requires password confirmation)
+    func clearAllData(password: String) async {
+        guard !password.isEmpty else {
+            errorMessage = "auth.password.required".localized
+            return
+        }
+        
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            try await authService.clearAllData(password: password)
+            successMessage = "settings.security.cleardata.success".localized
+            isLoading = false
+        } catch {
+            errorMessage = error.localizedDescription
+            isLoading = false
+        }
+    }
+    
     // MARK: - Clear Messages
     
     func clearError() {

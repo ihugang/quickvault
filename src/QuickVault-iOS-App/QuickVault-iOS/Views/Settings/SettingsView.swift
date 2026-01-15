@@ -7,6 +7,8 @@ struct SettingsView: View {
     @ObservedObject var localizationManager = LocalizationManager.shared
     @State private var showChangePassword = false
     @State private var showLanguagePicker = false
+    @State private var showClearDataConfirmation = false
+    @State private var clearDataPassword = ""
     
     var body: some View {
         NavigationStack {
@@ -43,8 +45,21 @@ struct SettingsView: View {
                         }
                     }
                     .foregroundStyle(.primary)
+                    
+                    // Clear All Data (Danger Zone)
+                    Button(role: .destructive) {
+                        showClearDataConfirmation = true
+                    } label: {
+                        HStack {
+                            Text(localizationManager.localizedString("settings.security.cleardata"))
+                            Spacer()
+                        }
+                    }
                 } header: {
                     Text(localizationManager.localizedString("settings.security"))
+                } footer: {
+                    Text(localizationManager.localizedString("settings.security.cleardata.footer"))
+                        .font(.caption)
                 }
                 
                 // Appearance Section
@@ -69,7 +84,9 @@ struct SettingsView: View {
                         HStack {
                             Text(localizationManager.localizedString("settings.language"))
                             Spacer()
-                            Text(localizationManager.currentLanguage.displayName)
+                            Text(localizationManager.isUsingSystemLanguage ?
+                                 localizationManager.localizedString("settings.language.system") :
+                                 localizationManager.currentLanguage.displayName)
                                 .foregroundStyle(.secondary)
                             Image(systemName: "chevron.right")
                                 .foregroundStyle(.secondary)
@@ -91,6 +108,86 @@ struct SettingsView: View {
                 } header: {
                     Text(localizationManager.localizedString("settings.about"))
                 }
+
+                // PhotoPC Promotion Section
+                Section {
+                    HStack(alignment: .center, spacing: 8) {
+                        Image("photopc_icon")
+                            .resizable()
+                            .frame(width: 64, height: 64)
+                            .cornerRadius(12)
+                            .padding(.trailing, 8)
+                            .onTapGesture {
+                                if let url = URL(string: "https://apps.apple.com/cn/app/photopc/id1667798896?l=en-GB") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }
+
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(localizationManager.localizedString("promo.photopc.title"))
+                                .foregroundColor(.blue)
+                                .font(.headline)
+                                .onTapGesture {
+                                    if let url = URL(string: "https://apps.apple.com/cn/app/photopc/id1667798896?l=en-GB") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }
+
+                            Text(localizationManager.localizedString("promo.photopc.description"))
+                                .foregroundColor(.secondary)
+                                .font(.subheadline)
+                                .lineLimit(3)
+                                .padding(.vertical, 4)
+                                .onTapGesture {
+                                    if let url = URL(string: "https://apps.apple.com/cn/app/photopc/id1667798896?l=en-GB") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }
+                        }
+                    }
+                } header: {
+                    Text(localizationManager.localizedString("promo.photopc.title"))
+                }
+
+                // FoxVault Promotion Section
+                Section {
+                    HStack(alignment: .center, spacing: 8) {
+                        Image("foxvault_icon")
+                            .resizable()
+                            .frame(width: 64, height: 64)
+                            .cornerRadius(12)
+                            .padding(.trailing, 8)
+                            .onTapGesture {
+                                if let url = URL(string: "https://apps.apple.com/us/app/foxvault/id6755353875") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }
+
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(localizationManager.localizedString("promo.foxvault.title"))
+                                .foregroundColor(.blue)
+                                .font(.headline)
+                                .onTapGesture {
+                                    if let url = URL(string: "https://apps.apple.com/us/app/foxvault/id6755353875") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }
+
+                            Text(localizationManager.localizedString("promo.foxvault.description"))
+                                .foregroundColor(.secondary)
+                                .font(.subheadline)
+                                .lineLimit(3)
+                                .padding(.vertical, 4)
+                                .onTapGesture {
+                                    if let url = URL(string: "https://apps.apple.com/us/app/foxvault/id6755353875") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }
+                        }
+                    }
+                } header: {
+                    Text(localizationManager.localizedString("promo.foxvault.title"))
+                }
             }
             .navigationTitle(localizationManager.localizedString("settings.title"))
             .environment(\.layoutDirection, localizationManager.layoutDirection)
@@ -99,6 +196,20 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showLanguagePicker) {
                 LanguagePickerSheet()
+            }
+            .alert(localizationManager.localizedString("settings.security.cleardata.confirm.title"), isPresented: $showClearDataConfirmation) {
+                SecureField(localizationManager.localizedString("settings.security.cleardata.confirm.password"), text: $clearDataPassword)
+                Button(localizationManager.localizedString("common.cancel"), role: .cancel) {
+                    clearDataPassword = ""
+                }
+                Button(localizationManager.localizedString("settings.security.cleardata.confirm.delete"), role: .destructive) {
+                    Task {
+                        await viewModel.clearAllData(password: clearDataPassword)
+                        clearDataPassword = ""
+                    }
+                }
+            } message: {
+                Text(localizationManager.localizedString("settings.security.cleardata.confirm.message"))
             }
             .overlay {
                 if let success = viewModel.successMessage {
@@ -127,10 +238,26 @@ struct SettingsView: View {
 struct LanguagePickerSheet: View {
     @ObservedObject var localizationManager = LocalizationManager.shared
     @Environment(\.dismiss) private var dismiss
-    
+
     var body: some View {
         NavigationStack {
             List {
+                // System Default Option
+                Button {
+                    localizationManager.useSystemLanguage()
+                    dismiss()
+                } label: {
+                    HStack {
+                        Text("settings.language.system".localized)
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        if localizationManager.isUsingSystemLanguage {
+                            Image(systemName: "checkmark")
+                                .foregroundStyle(.blue)
+                        }
+                    }
+                }
+
                 ForEach(AppLanguage.allCases) { language in
                     Button {
                         localizationManager.setLanguage(language)
@@ -140,7 +267,7 @@ struct LanguagePickerSheet: View {
                             Text(language.displayName)
                                 .foregroundStyle(.primary)
                             Spacer()
-                            if localizationManager.currentLanguage == language {
+                            if !localizationManager.isUsingSystemLanguage && localizationManager.currentLanguage == language {
                                 Image(systemName: "checkmark")
                                     .foregroundStyle(.blue)
                             }
@@ -230,6 +357,6 @@ struct ChangePasswordSheet: View {
 #Preview {
     let keychainService = KeychainServiceImpl()
     let cryptoService = CryptoServiceImpl()
-    let authService = AuthenticationServiceImpl(keychainService: keychainService, cryptoService: cryptoService)
+    let authService = AuthenticationServiceImpl(keychainService: keychainService, persistenceController: PersistenceController.shared, cryptoService: cryptoService)
     return SettingsView(viewModel: SettingsViewModel(authService: authService))
 }

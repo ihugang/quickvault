@@ -31,6 +31,7 @@
 "auth.password.placeholder" = "输入密码";
 "auth.password.confirm" = "确认密码";
 "auth.password.hint" = "密码至少需要8个字符";
+"auth.password.required" = "请输入密码";
 "auth.password.mismatch" = "两次输入的密码不一致";
 "auth.password.weak" = "密码强度太弱";
 "auth.setup.button" = "设置密码";
@@ -254,6 +255,13 @@
 "settings.security.autolock.15min" = "15分钟后";
 "settings.security.autolock.never" = "从不";
 "settings.security.changepassword" = "更改密码";
+"settings.security.cleardata" = "删除所有数据";
+"settings.security.cleardata.footer" = "⚠️ 此操作将永久删除所有卡片、图片和文件，且无法恢复！";
+"settings.security.cleardata.confirm.title" = "确认删除所有数据";
+"settings.security.cleardata.confirm.message" = "此操作将永久删除所有数据，且无法恢复。请输入密码以确认。";
+"settings.security.cleardata.confirm.password" = "输入密码";
+"settings.security.cleardata.confirm.delete" = "删除所有数据";
+"settings.security.cleardata.success" = "已删除所有数据";
 "settings.appearance" = "外观";
 "settings.appearance.title" = "显示";
 "settings.appearance.auto" = "自动";
@@ -287,8 +295,20 @@
 "items.create.image" = "创建图片卡片";
 "items.type.text" = "文本卡片";
 "items.type.image" = "图片卡片";
+"items.type.file" = "文件卡片";
 "items.type.text.desc" = "存储文本信息，便于快速分享";
 "items.type.image.desc" = "保存图片，支持添加水印分享";
+"items.type.file.desc" = "存储各种文件，支持PDF预览";
+
+// Items - Files
+"items.files.select" = "选择文件";
+"items.files.count" = "%d 个文件";
+"items.files.section" = "文件";
+"items.files.limit" = "最多可选择 10 个文件，单个文件不超过 10MB";
+
+// Items - Detail Files
+"items.detail.files" = "文件";
+"items.detail.files.count" = "%d 个文件";
 "items.create.title" = "创建%@";
 "items.create.selecttype" = "选择类型";
 "items.create.button" = "创建";
@@ -353,3 +373,9 @@
 "error.storage" = "存储错误";
 "error.biometric.unavailable" = "生物识别认证不可用";
 "error.biometric.notEnrolled" = "未设置生物识别数据";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "跨平台照片传输工具，无需网络，Mac和iPhone之间快速传输照片。";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "iPhone做U盘，私密文件保险箱，安全加密存储您的隐私文件和照片。";

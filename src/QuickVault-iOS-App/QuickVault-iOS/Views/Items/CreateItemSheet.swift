@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import UniformTypeIdentifiers
 import QuickVaultCore
 
 struct CreateItemSheet: View {
@@ -22,6 +23,9 @@ struct CreateItemSheet: View {
     @State private var tagInput = ""
     @State private var selectedImages: [PhotosPickerItem] = []
     @State private var imageData: [ImageData] = []
+    @State private var selectedFiles: [URL] = []
+    @State private var fileData: [FileData] = []
+    @State private var showingDocumentPicker = false
     @State private var isLoading = false
     
     var body: some View {
@@ -38,8 +42,10 @@ struct CreateItemSheet: View {
                         // 内容区域
                         if selectedType == .text {
                             textContentSection
-                        } else {
+                        } else if selectedType == .image {
                             imageContentSection
+                        } else if selectedType == .file {
+                            fileContentSection
                         }
                         
                         // 标签
@@ -51,7 +57,7 @@ struct CreateItemSheet: View {
                     loadingOverlay
                 }
             }
-            .navigationTitle(selectedType == nil ? localizationManager.localizedString("items.create.selecttype") : String(format: localizationManager.localizedString("items.create.title"), selectedType!.displayName))
+            .navigationTitle(selectedType == nil ? localizationManager.localizedString("items.create.selecttype") : String(format: localizationManager.localizedString("items.create.title"), localizationManager.localizedString(selectedType!.localizationKey)))
             .navigationBarTitleDisplayMode(.inline)
             .environment(\.layoutDirection, localizationManager.layoutDirection)
             .toolbar {
@@ -134,6 +140,41 @@ struct CreateItemSheet: View {
                             .foregroundColor(.primary)
                         
                         Text(localizationManager.localizedString("items.type.image.desc"))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+                .padding(.vertical, 8)
+            }
+            
+            Button {
+                withAnimation {
+                    selectedType = .file
+                }
+            } label: {
+                HStack(spacing: 16) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .fill(Color.orange.opacity(0.1))
+                            .frame(width: 60, height: 60)
+                        
+                        Image(systemName: "folder.fill")
+                            .font(.title2)
+                            .foregroundStyle(.orange)
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(localizationManager.localizedString("items.type.file"))
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                        
+                        Text(localizationManager.localizedString("items.type.file.desc"))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -232,6 +273,70 @@ struct CreateItemSheet: View {
         }
     }
     
+    // MARK: - File Content
+    
+    private var fileContentSection: some View {
+        Section {
+            Button {
+                showingDocumentPicker = true
+            } label: {
+                HStack {
+                    Image(systemName: "doc.badge.plus")
+                    Text(localizationManager.localizedString("items.files.select"))
+                    Spacer()
+                    if !fileData.isEmpty {
+                        Text(String(format: localizationManager.localizedString("items.files.count"), fileData.count))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .foregroundStyle(.primary)
+            
+            if !fileData.isEmpty {
+                ForEach(fileData.indices, id: \.self) { index in
+                    HStack {
+                        Image(systemName: fileIcon(for: fileData[index].mimeType))
+                            .font(.title2)
+                            .foregroundStyle(.orange)
+                            .frame(width: 32)
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(fileData[index].fileName)
+                                .font(.body)
+                                .lineLimit(1)
+                            
+                            Text(formatFileSize(fileData[index].data.count))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        
+                        Spacer()
+                        
+                        Button {
+                            fileData.remove(at: index)
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.title3)
+                                .foregroundStyle(.red)
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
+        } header: {
+            Text(localizationManager.localizedString("items.files.section"))
+        } footer: {
+            Text(localizationManager.localizedString("items.files.limit"))
+        }
+        .fileImporter(
+            isPresented: $showingDocumentPicker,
+            allowedContentTypes: [.pdf, .text, .archive, .data],
+            allowsMultipleSelection: true
+        ) { result in
+            Task { await loadFiles(from: result) }
+        }
+    }
+    
     // MARK: - Tags
     
     private var tagsSection: some View {
@@ -309,9 +414,12 @@ struct CreateItemSheet: View {
         
         if selectedType == .text {
             return !textContent.isEmpty
-        } else {
+        } else if selectedType == .image {
             return !imageData.isEmpty
+        } else if selectedType == .file {
+            return !fileData.isEmpty
         }
+        return false
     }
     
     private func addTag() {
@@ -336,6 +444,82 @@ struct CreateItemSheet: View {
         }
     }
     
+    private func loadFiles(from result: Result<[URL], Error>) async {
+        do {
+            let urls = try result.get()
+            fileData = []
+            
+            for url in urls {
+                // 开始访问安全作用域资源
+                guard url.startAccessingSecurityScopedResource() else {
+                    print("Failed to access security-scoped resource: \(url)")
+                    continue
+                }
+                
+                defer {
+                    // 确保在函数退出时停止访问
+                    url.stopAccessingSecurityScopedResource()
+                }
+                
+                // 读取文件数据
+                let data = try Data(contentsOf: url)
+                let fileName = url.lastPathComponent
+                let mimeType = getMimeType(for: url)
+                
+                fileData.append(FileData(data: data, fileName: fileName, mimeType: mimeType))
+            }
+        } catch {
+            print("Error loading files: \(error)")
+        }
+    }
+    
+    private func getMimeType(for url: URL) -> String {
+        let pathExtension = url.pathExtension.lowercased()
+        switch pathExtension {
+        case "pdf":
+            return "application/pdf"
+        case "txt":
+            return "text/plain"
+        case "doc":
+            return "application/msword"
+        case "docx":
+            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        case "xls":
+            return "application/vnd.ms-excel"
+        case "xlsx":
+            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        case "zip":
+            return "application/zip"
+        case "rar":
+            return "application/vnd.rar"
+        default:
+            return "application/octet-stream"
+        }
+    }
+    
+    private func fileIcon(for mimeType: String) -> String {
+        if mimeType.hasPrefix("application/pdf") {
+            return "doc.fill"
+        } else if mimeType.hasPrefix("text/") {
+            return "doc.text.fill"
+        } else if mimeType.hasPrefix("application/zip") || mimeType.hasPrefix("application/vnd.rar") {
+            return "doc.zipper"
+        } else if mimeType.contains("word") {
+            return "doc.richtext.fill"
+        } else if mimeType.contains("excel") || mimeType.contains("spreadsheet") {
+            return "tablecells.fill"
+        } else {
+            return "doc.fill"
+        }
+    }
+    
+    private func formatFileSize(_ bytes: Int) -> String {
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = [.useKB, .useMB, .useGB]
+        formatter.countStyle = .file
+        return formatter.string(fromByteCount: Int64(bytes))
+    }
+    
     private func createItem() async {
         isLoading = true
         defer { isLoading = false }
@@ -347,10 +531,16 @@ struct CreateItemSheet: View {
                     content: textContent,
                     tags: tags
                 )
-            } else {
+            } else if selectedType == .image {
                 _ = try await itemService.createImageItem(
                     title: title,
                     images: imageData,
+                    tags: tags
+                )
+            } else if selectedType == .file {
+                _ = try await itemService.createFileItem(
+                    title: title,
+                    files: fileData,
                     tags: tags
                 )
             }

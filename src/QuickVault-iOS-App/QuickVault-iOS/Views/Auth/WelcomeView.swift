@@ -13,10 +13,11 @@ struct WelcomeView: View {
                 
                 // App Icon and Title
                 VStack(spacing: 16) {
-                    Image(systemName: "lock.shield.fill")
-                        .font(.system(size: 80))
-                        .foregroundStyle(.blue)
-                    
+                    Image("center-logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 120, height: 120)
+
                     Text("app.name".localized)
                         .font(.largeTitle)
                         .fontWeight(.bold)
@@ -33,25 +34,30 @@ struct WelcomeView: View {
                 VStack(spacing: 20) {
                     Text("auth.welcome.subtitle".localized)
                         .font(.headline)
-                    
+                        .multilineTextAlignment(.center)
+
                     SecureField("auth.password.placeholder".localized, text: $viewModel.password)
                         .textFieldStyle(.roundedBorder)
                         .textContentType(.newPassword)
-                    
+                        .frame(height: 48)
+
                     SecureField("auth.password.confirm".localized, text: $viewModel.confirmPassword)
                         .textFieldStyle(.roundedBorder)
                         .textContentType(.newPassword)
-                    
+                        .frame(height: 48)
+
                     Text("auth.password.hint".localized)
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    
+                        .multilineTextAlignment(.center)
+
                     if let error = viewModel.errorMessage {
                         Text(error)
                             .font(.caption)
                             .foregroundStyle(.red)
+                            .multilineTextAlignment(.center)
                     }
-                    
+
                     Button(action: {
                         Task {
                             await viewModel.setupPassword()
@@ -69,6 +75,7 @@ struct WelcomeView: View {
                         }
                     }
                     .buttonStyle(.borderedProminent)
+                    .frame(height: 48)
                     .disabled(viewModel.isLoading || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty)
                 }
                 .padding(.horizontal, 32)
@@ -117,7 +124,8 @@ struct BiometricSetupSheet: View {
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
-                    
+                    .frame(height: 48)
+
                     Button(action: {
                         dismiss()
                     }) {
@@ -125,6 +133,7 @@ struct BiometricSetupSheet: View {
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
+                    .frame(height: 48)
                 }
                 .padding(.horizontal, 32)
             }
@@ -138,6 +147,6 @@ struct BiometricSetupSheet: View {
 #Preview {
     let keychainService = KeychainServiceImpl()
     let cryptoService = CryptoServiceImpl()
-    let authService = AuthenticationServiceImpl(keychainService: keychainService, cryptoService: cryptoService)
+    let authService = AuthenticationServiceImpl(keychainService: keychainService, persistenceController: PersistenceController.shared, cryptoService: cryptoService)
     return WelcomeView(viewModel: AuthViewModel(authService: authService))
 }

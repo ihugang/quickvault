@@ -650,7 +650,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.00;
-				PRODUCT_BUNDLE_IDENTIFIER = com.quickvault.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codans.quickvault.ios;
 				PRODUCT_NAME = QuickVault;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -760,7 +760,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.00;
-				PRODUCT_BUNDLE_IDENTIFIER = com.quickvault.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codans.quickvault.ios;
 				PRODUCT_NAME = QuickVault;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;

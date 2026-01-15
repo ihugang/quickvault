@@ -12,9 +12,10 @@ struct LockScreenView: View {
 
             // App Icon
             VStack(spacing: 16) {
-                Image(systemName: "lock.shield.fill")
-                    .font(.system(size: 60))
-                    .foregroundStyle(.blue)
+                Image("center-logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 120, height: 120)
 
                 Text("app.name".localized)
                     .font(.title)
@@ -28,6 +29,7 @@ struct LockScreenView: View {
                 SecureField("auth.password.placeholder".localized, text: $viewModel.password)
                     .textFieldStyle(.roundedBorder)
                     .textContentType(.password)
+                    .frame(height: 48)
                     .submitLabel(.done)
                     .onSubmit {
                         Task {
@@ -56,6 +58,7 @@ struct LockScreenView: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
+                .frame(height: 48)
                 .disabled(viewModel.isLoading || viewModel.password.isEmpty)
 
                 // Biometric Button
@@ -69,8 +72,10 @@ struct LockScreenView: View {
                             Image(systemName: "faceid")
                             Text("auth.unlock.biometric".localized)
                         }
+                        .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
+                    .frame(height: 48)
                     .disabled(viewModel.isLoading)
                 }
             }
@@ -94,6 +99,6 @@ struct LockScreenView: View {
 #Preview {
     let keychainService = KeychainServiceImpl()
     let cryptoService = CryptoServiceImpl()
-    let authService = AuthenticationServiceImpl(keychainService: keychainService, cryptoService: cryptoService)
+    let authService = AuthenticationServiceImpl(keychainService: keychainService, persistenceController: PersistenceController.shared, cryptoService: cryptoService)
     return LockScreenView(viewModel: AuthViewModel(authService: authService))
 }

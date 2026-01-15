@@ -31,7 +31,7 @@ struct MainTabView: View {
     let cryptoService = CryptoServiceImpl()
     let keychainService = KeychainServiceImpl()
     let cardService = CardServiceImpl(persistenceController: persistenceController, cryptoService: cryptoService)
-    let authService = AuthenticationServiceImpl(keychainService: keychainService, cryptoService: cryptoService)
+    let authService = AuthenticationServiceImpl(keychainService: keychainService, persistenceController: PersistenceController.shared, cryptoService: cryptoService)
     
     return MainTabView(
         cardListViewModel: CardListViewModel(cardService: cardService),

@@ -12,7 +12,8 @@ struct EditItemSheet: View {
     let item: ItemDTO
     let itemService: ItemService
     let onUpdate: () -> Void
-    
+
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @Environment(\.dismiss) private var dismiss
     @State private var title: String
     @State private var content: String
@@ -20,27 +21,27 @@ struct EditItemSheet: View {
     @State private var tagInput = ""
     @State private var isLoading = false
     @State private var errorMessage: String?
-    
+
     init(item: ItemDTO, itemService: ItemService, onUpdate: @escaping () -> Void) {
         self.item = item
         self.itemService = itemService
         self.onUpdate = onUpdate
-        
+
         _title = State(initialValue: item.title)
         _content = State(initialValue: item.textContent ?? "")
         _tags = State(initialValue: item.tags)
     }
-    
+
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("标题", text: $title)
+                    TextField(localizationManager.localizedString("items.info.title"), text: $title)
                         .font(.headline)
                 } header: {
-                    Text("标题 / Title")
+                    Text(localizationManager.localizedString("items.info.basic"))
                 }
-                
+
                 if item.type == .text {
                     Section {
                         TextEditor(text: $content)
@@ -49,34 +50,34 @@ struct EditItemSheet: View {
                             .lineSpacing(4)
                             .autocorrectionDisabled()
                     } header: {
-                        Text("内容 / Content")
+                        Text(localizationManager.localizedString("items.content"))
                     }
                 }
-                
+
                 Section {
                     // 标签输入
                     HStack {
-                        TextField("添加标签", text: $tagInput)
+                        TextField(localizationManager.localizedString("items.tags.placeholder"), text: $tagInput)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
                             .onSubmit {
                                 addTag()
                             }
-                        
+
                         if !tagInput.isEmpty {
-                            Button("添加") {
+                            Button(localizationManager.localizedString("items.tags.add")) {
                                 addTag()
                             }
                         }
                     }
-                    
+
                     // 标签列表
                     if !tags.isEmpty {
                         FlowLayout(spacing: 8) {
                             ForEach(tags, id: \.self) { tag in
                                 HStack(spacing: 4) {
                                     Text(tag)
-                                    
+
                                     Button {
                                         removeTag(tag)
                                     } label: {
@@ -94,26 +95,29 @@ struct EditItemSheet: View {
                         }
                     }
                 } header: {
-                    Text("标签 / Tags")
+                    Text(localizationManager.localizedString("items.tags.section"))
                 } footer: {
                     if tags.isEmpty {
-                        Text("标签帮助你快速找到卡片")
+                        Text(localizationManager.localizedString("items.tags.hint"))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                 }
             }
-            .navigationTitle(item.type == .text ? "编辑文本卡片" : "编辑图片卡片")
+            .navigationTitle(item.type == .text ?
+                           localizationManager.localizedString("items.type.text") :
+                           localizationManager.localizedString("items.type.image"))
             .navigationBarTitleDisplayMode(.inline)
+            .environment(\.layoutDirection, localizationManager.layoutDirection)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("取消") {
+                    Button(localizationManager.localizedString("common.cancel")) {
                         dismiss()
                     }
                 }
-                
+
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("保存") {
+                    Button(localizationManager.localizedString("common.save")) {
                         Task { await saveChanges() }
                     }
                     .disabled(title.isEmpty || isLoading)
@@ -128,8 +132,8 @@ struct EditItemSheet: View {
                         .background(Color.black.opacity(0.1))
                 }
             }
-            .alert("错误", isPresented: .constant(errorMessage != nil)) {
-                Button("好的") {
+            .alert(localizationManager.localizedString("common.error"), isPresented: .constant(errorMessage != nil)) {
+                Button(localizationManager.localizedString("common.ok")) {
                     errorMessage = nil
                 }
             } message: {
