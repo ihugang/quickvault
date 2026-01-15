@@ -7,7 +7,7 @@
 
 import AppKit
 import SwiftUI
-import QuickVaultCore
+import QuickHoldCore
 
 @main
 struct QuickVaultApp: App {
@@ -40,5 +40,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     )
 
     menuBarManager = MenuBarManager(authService: authService, cardService: cardService)
+
+    // 报告设备信息到云端
+    Task { @MainActor in
+      await DeviceReportService.shared.reportDeviceIfNeeded()
+    }
   }
 }
