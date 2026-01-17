@@ -58,6 +58,17 @@
 "auth.error.rate.limited" = "失败次数过多，请等待 %d 秒";
 "auth.error.keychain" = "钥匙串错误：%@";
 
+// MARK: - Introduction
+"intro.feature.local.title" = "本地存储，安心可靠";
+"intro.feature.local.description" = "所有数据仅存储在您的设备上，不上传到任何云端服务器，完全离线使用。";
+"intro.feature.encryption.title" = "数据加密保护";
+"intro.feature.encryption.description" = "采用 AES-256-GCM 加密算法，所有敏感数据都经过加密存储，即使设备丢失也无法被破解。";
+"intro.feature.files.title" = "照片文件全加密";
+"intro.feature.files.description" = "图片、PDF 等附件均加密保存，导出照片时支持添加水印。";
+"intro.feature.privacy.title" = "绝对隐私保护";
+"intro.feature.privacy.description" = "无需注册账号，无需提供任何个人信息，您的数据完全属于您自己。";
+"intro.button.continue" = "我知道了，开始使用";
+
 // MARK: - Cards
 "cards.title" = "卡片";
 "cards.empty" = "暂无卡片";

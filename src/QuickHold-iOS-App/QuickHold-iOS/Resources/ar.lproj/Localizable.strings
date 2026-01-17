@@ -351,3 +351,14 @@
 "settings.security.cleardata.confirm.delete" = "حذف كل البيانات";
 "settings.security.cleardata.success" = "تم مسح كل البيانات";
 
+
+// MARK: - Introduction
+"intro.feature.local.title" = "تخزين محلي، موثوق وآمن";
+"intro.feature.local.description" = "يتم تخزين جميع البيانات على جهازك فقط، ولا يتم تحميلها أبدًا إلى أي خادم سحابي. يعمل بشكل كامل دون اتصال بالإنترنت.";
+"intro.feature.encryption.title" = "حماية تشفير البيانات";
+"intro.feature.encryption.description" = "يستخدم خوارزمية التشفير AES-256-GCM. يتم تشفير جميع البيانات الحساسة قبل التخزين. حتى في حالة فقدان الجهاز، لا يمكن فك تشفيرها.";
+"intro.feature.files.title" = "الصور والملفات مشفرة بالكامل";
+"intro.feature.files.description" = "الصور وملفات PDF والمرفقات الأخرى كلها مشفرة. يدعم إضافة علامات مائية عند تصدير الصور.";
+"intro.feature.privacy.title" = "حماية مطلقة للخصوصية";
+"intro.feature.privacy.description" = "لا يلزم تسجيل حساب. لا حاجة لمعلومات شخصية. بياناتك ملك لك بالكامل.";
+"intro.button.continue" = "فهمت، لنبدأ";

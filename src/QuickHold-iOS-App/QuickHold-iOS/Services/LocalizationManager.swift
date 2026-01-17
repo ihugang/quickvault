@@ -74,11 +74,11 @@ enum AppLanguage: String, CaseIterable, Identifiable {
 class LocalizationManager: ObservableObject {
   static let shared = LocalizationManager()
   
-  private let languageKey = "app_language"
+  private static let languageKey = "app_language"
   
   @Published var currentLanguage: AppLanguage {
     didSet {
-      UserDefaults.standard.set(currentLanguage.rawValue, forKey: languageKey)
+      UserDefaults.standard.set(currentLanguage.rawValue, forKey: Self.languageKey)
       updateLayoutDirection()
     }
   }
@@ -90,18 +90,13 @@ class LocalizationManager: ObservableObject {
   private var bundle: Bundle?
   
   private init() {
-    if let savedLanguage = UserDefaults.standard.string(forKey: languageKey),
+    if let savedLanguage = UserDefaults.standard.string(forKey: Self.languageKey),
        let language = AppLanguage(rawValue: savedLanguage) {
       self.currentLanguage = language
       self.isUsingSystemLanguage = false
     } else {
-      // Default to system language
-      let preferredLanguage = Locale.preferredLanguages.first ?? "en"
-      if let language = AppLanguage.allCases.first(where: { preferredLanguage.hasPrefix($0.rawValue) }) {
-        self.currentLanguage = language
-      } else {
-        self.currentLanguage = .english
-      }
+      let resolvedCode = Self.resolvedLanguageCode()
+      self.currentLanguage = AppLanguage(rawValue: resolvedCode) ?? .english
       self.isUsingSystemLanguage = true
     }
     updateBundle()
@@ -115,15 +110,19 @@ class LocalizationManager: ObservableObject {
   }
 
   func useSystemLanguage() {
-    UserDefaults.standard.removeObject(forKey: languageKey)
-    let preferredLanguage = Locale.preferredLanguages.first ?? "en"
-    if let language = AppLanguage.allCases.first(where: { preferredLanguage.hasPrefix($0.rawValue) }) {
-      currentLanguage = language
-    } else {
-      currentLanguage = .english
-    }
+    UserDefaults.standard.removeObject(forKey: Self.languageKey)
+    let resolvedCode = Self.resolvedLanguageCode()
+    currentLanguage = AppLanguage(rawValue: resolvedCode) ?? .english
     isUsingSystemLanguage = true
     updateBundle()
+  }
+
+  nonisolated static func resolvedLanguageCode() -> String {
+    if let savedLanguage = UserDefaults.standard.string(forKey: Self.languageKey) {
+      return savedLanguage
+    }
+    let preferredLanguage = Locale.preferredLanguages.first ?? "en"
+    return AppLanguage.allCases.first(where: { preferredLanguage.hasPrefix($0.rawValue) })?.rawValue ?? "en"
   }
   
   private func updateBundle() {
@@ -141,7 +140,7 @@ class LocalizationManager: ObservableObject {
   }
   
   nonisolated func localizedString(_ key: String) -> String {
-    let languageCode = UserDefaults.standard.string(forKey: "app_language") ?? "en"
+    let languageCode = Self.resolvedLanguageCode()
     if let path = Bundle.main.path(forResource: languageCode, ofType: "lproj"),
        let bundle = Bundle(path: path) {
       return bundle.localizedString(forKey: key, value: nil, table: nil)
@@ -156,7 +155,7 @@ class LocalizationManager: ObservableObject {
   
   /// Format date according to current language locale / 根据当前语言的区域设置格式化日期
   nonisolated func formatDate(_ date: Date, dateStyle: DateFormatter.Style = .medium, timeStyle: DateFormatter.Style = .none) -> String {
-    let languageCode = UserDefaults.standard.string(forKey: "app_language") ?? "en"
+    let languageCode = Self.resolvedLanguageCode()
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: languageCode)
     formatter.dateStyle = dateStyle
@@ -166,7 +165,7 @@ class LocalizationManager: ObservableObject {
   
   /// Format relative date according to current language locale / 根据当前语言的区域设置格式化相对时间
   nonisolated func formatRelativeDate(_ date: Date) -> String {
-    let languageCode = UserDefaults.standard.string(forKey: "app_language") ?? "en"
+    let languageCode = Self.resolvedLanguageCode()
     let formatter = RelativeDateTimeFormatter()
     formatter.locale = Locale(identifier: languageCode)
     formatter.unitsStyle = .full
@@ -179,7 +178,7 @@ class LocalizationManager: ObservableObject {
 extension String {
   var localized: String {
     // Use direct bundle lookup to avoid MainActor isolation issues
-    let languageCode = UserDefaults.standard.string(forKey: "app_language") ?? "en"
+    let languageCode = LocalizationManager.resolvedLanguageCode()
     if let path = Bundle.main.path(forResource: languageCode, ofType: "lproj"),
        let bundle = Bundle(path: path) {
       return bundle.localizedString(forKey: self, value: nil, table: nil)

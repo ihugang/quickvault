@@ -350,3 +350,14 @@
 "settings.security.cleardata.confirm.delete" = "Alles wissen";
 "settings.security.cleardata.success" = "Alle gegevens zijn gewist";
 
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Lokale Opslag, Betrouwbaar & Veilig";
+"intro.feature.local.description" = "Alle gegevens worden alleen op uw apparaat opgeslagen, nooit geüpload naar een cloudserver. Werkt volledig offline.";
+"intro.feature.encryption.title" = "Gegevensversleutelingsbescherming";
+"intro.feature.encryption.description" = "Gebruikt AES-256-GCM-versleutelingsalgoritme. Alle gevoelige gegevens worden versleuteld voor opslag. Zelfs als het apparaat verloren gaat, kunnen ze niet worden gekraakt.";
+"intro.feature.files.title" = "Foto's & Bestanden Volledig Versleuteld";
+"intro.feature.files.description" = "Afbeeldingen, PDF's en andere bijlagen zijn allemaal versleuteld. Ondersteunt het toevoegen van watermerken bij het exporteren van foto's.";
+"intro.feature.privacy.title" = "Absolute Privacybescherming";
+"intro.feature.privacy.description" = "Geen accountregistratie vereist. Geen persoonlijke informatie nodig. Uw gegevens behoren volledig aan u.";
+"intro.button.continue" = "Begrepen, Laten We Beginnen";

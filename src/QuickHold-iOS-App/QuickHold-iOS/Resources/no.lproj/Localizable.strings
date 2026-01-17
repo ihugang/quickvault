@@ -350,3 +350,14 @@
 "settings.security.cleardata.confirm.delete" = "Slett alle data";
 "settings.security.cleardata.success" = "Alle data er slettet";
 
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Lokal Lagring, Pålitelig & Sikker";
+"intro.feature.local.description" = "All data lagres kun på enheten din, aldri lastet opp til noen skyserver. Fungerer helt offline.";
+"intro.feature.encryption.title" = "Datakrypteringsbeskyttelse";
+"intro.feature.encryption.description" = "Bruker AES-256-GCM-krypteringsalgoritme. All sensitiv data krypteres før lagring. Selv om enheten mistes, kan den ikke knekkes.";
+"intro.feature.files.title" = "Bilder & Filer Helt Kryptert";
+"intro.feature.files.description" = "Bilder, PDF-er og andre vedlegg er alle kryptert. Støtter å legge til vannmerker ved eksport av bilder.";
+"intro.feature.privacy.title" = "Absolutt Personvernbeskyttelse";
+"intro.feature.privacy.description" = "Ingen kontoregistrering nødvendig. Ingen personlig informasjon nødvendig. Dataene dine tilhører helt deg.";
+"intro.button.continue" = "Forstått, La Oss Begynne";

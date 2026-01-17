@@ -73,7 +73,8 @@ struct QuickHoldSimpleApp: App {
 struct SimpleRootView: View {
     @ObservedObject var authViewModel: AuthViewModel
     @AppStorage(QuickHoldConstants.UserDefaultsKeys.appearanceMode) private var appearanceModeRaw: Int = 0
-    
+    @AppStorage("hasSeenIntroduction") private var hasSeenIntroduction: Bool = false
+
     private var preferredColorScheme: ColorScheme? {
         // 0 = system, 1 = light, 2 = dark
         switch appearanceModeRaw {
@@ -85,24 +86,32 @@ struct SimpleRootView: View {
             return nil  // system
         }
     }
-    
+
     var body: some View {
         Group {
             switch authViewModel.authState {
             case .locked:
                 LockScreenView(viewModel: authViewModel)
                     .transition(.opacity)
-                
+
             case .unlocked:
                 MainContentView()
                     .transition(.opacity)
-                
+
             case .setupRequired:
-                WelcomeView(viewModel: authViewModel)
-                    .transition(.opacity)
+                if !hasSeenIntroduction {
+                    // 首次启动，显示介绍页面
+                    IntroductionView(hasSeenIntroduction: $hasSeenIntroduction)
+                        .transition(.opacity)
+                } else {
+                    // 已看过介绍，显示密码设置页面
+                    WelcomeView(viewModel: authViewModel)
+                        .transition(.opacity)
+                }
             }
         }
         .animation(.easeInOut, value: authViewModel.authState)
+        .animation(.easeInOut, value: hasSeenIntroduction)
         .preferredColorScheme(preferredColorScheme)
     }
 }

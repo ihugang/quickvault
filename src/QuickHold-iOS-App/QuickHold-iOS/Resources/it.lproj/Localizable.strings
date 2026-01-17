@@ -350,3 +350,14 @@
 "settings.security.cleardata.confirm.delete" = "Elimina tutti i dati";
 "settings.security.cleardata.success" = "Tutti i dati sono stati eliminati";
 
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Archiviazione Locale, Affidabile e Sicura";
+"intro.feature.local.description" = "Tutti i dati sono archiviati solo sul tuo dispositivo, mai caricati su alcun server cloud. Funziona completamente offline.";
+"intro.feature.encryption.title" = "Protezione Crittografia dei Dati";
+"intro.feature.encryption.description" = "Utilizza l'algoritmo di crittografia AES-256-GCM. Tutti i dati sensibili vengono crittografati prima dell'archiviazione. Anche in caso di smarrimento del dispositivo, non possono essere decifrati.";
+"intro.feature.files.title" = "Foto e File Completamente Crittografati";
+"intro.feature.files.description" = "Immagini, PDF e altri allegati sono tutti crittografati. Supporta l'aggiunta di filigrane durante l'esportazione di foto.";
+"intro.feature.privacy.title" = "Protezione Assoluta della Privacy";
+"intro.feature.privacy.description" = "Nessuna registrazione account richiesta. Nessuna informazione personale necessaria. I tuoi dati appartengono interamente a te.";
+"intro.button.continue" = "Capito, Iniziamo";

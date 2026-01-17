@@ -367,3 +367,14 @@
 "promo.photopc.description" = "Verktyg för överföring av foton över flera plattformar. Överför foton snabbt mellan Mac och iPhone utan nätverk.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Förvandla din iPhone till en säker mobil enhet";
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Lokal Lagring, Pålitlig & Säker";
+"intro.feature.local.description" = "All data lagras endast på din enhet, aldrig uppladdad till någon molnserver. Fungerar helt offline.";
+"intro.feature.encryption.title" = "Datakrypteringsskydd";
+"intro.feature.encryption.description" = "Använder AES-256-GCM-krypteringsalgoritm. All känslig data krypteras före lagring. Även om enheten förloras kan den inte knäckas.";
+"intro.feature.files.title" = "Foton & Filer Helt Krypterade";
+"intro.feature.files.description" = "Bilder, PDF-filer och andra bilagor är alla krypterade. Stöder tillägg av vattenstämplar vid export av foton.";
+"intro.feature.privacy.title" = "Absolut Integritetsskydd";
+"intro.feature.privacy.description" = "Ingen kontoregistrering krävs. Ingen personlig information behövs. Din data tillhör helt dig.";
+"intro.button.continue" = "Förstått, Låt Oss Börja";

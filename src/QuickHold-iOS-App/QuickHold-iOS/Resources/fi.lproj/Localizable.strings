@@ -350,3 +350,14 @@
 "settings.security.cleardata.confirm.delete" = "Poista kaikki tiedot";
 "settings.security.cleardata.success" = "Kaikki tiedot on poistettu";
 
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Paikallinen Tallennus, Luotettava & Turvallinen";
+"intro.feature.local.description" = "Kaikki tiedot tallennetaan vain laitteellesi, ei koskaan ladattu mihinkään pilvipalvelimeen. Toimii täysin offline-tilassa.";
+"intro.feature.encryption.title" = "Tietojen Salaussuojaus";
+"intro.feature.encryption.description" = "Käyttää AES-256-GCM-salausalgoritmia. Kaikki arkaluonteiset tiedot salataan ennen tallennusta. Vaikka laite katoaisi, niitä ei voi murtaa.";
+"intro.feature.files.title" = "Kuvat & Tiedostot Täysin Salattu";
+"intro.feature.files.description" = "Kuvat, PDF-tiedostot ja muut liitteet ovat kaikki salattuja. Tukee vesileiman lisäämistä kuvien viennissä.";
+"intro.feature.privacy.title" = "Ehdoton Yksityisyydensuoja";
+"intro.feature.privacy.description" = "Tilin rekisteröintiä ei vaadita. Henkilökohtaisia tietoja ei tarvita. Tietosi kuuluvat täysin sinulle.";
+"intro.button.continue" = "Ymmärretty, Aloitetaan";

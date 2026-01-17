@@ -377,3 +377,14 @@
 "promo.photopc.description" = "クロスプラットフォーム写真転送ツール。ネットワークなしでMacとiPhone間で写真を素早く転送。";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "iPhoneを安全なモバイルドライブに変える";
+
+// MARK: - Introduction
+"intro.feature.local.title" = "ローカルストレージ、信頼性と安全性";
+"intro.feature.local.description" = "すべてのデータはデバイスにのみ保存され、クラウドサーバーにアップロードされることはありません。完全にオフラインで動作します。";
+"intro.feature.encryption.title" = "データ暗号化保護";
+"intro.feature.encryption.description" = "AES-256-GCM暗号化アルゴリズムを使用。すべての機密データは保存前に暗号化されます。デバイスを紛失しても解読できません。";
+"intro.feature.files.title" = "写真とファイルをすべて暗号化";
+"intro.feature.files.description" = "画像、PDF、その他の添付ファイルはすべて暗号化されます。写真のエクスポート時に透かしの追加をサポートします。";
+"intro.feature.privacy.title" = "絶対的なプライバシー保護";
+"intro.feature.privacy.description" = "アカウント登録は不要です。個人情報も必要ありません。あなたのデータは完全にあなたのものです。";
+"intro.button.continue" = "了解、始めましょう";

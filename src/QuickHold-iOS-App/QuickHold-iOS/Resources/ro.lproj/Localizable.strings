@@ -370,3 +370,14 @@
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Transformă iPhone-ul într-un drive mobil securizat";
 
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Stocare Locală, De Încredere și Sigură";
+"intro.feature.local.description" = "Toate datele sunt stocate doar pe dispozitivul dvs., niciodată încărcate pe niciun server cloud. Funcționează complet offline.";
+"intro.feature.encryption.title" = "Protecție prin Criptare a Datelor";
+"intro.feature.encryption.description" = "Utilizează algoritmul de criptare AES-256-GCM. Toate datele sensibile sunt criptate înainte de stocare. Chiar dacă dispozitivul este pierdut, nu pot fi decriptate.";
+"intro.feature.files.title" = "Fotografii și Fișiere Complet Criptate";
+"intro.feature.files.description" = "Imagini, PDF-uri și alte atașamente sunt toate criptate. Suportă adăugarea de filigrane la exportul fotografiilor.";
+"intro.feature.privacy.title" = "Protecție Absolută a Confidențialității";
+"intro.feature.privacy.description" = "Nu este necesară înregistrarea contului. Nu sunt necesare informații personale. Datele dvs. vă aparțin în totalitate.";
+"intro.button.continue" = "Am Înțeles, Să Începem";

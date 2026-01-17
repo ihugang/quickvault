@@ -1,0 +1,13 @@
+/*
+  InfoPlist.strings (English)
+  QuickHold
+*/
+
+// App Display Name
+"CFBundleDisplayName" = "QuickHold";
+
+// Face ID Usage
+"NSFaceIDUsageDescription" = "Use Face ID to unlock the app";
+
+// Photo Library Usage
+"NSPhotoLibraryUsageDescription" = "Access photo library to add image attachments";

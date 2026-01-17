@@ -350,3 +350,14 @@
 "settings.security.cleardata.confirm.delete" = "Wyczyść wszystkie dane";
 "settings.security.cleardata.success" = "Wszystkie dane zostały wyczyszczone";
 
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Lokalne Przechowywanie, Niezawodne i Bezpieczne";
+"intro.feature.local.description" = "Wszystkie dane są przechowywane tylko na Twoim urządzeniu, nigdy nie są przesyłane na żaden serwer w chmurze. Działa całkowicie offline.";
+"intro.feature.encryption.title" = "Ochrona Szyfrowania Danych";
+"intro.feature.encryption.description" = "Używa algorytmu szyfrowania AES-256-GCM. Wszystkie wrażliwe dane są szyfrowane przed zapisem. Nawet w przypadku utraty urządzenia nie można ich złamać.";
+"intro.feature.files.title" = "Zdjęcia i Pliki Całkowicie Zaszyfrowane";
+"intro.feature.files.description" = "Obrazy, pliki PDF i inne załączniki są wszystkie zaszyfrowane. Obsługuje dodawanie znaków wodnych podczas eksportowania zdjęć.";
+"intro.feature.privacy.title" = "Absolutna Ochrona Prywatności";
+"intro.feature.privacy.description" = "Nie wymaga rejestracji konta. Nie wymaga żadnych danych osobowych. Twoje dane należą całkowicie do Ciebie.";
+"intro.button.continue" = "Rozumiem, Zaczynajmy";

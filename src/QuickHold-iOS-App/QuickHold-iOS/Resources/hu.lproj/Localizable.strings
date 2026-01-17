@@ -350,3 +350,14 @@
 "settings.security.cleardata.confirm.delete" = "Összes adat törlése";
 "settings.security.cleardata.success" = "Minden adat törölve";
 
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Helyi Tárolás, Megbízható és Biztonságos";
+"intro.feature.local.description" = "Minden adat csak az eszközén tárolódik, soha nem töltődik fel felhőszerverre. Teljesen offline működik.";
+"intro.feature.encryption.title" = "Adattitkosítási Védelem";
+"intro.feature.encryption.description" = "AES-256-GCM titkosítási algoritmust használ. Minden érzékeny adat titkosítva van tárolás előtt. Még eszközvesztés esetén sem törhetők fel.";
+"intro.feature.files.title" = "Fényképek és Fájlok Teljesen Titkosítva";
+"intro.feature.files.description" = "Képek, PDF-ek és egyéb mellékletek mind titkosítva vannak. Támogatja vízjel hozzáadását fényképek exportálásakor.";
+"intro.feature.privacy.title" = "Abszolút Adatvédelem";
+"intro.feature.privacy.description" = "Nincs szükség fiókregisztrációra. Nincs szükség személyes adatokra. Az adatai teljes mértékben az önéi.";
+"intro.button.continue" = "Értem, Kezdjük El";

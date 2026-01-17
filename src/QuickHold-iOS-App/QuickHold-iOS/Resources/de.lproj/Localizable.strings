@@ -377,3 +377,14 @@
 "error.storage" = "Speicherfehler";
 "error.biometric.unavailable" = "Biometrische Authentifizierung ist nicht verfügbar";
 "error.biometric.notEnrolled" = "Keine biometrischen Daten registriert";
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Lokale Speicherung, Vertrauenswürdig & Zuverlässig";
+"intro.feature.local.description" = "Alle Daten werden nur auf Ihrem Gerät gespeichert, niemals auf einen Cloud-Server hochgeladen. Funktioniert vollständig offline.";
+"intro.feature.encryption.title" = "Datenverschlüsselungsschutz";
+"intro.feature.encryption.description" = "Verwendet AES-256-GCM-Verschlüsselungsalgorithmus. Alle sensiblen Daten werden vor der Speicherung verschlüsselt. Selbst bei Geräteverlust können sie nicht geknackt werden.";
+"intro.feature.files.title" = "Fotos & Dateien Vollständig Verschlüsselt";
+"intro.feature.files.description" = "Bilder, PDFs und andere Anhänge sind alle verschlüsselt. Unterstützt das Hinzufügen von Wasserzeichen beim Exportieren von Fotos.";
+"intro.feature.privacy.title" = "Absoluter Datenschutz";
+"intro.feature.privacy.description" = "Keine Kontoregistrierung erforderlich. Keine persönlichen Informationen benötigt. Ihre Daten gehören vollständig Ihnen.";
+"intro.button.continue" = "Verstanden, Los Geht's";

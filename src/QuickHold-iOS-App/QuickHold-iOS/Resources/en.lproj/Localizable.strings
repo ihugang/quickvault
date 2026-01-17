@@ -379,3 +379,14 @@
 "promo.photopc.description" = "Cross-platform photo transfer tool. Transfer photos quickly between Mac and iPhone without network.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Turn your iPhone into a secure mobile drive";
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Local Storage, Trustworthy & Reliable";
+"intro.feature.local.description" = "All data is stored only on your device, never uploaded to any cloud server. Works completely offline.";
+"intro.feature.encryption.title" = "Data Encryption Protection";
+"intro.feature.encryption.description" = "Uses AES-256-GCM encryption algorithm. All sensitive data is encrypted before storage. Even if the device is lost, it cannot be cracked.";
+"intro.feature.files.title" = "Photos & Files All Encrypted";
+"intro.feature.files.description" = "Images, PDFs, and other attachments are all encrypted. Supports adding watermarks when exporting photos.";
+"intro.feature.privacy.title" = "Absolute Privacy Protection";
+"intro.feature.privacy.description" = "No account registration required. No personal information needed. Your data belongs entirely to you.";
+"intro.button.continue" = "Got It, Let's Start";

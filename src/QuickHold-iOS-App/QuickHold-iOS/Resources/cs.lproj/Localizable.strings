@@ -350,3 +350,14 @@
 "settings.security.cleardata.confirm.delete" = "Vymazat všechna data";
 "settings.security.cleardata.success" = "Všechna data byla vymazána";
 
+
+// MARK: - Introduction
+"intro.feature.local.title" = "Lokální Úložiště, Spolehlivé a Bezpečné";
+"intro.feature.local.description" = "Všechna data jsou uložena pouze na vašem zařízení, nikdy nenahrána na žádný cloudový server. Funguje zcela offline.";
+"intro.feature.encryption.title" = "Ochrana Šifrování Dat";
+"intro.feature.encryption.description" = "Používá šifrovací algoritmus AES-256-GCM. Všechna citlivá data jsou před uložením zašifrována. Ani při ztrátě zařízení je nelze prolomit.";
+"intro.feature.files.title" = "Fotografie a Soubory Plně Zašifrovány";
+"intro.feature.files.description" = "Obrázky, PDF a další přílohy jsou všechny zašifrovány. Podporuje přidávání vodoznaků při exportu fotografií.";
+"intro.feature.privacy.title" = "Absolutní Ochrana Soukromí";
+"intro.feature.privacy.description" = "Není vyžadována registrace účtu. Nejsou potřeba žádné osobní údaje. Vaše data patří zcela vám.";
+"intro.button.continue" = "Rozumím, Začněme";
