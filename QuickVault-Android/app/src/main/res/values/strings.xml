@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">QuickVault 随取</string>
+    <string name="app_name_short">QuickVault</string>
+
+    <!-- Tab Navigation -->
+    <string name="tab_cards">卡片 Cards</string>
+    <string name="tab_search">搜索 Search</string>
+    <string name="tab_settings">设置 Settings</string>
+
+    <!-- Authentication -->
+    <string name="auth_welcome">欢迎使用 QuickVault\nWelcome to QuickVault</string>
+    <string name="auth_setup_password">设置主密码\nSet Master Password</string>
+    <string name="auth_enter_password">输入主密码\nEnter Master Password</string>
+    <string name="auth_confirm_password">确认密码\nConfirm Password</string>
+    <string name="auth_password_hint">至少 8 个字符 Min 8 characters</string>
+    <string name="auth_unlock">解锁 Unlock</string>
+    <string name="auth_use_biometric">使用生物识别\nUse Biometric</string>
+    <string name="auth_biometric_title">解锁 QuickVault\nUnlock QuickVault</string>
+    <string name="auth_biometric_subtitle">使用指纹或面部识别\nUse fingerprint or face</string>
+    <string name="auth_password_mismatch">密码不匹配 Passwords do not match</string>
+    <string name="auth_password_too_short">密码太短 Password too short</string>
+    <string name="auth_failed">认证失败 Authentication failed</string>
+    <string name="auth_locked">已锁定 Locked</string>
+
+    <!-- Cards -->
+    <string name="cards_title">我的卡片\nMy Cards</string>
+    <string name="cards_empty">暂无卡片\n点击 + 创建第一张卡片\n\nNo cards yet\nTap + to create your first card</string>
+    <string name="cards_pinned">置顶 Pinned</string>
+    <string name="cards_recent">最近 Recent</string>
+    <string name="card_pin">置顶 Pin</string>
+    <string name="card_unpin">取消置顶 Unpin</string>
+    <string name="card_edit">编辑 Edit</string>
+    <string name="card_delete">删除 Delete</string>
+    <string name="card_copy">复制 Copy</string>
+    <string name="card_copy_field">复制字段 Copy Field</string>
+    <string name="card_copied">已复制 Copied</string>
+
+    <!-- Card Types -->
+    <string name="card_type_address">地址 Address</string>
+    <string name="card_type_invoice">发票 Invoice</string>
+    <string name="card_type_general">通用文本 General Text</string>
+
+    <!-- Card Groups -->
+    <string name="group_personal">个人 Personal</string>
+    <string name="group_company">公司 Company</string>
+
+    <!-- Card Editor -->
+    <string name="editor_new_card">新建卡片\nNew Card</string>
+    <string name="editor_edit_card">编辑卡片\nEdit Card</string>
+    <string name="editor_title">标题 Title</string>
+    <string name="editor_type">类型 Type</string>
+    <string name="editor_group">分组 Group</string>
+    <string name="editor_tags">标签 Tags</string>
+    <string name="editor_add_tag">添加标签 Add Tag</string>
+    <string name="editor_save">保存 Save</string>
+    <string name="editor_cancel">取消 Cancel</string>
+    <string name="editor_required">必填 Required</string>
+
+    <!-- Address Fields -->
+    <string name="field_recipient">收件人 Recipient</string>
+    <string name="field_phone">手机号 Phone</string>
+    <string name="field_province">省 Province</string>
+    <string name="field_city">市 City</string>
+    <string name="field_district">区 District</string>
+    <string name="field_address">详细地址 Address</string>
+    <string name="field_postal_code">邮编 Postal Code</string>
+    <string name="field_notes">备注 Notes</string>
+
+    <!-- Invoice Fields -->
+    <string name="field_company_name">公司名称 Company Name</string>
+    <string name="field_tax_id">税号 Tax ID</string>
+    <string name="field_bank_name">开户行 Bank Name</string>
+    <string name="field_bank_account">银行账号 Bank Account</string>
+
+    <!-- General Text Fields -->
+    <string name="field_content">内容 Content</string>
+
+    <!-- Attachments -->
+    <string name="attachment_add">添加附件 Add Attachment</string>
+    <string name="attachment_photo">拍照 Take Photo</string>
+    <string name="attachment_gallery">从相册选择 Choose from Gallery</string>
+    <string name="attachment_file">选择文件 Choose File</string>
+    <string name="attachment_watermark">添加水印 Add Watermark</string>
+    <string name="attachment_watermark_text">水印文字 Watermark Text</string>
+    <string name="attachment_watermark_apply">应用水印 Apply Watermark</string>
+    <string name="attachment_delete">删除附件 Delete Attachment</string>
+    <string name="attachment_share">分享 Share</string>
+
+    <!-- Search -->
+    <string name="search_hint">搜索卡片… Search cards…</string>
+    <string name="search_no_results">无结果 No results</string>
+    <string name="search_filter_group">筛选分组 Filter by Group</string>
+    <string name="search_all_groups">全部 All</string>
+
+    <!-- Settings -->
+    <string name="settings_title">设置 Settings</string>
+    <string name="settings_security">安全 Security</string>
+    <string name="settings_change_password">修改主密码 Change Master Password</string>
+    <string name="settings_biometric">生物识别 Biometric</string>
+    <string name="settings_biometric_enable">启用生物识别 Enable Biometric</string>
+    <string name="settings_auto_lock">自动锁定 Auto Lock</string>
+    <string name="settings_auto_lock_timeout">锁定超时 Lock Timeout</string>
+    <string name="settings_lock_on_background">后台锁定 Lock on Background</string>
+    <string name="settings_about">关于 About</string>
+    <string name="settings_version">版本 Version</string>
+    <string name="settings_clear_data">清除所有数据 Clear All Data</string>
+    <string name="settings_clear_data_warning">此操作不可恢复！\nThis action cannot be undone!</string>
+
+    <!-- Lock Timeout Options -->
+    <string name="timeout_immediately">立即 Immediately</string>
+    <string name="timeout_1min">1 分钟 1 Minute</string>
+    <string name="timeout_5min">5 分钟 5 Minutes</string>
+    <string name="timeout_10min">10 分钟 10 Minutes</string>
+    <string name="timeout_30min">30 分钟 30 Minutes</string>
+    <string name="timeout_never">从不 Never</string>
+
+    <!-- Validation Errors -->
+    <string name="error_field_required">此字段必填 This field is required</string>
+    <string name="error_phone_invalid">手机号格式错误 Invalid phone number</string>
+    <string name="error_tax_id_invalid">税号格式错误 Invalid tax ID</string>
+    <string name="error_title_required">请输入标题 Title is required</string>
+
+    <!-- Common -->
+    <string name="ok">确定 OK</string>
+    <string name="cancel">取消 Cancel</string>
+    <string name="delete">删除 Delete</string>
+    <string name="save">保存 Save</string>
+    <string name="edit">编辑 Edit</string>
+    <string name="done">完成 Done</string>
+    <string name="loading">加载中… Loading…</string>
+    <string name="error">错误 Error</string>
+</resources>

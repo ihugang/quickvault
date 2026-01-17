@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- 禁用云备份，保护敏感数据 -->
+        <include domain="sharedpref" path="." />
+        <exclude domain="sharedpref" path="crypto_prefs.xml" />
+        <exclude domain="database" path="." />
+    </cloud-backup>
+</data-extraction-rules>
