@@ -131,11 +131,16 @@ enum DeviceReportError: LocalizedError {
 public class DeviceReportService: ObservableObject {
   public static let shared = DeviceReportService()
 
-  private let reportDeviceIdKey = QuickHoldConstants.UserDefaultsKeys.reportDeviceId
+  private let keychainService = KeychainServiceImpl()
+  private let reportDeviceIdKey = QuickHoldConstants.KeychainKeys.reportDeviceId
+  private let legacyUserDefaultsKey = QuickHoldConstants.UserDefaultsKeys.reportDeviceId
   private var hasReportedDevice = false
   private let persistenceController = PersistenceController.shared
 
-  private init() {}
+  private init() {
+    // Migrate from UserDefaults to Keychain if needed
+    migrateDeviceIdToKeychain()
+  }
 
   /// 报告设备信息到云端
   public func reportDeviceIfNeeded(itemCount: Int = 0) {
@@ -200,17 +205,44 @@ public class DeviceReportService: ObservableObject {
     }
   }
 
-  /// 获取或创建设备报告ID
+  /// 获取或创建设备报告ID（从 Keychain 读取，确保重装后保持不变）
   private func getReportDeviceId() -> UUID {
-    let defaults = UserDefaults.standard
-    if let stored = defaults.string(forKey: reportDeviceIdKey),
-       let uuid = UUID(uuidString: stored)
+    // Try to load from Keychain
+    if let data = try? keychainService.load(key: reportDeviceIdKey),
+       let uuidString = String(data: data, encoding: .utf8),
+       let uuid = UUID(uuidString: uuidString)
     {
       return uuid
     }
+
+    // Generate new ID and save to Keychain
     let newId = UUID()
-    defaults.set(newId.uuidString, forKey: reportDeviceIdKey)
+    if let data = newId.uuidString.data(using: .utf8) {
+      // Device ID should NOT be synced across devices (synchronizable: false)
+      try? keychainService.save(key: reportDeviceIdKey, data: data, synchronizable: false)
+    }
     return newId
+  }
+
+  /// 从 UserDefaults 迁移到 Keychain（仅执行一次）
+  private func migrateDeviceIdToKeychain() {
+    // Check if already in Keychain
+    if keychainService.exists(key: reportDeviceIdKey) {
+      return
+    }
+
+    // Try to migrate from UserDefaults
+    let defaults = UserDefaults.standard
+    if let stored = defaults.string(forKey: legacyUserDefaultsKey),
+       let uuid = UUID(uuidString: stored),
+       let data = uuid.uuidString.data(using: .utf8)
+    {
+      // Migrate to Keychain
+      try? keychainService.save(key: reportDeviceIdKey, data: data, synchronizable: false)
+      // Clean up UserDefaults
+      defaults.removeObject(forKey: legacyUserDefaultsKey)
+      print("✅ Migrated DeviceId from UserDefaults to Keychain")
+    }
   }
 
   /// 重置报告状态(用于测试)

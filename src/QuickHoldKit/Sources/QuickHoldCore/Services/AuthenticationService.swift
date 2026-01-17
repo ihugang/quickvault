@@ -18,6 +18,8 @@ public enum AuthenticationError: LocalizedError {
   case noPasswordSet  // 未设置密码
   case rateLimited(remainingSeconds: Int)  // 速率限制
   case keychainError(String)  // 钥匙串错误
+  case passwordMismatchWithExistingData  // 密码与现有数据不匹配（多设备场景）
+  case waitingForSync  // 等待 iCloud 同步
 
   public var localizationKey: String {
     switch self {
@@ -37,6 +39,10 @@ public enum AuthenticationError: LocalizedError {
       return "auth.error.rate.limited"
     case .keychainError:
       return "auth.error.keychain"
+    case .passwordMismatchWithExistingData:
+      return "auth.error.password.mismatch.existing.data"
+    case .waitingForSync:
+      return "auth.error.waiting.for.sync"
     }
   }
   
@@ -73,6 +79,10 @@ public enum AuthenticationError: LocalizedError {
       return "Too many failed attempts. Please wait \(seconds) seconds"
     case .keychainError(let message):
       return "Keychain error: \(message)"
+    case .passwordMismatchWithExistingData:
+      return "Password does not match existing data from other devices. Please use the same password you set on your first device."
+    case .waitingForSync:
+      return "Waiting for iCloud sync... Please try again in a few moments."
     }
   }
 }
@@ -101,6 +111,8 @@ public protocol AuthenticationService {
   func isBiometricAvailable() -> Bool
   func enableBiometric(_ enabled: Bool) throws
   func isBiometricEnabled() -> Bool
+  func hasExistingCloudData() async -> Bool  // 检查是否有现有 iCloud 数据
+  func validatePasswordWithExistingData(_ password: String) async -> Bool  // 验证密码是否能解密现有数据
 }
 
 // MARK: - Authentication Service Implementation / 认证服务实现
@@ -146,7 +158,30 @@ public class AuthenticationServiceImpl: AuthenticationService, @unchecked Sendab
 
     // Check if master password exists
     if keychainService.exists(key: masterPasswordKey) {
-      stateSubject.send(.locked)
+      // Check if there's any data in CoreData
+      // If password exists but no data, it's likely a reinstall - clear Keychain
+      let context = persistenceController.viewContext
+      let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Item")
+      fetchRequest.fetchLimit = 1
+
+      do {
+        let count = try context.count(for: fetchRequest)
+        if count == 0 {
+          // Password exists but no data - likely a reinstall
+          authLogger.warning("[AuthService] Detected password in Keychain but no data in CoreData - clearing Keychain for fresh start")
+          try? keychainService.delete(key: masterPasswordKey)
+          try? keychainService.delete(key: biometricPasswordKey)
+          try? keychainService.delete(key: QuickHoldConstants.KeychainKeys.cryptoSalt)
+          stateSubject.send(.setupRequired)
+        } else {
+          // Normal case - password and data both exist
+          stateSubject.send(.locked)
+        }
+      } catch {
+        authLogger.error("[AuthService] Failed to check CoreData count: \(error.localizedDescription)")
+        // On error, assume locked state
+        stateSubject.send(.locked)
+      }
     } else {
       stateSubject.send(.setupRequired)
     }
@@ -161,6 +196,23 @@ public class AuthenticationServiceImpl: AuthenticationService, @unchecked Sendab
       throw AuthenticationError.passwordTooShort
     }
 
+    // Check if there's existing data from other devices
+    let hasExistingData = await hasExistingCloudData()
+    if hasExistingData {
+      authLogger.info("[AuthService] Detected existing data from other devices")
+
+      // Wait longer for iCloud Keychain to sync (increased from 2s to 5s)
+      try? await Task.sleep(nanoseconds: 5_000_000_000)  // 5 seconds
+
+      // Validate password against existing data
+      let isValid = await validatePasswordWithExistingData(password)
+      if !isValid {
+        authLogger.error("[AuthService] Password does not match existing data")
+        throw AuthenticationError.passwordMismatchWithExistingData
+      }
+      authLogger.info("[AuthService] Password validated successfully against existing data")
+    }
+
     // Hash the password before storing
     let passwordHash = cryptoService.hashPassword(password)
     guard let passwordData = passwordHash.data(using: .utf8) else {
@@ -168,17 +220,19 @@ public class AuthenticationServiceImpl: AuthenticationService, @unchecked Sendab
     }
 
     do {
-      try keychainService.save(key: masterPasswordKey, data: passwordData)
+      // Password hash should NOT be synced to iCloud for security reasons
+      // 密码哈希不应同步到 iCloud（安全考虑）
+      try keychainService.save(key: masterPasswordKey, data: passwordData, synchronizable: false)
       authLogger.info("[AuthService] Master password saved to keychain")
-      
+
       // Initialize encryption key with the password
       try cryptoService.initializeKey(password: password, salt: nil)
       authLogger.info("[AuthService] Encryption key initialized")
-      
+
       // Store password for biometric authentication (if enabled later)
       storeBiometricPassword(password)
       authLogger.info("[AuthService] Biometric password stored")
-      
+
       stateSubject.send(.unlocked)
     } catch {
       authLogger.error("[AuthService] Setup failed: \(error.localizedDescription)")
@@ -314,7 +368,9 @@ public class AuthenticationServiceImpl: AuthenticationService, @unchecked Sendab
     guard let newPasswordData = newPasswordHash.data(using: .utf8) else {
       throw AuthenticationError.keychainError("Failed to encode new password hash")
     }
-    try keychainService.save(key: masterPasswordKey, data: newPasswordData)
+    // Password hash should NOT be synced to iCloud for security reasons
+    // 密码哈希不应同步到 iCloud（安全考虑）
+    try keychainService.save(key: masterPasswordKey, data: newPasswordData, synchronizable: false)
     
     // Update stored password for biometric authentication
     storeBiometricPassword(newPassword)
@@ -525,7 +581,9 @@ public class AuthenticationServiceImpl: AuthenticationService, @unchecked Sendab
       return
     }
     do {
-      try keychainService.save(key: biometricPasswordKey, data: passwordData)
+      // Biometric password should NOT be synced to iCloud for security reasons
+      // 生物识别密码不应同步到 iCloud（安全考虑）
+      try keychainService.save(key: biometricPasswordKey, data: passwordData, synchronizable: false)
       authLogger.info("[AuthService] Biometric password stored successfully")
     } catch {
       authLogger.error("[AuthService] Failed to store biometric password: \(error.localizedDescription)")
@@ -566,5 +624,72 @@ public class AuthenticationServiceImpl: AuthenticationService, @unchecked Sendab
   private func resetFailedAttempts() {
     UserDefaults.standard.set(0, forKey: failedAttemptsKey)
     UserDefaults.standard.set(0, forKey: lastFailedAttemptKey)
+  }
+
+  // MARK: - Multi-Device Support / 多设备支持
+
+  /// Check if there is existing data in iCloud
+  /// 检查 iCloud 中是否有现有数据
+  public func hasExistingCloudData() async -> Bool {
+    return await persistenceController.hasExistingData()
+  }
+
+  /// Validate if the password can decrypt existing data
+  /// 验证密码是否能解密现有数据
+  public func validatePasswordWithExistingData(_ password: String) async -> Bool {
+    authLogger.info("[AuthService] Validating password with existing data")
+
+    // Check if there's any encrypted data to validate against
+    let hasData = await hasExistingCloudData()
+    guard hasData else {
+      authLogger.debug("[AuthService] No existing data to validate against")
+      return true  // No data means password is valid
+    }
+
+    // Try to initialize crypto service with the password
+    do {
+      try cryptoService.initializeKey(password: password, salt: nil)
+
+      // Try to fetch and decrypt a sample item
+      let context = persistenceController.viewContext
+      let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Item")
+      fetchRequest.fetchLimit = 1
+
+      guard let items = try? context.fetch(fetchRequest) as? [NSManagedObject],
+            let item = items.first else {
+        authLogger.debug("[AuthService] No items found to validate")
+        return true
+      }
+
+      // Try to decrypt text content if available
+      if let textContentSet = item.value(forKey: "textContent") as? NSSet,
+         let textContent = textContentSet.allObjects.first as? NSManagedObject,
+         let encryptedData = textContent.value(forKey: "encryptedContent") as? Data {
+        do {
+          _ = try cryptoService.decrypt(encryptedData)
+          authLogger.info("[AuthService] Password validation successful")
+          return true
+        } catch {
+          authLogger.error("[AuthService] Failed to decrypt existing data: \(error.localizedDescription)")
+          return false
+        }
+      }
+
+      // If no text content, try image content
+      if let imageContentSet = item.value(forKey: "imageContent") as? NSSet,
+         !imageContentSet.allObjects.isEmpty {
+        // For images, we can't easily validate without decrypting
+        // Assume valid if we got this far
+        authLogger.debug("[AuthService] Found image content, assuming password is valid")
+        return true
+      }
+
+      authLogger.debug("[AuthService] No encrypted content found to validate")
+      return true
+
+    } catch {
+      authLogger.error("[AuthService] Password validation failed: \(error.localizedDescription)")
+      return false
+    }
   }
 }

@@ -74,14 +74,31 @@ public final class CryptoServiceImpl: CryptoService, @unchecked Sendable {
     } else if keychainService.exists(key: saltKey) {
       cryptoLogger.debug("[CryptoService] Loading salt from keychain")
       saltData = try keychainService.load(key: saltKey)
+
+      // Migration: Re-save salt with iCloud sync enabled for existing users
+      // 迁移：为已有用户重新保存盐值并启用 iCloud 同步
+      try migrateSaltToSynchronizable(saltData)
     } else {
       cryptoLogger.debug("[CryptoService] Generating new salt")
       saltData = generateSalt()
-      try keychainService.save(key: saltKey, data: saltData)
+      // Enable iCloud Keychain sync for salt to support multi-device scenarios
+      // 启用 iCloud Keychain 同步以支持多设备场景
+      try keychainService.save(key: saltKey, data: saltData, synchronizable: true)
     }
 
     encryptionKey = try deriveKey(from: password, salt: saltData)
     cryptoLogger.info("[CryptoService] Encryption key initialized successfully")
+  }
+
+  /// Migrate existing salt to synchronizable keychain item
+  /// 将现有盐值迁移到可同步的 Keychain 项
+  private func migrateSaltToSynchronizable(_ salt: Data) throws {
+    cryptoLogger.info("[CryptoService] Migrating salt to synchronizable keychain item")
+    // Delete old non-synchronizable item and save as synchronizable
+    // 删除旧的不可同步项并保存为可同步项
+    try keychainService.delete(key: saltKey)
+    try keychainService.save(key: saltKey, data: salt, synchronizable: true)
+    cryptoLogger.info("[CryptoService] Salt migration completed")
   }
 
   public func deriveKey(from password: String, salt: Data) throws -> SymmetricKey {

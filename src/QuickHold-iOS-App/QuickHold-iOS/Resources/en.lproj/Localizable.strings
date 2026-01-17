@@ -47,6 +47,11 @@
 "auth.change.confirm" = "Confirm new password";
 "auth.change.success" = "Password changed successfully";
 "auth.change.failed" = "Failed to change password";
+"auth.sync.detected.title" = "Data from Other Devices Detected";
+"auth.sync.detected.message" = "Please use the same password you set on your first device";
+"auth.sync.detected.existing.data" = "Detected data from other devices";
+"auth.sync.waiting" = "Waiting for iCloud sync...";
+"auth.sync.retry" = "Retry";
 
 // MARK: - Authentication Errors
 "auth.error.biometric.unavailable" = "Touch ID is not available";
@@ -57,6 +62,8 @@
 "auth.error.no.password" = "No master password set";
 "auth.error.rate.limited" = "Too many failed attempts. Please wait %d seconds";
 "auth.error.keychain" = "Keychain error: %@";
+"auth.error.password.mismatch.existing.data" = "Password does not match existing data from other devices. Please use the same password you set on your first device.";
+"auth.error.waiting.for.sync" = "Waiting for iCloud sync... Please try again in a few moments.";
 
 // MARK: - Cards
 "cards.title" = "Cards";

@@ -25,5 +25,6 @@ public enum QuickHoldConstants {
     public static let masterPassword = "com.quickhold.masterPassword"
     public static let biometricPassword = "com.quickhold.biometricPassword"
     public static let cryptoSalt = "crypto.salt"
+    public static let reportDeviceId = "com.quickhold.reportDeviceId"
   }
 }

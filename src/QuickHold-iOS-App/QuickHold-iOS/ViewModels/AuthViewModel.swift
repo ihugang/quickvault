@@ -7,13 +7,17 @@ import QuickHoldCore
 class AuthViewModel: ObservableObject {
     
     // MARK: - Published Properties
-    
+
     @Published var authState: AuthenticationState = .locked
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
     @Published var errorMessage: String?
     @Published var isLoading: Bool = false
     @Published var showBiometricPrompt: Bool = false
+    @Published var hasExistingCloudData: Bool = false
+    @Published var isSyncing: Bool = false
+    @Published var syncStatusMessage: String?
+    @Published var showRetryButton: Bool = false
     
     // 防止生物识别重复调用
     private var isBiometricInProgress: Bool = false
@@ -52,40 +56,76 @@ class AuthViewModel: ObservableObject {
     
     init(authService: AuthenticationService) {
         self.authService = authService
-        
+
         authService.authenticationStatePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 self?.authState = state
             }
             .store(in: &cancellables)
+
+        // Check for existing cloud data on init
+        Task {
+            await checkForExistingCloudData()
+        }
+    }
+
+    // MARK: - Cloud Data Detection
+
+    func checkForExistingCloudData() async {
+        hasExistingCloudData = await authService.hasExistingCloudData()
+        if hasExistingCloudData {
+            syncStatusMessage = "auth.sync.detected.existing.data".localized
+        }
     }
     
     // MARK: - Setup
-    
+
     func setupPassword() async {
         guard password.count >= 8 else {
             errorMessage = "auth.password.hint".localized
             return
         }
-        
+
         guard password == confirmPassword else {
             errorMessage = "auth.password.mismatch".localized
             return
         }
-        
+
         isLoading = true
         errorMessage = nil
-        
+        showRetryButton = false
+
+        // Show syncing status if there's existing data
+        if hasExistingCloudData {
+            isSyncing = true
+            syncStatusMessage = "auth.sync.waiting".localized
+        }
+
         do {
             try await authService.setupMasterPassword(password)
             password = ""
             confirmPassword = ""
+            isSyncing = false
+            syncStatusMessage = nil
+        } catch let error as AuthenticationError {
+            if case .passwordMismatchWithExistingData = error {
+                showRetryButton = true
+            }
+            errorMessage = error.localizedDescription
+            isSyncing = false
         } catch {
             errorMessage = error.localizedDescription
+            isSyncing = false
         }
-        
+
         isLoading = false
+    }
+
+    func retrySetup() async {
+        showRetryButton = false
+        errorMessage = nil
+        await setupPassword()
     }
     
     // MARK: - Authentication

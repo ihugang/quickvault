@@ -32,6 +32,25 @@ struct WelcomeView: View {
                 
                 // Password Setup Form
                 VStack(spacing: 20) {
+                    // Show existing data detection message
+                    if viewModel.hasExistingCloudData {
+                        HStack(spacing: 12) {
+                            Image(systemName: "icloud.fill")
+                                .foregroundStyle(.blue)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("auth.sync.detected.title".localized)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                Text("auth.sync.detected.message".localized)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .padding()
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(12)
+                    }
+
                     Text("auth.welcome.subtitle".localized)
                         .font(.headline)
                         .multilineTextAlignment(.center)
@@ -50,6 +69,19 @@ struct WelcomeView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
+
+                    // Show syncing status
+                    if viewModel.isSyncing {
+                        HStack(spacing: 12) {
+                            ProgressView()
+                            Text(viewModel.syncStatusMessage ?? "auth.sync.waiting".localized)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.1))
+                        .cornerRadius(8)
+                    }
 
                     if let error = viewModel.errorMessage {
                         Text(error)
@@ -77,6 +109,23 @@ struct WelcomeView: View {
                     .buttonStyle(.borderedProminent)
                     .frame(height: 48)
                     .disabled(viewModel.isLoading || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty)
+
+                    // Show retry button if password mismatch
+                    if viewModel.showRetryButton {
+                        Button(action: {
+                            Task {
+                                await viewModel.retrySetup()
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: "arrow.clockwise")
+                                Text("auth.sync.retry".localized)
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        .frame(height: 48)
+                    }
                 }
                 .padding(.horizontal, 32)
                 

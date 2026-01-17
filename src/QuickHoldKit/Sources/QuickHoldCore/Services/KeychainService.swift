@@ -30,7 +30,7 @@ public enum KeychainError: LocalizedError {
 }
 
 public protocol KeychainService {
-  func save(key: String, data: Data) throws
+  func save(key: String, data: Data, synchronizable: Bool) throws
   func load(key: String) throws -> Data
   func delete(key: String) throws
   func exists(key: String) -> Bool
@@ -43,17 +43,22 @@ public class KeychainServiceImpl: KeychainService {
     self.service = service
   }
 
-  public func save(key: String, data: Data) throws {
+  public func save(key: String, data: Data, synchronizable: Bool = false) throws {
     // Delete existing item if present
     try? delete(key: key)
 
-    let query: [String: Any] = [
+    var query: [String: Any] = [
       kSecClass as String: kSecClassGenericPassword,
       kSecAttrService as String: service,
       kSecAttrAccount as String: key,
       kSecValueData as String: data,
       kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlocked,
     ]
+
+    // Enable iCloud Keychain sync if requested
+    if synchronizable {
+      query[kSecAttrSynchronizable as String] = true
+    }
 
     let status = SecItemAdd(query as CFDictionary, nil)
 
@@ -63,16 +68,18 @@ public class KeychainServiceImpl: KeychainService {
   }
 
   public func load(key: String) throws -> Data {
-    let query: [String: Any] = [
+    // First try to load synchronizable item (for iCloud synced data)
+    var query: [String: Any] = [
       kSecClass as String: kSecClassGenericPassword,
       kSecAttrService as String: service,
       kSecAttrAccount as String: key,
       kSecReturnData as String: true,
       kSecMatchLimit as String: kSecMatchLimitOne,
+      kSecAttrSynchronizable as String: kSecAttrSynchronizableAny,
     ]
 
     var result: AnyObject?
-    let status = SecItemCopyMatching(query as CFDictionary, &result)
+    var status = SecItemCopyMatching(query as CFDictionary, &result)
 
     guard status == errSecSuccess else {
       if status == errSecItemNotFound {
@@ -93,6 +100,7 @@ public class KeychainServiceImpl: KeychainService {
       kSecClass as String: kSecClassGenericPassword,
       kSecAttrService as String: service,
       kSecAttrAccount as String: key,
+      kSecAttrSynchronizable as String: kSecAttrSynchronizableAny,
     ]
 
     let status = SecItemDelete(query as CFDictionary)
@@ -109,6 +117,7 @@ public class KeychainServiceImpl: KeychainService {
       kSecAttrAccount as String: key,
       kSecReturnData as String: false,
       kSecMatchLimit as String: kSecMatchLimitOne,
+      kSecAttrSynchronizable as String: kSecAttrSynchronizableAny,
     ]
 
     let status = SecItemCopyMatching(query as CFDictionary, nil)

@@ -102,4 +102,20 @@ public struct PersistenceController: Sendable {
   public var viewContext: NSManagedObjectContext {
     container.viewContext
   }
+
+  /// Check if there is any existing data in CloudKit
+  /// 检查 CloudKit 中是否有现有数据
+  public func hasExistingData() async -> Bool {
+    let context = container.newBackgroundContext()
+    return await context.perform {
+      let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Item")
+      fetchRequest.fetchLimit = 1
+      do {
+        let count = try context.count(for: fetchRequest)
+        return count > 0
+      } catch {
+        return false
+      }
+    }
+  }
 }
