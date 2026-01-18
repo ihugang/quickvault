@@ -523,7 +523,7 @@ struct CreateItemSheet: View {
     private func createItem() async {
         isLoading = true
         defer { isLoading = false }
-        
+
         do {
             if selectedType == .text {
                 _ = try await itemService.createTextItem(
@@ -544,7 +544,10 @@ struct CreateItemSheet: View {
                     tags: tags
                 )
             }
-            
+
+            // 立即触发 iCloud 同步 / Trigger iCloud sync immediately
+            CloudSyncMonitor.shared.manualSync()
+
             onCreate()
             dismiss()
         } catch {

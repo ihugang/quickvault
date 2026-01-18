@@ -164,10 +164,10 @@ struct EditItemSheet: View {
     
     private func saveChanges() async {
         guard !title.isEmpty else { return }
-        
+
         isLoading = true
         defer { isLoading = false }
-        
+
         do {
             if item.type == .text {
                 _ = try await itemService.updateTextItem(
@@ -183,7 +183,10 @@ struct EditItemSheet: View {
                     tags: tags
                 )
             }
-            
+
+            // 立即触发 iCloud 同步 / Trigger iCloud sync immediately
+            CloudSyncMonitor.shared.manualSync()
+
             onUpdate()
             dismiss()
         } catch {

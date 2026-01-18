@@ -92,27 +92,32 @@ struct ItemListView: View {
     // MARK: - Sync Status Icon
 
     private var syncStatusIcon: some View {
-        Group {
-            switch syncMonitor.syncStatus {
-            case .synced:
-                Image(systemName: "icloud.and.arrow.down")
-                    .foregroundStyle(.green)
-            case .syncing:
-                HStack(spacing: 4) {
-                    ProgressView()
-                        .scaleEffect(0.7)
-                    Image(systemName: "icloud")
+        Button {
+            syncMonitor.manualSync()
+        } label: {
+            Group {
+                switch syncMonitor.syncStatus {
+                case .synced:
+                    Image(systemName: "icloud.and.arrow.down")
+                        .foregroundStyle(.green)
+                case .syncing:
+                    HStack(spacing: 4) {
+                        ProgressView()
+                            .scaleEffect(0.7)
+                        Image(systemName: "icloud")
+                    }
+                    .foregroundStyle(.blue)
+                case .notSynced:
+                    Image(systemName: "icloud.slash")
+                        .foregroundStyle(.orange)
+                case .error:
+                    Image(systemName: "exclamationmark.icloud")
+                        .foregroundStyle(.red)
                 }
-                .foregroundStyle(.blue)
-            case .notSynced:
-                Image(systemName: "icloud.slash")
-                    .foregroundStyle(.orange)
-            case .error:
-                Image(systemName: "exclamationmark.icloud")
-                    .foregroundStyle(.red)
             }
+            .font(.body)
         }
-        .font(.body)
+        .buttonStyle(.plain)
     }
     
     // MARK: - Background
@@ -193,9 +198,8 @@ struct ItemListView: View {
                 Label(localizationManager.localizedString("items.type.file"), systemImage: "folder.fill")
             }
         } label: {
-            Image(systemName: "plus.circle.fill")
-                .font(.title2)
-                .symbolRenderingMode(.hierarchical)
+            Image(systemName: "plus")
+                .font(.body)
         }
     }
     

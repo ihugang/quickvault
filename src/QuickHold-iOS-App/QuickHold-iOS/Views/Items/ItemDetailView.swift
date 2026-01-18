@@ -297,16 +297,20 @@ struct ItemDetailView: View {
     private func togglePin() async {
         do {
             _ = try await itemService.togglePin(id: item.id)
+            // 立即触发 iCloud 同步 / Trigger iCloud sync immediately
+            CloudSyncMonitor.shared.manualSync()
             onUpdate()
             dismiss()
         } catch {
             print("Error toggling pin: \(error)")
         }
     }
-    
+
     private func deleteItem() async {
         do {
             try await itemService.deleteItem(id: item.id)
+            // 立即触发 iCloud 同步 / Trigger iCloud sync immediately
+            CloudSyncMonitor.shared.manualSync()
             onUpdate()
             dismiss()
         } catch {
