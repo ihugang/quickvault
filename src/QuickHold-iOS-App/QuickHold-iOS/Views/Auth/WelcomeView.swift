@@ -5,12 +5,13 @@ import QuickHoldCore
 struct WelcomeView: View {
     @ObservedObject var viewModel: AuthViewModel
     @State private var showBiometricSetup = false
-    
+    @State private var isLoginMode = false
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 32) {
                 Spacer()
-                
+
                 // App Icon and Title
                 VStack(spacing: 16) {
                     Image("center-logo")
@@ -21,16 +22,16 @@ struct WelcomeView: View {
                     Text("app.name".localized)
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                    
+
                     Text("app.tagline".localized)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                 }
-                
+
                 Spacer()
-                
-                // Password Setup Form
+
+                // Password Setup or Login Form
                 VStack(spacing: 20) {
                     // Show existing data detection message
                     if viewModel.hasExistingCloudData {
@@ -51,24 +52,26 @@ struct WelcomeView: View {
                         .cornerRadius(12)
                     }
 
-                    Text("auth.welcome.subtitle".localized)
+                    Text(isLoginMode ? "auth.login.subtitle".localized : "auth.welcome.subtitle".localized)
                         .font(.headline)
                         .multilineTextAlignment(.center)
 
                     SecureField("auth.password.placeholder".localized, text: $viewModel.password)
                         .textFieldStyle(.roundedBorder)
-                        .textContentType(.newPassword)
+                        .textContentType(isLoginMode ? .password : .newPassword)
                         .frame(height: 48)
 
-                    SecureField("auth.password.confirm".localized, text: $viewModel.confirmPassword)
-                        .textFieldStyle(.roundedBorder)
-                        .textContentType(.newPassword)
-                        .frame(height: 48)
+                    if !isLoginMode {
+                        SecureField("auth.password.confirm".localized, text: $viewModel.confirmPassword)
+                            .textFieldStyle(.roundedBorder)
+                            .textContentType(.newPassword)
+                            .frame(height: 48)
 
-                    Text("auth.password.hint".localized)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
+                        Text("auth.password.hint".localized)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
 
                     // Show syncing status
                     if viewModel.isSyncing {
@@ -92,9 +95,13 @@ struct WelcomeView: View {
 
                     Button(action: {
                         Task {
-                            await viewModel.setupPassword()
-                            if viewModel.isUnlocked && viewModel.isBiometricAvailable {
-                                showBiometricSetup = true
+                            if isLoginMode {
+                                await viewModel.authenticateWithPassword()
+                            } else {
+                                await viewModel.setupPassword()
+                                if viewModel.isUnlocked && viewModel.isBiometricAvailable {
+                                    showBiometricSetup = true
+                                }
                             }
                         }
                     }) {
@@ -102,13 +109,25 @@ struct WelcomeView: View {
                             ProgressView()
                                 .frame(maxWidth: .infinity)
                         } else {
-                            Text("auth.setup.button".localized)
+                            Text(isLoginMode ? "auth.login.button".localized : "auth.setup.button".localized)
                                 .frame(maxWidth: .infinity)
                         }
                     }
                     .buttonStyle(.borderedProminent)
                     .frame(height: 48)
-                    .disabled(viewModel.isLoading || viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty)
+                    .disabled(viewModel.isLoading || viewModel.password.isEmpty || (!isLoginMode && viewModel.confirmPassword.isEmpty))
+
+                    // Toggle between setup and login
+                    Button(action: {
+                        isLoginMode.toggle()
+                        viewModel.password = ""
+                        viewModel.confirmPassword = ""
+                        viewModel.errorMessage = nil
+                    }) {
+                        Text(isLoginMode ? "auth.switch.to.setup".localized : "auth.switch.to.login".localized)
+                            .font(.subheadline)
+                            .foregroundStyle(.blue)
+                    }
 
                     // Show retry button if password mismatch
                     if viewModel.showRetryButton {
@@ -128,7 +147,7 @@ struct WelcomeView: View {
                     }
                 }
                 .padding(.horizontal, 32)
-                
+
                 Spacer()
             }
             .padding()

@@ -397,3 +397,9 @@
 "intro.feature.privacy.title" = "Absolute Privacy Protection";
 "intro.feature.privacy.description" = "No account registration required. No personal information needed. Your data belongs entirely to you.";
 "intro.button.continue" = "Got It, Let's Start";
+
+// Login mode
+"auth.login.subtitle" = "Enter your password to login";
+"auth.login.button" = "Login";
+"auth.switch.to.login" = "Already have an account? Login";
+"auth.switch.to.setup" = "Create new account";
