@@ -43,7 +43,8 @@ public protocol CryptoService {
   func deriveKey(from password: String, salt: Data) throws -> SymmetricKey
   func generateSalt() -> Data
   func getSalt() throws -> Data
-  func initializeKey(password: String, salt: Data?) throws
+  func initializeKey(password: String, salt: Data?, allowSaltGeneration: Bool) throws
+  func hasSalt() -> Bool
   func clearKey()  // 清除加密密钥 / Clear encryption key
   func hashPassword(_ password: String) -> String
 }
@@ -64,41 +65,69 @@ public final class CryptoServiceImpl: CryptoService, @unchecked Sendable {
 
   // MARK: - Key Management
 
-  public func initializeKey(password: String, salt: Data? = nil) throws {
-    cryptoLogger.info("[CryptoService] initializeKey called")
+  public func initializeKey(
+    password: String,
+    salt: Data? = nil,
+    allowSaltGeneration: Bool = true
+  ) throws {
+    cryptoLogger.info("🔐 [CryptoService] initializeKey called - allowSaltGeneration: \(allowSaltGeneration)")
     let saltData: Data
 
     if let existingSalt = salt {
-      cryptoLogger.debug("[CryptoService] Using provided salt")
+      cryptoLogger.info("📥 [CryptoService] Using provided salt (length: \(existingSalt.count) bytes)")
       saltData = existingSalt
     } else if keychainService.exists(key: saltKey) {
-      cryptoLogger.debug("[CryptoService] Loading salt from keychain")
+      cryptoLogger.info("🔑 [CryptoService] Loading salt from keychain")
       saltData = try keychainService.load(key: saltKey)
+      cryptoLogger.info("✅ [CryptoService] Salt loaded successfully (length: \(saltData.count) bytes)")
+
+      // Log salt hash for debugging (first 8 bytes as hex)
+      let saltPrefix = saltData.prefix(8).map { String(format: "%02x", $0) }.joined()
+      cryptoLogger.info("🔍 [CryptoService] Salt prefix (first 8 bytes): \(saltPrefix)")
 
       // Migration: Re-save salt with iCloud sync enabled for existing users
       // 迁移：为已有用户重新保存盐值并启用 iCloud 同步
+      cryptoLogger.info("🔄 [CryptoService] Checking if salt migration needed...")
       try migrateSaltToSynchronizable(saltData)
-    } else {
-      cryptoLogger.debug("[CryptoService] Generating new salt")
+    } else if allowSaltGeneration {
+      cryptoLogger.warning("⚠️ [CryptoService] Salt not found in keychain, generating new salt")
       saltData = generateSalt()
+      cryptoLogger.info("🆕 [CryptoService] New salt generated (length: \(saltData.count) bytes)")
+
+      // Log salt hash for debugging (first 8 bytes as hex)
+      let saltPrefix = saltData.prefix(8).map { String(format: "%02x", $0) }.joined()
+      cryptoLogger.info("🔍 [CryptoService] Salt prefix (first 8 bytes): \(saltPrefix)")
+
       // Enable iCloud Keychain sync for salt to support multi-device scenarios
       // 启用 iCloud Keychain 同步以支持多设备场景
+      cryptoLogger.info("☁️ [CryptoService] Saving salt to iCloud Keychain (synchronizable: true)")
       try keychainService.save(key: saltKey, data: saltData, synchronizable: true)
+      cryptoLogger.info("✅ [CryptoService] Salt saved to iCloud Keychain successfully")
+    } else {
+      cryptoLogger.error("❌ [CryptoService] Salt not available and generation disabled - throwing keyNotAvailable")
+      throw CryptoError.keyNotAvailable
     }
 
+    cryptoLogger.info("🔑 [CryptoService] Deriving encryption key from password...")
     encryptionKey = try deriveKey(from: password, salt: saltData)
-    cryptoLogger.info("[CryptoService] Encryption key initialized successfully")
+    cryptoLogger.info("✅ [CryptoService] Encryption key initialized successfully")
   }
 
   /// Migrate existing salt to synchronizable keychain item
   /// 将现有盐值迁移到可同步的 Keychain 项
   private func migrateSaltToSynchronizable(_ salt: Data) throws {
-    cryptoLogger.info("[CryptoService] Migrating salt to synchronizable keychain item")
+    cryptoLogger.info("🔄 [CryptoService] Starting salt migration to synchronizable keychain item")
+    cryptoLogger.debug("📊 [CryptoService] Salt to migrate: \(salt.count) bytes")
+
     // Delete old non-synchronizable item and save as synchronizable
     // 删除旧的不可同步项并保存为可同步项
+    cryptoLogger.info("🗑️ [CryptoService] Deleting old non-synchronizable salt")
     try keychainService.delete(key: saltKey)
+
+    cryptoLogger.info("💾 [CryptoService] Saving salt with synchronizable: true")
     try keychainService.save(key: saltKey, data: salt, synchronizable: true)
-    cryptoLogger.info("[CryptoService] Salt migration completed")
+
+    cryptoLogger.info("✅ [CryptoService] Salt migration completed successfully")
   }
 
   public func deriveKey(from password: String, salt: Data) throws -> SymmetricKey {
@@ -118,25 +147,42 @@ public final class CryptoServiceImpl: CryptoService, @unchecked Sendable {
   }
 
   public func generateSalt() -> Data {
+    cryptoLogger.info("🎲 [CryptoService] Generating new random salt (32 bytes)...")
     var salt = Data(count: 32)
-    _ = salt.withUnsafeMutableBytes { bytes in
+    let result = salt.withUnsafeMutableBytes { bytes in
       SecRandomCopyBytes(kSecRandomDefault, 32, bytes.baseAddress!)
+    }
+    if result == errSecSuccess {
+      cryptoLogger.info("✅ [CryptoService] Random salt generated successfully")
+    } else {
+      cryptoLogger.error("❌ [CryptoService] Failed to generate random salt, status: \(result)")
     }
     return salt
   }
   
   public func getSalt() throws -> Data {
+    cryptoLogger.debug("🔍 [CryptoService] getSalt() called")
     guard keychainService.exists(key: saltKey) else {
+      cryptoLogger.warning("⚠️ [CryptoService] Salt not found in keychain")
       throw CryptoError.keyNotAvailable
     }
-    return try keychainService.load(key: saltKey)
+    let salt = try keychainService.load(key: saltKey)
+    cryptoLogger.info("✅ [CryptoService] Salt retrieved successfully (length: \(salt.count) bytes)")
+    return salt
+  }
+
+  public func hasSalt() -> Bool {
+    let exists = keychainService.exists(key: saltKey)
+    cryptoLogger.debug("🔍 [CryptoService] hasSalt() = \(exists)")
+    return exists
   }
   
   /// 清除加密密钥（用于登出或清除所有数据）
   /// Clear encryption key (for logout or clearing all data)
   public func clearKey() {
+    cryptoLogger.info("🗑️ [CryptoService] Clearing encryption key from memory")
     encryptionKey = nil
-    cryptoLogger.info("[CryptoService] Encryption key cleared")
+    cryptoLogger.info("✅ [CryptoService] Encryption key cleared successfully")
   }
 
   // MARK: - String Encryption/Decryption

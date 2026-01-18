@@ -343,7 +343,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.quickvault.macos.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codans.quickvault.macos.tests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QuickVault-macOS.app/Contents/MacOS/QuickVault-macOS";
 			};
@@ -420,7 +420,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.quickvault.macos;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codans.quickvault.macos;
 				PRODUCT_NAME = QuickVault;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
@@ -438,7 +438,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.quickvault.macos.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codans.quickvault.macos.tests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QuickVault-macOS.app/Contents/MacOS/QuickVault-macOS";
 			};
@@ -522,7 +522,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.quickvault.macos;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codans.quickvault.macos;
 				PRODUCT_NAME = QuickVault;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;

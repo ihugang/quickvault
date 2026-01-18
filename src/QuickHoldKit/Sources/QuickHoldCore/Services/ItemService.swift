@@ -540,7 +540,12 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
     var files: [FileDTO]?
 
     if itemType == .text, let tc = item.textContent, let encData = tc.encryptedContent {
-      textContent = try cryptoService.decrypt(encData)
+      do {
+        textContent = try cryptoService.decrypt(encData)
+      } catch {
+        print("❌ [ItemService] Failed to decrypt text content for item \(item.id?.uuidString ?? "unknown"): \(error)")
+        throw CryptoError.decryptionFailed
+      }
     } else if itemType == .image, let imageSet = item.images {
       let sortedImages = (imageSet.allObjects as! [ImageContent]).sorted { $0.displayOrder < $1.displayOrder }
       images = sortedImages.compactMap { img in

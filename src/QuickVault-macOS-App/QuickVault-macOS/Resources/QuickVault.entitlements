@@ -12,21 +12,21 @@
     <true/>
     <key>keychain-access-groups</key>
     <array>
-        <string>$(AppIdentifierPrefix)com.quickvault.app</string>
+        <string>$(AppIdentifierPrefix)com.codans.quickvault.macos</string>
     </array>
     <key>com.apple.security.application-groups</key>
     <array>
-        <string>group.com.quickvault.app</string>
+        <string>group.com.QuickHold.app</string>
     </array>
     <key>com.apple.developer.icloud-container-identifiers</key>
     <array>
-        <string>iCloud.com.quickvault.app</string>
+        <string>iCloud.com.QuickHold.app</string>
     </array>
     <key>com.apple.developer.icloud-services</key>
     <array>
         <string>CloudKit</string>
     </array>
     <key>com.apple.developer.ubiquity-kvstore-identifier</key>
-    <string>$(TeamIdentifierPrefix)com.quickvault.app</string>
+    <string>$(TeamIdentifierPrefix)com.QuickHold.app</string>
 </dict>
 </plist>

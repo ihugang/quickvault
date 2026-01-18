@@ -90,6 +90,10 @@ struct SimpleRootView: View {
     var body: some View {
         Group {
             switch authViewModel.authState {
+            case .initializing, .waitingForCloudSync:
+                ProgressView()
+                    .transition(.opacity)
+
             case .locked:
                 LockScreenView(viewModel: authViewModel)
                     .transition(.opacity)
