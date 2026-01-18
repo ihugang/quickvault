@@ -64,8 +64,9 @@ class AuthViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        // Check for existing cloud data on init
+        // Check initial state to determine if this is first device or secondary device
         Task {
+            await authService.checkInitialState()
             await checkForExistingCloudData()
         }
     }
