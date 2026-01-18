@@ -28,21 +28,22 @@ struct ItemListView: View {
     @State private var showingCreateSheet = false
     @State private var selectedItemType: ItemType?
     @State private var searchText = ""
-    
+    @Environment(\.scenePhase) private var scenePhase
+
     init(itemService: ItemService) {
         _viewModel = StateObject(wrappedValue: ItemListViewModel(itemService: itemService))
     }
-    
+
     var body: some View {
         NavigationStack {
             ZStack {
                 // 背景渐变
                 backgroundGradient
-                
+
                 VStack(spacing: 0) {
                     // 搜索栏
                     searchBar
-                    
+
                     // 内容区域
                     if viewModel.isLoading {
                         loadingView
@@ -72,6 +73,14 @@ struct ItemListView: View {
             }
             .task {
                 await viewModel.loadItems()
+            }
+            .onChange(of: scenePhase) { oldPhase, newPhase in
+                if newPhase == .active && oldPhase == .background {
+                    // 从后台返回前台时自动刷新
+                    Task {
+                        await viewModel.loadItems()
+                    }
+                }
             }
         }
     }
@@ -213,7 +222,7 @@ struct ItemListView: View {
     }
     
     // MARK: - Items Scroll View
-    
+
     private var itemsScrollView: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
@@ -221,7 +230,7 @@ struct ItemListView: View {
                 if !viewModel.pinnedItems.isEmpty {
                     pinnedSection
                 }
-                
+
                 // 普通卡片
                 if !viewModel.unpinnedItems.isEmpty {
                     regularSection
@@ -229,6 +238,9 @@ struct ItemListView: View {
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 16)
+        }
+        .refreshable {
+            await viewModel.loadItems()
         }
     }
     
