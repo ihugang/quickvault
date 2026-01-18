@@ -45,6 +45,16 @@ struct ItemListView: View {
                     // 搜索栏
                     searchBar
 
+                    // Tag 过滤
+                    if !viewModel.allTags.isEmpty {
+                        tagFilterBar
+                    }
+
+                    // 新内容横幅
+                    if syncMonitor.newItemCount > 0 {
+                        newItemsBanner
+                    }
+
                     // 内容区域
                     if viewModel.isLoading {
                         loadingView
@@ -135,17 +145,18 @@ struct ItemListView: View {
     }
     
     // MARK: - Search Bar
-    
+
     private var searchBar: some View {
         HStack(spacing: 12) {
+            // 搜索框
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
-                
+
                 TextField(localizationManager.localizedString("items.search.placeholder"), text: $searchText)
                     .textFieldStyle(.plain)
                     .autocorrectionDisabled()
-                
+
                 if !searchText.isEmpty {
                     Button {
                         searchText = ""
@@ -165,12 +176,137 @@ struct ItemListView: View {
                             .stroke(ListPalette.border, lineWidth: 1)
                     )
             )
+
+            // 排序选择器
+            Menu {
+                ForEach(SortOption.allCases, id: \.self) { option in
+                    Button {
+                        viewModel.sortOption = option
+                    } label: {
+                        HStack {
+                            Text(option.rawValue)
+                            if viewModel.sortOption == option {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "arrow.up.arrow.down")
+                        .font(.caption)
+                    Text(viewModel.sortOption.rawValue)
+                        .font(.caption.weight(.medium))
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .background(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(Color(.systemGray6))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .stroke(ListPalette.border, lineWidth: 1)
+                        )
+                )
+                .foregroundStyle(.primary)
+            }
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
         .onChange(of: searchText) { _, newValue in
             viewModel.searchQuery = newValue
         }
+    }
+
+    // MARK: - New Items Banner
+
+    private var newItemsBanner: some View {
+        Button {
+            // 点击后标记为已读
+            withAnimation {
+                syncMonitor.markNewItemsAsRead()
+            }
+        } label: {
+            HStack(spacing: 12) {
+                // 图标
+                ZStack {
+                    Circle()
+                        .fill(Color.blue.opacity(0.1))
+                        .frame(width: 36, height: 36)
+
+                    Image(systemName: "arrow.down.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(.blue)
+                }
+
+                // 文字
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("有 \(syncMonitor.newItemCount) 个新项目")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundColor(.primary)
+
+                    Text("点击查看并标记为已读")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                // 关闭按钮
+                Image(systemName: "xmark")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .padding(8)
+                    .background(
+                        Circle()
+                            .fill(Color(.systemGray5))
+                    )
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(Color.blue.opacity(0.08))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(Color.blue.opacity(0.3), lineWidth: 1.5)
+                    )
+            )
+            .padding(.horizontal, 20)
+            .padding(.vertical, 8)
+        }
+        .buttonStyle(.plain)
+        .transition(.move(edge: .top).combined(with: .opacity))
+    }
+
+    // MARK: - Tag Filter Bar
+
+    private var tagFilterBar: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(viewModel.allTags, id: \.self) { tag in
+                    Button {
+                        if viewModel.selectedTags.contains(tag) {
+                            viewModel.selectedTags.remove(tag)
+                        } else {
+                            viewModel.selectedTags.insert(tag)
+                        }
+                    } label: {
+                        Text(tag)
+                            .font(.subheadline.weight(.medium))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(
+                                Capsule()
+                                    .fill(viewModel.selectedTags.contains(tag) ? ListPalette.primary : Color(.systemGray6))
+                            )
+                            .foregroundStyle(viewModel.selectedTags.contains(tag) ? .white : .primary)
+                    }
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+        .padding(.vertical, 8)
     }
     
     // MARK: - Create Button
@@ -297,7 +433,7 @@ struct ItemListView: View {
                         Task { await viewModel.loadItems() }
                     }
                 } label: {
-                    ItemCard(item: item)
+                    ItemCard(item: item, isNew: syncMonitor.isNewItem(item.id))
                 }
                 .buttonStyle(.plain)
             }
@@ -325,7 +461,7 @@ struct ItemListView: View {
                         Task { await viewModel.loadItems() }
                     }
                 } label: {
-                    ItemCard(item: item)
+                    ItemCard(item: item, isNew: syncMonitor.isNewItem(item.id))
                 }
                 .buttonStyle(.plain)
             }
@@ -337,6 +473,7 @@ struct ItemListView: View {
 
 struct ItemCard: View {
     let item: ItemDTO
+    var isNew: Bool = false
     @ObservedObject private var localizationManager = LocalizationManager.shared
     
     var body: some View {
@@ -360,7 +497,27 @@ struct ItemCard: View {
                 }
                 
                 Spacer()
-                
+
+                // 新项目标签
+                if isNew {
+                    Text("新")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(
+                            Capsule()
+                                .fill(
+                                    LinearGradient(
+                                        colors: [Color.blue, Color.blue.opacity(0.8)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                        )
+                        .shadow(color: Color.blue.opacity(0.3), radius: 4, y: 2)
+                }
+
                 // 置顶标记
                 if item.isPinned {
                     Image(systemName: "pin.fill")
@@ -460,7 +617,11 @@ struct ItemCard: View {
                                 .padding(.vertical, 5)
                                 .background(
                                     Capsule()
-                                        .fill(Color(.systemGray6))
+                                        .fill(Color(.systemBackground))
+                                )
+                                .overlay(
+                                    Capsule()
+                                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                                 )
                         }
                     }

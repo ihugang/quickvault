@@ -27,7 +27,8 @@ struct CreateItemSheet: View {
     @State private var fileData: [FileData] = []
     @State private var showingDocumentPicker = false
     @State private var isLoading = false
-    
+    @State private var availableTags: [String] = []
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -77,8 +78,11 @@ struct CreateItemSheet: View {
                 }
             }
         }
+        .task {
+            await loadAvailableTags()
+        }
     }
-    
+
     // MARK: - Type Selection
     
     private var typeSelectionSection: some View {
@@ -338,46 +342,91 @@ struct CreateItemSheet: View {
     }
     
     // MARK: - Tags
-    
+
     private var tagsSection: some View {
         Section {
+            // 输入框
             HStack {
                 TextField(localizationManager.localizedString("items.tags.placeholder"), text: $tagInput)
                     .onSubmit {
                         addTag()
                     }
-                
+
                 if !tagInput.isEmpty {
                     Button(localizationManager.localizedString("items.tags.add")) {
                         addTag()
                     }
                 }
             }
-            
+
+            // 已选择的标签
             if !tags.isEmpty {
-                FlowLayout(spacing: 8) {
-                    ForEach(tags, id: \.self) { tag in
-                        HStack(spacing: 4) {
-                            Text(tag)
-                            
-                            Button {
-                                removeTag(tag)
-                            } label: {
-                                Image(systemName: "xmark.circle.fill")
-                                    .font(.caption)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(localizationManager.localizedString("items.tags.selected"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    FlowLayout(spacing: 8) {
+                        ForEach(tags, id: \.self) { tag in
+                            HStack(spacing: 4) {
+                                Text(tag)
+
+                                Button {
+                                    removeTag(tag)
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .font(.caption)
+                                }
                             }
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(.blue)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(
+                                Capsule()
+                                    .fill(Color.blue.opacity(0.1))
+                            )
                         }
-                        .font(.subheadline.weight(.medium))
-                        .foregroundStyle(.blue)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(
-                            Capsule()
-                                .fill(Color.blue.opacity(0.1))
-                        )
                     }
                 }
                 .padding(.vertical, 8)
+            }
+
+            // 可选择的标签（排除已选择的）
+            if !availableTags.isEmpty {
+                let unselectedTags = availableTags.filter { !tags.contains($0) }
+
+                if !unselectedTags.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(localizationManager.localizedString("items.tags.available"))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+
+                        FlowLayout(spacing: 8) {
+                            ForEach(unselectedTags, id: \.self) { tag in
+                                Button {
+                                    addExistingTag(tag)
+                                } label: {
+                                    HStack(spacing: 4) {
+                                        Text(tag)
+                                        Image(systemName: "plus.circle.fill")
+                                            .font(.caption)
+                                    }
+                                    .font(.subheadline.weight(.medium))
+                                    .foregroundStyle(.blue)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 6)
+                                    .background(
+                                        Capsule()
+                                            .strokeBorder(Color.blue, lineWidth: 1.5)
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                    }
+                    .padding(.vertical, 8)
+                }
             }
         } header: {
             Text(localizationManager.localizedString("items.tags.section"))
@@ -427,10 +476,33 @@ struct CreateItemSheet: View {
         guard !trimmed.isEmpty, !tags.contains(trimmed) else { return }
         tags.append(trimmed)
         tagInput = ""
+
+        // 添加到可用标签列表
+        if !availableTags.contains(trimmed) {
+            availableTags.append(trimmed)
+            availableTags.sort()
+        }
     }
-    
+
+    private func addExistingTag(_ tag: String) {
+        guard !tags.contains(tag) else { return }
+        tags.append(tag)
+    }
+
     private func removeTag(_ tag: String) {
         tags.removeAll { $0 == tag }
+    }
+
+    private func loadAvailableTags() async {
+        do {
+            let items = try await itemService.fetchAllItems()
+            let tagSet = Set(items.flatMap { $0.tags })
+            await MainActor.run {
+                availableTags = Array(tagSet).sorted()
+            }
+        } catch {
+            print("Error loading available tags: \(error)")
+        }
     }
     
     private func loadImages(from items: [PhotosPickerItem]) async {

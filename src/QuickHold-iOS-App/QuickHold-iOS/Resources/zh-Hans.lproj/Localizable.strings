@@ -339,10 +339,12 @@
 "items.images.count" = "%d 张";
 "items.images.section" = "图片";
 "items.images.limit" = "最多可选择 10 张图片";
-"items.tags.section" = "标签";
-"items.tags.add" = "添加标签";
+"items.tags.section" = "标签（可选）";
+"items.tags.add" = "添加";
 "items.tags.placeholder" = "输入标签名称";
-"items.tags.hint" = "使用标签帮助分类和搜索";
+"items.tags.hint" = "可选：使用标签帮助分类和搜索";
+"items.tags.selected" = "已选择的标签";
+"items.tags.available" = "可选择的标签";
 "items.detail.edit" = "编辑";
 "items.detail.delete" = "删除";
 "items.detail.pin" = "置顶";

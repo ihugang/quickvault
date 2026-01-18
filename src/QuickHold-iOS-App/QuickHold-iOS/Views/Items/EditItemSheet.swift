@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 import QuickHoldCore
 
 struct EditItemSheet: View {
@@ -21,6 +22,12 @@ struct EditItemSheet: View {
     @State private var tagInput = ""
     @State private var isLoading = false
     @State private var errorMessage: String?
+    @State private var availableTags: [String] = []
+
+    // 图片编辑相关 / Image editing related
+    @State private var selectedImages: [PhotosPickerItem] = []
+    @State private var newImageData: [ImageData] = []
+    @State private var imagesToDelete: Set<UUID> = []
 
     init(item: ItemDTO, itemService: ItemService, onUpdate: @escaping () -> Void) {
         self.item = item
@@ -52,6 +59,8 @@ struct EditItemSheet: View {
                     } header: {
                         Text(localizationManager.localizedString("items.content"))
                     }
+                } else if item.type == .image {
+                    imageContentSection
                 }
 
                 Section {
@@ -71,37 +80,79 @@ struct EditItemSheet: View {
                         }
                     }
 
-                    // 标签列表
+                    // 已选择的标签
                     if !tags.isEmpty {
-                        FlowLayout(spacing: 8) {
-                            ForEach(tags, id: \.self) { tag in
-                                HStack(spacing: 4) {
-                                    Text(tag)
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(localizationManager.localizedString("items.tags.selected"))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
 
-                                    Button {
-                                        removeTag(tag)
-                                    } label: {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .font(.caption)
+                            FlowLayout(spacing: 8) {
+                                ForEach(tags, id: \.self) { tag in
+                                    HStack(spacing: 4) {
+                                        Text(tag)
+
+                                        Button {
+                                            removeTag(tag)
+                                        } label: {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .font(.caption)
+                                        }
+                                    }
+                                    .font(.subheadline.weight(.medium))
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 6)
+                                    .background(Color.blue.opacity(0.1))
+                                    .foregroundStyle(.blue)
+                                    .clipShape(Capsule())
+                                }
+                            }
+                        }
+                        .padding(.vertical, 8)
+                    }
+
+                    // 可选择的标签（排除已选择的）
+                    if !availableTags.isEmpty {
+                        let unselectedTags = availableTags.filter { !tags.contains($0) }
+
+                        if !unselectedTags.isEmpty {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(localizationManager.localizedString("items.tags.available"))
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+
+                                FlowLayout(spacing: 8) {
+                                    ForEach(unselectedTags, id: \.self) { tag in
+                                        Button {
+                                            addExistingTag(tag)
+                                        } label: {
+                                            HStack(spacing: 4) {
+                                                Text(tag)
+                                                Image(systemName: "plus.circle.fill")
+                                                    .font(.caption)
+                                            }
+                                            .font(.subheadline.weight(.medium))
+                                            .foregroundStyle(.blue)
+                                            .padding(.horizontal, 12)
+                                            .padding(.vertical, 6)
+                                            .background(
+                                                Capsule()
+                                                    .strokeBorder(Color.blue, lineWidth: 1.5)
+                                            )
+                                        }
+                                        .buttonStyle(.plain)
                                     }
                                 }
-                                .font(.subheadline.weight(.medium))
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(Color.blue.opacity(0.1))
-                                .foregroundStyle(.blue)
-                                .clipShape(Capsule())
                             }
+                            .padding(.vertical, 8)
                         }
                     }
                 } header: {
                     Text(localizationManager.localizedString("items.tags.section"))
                 } footer: {
-                    if tags.isEmpty {
-                        Text(localizationManager.localizedString("items.tags.hint"))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
+                    Text(localizationManager.localizedString("items.tags.hint"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
             }
             .navigationTitle(item.type == .text ?
@@ -141,11 +192,14 @@ struct EditItemSheet: View {
                     Text(error)
                 }
             }
+            .task {
+                await loadAvailableTags()
+            }
         }
     }
     
     // MARK: - Actions
-    
+
     private func addTag() {
         let trimmed = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
@@ -153,13 +207,126 @@ struct EditItemSheet: View {
             tagInput = ""
             return
         }
-        
+
         tags.append(trimmed)
         tagInput = ""
+
+        // 添加到可用标签列表
+        if !availableTags.contains(trimmed) {
+            availableTags.append(trimmed)
+            availableTags.sort()
+        }
     }
-    
+
+    private func addExistingTag(_ tag: String) {
+        guard !tags.contains(tag) else { return }
+        tags.append(tag)
+    }
+
     private func removeTag(_ tag: String) {
         tags.removeAll { $0 == tag }
+    }
+
+    private func loadAvailableTags() async {
+        do {
+            let items = try await itemService.fetchAllItems()
+            let tagSet = Set(items.flatMap { $0.tags })
+            await MainActor.run {
+                availableTags = Array(tagSet).sorted()
+            }
+        } catch {
+            print("Error loading available tags: \(error)")
+        }
+    }
+
+    // MARK: - Image Content Section
+
+    private var imageContentSection: some View {
+        Section {
+            // 添加新图片按钮
+            PhotosPicker(selection: $selectedImages, maxSelectionCount: 10, matching: .images) {
+                HStack {
+                    Image(systemName: "photo.badge.plus")
+                    Text(localizationManager.localizedString("items.images.select"))
+                    Spacer()
+                    if !newImageData.isEmpty {
+                        Text("+\(newImageData.count)")
+                            .foregroundStyle(.green)
+                    }
+                }
+            }
+            .onChange(of: selectedImages) { _, newItems in
+                Task { await loadImages(from: newItems) }
+            }
+
+            // 显示现有图片和新添加的图片
+            if let existingImages = item.images, !existingImages.isEmpty || !newImageData.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        // 现有图片
+                        ForEach(existingImages.filter { !imagesToDelete.contains($0.id) }) { image in
+                            if let thumbnailData = image.thumbnailData,
+                               let uiImage = UIImage(data: thumbnailData) {
+                                ZStack(alignment: .topTrailing) {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+
+                                    Button {
+                                        imagesToDelete.insert(image.id)
+                                    } label: {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .font(.title3)
+                                            .foregroundStyle(.white, .red)
+                                    }
+                                    .offset(x: 8, y: -8)
+                                }
+                            }
+                        }
+
+                        // 新添加的图片
+                        ForEach(newImageData.indices, id: \.self) { index in
+                            if let uiImage = UIImage(data: newImageData[index].data) {
+                                ZStack(alignment: .topTrailing) {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+
+                                    Button {
+                                        newImageData.remove(at: index)
+                                    } label: {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .font(.title3)
+                                            .foregroundStyle(.white, .red)
+                                    }
+                                    .offset(x: 8, y: -8)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
+        } header: {
+            Text(localizationManager.localizedString("items.images.section"))
+        } footer: {
+            Text(localizationManager.localizedString("items.images.limit"))
+        }
+    }
+
+    private func loadImages(from items: [PhotosPickerItem]) async {
+        newImageData.removeAll()
+
+        for item in items {
+            if let data = try? await item.loadTransferable(type: Data.self) {
+                let fileName = "image_\(UUID().uuidString).jpg"
+                newImageData.append(ImageData(data: data, fileName: fileName))
+            }
+        }
     }
     
     private func saveChanges() async {
@@ -182,6 +349,16 @@ struct EditItemSheet: View {
                     title: title,
                     tags: tags
                 )
+
+                // 删除标记的图片 / Delete marked images
+                for imageId in imagesToDelete {
+                    try await itemService.removeImage(id: imageId)
+                }
+
+                // 添加新图片 / Add new images
+                if !newImageData.isEmpty {
+                    try await itemService.addImages(to: item.id, images: newImageData)
+                }
             }
 
             // 立即触发 iCloud 同步 / Trigger iCloud sync immediately

@@ -31,7 +31,8 @@ struct ItemDetailView: View {
     @State private var showingDeleteAlert = false
     @State private var showingEditSheet = false
     @State private var isLoading = false
-    
+    @State private var imageDataToShow: ImageDataWrapper?
+
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
@@ -198,13 +199,18 @@ struct ItemDetailView: View {
                     .foregroundStyle(.secondary)
             }
             .foregroundStyle(.secondary)
-            
+
             if let images = item.images, !images.isEmpty {
                 VStack(spacing: 12) {
                     ForEach(images) { image in
                         ImageThumbnailView(image: image, itemService: itemService, item: item)
                     }
                 }
+            }
+        }
+        .fullScreenCover(item: $imageDataToShow) { wrapper in
+            if let uiImage = UIImage(data: wrapper.data) {
+                FullImageView(image: uiImage, item: item, itemService: itemService)
             }
         }
     }
@@ -263,7 +269,7 @@ struct ItemDetailView: View {
     }
     
     // MARK: - Actions Section
-    
+
     private var actionsSection: some View {
         VStack(spacing: 12) {
             if item.type == .text {
@@ -273,6 +279,28 @@ struct ItemDetailView: View {
                     HStack {
                         Image(systemName: "square.and.arrow.up")
                         Text(localizationManager.localizedString("items.detail.share.text"))
+                        Spacer()
+                        if isLoading {
+                            ProgressView()
+                        }
+                    }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding(16)
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(DetailPalette.primary)
+                    )
+                }
+                .disabled(isLoading)
+            } else if item.type == .image {
+                Button {
+                    Task { await openFirstImage() }
+                } label: {
+                    HStack {
+                        Image(systemName: "square.and.arrow.up")
+                        Text(localizationManager.localizedString("items.detail.share.images"))
                         Spacer()
                         if isLoading {
                             ProgressView()
@@ -321,7 +349,7 @@ struct ItemDetailView: View {
     private func shareText() async {
         isLoading = true
         defer { isLoading = false }
-        
+
         do {
             let text = try await itemService.getShareableText(id: item.id)
             await MainActor.run {
@@ -331,7 +359,23 @@ struct ItemDetailView: View {
             print("Error getting shareable text: \(error)")
         }
     }
-    
+
+    private func openFirstImage() async {
+        guard let images = item.images, let firstImage = images.first else {
+            print("No images available")
+            return
+        }
+
+        do {
+            let imageData = try await itemService.getDecryptedImage(imageId: firstImage.id)
+            await MainActor.run {
+                imageDataToShow = ImageDataWrapper(data: imageData)
+            }
+        } catch {
+            print("Error loading first image: \(error)")
+        }
+    }
+
     private func showSystemShareSheet(items: [Any]) {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let rootViewController = windowScene.windows.first?.rootViewController else {
@@ -559,14 +603,17 @@ struct FullImageView: View {
                 // 顶部按钮栏
                 HStack {
                     Spacer()
-                    
+
                     Button {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.title2)
                             .foregroundStyle(.white, .black.opacity(0.5))
+                            .frame(width: 44, height: 44) // 确保 44x44 的最小点击区域
+                            .contentShape(Rectangle()) // 确保整个区域可点击
                     }
+                    .buttonStyle(.plain) // 使用 plain 样式避免点击问题
                     .padding()
                 }
                 

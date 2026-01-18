@@ -328,10 +328,12 @@
 "items.images.count" = "%d images";
 "items.images.section" = "Images";
 "items.images.limit" = "Up to 10 images can be selected";
-"items.tags.section" = "Tags";
-"items.tags.add" = "Add Tag";
+"items.tags.section" = "Tags (Optional)";
+"items.tags.add" = "Add";
 "items.tags.placeholder" = "Enter tag name";
-"items.tags.hint" = "Use tags to help with categorization and search";
+"items.tags.hint" = "Optional: Use tags to help with categorization and search";
+"items.tags.selected" = "Selected Tags";
+"items.tags.available" = "Available Tags";
 "items.detail.edit" = "Edit";
 "items.detail.delete" = "Delete";
 "items.detail.pin" = "Pin";
