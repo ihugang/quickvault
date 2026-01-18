@@ -325,6 +325,7 @@
 "items.content" = "Content";
 "items.content.characters" = "%d characters";
 "items.images.select" = "Select Images";
+"items.images.camera" = "Take Photo";
 "items.images.count" = "%d images";
 "items.images.section" = "Images";
 "items.images.limit" = "Up to 10 images can be selected";

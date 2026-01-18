@@ -2,12 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:QuickVaultKit/Package.swift">
+      location = "group:QuickHoldKit/Package.swift">
    </FileRef>
    <FileRef
       location = "group:QuickVault-macOS-App/QuickVault-macOS.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:QuickVault-iOS-App/QuickVault-iOS.xcodeproj">
+      location = "group:QuickHold-iOS-App/QuickHold-iOS.xcodeproj">
    </FileRef>
 </Workspace>

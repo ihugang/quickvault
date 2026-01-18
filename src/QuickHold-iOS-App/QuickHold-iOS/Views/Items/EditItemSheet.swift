@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import AVFoundation
 import QuickHoldCore
 
 struct EditItemSheet: View {
@@ -28,6 +29,8 @@ struct EditItemSheet: View {
     @State private var selectedImages: [PhotosPickerItem] = []
     @State private var newImageData: [ImageData] = []
     @State private var imagesToDelete: Set<UUID> = []
+    @State private var showingCamera = false
+    @State private var showingCameraUnavailableAlert = false
 
     init(item: ItemDTO, itemService: ItemService, onUpdate: @escaping () -> Void) {
         self.item = item
@@ -196,6 +199,17 @@ struct EditItemSheet: View {
                 await loadAvailableTags()
             }
         }
+        .fullScreenCover(isPresented: $showingCamera) {
+            CameraPicker(isPresented: $showingCamera) { image in
+                addCapturedImage(image)
+            }
+            .ignoresSafeArea()
+        }
+        .alert("相机不可用 / Camera unavailable", isPresented: $showingCameraUnavailableAlert) {
+            Button("好的 / OK", role: .cancel) {}
+        } message: {
+            Text("请在系统设置中允许访问相机 / Allow camera access in Settings")
+        }
     }
     
     // MARK: - Actions
@@ -243,6 +257,18 @@ struct EditItemSheet: View {
 
     private var imageContentSection: some View {
         Section {
+            // 相机拍摄按钮
+            Button {
+                requestCameraAccessAndPresent()
+            } label: {
+                HStack {
+                    Image(systemName: "camera")
+                    Text(localizationManager.localizedString("items.images.camera"))
+                    Spacer()
+                }
+            }
+            .disabled(showingCamera || !UIImagePickerController.isSourceTypeAvailable(.camera))
+
             // 添加新图片按钮
             PhotosPicker(selection: $selectedImages, maxSelectionCount: 10, matching: .images) {
                 HStack {
@@ -326,6 +352,37 @@ struct EditItemSheet: View {
                 let fileName = "image_\(UUID().uuidString).jpg"
                 newImageData.append(ImageData(data: data, fileName: fileName))
             }
+        }
+    }
+
+    private func addCapturedImage(_ image: UIImage) {
+        guard let data = image.jpegData(compressionQuality: 0.9) else { return }
+        let fileName = "camera_\(Date().timeIntervalSince1970).jpg"
+        newImageData.append(ImageData(data: data, fileName: fileName))
+    }
+
+    private func requestCameraAccessAndPresent() {
+        guard UIImagePickerController.isSourceTypeAvailable(.camera),
+              UIImagePickerController.isCameraDeviceAvailable(.rear) || UIImagePickerController.isCameraDeviceAvailable(.front) else {
+            showingCameraUnavailableAlert = true
+            return
+        }
+
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            showingCamera = true
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        showingCamera = true
+                    } else {
+                        showingCameraUnavailableAlert = true
+                    }
+                }
+            }
+        default:
+            showingCameraUnavailableAlert = true
         }
     }
     

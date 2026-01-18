@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 import UniformTypeIdentifiers
+import AVFoundation
 import QuickHoldCore
 
 struct CreateItemSheet: View {
@@ -26,6 +27,8 @@ struct CreateItemSheet: View {
     @State private var selectedFiles: [URL] = []
     @State private var fileData: [FileData] = []
     @State private var showingDocumentPicker = false
+    @State private var showingCamera = false
+    @State private var showingCameraUnavailableAlert = false
     @State private var isLoading = false
     @State private var availableTags: [String] = []
 
@@ -77,6 +80,17 @@ struct CreateItemSheet: View {
                     }
                 }
             }
+        }
+        .fullScreenCover(isPresented: $showingCamera) {
+            CameraPicker(isPresented: $showingCamera) { image in
+                addCapturedImage(image)
+            }
+            .ignoresSafeArea()
+        }
+        .alert("相机不可用 / Camera unavailable", isPresented: $showingCameraUnavailableAlert) {
+            Button("好的 / OK", role: .cancel) {}
+        } message: {
+            Text("请在系统设置中允许访问相机 / Allow camera access in Settings")
         }
         .task {
             await loadAvailableTags()
@@ -228,6 +242,19 @@ struct CreateItemSheet: View {
     
     private var imageContentSection: some View {
         Section {
+            // 相机拍摄按钮
+            Button {
+                requestCameraAccessAndPresent()
+            } label: {
+                HStack {
+                    Image(systemName: "camera")
+                    Text(localizationManager.localizedString("items.images.camera"))
+                    Spacer()
+                }
+            }
+            .disabled(showingCamera || !UIImagePickerController.isSourceTypeAvailable(.camera))
+
+            // 相册选择按钮
             PhotosPicker(selection: $selectedImages, maxSelectionCount: 10, matching: .images) {
                 HStack {
                     Image(systemName: "photo.badge.plus")
@@ -242,7 +269,7 @@ struct CreateItemSheet: View {
             .onChange(of: selectedImages) { _, newItems in
                 Task { await loadImages(from: newItems) }
             }
-            
+
             if !imageData.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
@@ -254,7 +281,7 @@ struct CreateItemSheet: View {
                                         .scaledToFill()
                                         .frame(width: 100, height: 100)
                                         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                                    
+
                                     Button {
                                         imageData.remove(at: index)
                                     } label: {
@@ -507,7 +534,7 @@ struct CreateItemSheet: View {
     
     private func loadImages(from items: [PhotosPickerItem]) async {
         imageData = []
-        
+
         for item in items {
             if let data = try? await item.loadTransferable(type: Data.self) {
                 let fileName = item.itemIdentifier ?? UUID().uuidString
@@ -515,7 +542,38 @@ struct CreateItemSheet: View {
             }
         }
     }
-    
+
+    private func addCapturedImage(_ image: UIImage) {
+        guard let data = image.jpegData(compressionQuality: 0.9) else { return }
+        let fileName = "camera_\(Date().timeIntervalSince1970).jpg"
+        imageData.append(ImageData(data: data, fileName: fileName))
+    }
+
+    private func requestCameraAccessAndPresent() {
+        guard UIImagePickerController.isSourceTypeAvailable(.camera),
+              UIImagePickerController.isCameraDeviceAvailable(.rear) || UIImagePickerController.isCameraDeviceAvailable(.front) else {
+            showingCameraUnavailableAlert = true
+            return
+        }
+
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            showingCamera = true
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        showingCamera = true
+                    } else {
+                        showingCameraUnavailableAlert = true
+                    }
+                }
+            }
+        default:
+            showingCameraUnavailableAlert = true
+        }
+    }
+
     private func loadFiles(from result: Result<[URL], Error>) async {
         do {
             let urls = try result.get()
@@ -669,6 +727,51 @@ fileprivate struct FlowLayout: Layout {
             }
             
             self.size = CGSize(width: maxWidth, height: currentY + lineHeight)
+        }
+    }
+}
+
+// MARK: - Camera Picker
+
+struct CameraPicker: UIViewControllerRepresentable {
+    @Binding var isPresented: Bool
+    let onImageCaptured: (UIImage) -> Void
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.cameraCaptureMode = .photo
+        if UIImagePickerController.isCameraDeviceAvailable(.rear) {
+            picker.cameraDevice = .rear
+        } else if UIImagePickerController.isCameraDeviceAvailable(.front) {
+            picker.cameraDevice = .front
+        }
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        let parent: CameraPicker
+
+        init(_ parent: CameraPicker) {
+            self.parent = parent
+        }
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let image = info[.originalImage] as? UIImage {
+                parent.onImageCaptured(image)
+            }
+            parent.isPresented = false
+        }
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            parent.isPresented = false
         }
     }
 }

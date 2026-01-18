@@ -22,7 +22,9 @@ let package = Package(
   // Dependencies / 依赖项
   dependencies: [
     // SwiftCheck for property-based testing
-    .package(url: "https://github.com/typelift/SwiftCheck.git", from: "0.12.0")
+    .package(url: "https://github.com/typelift/SwiftCheck.git", from: "0.12.0"),
+    // ZIPFoundation for cross-platform zip/unzip support
+    .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.0")
   ],
 
   // Targets / 目标
@@ -32,7 +34,9 @@ let package = Package(
     // ========================================
     .target(
       name: "QuickHoldCore",
-      dependencies: [],
+      dependencies: [
+        .product(name: "ZIPFoundation", package: "ZIPFoundation")
+      ],
       resources: [
         .process("Models/QuickHold.xcdatamodeld")
       ],

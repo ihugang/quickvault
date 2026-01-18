@@ -336,6 +336,7 @@
 "items.content" = "内容";
 "items.content.characters" = "%d 字符";
 "items.images.select" = "选择图片";
+"items.images.camera" = "拍摄照片";
 "items.images.count" = "%d 张";
 "items.images.section" = "图片";
 "items.images.limit" = "最多可选择 10 张图片";
