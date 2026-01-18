@@ -25,6 +25,7 @@ private enum ListPalette {
 struct ItemListView: View {
     @StateObject private var viewModel: ItemListViewModel
     @ObservedObject private var localizationManager = LocalizationManager.shared
+    @ObservedObject private var syncMonitor = CloudSyncMonitor.shared
     @State private var showingCreateSheet = false
     @State private var selectedItemType: ItemType?
     @State private var searchText = ""
@@ -59,6 +60,9 @@ struct ItemListView: View {
             .environment(\.layoutDirection, localizationManager.layoutDirection)
             .tint(ListPalette.primary)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    syncStatusIcon
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     createButton
                 }
@@ -83,6 +87,32 @@ struct ItemListView: View {
                 }
             }
         }
+    }
+
+    // MARK: - Sync Status Icon
+
+    private var syncStatusIcon: some View {
+        Group {
+            switch syncMonitor.syncStatus {
+            case .synced:
+                Image(systemName: "icloud.and.arrow.down")
+                    .foregroundStyle(.green)
+            case .syncing:
+                HStack(spacing: 4) {
+                    ProgressView()
+                        .scaleEffect(0.7)
+                    Image(systemName: "icloud")
+                }
+                .foregroundStyle(.blue)
+            case .notSynced:
+                Image(systemName: "icloud.slash")
+                    .foregroundStyle(.orange)
+            case .error:
+                Image(systemName: "exclamationmark.icloud")
+                    .foregroundStyle(.red)
+            }
+        }
+        .font(.body)
     }
     
     // MARK: - Background
