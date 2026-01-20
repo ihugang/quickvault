@@ -1,5 +1,7 @@
 package com.quickvault.domain.service.impl
 
+import android.content.Context
+import com.quickvault.R
 import com.quickvault.data.model.CardDTO
 import com.quickvault.data.model.CardFieldDTO
 import com.quickvault.data.repository.CardRepository
@@ -7,6 +9,7 @@ import com.quickvault.domain.service.CardService
 import com.quickvault.domain.validation.ValidationResult
 import com.quickvault.domain.validation.ValidationService
 import kotlinx.coroutines.flow.Flow
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,7 +25,8 @@ import javax.inject.Singleton
 @Singleton
 class CardServiceImpl @Inject constructor(
     private val cardRepository: CardRepository,
-    private val validationService: ValidationService
+    private val validationService: ValidationService,
+    @ApplicationContext private val context: Context
 ) : CardService {
 
     companion object {
@@ -63,14 +67,19 @@ class CardServiceImpl @Inject constructor(
             val titleValidation = validationService.validateCardTitle(title)
             if (!titleValidation.isValid()) {
                 return Result.failure(
-                    IllegalArgumentException(titleValidation.getErrorMessage() ?: "标题验证失败")
+                    IllegalArgumentException(
+                        titleValidation.getErrorMessage()
+                            ?: context.getString(R.string.card_error_title_validation)
+                    )
                 )
             }
 
             // 2. 验证卡片类型
             if (cardType !in listOf(CARD_TYPE_ADDRESS, CARD_TYPE_INVOICE, CARD_TYPE_GENERAL)) {
                 return Result.failure(
-                    IllegalArgumentException("无效的卡片类型 Invalid card type: $cardType")
+                    IllegalArgumentException(
+                        context.getString(R.string.card_error_invalid_type, cardType)
+                    )
                 )
             }
 
@@ -78,7 +87,10 @@ class CardServiceImpl @Inject constructor(
             val fieldValidation = validateCardFields(cardType, fields)
             if (!fieldValidation.isValid()) {
                 return Result.failure(
-                    IllegalArgumentException(fieldValidation.getErrorMessage() ?: "字段验证失败")
+                    IllegalArgumentException(
+                        fieldValidation.getErrorMessage()
+                            ?: context.getString(R.string.card_error_field_validation)
+                    )
                 )
             }
 
@@ -113,28 +125,38 @@ class CardServiceImpl @Inject constructor(
             if (title != null) {
                 val titleValidation = validationService.validateCardTitle(title)
                 if (!titleValidation.isValid()) {
-                    return Result.failure(
-                        IllegalArgumentException(titleValidation.getErrorMessage() ?: "标题验证失败")
+                return Result.failure(
+                    IllegalArgumentException(
+                        titleValidation.getErrorMessage()
+                            ?: context.getString(R.string.card_error_title_validation)
                     )
-                }
+                )
+            }
             }
 
             // 2. 如果更新字段，需要先获取卡片类型进行验证
             if (fields != null) {
                 val existingCard = cardRepository.getCardById(id)
-                    ?: return Result.failure(IllegalArgumentException("卡片不存在 Card not found"))
+                    ?: return Result.failure(
+                        IllegalArgumentException(context.getString(R.string.card_error_not_found))
+                    )
 
                 val fieldValidation = validateCardFields(existingCard.cardType, fields)
                 if (!fieldValidation.isValid()) {
                     return Result.failure(
-                        IllegalArgumentException(fieldValidation.getErrorMessage() ?: "字段验证失败")
+                        IllegalArgumentException(
+                            fieldValidation.getErrorMessage()
+                                ?: context.getString(R.string.card_error_field_validation)
+                        )
                     )
                 }
             }
 
             // 3. 调用 Repository 更新
             val updatedCard = cardRepository.updateCard(id, title, group, fields, tags)
-                ?: return Result.failure(IllegalArgumentException("卡片不存在 Card not found"))
+                ?: return Result.failure(
+                    IllegalArgumentException(context.getString(R.string.card_error_not_found))
+                )
 
             Result.success(updatedCard)
         } catch (e: Exception) {
@@ -170,7 +192,9 @@ class CardServiceImpl @Inject constructor(
     override suspend fun getCard(id: String): Result<CardDTO> {
         return try {
             val card = cardRepository.getCardById(id)
-                ?: return Result.failure(IllegalArgumentException("卡片不存在 Card not found"))
+                ?: return Result.failure(
+                    IllegalArgumentException(context.getString(R.string.card_error_not_found))
+                )
             Result.success(card)
         } catch (e: Exception) {
             Result.failure(e)
@@ -192,7 +216,9 @@ class CardServiceImpl @Inject constructor(
     override suspend fun togglePin(id: String): Result<CardDTO> {
         return try {
             val card = cardRepository.togglePin(id)
-                ?: return Result.failure(IllegalArgumentException("卡片不存在 Card not found"))
+                ?: return Result.failure(
+                    IllegalArgumentException(context.getString(R.string.card_error_not_found))
+                )
             Result.success(card)
         } catch (e: Exception) {
             Result.failure(e)
@@ -215,7 +241,9 @@ class CardServiceImpl @Inject constructor(
             CARD_TYPE_ADDRESS -> validateAddressFields(fields)
             CARD_TYPE_INVOICE -> validateInvoiceFields(fields)
             CARD_TYPE_GENERAL -> validateGeneralFields(fields)
-            else -> ValidationResult.Error("未知的卡片类型 Unknown card type: $cardType")
+            else -> ValidationResult.Error(
+                context.getString(R.string.card_error_unknown_type, cardType)
+            )
         }
     }
 
@@ -231,18 +259,20 @@ class CardServiceImpl @Inject constructor(
 
         // 1. 验证必填字段存在
         val requiredFields = listOf(
-            FIELD_RECIPIENT to "收件人",
-            FIELD_PHONE to "手机号",
-            FIELD_PROVINCE to "省",
-            FIELD_CITY to "市",
-            FIELD_DISTRICT to "区",
-            FIELD_ADDRESS to "详细地址"
+            FIELD_RECIPIENT,
+            FIELD_PHONE,
+            FIELD_PROVINCE,
+            FIELD_CITY,
+            FIELD_DISTRICT,
+            FIELD_ADDRESS
         )
 
-        for ((key, displayName) in requiredFields) {
+        for (key in requiredFields) {
             val field = fieldMap[key]
-            if (field == null || field.value.isBlank()) {
-                return ValidationResult.Error("$displayName 不能为空 $displayName cannot be empty")
+            val displayName = getFieldDisplayName(key)
+            val validation = validationService.validateRequired(field?.value ?: "", displayName)
+            if (!validation.isValid()) {
+                return validation
             }
         }
 
@@ -279,18 +309,20 @@ class CardServiceImpl @Inject constructor(
 
         // 1. 验证必填字段存在
         val requiredFields = listOf(
-            FIELD_COMPANY_NAME to "公司名称",
-            FIELD_TAX_ID to "税号",
-            FIELD_ADDRESS to "地址",
-            FIELD_PHONE to "电话",
-            FIELD_BANK_NAME to "开户行",
-            FIELD_BANK_ACCOUNT to "银行账号"
+            FIELD_COMPANY_NAME,
+            FIELD_TAX_ID,
+            FIELD_ADDRESS,
+            FIELD_PHONE,
+            FIELD_BANK_NAME,
+            FIELD_BANK_ACCOUNT
         )
 
-        for ((key, displayName) in requiredFields) {
+        for (key in requiredFields) {
             val field = fieldMap[key]
-            if (field == null || field.value.isBlank()) {
-                return ValidationResult.Error("$displayName 不能为空 $displayName cannot be empty")
+            val displayName = getFieldDisplayName(key)
+            val validation = validationService.validateRequired(field?.value ?: "", displayName)
+            if (!validation.isValid()) {
+                return validation
             }
         }
 
@@ -323,15 +355,35 @@ class CardServiceImpl @Inject constructor(
      */
     private fun validateGeneralFields(fields: List<CardFieldDTO>): ValidationResult {
         if (fields.isEmpty()) {
-            return ValidationResult.Error("至少需要一个字段 At least one field is required")
+            return ValidationResult.Error(context.getString(R.string.card_error_at_least_one_field))
         }
 
         // 验证所有字段都不为空
         val emptyField = fields.find { it.value.isBlank() }
         if (emptyField != null) {
-            return ValidationResult.Error("字段 ${emptyField.label} 不能为空 Field cannot be empty")
+            val displayName = getFieldDisplayName(emptyField.label)
+            return ValidationResult.Error(
+                context.getString(R.string.card_error_field_empty, displayName)
+            )
         }
 
         return ValidationResult.Valid
+    }
+
+    private fun getFieldDisplayName(fieldKey: String): String {
+        return when (fieldKey) {
+            FIELD_RECIPIENT -> context.getString(R.string.field_recipient)
+            FIELD_PHONE -> context.getString(R.string.field_phone)
+            FIELD_PROVINCE -> context.getString(R.string.field_province)
+            FIELD_CITY -> context.getString(R.string.field_city)
+            FIELD_DISTRICT -> context.getString(R.string.field_district)
+            FIELD_ADDRESS -> context.getString(R.string.field_address)
+            FIELD_POSTAL_CODE -> context.getString(R.string.field_postalcode)
+            FIELD_COMPANY_NAME -> context.getString(R.string.field_companyname)
+            FIELD_TAX_ID -> context.getString(R.string.field_taxid)
+            FIELD_BANK_NAME -> context.getString(R.string.field_bankname)
+            FIELD_BANK_ACCOUNT -> context.getString(R.string.field_bankaccount)
+            else -> fieldKey
+        }
     }
 }

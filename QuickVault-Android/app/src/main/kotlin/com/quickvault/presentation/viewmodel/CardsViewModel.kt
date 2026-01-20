@@ -2,9 +2,12 @@ package com.quickvault.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.content.Context
 import com.quickvault.data.model.CardDTO
 import com.quickvault.domain.service.CardService
+import com.quickvault.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +24,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class CardsViewModel @Inject constructor(
-    private val cardService: CardService
+    private val cardService: CardService,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     // UI 状态
@@ -85,7 +89,7 @@ class CardsViewModel @Inject constructor(
                     _uiState.update { state ->
                         state.copy(
                             isLoading = false,
-                            errorMessage = error.message ?: "切换置顶失败 Toggle pin failed"
+                            errorMessage = error.message ?: context.getString(R.string.cards_error_toggle_pin)
                         )
                     }
                 }
@@ -104,7 +108,7 @@ class CardsViewModel @Inject constructor(
                     _uiState.update { state ->
                         state.copy(
                             isLoading = false,
-                            successMessage = "删除成功 Deleted successfully"
+                            successMessage = context.getString(R.string.cards_success_deleted)
                         )
                     }
                 }
@@ -112,7 +116,7 @@ class CardsViewModel @Inject constructor(
                     _uiState.update { state ->
                         state.copy(
                             isLoading = false,
-                            errorMessage = error.message ?: "删除失败 Delete failed"
+                            errorMessage = error.message ?: context.getString(R.string.cards_error_delete)
                         )
                     }
                 }

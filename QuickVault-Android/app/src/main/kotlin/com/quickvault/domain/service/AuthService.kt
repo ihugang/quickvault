@@ -26,8 +26,9 @@ interface AuthService {
     /**
      * 使用生物识别认证
      * 对应 iOS 的 authenticateWithBiometric()
+     * @param activity 用于显示生物识别提示的 Activity（可选）
      */
-    suspend fun authenticateWithBiometric(): Result<Unit>
+    suspend fun authenticateWithBiometric(activity: android.app.Activity? = null): Result<Unit>
 
     /**
      * 修改主密码

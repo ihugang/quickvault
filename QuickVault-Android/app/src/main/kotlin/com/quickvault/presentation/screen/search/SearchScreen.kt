@@ -12,9 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.quickvault.R
 import com.quickvault.data.model.CardDTO
 import com.quickvault.presentation.viewmodel.CardsViewModel
 import java.text.SimpleDateFormat
@@ -96,7 +99,7 @@ fun SearchTopBar(
             TextField(
                 value = query,
                 onValueChange = onQueryChange,
-                placeholder = { Text("搜索卡片、字段、标签... Search...") },
+                placeholder = { Text(stringResource(R.string.search_placeholder_full)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
@@ -104,15 +107,15 @@ fun SearchTopBar(
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.surface,
                     unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.transparent,
-                    unfocusedIndicatorColor = MaterialTheme.colorScheme.transparent
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
                 ),
                 trailingIcon = {
                     if (query.isNotEmpty()) {
                         IconButton(onClick = onClear) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = "清除搜索"
+                                contentDescription = stringResource(R.string.search_clear)
                             )
                         }
                     }
@@ -120,7 +123,7 @@ fun SearchTopBar(
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "搜索"
+                        contentDescription = stringResource(R.string.common_search)
                     )
                 }
             )
@@ -149,14 +152,14 @@ fun SearchEmptyState() {
             )
 
             Text(
-                text = "搜索卡片内容\nSearch cards",
+                text = stringResource(R.string.search_empty_title),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
 
             Text(
-                text = "支持搜索标题、字段值、标签\nSearch by title, fields, or tags",
+                text = stringResource(R.string.search_empty_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -187,21 +190,21 @@ fun SearchNoResults(query: String) {
             )
 
             Text(
-                text = "未找到匹配结果\nNo results found",
+                text = stringResource(R.string.search_no_results_title),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
 
             Text(
-                text = "搜索: \"$query\"",
+                text = stringResource(R.string.search_query_label, query),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
 
             Text(
-                text = "尝试使用不同的关键词\nTry different keywords",
+                text = stringResource(R.string.search_no_results_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -222,7 +225,7 @@ fun SearchResults(
     Column {
         // 结果统计
         Text(
-            text = "找到 ${cards.size} 个结果 / Found ${cards.size} results",
+            text = stringResource(R.string.search_results_count, cards.size),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -332,7 +335,10 @@ fun SearchResultItem(
                 if (matchedTags.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "标签: ${matchedTags.joinToString(", ")}",
+                        text = stringResource(
+                            R.string.tags_label,
+                            matchedTags.joinToString(", ")
+                        ),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -343,7 +349,7 @@ fun SearchResultItem(
             if (card.isPinned) {
                 Icon(
                     imageVector = Icons.Default.PushPin,
-                    contentDescription = "已置顶",
+                    contentDescription = stringResource(R.string.cards_pinned),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )

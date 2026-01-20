@@ -326,6 +326,8 @@
 "items.content.characters" = "%d characters";
 "items.images.select" = "Select Images";
 "items.images.camera" = "Take Photo";
+"items.images.camera.unavailable" = "Camera Unavailable";
+"items.images.camera.permission" = "Allow camera access in Settings";
 "items.images.count" = "%d images";
 "items.images.section" = "Images";
 "items.images.limit" = "Up to 10 images can be selected";
@@ -335,6 +337,9 @@
 "items.tags.hint" = "Optional: Use tags to help with categorization and search";
 "items.tags.selected" = "Selected Tags";
 "items.tags.available" = "Available Tags";
+"items.sort.created" = "Created Time";
+"items.sort.type" = "Type";
+"items.sort.updated" = "Updated Time";
 "items.detail.edit" = "Edit";
 "items.detail.delete" = "Delete";
 "items.detail.pin" = "Pin";

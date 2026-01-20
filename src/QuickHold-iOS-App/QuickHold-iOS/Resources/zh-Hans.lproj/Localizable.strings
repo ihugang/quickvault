@@ -337,6 +337,8 @@
 "items.content.characters" = "%d 字符";
 "items.images.select" = "选择图片";
 "items.images.camera" = "拍摄照片";
+"items.images.camera.unavailable" = "相机不可用";
+"items.images.camera.permission" = "请在系统设置中允许访问相机";
 "items.images.count" = "%d 张";
 "items.images.section" = "图片";
 "items.images.limit" = "最多可选择 10 张图片";
@@ -346,6 +348,9 @@
 "items.tags.hint" = "可选：使用标签帮助分类和搜索";
 "items.tags.selected" = "已选择的标签";
 "items.tags.available" = "可选择的标签";
+"items.sort.created" = "创建时间";
+"items.sort.type" = "类型";
+"items.sort.updated" = "更新时间";
 "items.detail.edit" = "编辑";
 "items.detail.delete" = "删除";
 "items.detail.pin" = "置顶";

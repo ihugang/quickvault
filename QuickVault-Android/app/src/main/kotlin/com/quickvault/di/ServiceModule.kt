@@ -57,26 +57,30 @@ object ServiceModule {
     @Provides
     @Singleton
     fun provideAuthService(
+        @ApplicationContext context: Context,
         keyManager: SecureKeyManager,
         cryptoService: CryptoService,
         biometricService: BiometricService
     ): AuthService {
-        return AuthServiceImpl(keyManager, cryptoService, biometricService)
+        return AuthServiceImpl(keyManager, cryptoService, biometricService, context)
     }
 
     @Provides
     @Singleton
-    fun provideValidationService(): ValidationService {
-        return ValidationService()
+    fun provideValidationService(
+        @ApplicationContext context: Context
+    ): ValidationService {
+        return ValidationService(context)
     }
 
     @Provides
     @Singleton
     fun provideCardService(
         cardRepository: CardRepository,
-        validationService: ValidationService
+        validationService: ValidationService,
+        @ApplicationContext context: Context
     ): CardService {
-        return CardServiceImpl(cardRepository, validationService)
+        return CardServiceImpl(cardRepository, validationService, context)
     }
 
     @Provides

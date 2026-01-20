@@ -2,9 +2,12 @@ package com.quickvault.presentation.screen.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.content.Context
 import com.quickvault.domain.service.AuthService
 import com.quickvault.domain.service.AuthState
+import com.quickvault.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,7 +18,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authService: AuthService
+    private val authService: AuthService,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     // UI 状态
@@ -36,7 +40,7 @@ class AuthViewModel @Inject constructor(
     fun setupPassword(password: String, confirmPassword: String) {
         if (password != confirmPassword) {
             _uiState.update {
-                it.copy(errorMessage = "密码不匹配 Passwords do not match")
+                it.copy(errorMessage = context.getString(R.string.auth_password_mismatch))
             }
             return
         }
@@ -56,7 +60,8 @@ class AuthViewModel @Inject constructor(
                 } else {
                     it.copy(
                         isLoading = false,
-                        errorMessage = result.exceptionOrNull()?.message ?: "设置失败 Setup failed"
+                        errorMessage = result.exceptionOrNull()?.message
+                            ?: context.getString(R.string.auth_setup_failed)
                     )
                 }
             }
@@ -81,7 +86,8 @@ class AuthViewModel @Inject constructor(
                 } else {
                     it.copy(
                         isLoading = false,
-                        errorMessage = result.exceptionOrNull()?.message ?: "认证失败 Auth failed"
+                        errorMessage = result.exceptionOrNull()?.message
+                            ?: context.getString(R.string.auth_error_auth_failed)
                     )
                 }
             }
@@ -90,12 +96,13 @@ class AuthViewModel @Inject constructor(
 
     /**
      * 使用生物识别解锁
+     * @param activity 用于显示生物识别提示的 Activity
      */
-    fun unlockWithBiometric() {
+    fun unlockWithBiometric(activity: android.app.Activity? = null) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-            val result = authService.authenticateWithBiometric()
+            val result = authService.authenticateWithBiometric(activity)
 
             _uiState.update {
                 if (result.isSuccess) {

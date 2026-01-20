@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.quickvault.app-mergeDebugResources-2:/values-v18/values-v18.xml",
+            "map": [
+                {
+                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/dc8f1a4ac77e4ae6332719d3d44fa7ca/transformed/appcompat-1.6.1/res/values-v18/values-v18.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "48",
+                        "endOffsets": "99"
+                    }
+                }
+            ]
+        }
+    ]
+}

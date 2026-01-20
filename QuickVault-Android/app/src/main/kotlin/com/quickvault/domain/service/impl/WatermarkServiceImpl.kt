@@ -2,6 +2,7 @@ package com.quickvault.domain.service.impl
 
 import android.content.Context
 import android.graphics.*
+import com.quickvault.R
 import com.quickvault.domain.service.WatermarkService
 import com.quickvault.domain.service.WatermarkStyle
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,9 +24,11 @@ class WatermarkServiceImpl @Inject constructor(
 ) : WatermarkService {
 
     companion object {
-        private const val DEFAULT_WATERMARK_TEXT = "QuickVault 随取"
         private const val WATERMARK_SPACING_FACTOR = 1.5f // 水印间距倍数
     }
+
+    private val defaultWatermarkText: String
+        get() = context.getString(R.string.watermark_default_text)
 
     /**
      * 添加水印到 Bitmap
@@ -34,7 +37,7 @@ class WatermarkServiceImpl @Inject constructor(
     fun addWatermark(bitmap: Bitmap): Bitmap {
         return applyWatermark(
             bitmap = bitmap,
-            text = DEFAULT_WATERMARK_TEXT,
+            text = defaultWatermarkText,
             style = WatermarkStyle()
         )
     }

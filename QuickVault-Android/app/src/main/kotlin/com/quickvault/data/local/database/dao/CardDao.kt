@@ -63,28 +63,6 @@ interface CardFieldDao {
 }
 
 /**
- * 附件 DAO
- */
-@Dao
-interface AttachmentDao {
-
-    @Query("SELECT * FROM attachments WHERE card_id = :cardId ORDER BY created_at DESC")
-    suspend fun getAttachmentsByCardId(cardId: String): List<AttachmentEntity>
-
-    @Query("SELECT * FROM attachments WHERE id = :attachmentId")
-    suspend fun getAttachmentById(attachmentId: String): AttachmentEntity?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAttachment(attachment: AttachmentEntity)
-
-    @Query("DELETE FROM attachments WHERE id = :attachmentId")
-    suspend fun deleteAttachment(attachmentId: String)
-
-    @Update
-    suspend fun updateAttachment(attachment: AttachmentEntity)
-}
-
-/**
  * 卡片与字段的一对多关系
  * 对应 iOS CoreData 的 Relationship
  */

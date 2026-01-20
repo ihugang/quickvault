@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.quickvault.R
+import com.quickvault.util.extensions.findActivity
 
 /**
  * 解锁界面
@@ -37,6 +39,8 @@ fun UnlockScreen(
     var passwordVisible by remember { mutableStateOf(false) }
 
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
+    val activity = context.findActivity()
 
     // 监听认证成功
     LaunchedEffect(uiState.isAuthenticated) {
@@ -47,7 +51,7 @@ fun UnlockScreen(
 
     // 自动显示生物识别（首次进入）
     LaunchedEffect(Unit) {
-        viewModel.unlockWithBiometric()
+        viewModel.unlockWithBiometric(activity)
     }
 
     Scaffold { paddingValues ->
@@ -99,7 +103,11 @@ fun UnlockScreen(
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
                         Icon(
                             imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                            contentDescription = if (passwordVisible) "隐藏密码" else "显示密码"
+                            contentDescription = if (passwordVisible) {
+                                stringResource(R.string.auth_hide_password)
+                            } else {
+                                stringResource(R.string.auth_show_password)
+                            }
                         )
                     }
                 },
@@ -140,7 +148,7 @@ fun UnlockScreen(
             // 生物识别按钮
             OutlinedButton(
                 onClick = {
-                    viewModel.unlockWithBiometric()
+                    viewModel.unlockWithBiometric(activity)
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

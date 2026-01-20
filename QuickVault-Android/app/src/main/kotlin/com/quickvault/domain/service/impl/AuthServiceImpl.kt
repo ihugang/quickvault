@@ -1,5 +1,7 @@
 package com.quickvault.domain.service.impl
 
+import android.content.Context
+import com.quickvault.R
 import com.quickvault.data.local.keystore.SecureKeyManager
 import com.quickvault.domain.service.AuthService
 import com.quickvault.domain.service.AuthState
@@ -9,6 +11,7 @@ import com.quickvault.util.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,7 +23,8 @@ import javax.inject.Singleton
 class AuthServiceImpl @Inject constructor(
     private val keyManager: SecureKeyManager,
     private val cryptoService: CryptoService,
-    private val biometricService: BiometricService
+    private val biometricService: BiometricService,
+    @ApplicationContext private val context: Context
 ) : AuthService {
 
     private val _authState = MutableStateFlow(AuthState.LOCKED)
@@ -66,7 +70,12 @@ class AuthServiceImpl @Inject constructor(
 
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(AuthException("设置密码失败 Setup failed: ${e.message}", e))
+            Result.failure(
+                AuthException(
+                    context.getString(R.string.auth_error_setup_failed, e.message ?: ""),
+                    e
+                )
+            )
         }
     }
 
@@ -82,7 +91,9 @@ class AuthServiceImpl @Inject constructor(
             // 2. 验证密码
             val passwordHash = cryptoService.hashPassword(password)
             val storedHash = keyManager.getPasswordHash()
-                ?: return Result.failure(AuthException("未找到密码 Password not found"))
+                ?: return Result.failure(
+                    AuthException(context.getString(R.string.auth_error_no_password))
+                )
 
             if (passwordHash != storedHash) {
                 // 密码错误
@@ -92,11 +103,16 @@ class AuthServiceImpl @Inject constructor(
                 val remainingAttempts = Constants.MAX_AUTH_ATTEMPTS - failedAttempts
                 if (remainingAttempts > 0) {
                     return Result.failure(
-                        AuthException("密码错误，剩余 $remainingAttempts 次尝试 Wrong password, $remainingAttempts attempts left")
+                        AuthException(
+                            context.getString(
+                                R.string.auth_error_wrong_password_attempts,
+                                remainingAttempts
+                            )
+                        )
                     )
                 } else {
                     return Result.failure(
-                        AuthException("密码错误次数过多，请等待 30 秒 Too many attempts, wait 30s")
+                        AuthException(context.getString(R.string.auth_error_rate_limited, 30))
                     )
                 }
             }
@@ -107,38 +123,59 @@ class AuthServiceImpl @Inject constructor(
 
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(AuthException("认证失败 Authentication failed: ${e.message}", e))
+            Result.failure(
+                AuthException(
+                    context.getString(R.string.auth_error_authentication_failed, e.message ?: ""),
+                    e
+                )
+            )
         }
     }
 
     /**
      * 使用生物识别认证
      * 对应 iOS 的 authenticateWithBiometric()
+     * @param activity 用于显示生物识别提示的 Activity
      */
-    override suspend fun authenticateWithBiometric(): Result<Unit> {
+    override suspend fun authenticateWithBiometric(activity: android.app.Activity?): Result<Unit> {
         return try {
             // 1. 检查是否启用生物识别
             if (!keyManager.isBiometricEnabled()) {
-                return Result.failure(AuthException("生物识别未启用 Biometric not enabled"))
+                return Result.failure(
+                    AuthException(context.getString(R.string.auth_error_biometric_not_enabled))
+                )
             }
 
             // 2. 检查设备支持
             if (!biometricService.isBiometricAvailable()) {
-                return Result.failure(AuthException("设备不支持生物识别 Biometric not available"))
+                return Result.failure(
+                    AuthException(context.getString(R.string.auth_error_biometric_unavailable))
+                )
             }
 
-            // 3. 执行生物识别
-            val result = biometricService.authenticate()
+            // 3. 执行生物识别（传递 Activity）
+            val result = biometricService.authenticate(activity)
 
             if (result.isSuccess) {
                 _authState.value = AuthState.UNLOCKED
                 failedAttempts = 0
                 Result.success(Unit)
             } else {
-                Result.failure(result.exceptionOrNull() ?: AuthException("生物识别失败 Biometric failed"))
+                Result.failure(
+                    result.exceptionOrNull()
+                        ?: AuthException(context.getString(R.string.auth_error_biometric_failed))
+                )
             }
         } catch (e: Exception) {
-            Result.failure(AuthException("生物识别认证失败 Biometric auth failed: ${e.message}", e))
+            Result.failure(
+                AuthException(
+                    context.getString(
+                        R.string.auth_error_biometric_failed_with_reason,
+                        e.message ?: ""
+                    ),
+                    e
+                )
+            )
         }
     }
 
@@ -151,10 +188,14 @@ class AuthServiceImpl @Inject constructor(
             // 1. 验证旧密码
             val oldHash = cryptoService.hashPassword(oldPassword)
             val storedHash = keyManager.getPasswordHash()
-                ?: return Result.failure(AuthException("未找到密码 Password not found"))
+                ?: return Result.failure(
+                    AuthException(context.getString(R.string.auth_error_no_password))
+                )
 
             if (oldHash != storedHash) {
-                return Result.failure(AuthException("旧密码错误 Old password incorrect"))
+                return Result.failure(
+                    AuthException(context.getString(R.string.auth_error_old_password_incorrect))
+                )
             }
 
             // 2. 验证新密码强度
@@ -173,7 +214,15 @@ class AuthServiceImpl @Inject constructor(
 
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(AuthException("修改密码失败 Change password failed: ${e.message}", e))
+            Result.failure(
+                AuthException(
+                    context.getString(
+                        R.string.auth_error_change_password_failed,
+                        e.message ?: ""
+                    ),
+                    e
+                )
+            )
         }
     }
 
@@ -200,7 +249,7 @@ class AuthServiceImpl @Inject constructor(
         return when {
             password.length < Constants.MIN_PASSWORD_LENGTH -> {
                 Result.failure(
-                    AuthException("密码至少需要 ${Constants.MIN_PASSWORD_LENGTH} 个字符 Password must be at least ${Constants.MIN_PASSWORD_LENGTH} characters")
+                    AuthException(context.getString(R.string.auth_error_password_too_short))
                 )
             }
             else -> Result.success(Unit)
@@ -215,7 +264,9 @@ class AuthServiceImpl @Inject constructor(
             val elapsed = System.currentTimeMillis() - lastFailedTime
             if (elapsed < Constants.AUTH_DELAY_MS) {
                 val remainingSeconds = (Constants.AUTH_DELAY_MS - elapsed) / 1000
-                throw AuthException("请等待 $remainingSeconds 秒后重试 Wait $remainingSeconds seconds")
+                throw AuthException(
+                    context.getString(R.string.auth_error_rate_limited, remainingSeconds)
+                )
             } else {
                 // 延迟时间已过，重置计数
                 failedAttempts = 0

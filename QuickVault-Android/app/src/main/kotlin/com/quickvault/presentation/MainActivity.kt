@@ -1,13 +1,15 @@
 package com.quickvault.presentation
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.fragment.app.FragmentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -26,7 +28,9 @@ import com.quickvault.presentation.screen.search.SearchScreen
 import com.quickvault.presentation.screen.settings.SettingsScreen
 import com.quickvault.presentation.screen.splash.SplashScreen
 import com.quickvault.presentation.theme.QuickVaultTheme
+import android.content.Context
 import com.quickvault.presentation.lifecycle.AppLifecycleObserver
+import com.quickvault.util.LanguageManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -35,10 +39,15 @@ import javax.inject.Inject
  * 对应 iOS 的 @main struct QuickVaultApp
  */
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
 
     @Inject
     lateinit var appLifecycleObserver: AppLifecycleObserver
+
+    override fun attachBaseContext(newBase: Context) {
+        // 应用语言设置
+        super.attachBaseContext(LanguageManager.wrap(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,8 +149,8 @@ fun MainScreenWithNavigation() {
                 NavigationBar {
                     screens.forEach { screen ->
                         NavigationBarItem(
-                            icon = { Icon(screen.icon, contentDescription = screen.label) },
-                            label = { Text(screen.label) },
+                            icon = { Icon(screen.icon, contentDescription = stringResource(screen.labelRes)) },
+                            label = { Text(stringResource(screen.labelRes)) },
                             selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                             onClick = {
                                 navController.navigate(screen.route) {
@@ -241,7 +250,7 @@ fun PlaceholderScreen(title: String) {
             )
 
             Text(
-                text = "功能开发中...\nFeature in development...",
+                text = stringResource(com.quickvault.R.string.common_feature_in_development),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center

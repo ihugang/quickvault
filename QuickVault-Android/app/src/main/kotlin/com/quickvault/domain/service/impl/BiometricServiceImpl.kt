@@ -38,15 +38,21 @@ class BiometricServiceImpl @Inject constructor(
     /**
      * 执行生物识别认证
      * 对应 iOS 的 LAContext.evaluatePolicy
+     * @param activity 用于显示生物识别提示的 Activity
      */
-    override suspend fun authenticate(): Result<Boolean> {
+    override suspend fun authenticate(activity: android.app.Activity?): Result<Boolean> {
         if (!isBiometricAvailable()) {
-            return Result.failure(BiometricException("生物识别不可用 Biometric not available"))
+            return Result.failure(
+                BiometricException(context.getString(R.string.biometric_error_unavailable))
+            )
         }
 
-        // 需要 FragmentActivity 上下文
-        val activity = context as? FragmentActivity
-            ?: return Result.failure(BiometricException("需要 Activity 上下文 Activity context required"))
+        // 优先使用传入的 Activity，否则尝试从 context 获取
+        val fragmentActivity = (activity as? FragmentActivity)
+            ?: (context as? FragmentActivity)
+            ?: return Result.failure(
+                BiometricException(context.getString(R.string.biometric_error_activity_required))
+            )
 
         return suspendCancellableCoroutine { continuation ->
             val executor = ContextCompat.getMainExecutor(context)
@@ -60,7 +66,7 @@ class BiometricServiceImpl @Inject constructor(
                 .build()
 
             val biometricPrompt = BiometricPrompt(
-                activity,
+                fragmentActivity,
                 executor,
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
@@ -74,11 +80,16 @@ class BiometricServiceImpl @Inject constructor(
                         super.onAuthenticationError(errorCode, errString)
                         if (continuation.isActive) {
                             val message = when (errorCode) {
-                                BiometricPrompt.ERROR_CANCELED -> "用户取消 User canceled"
-                                BiometricPrompt.ERROR_USER_CANCELED -> "用户取消 User canceled"
-                                BiometricPrompt.ERROR_LOCKOUT -> "尝试次数过多，已锁定 Too many attempts"
-                                BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> "永久锁定 Permanently locked"
-                                BiometricPrompt.ERROR_NO_BIOMETRICS -> "未录入生物识别 No biometrics enrolled"
+                                BiometricPrompt.ERROR_CANCELED ->
+                                    context.getString(R.string.biometric_error_user_canceled)
+                                BiometricPrompt.ERROR_USER_CANCELED ->
+                                    context.getString(R.string.biometric_error_user_canceled)
+                                BiometricPrompt.ERROR_LOCKOUT ->
+                                    context.getString(R.string.biometric_error_too_many_attempts)
+                                BiometricPrompt.ERROR_LOCKOUT_PERMANENT ->
+                                    context.getString(R.string.biometric_error_permanently_locked)
+                                BiometricPrompt.ERROR_NO_BIOMETRICS ->
+                                    context.getString(R.string.biometric_error_no_biometrics)
                                 else -> errString.toString()
                             }
                             continuation.resume(Result.failure(BiometricException(message)))

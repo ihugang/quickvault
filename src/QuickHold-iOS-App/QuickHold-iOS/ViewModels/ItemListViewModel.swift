@@ -8,9 +8,13 @@ import QuickHoldCore
 import Combine
 
 enum SortOption: String, CaseIterable {
-    case createdTime = "创建时间"
-    case type = "类型"
-    case updatedTime = "更新时间"
+    case createdTime = "items.sort.created"
+    case type = "items.sort.type"
+    case updatedTime = "items.sort.updated"
+
+    var localizedString: String {
+        LocalizationManager.shared.localizedString(self.rawValue)
+    }
 }
 
 @MainActor

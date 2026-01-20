@@ -26,6 +26,7 @@ import com.quickvault.R
  * 首次设置密码界面
  * 对应 iOS 的 SetupScreen
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetupScreen(
     onSetupComplete: () -> Unit,
@@ -91,7 +92,11 @@ fun SetupScreen(
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
                         Icon(
                             imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                            contentDescription = if (passwordVisible) "隐藏密码" else "显示密码"
+                            contentDescription = if (passwordVisible) {
+                                stringResource(R.string.auth_hide_password)
+                            } else {
+                                stringResource(R.string.auth_show_password)
+                            }
                         )
                     }
                 },
@@ -121,7 +126,11 @@ fun SetupScreen(
                     IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
                         Icon(
                             imageVector = if (confirmPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                            contentDescription = if (confirmPasswordVisible) "隐藏密码" else "显示密码"
+                            contentDescription = if (confirmPasswordVisible) {
+                                stringResource(R.string.auth_hide_password)
+                            } else {
+                                stringResource(R.string.auth_show_password)
+                            }
                         )
                     }
                 },

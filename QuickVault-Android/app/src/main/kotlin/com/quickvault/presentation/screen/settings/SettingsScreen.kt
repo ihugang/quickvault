@@ -1,17 +1,24 @@
 package com.quickvault.presentation.screen.settings
 
+import android.app.Activity
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.quickvault.BuildConfig
+import com.quickvault.R
 import com.quickvault.presentation.viewmodel.SettingsViewModel
+import com.quickvault.util.LanguageManager
+import com.quickvault.util.extensions.findActivity
 
 /**
  * 设置界面
@@ -28,12 +35,16 @@ fun SettingsScreen(
     onNavigateToUnlock: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    val activity = context.findActivity()
     val uiState by viewModel.uiState.collectAsState()
     val isBiometricEnabled by viewModel.isBiometricEnabled.collectAsState()
     val isBiometricAvailable by viewModel.isBiometricAvailable.collectAsState()
+    val currentLanguage by viewModel.currentLanguage.collectAsState()
 
     var showChangePasswordDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
 
     // 显示成功消息
     LaunchedEffect(uiState.successMessage) {
@@ -46,7 +57,7 @@ fun SettingsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("设置 Settings") }
+                title = { Text(stringResource(R.string.settings_title)) }
             )
         }
     ) { paddingValues ->
@@ -58,18 +69,18 @@ fun SettingsScreen(
         ) {
             // 安全设置区域
             item {
-                SectionHeader(title = "安全 Security")
+                SectionHeader(title = stringResource(R.string.settings_security))
             }
 
             // 生物识别开关
             if (isBiometricAvailable) {
                 item {
                     SettingsSwitchItem(
-                        title = "生物识别解锁",
-                        subtitle = "使用指纹或面部识别 Use fingerprint or face",
+                        title = stringResource(R.string.settings_security_biometric),
+                        subtitle = stringResource(R.string.settings_security_biometric_subtitle),
                         icon = Icons.Default.Fingerprint,
                         checked = isBiometricEnabled,
-                        onCheckedChange = { viewModel.toggleBiometric(it) }
+                        onCheckedChange = { viewModel.toggleBiometric(activity, it) }
                     )
                 }
             }
@@ -77,8 +88,8 @@ fun SettingsScreen(
             // 修改密码
             item {
                 SettingsClickableItem(
-                    title = "修改主密码",
-                    subtitle = "Change master password",
+                    title = stringResource(R.string.settings_security_changepassword),
+                    subtitle = stringResource(R.string.settings_change_password_subtitle),
                     icon = Icons.Default.Lock,
                     onClick = { showChangePasswordDialog = true }
                 )
@@ -87,8 +98,8 @@ fun SettingsScreen(
             // 立即锁定
             item {
                 SettingsClickableItem(
-                    title = "立即锁定",
-                    subtitle = "Lock app now",
+                    title = stringResource(R.string.settings_lock_now_title),
+                    subtitle = stringResource(R.string.settings_lock_now_subtitle),
                     icon = Icons.Default.LockClock,
                     onClick = {
                         viewModel.lockApp {
@@ -104,14 +115,24 @@ fun SettingsScreen(
 
             // 应用设置区域
             item {
-                SectionHeader(title = "应用 Application")
+                SectionHeader(title = stringResource(R.string.settings_app_section_title))
+            }
+
+            // 语言设置
+            item {
+                SettingsClickableItem(
+                    title = stringResource(R.string.settings_language),
+                    subtitle = currentLanguage.nativeName,
+                    icon = Icons.Default.Language,
+                    onClick = { showLanguageDialog = true }
+                )
             }
 
             // 关于
             item {
                 SettingsClickableItem(
-                    title = "关于 QuickVault",
-                    subtitle = "版本、开源协议 Version, licenses",
+                    title = stringResource(R.string.settings_about),
+                    subtitle = stringResource(R.string.settings_about_subtitle),
                     icon = Icons.Default.Info,
                     onClick = { showAboutDialog = true }
                 )
@@ -164,6 +185,23 @@ fun SettingsScreen(
     if (showAboutDialog) {
         AboutDialog(
             onDismiss = { showAboutDialog = false }
+        )
+    }
+
+    // 语言选择对话框
+    if (showLanguageDialog) {
+        LanguageDialog(
+            currentLanguage = currentLanguage,
+            availableLanguages = viewModel.getAvailableLanguages(),
+            onDismiss = { showLanguageDialog = false },
+            onSelectLanguage = { language ->
+                viewModel.setLanguage(language)
+                showLanguageDialog = false
+                // 重启Activity以应用语言更改
+                (context as? Activity)?.let {
+                    LanguageManager.restartActivity(it)
+                }
+            }
         )
     }
 }
@@ -254,10 +292,13 @@ fun ChangePasswordDialog(
     var newPassword by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
+    val currentPasswordRequired = stringResource(R.string.settings_change_password_error_current_required)
+    val passwordTooShort = stringResource(R.string.settings_change_password_error_length)
+    val passwordMismatch = stringResource(R.string.settings_change_password_error_mismatch)
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("修改主密码 Change Password") },
+        title = { Text(stringResource(R.string.settings_change_password_dialog_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
@@ -266,7 +307,7 @@ fun ChangePasswordDialog(
                         currentPassword = it
                         error = null
                     },
-                    label = { Text("当前密码 Current") },
+                    label = { Text(stringResource(R.string.auth_change_current)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -277,7 +318,7 @@ fun ChangePasswordDialog(
                         newPassword = it
                         error = null
                     },
-                    label = { Text("新密码 New (min 8 chars)") },
+                    label = { Text(stringResource(R.string.auth_change_new)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -288,7 +329,7 @@ fun ChangePasswordDialog(
                         confirmPassword = it
                         error = null
                     },
-                    label = { Text("确认新密码 Confirm") },
+                    label = { Text(stringResource(R.string.auth_change_confirm)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -306,9 +347,9 @@ fun ChangePasswordDialog(
             TextButton(
                 onClick = {
                     when {
-                        currentPassword.isEmpty() -> error = "请输入当前密码"
-                        newPassword.length < 8 -> error = "新密码至少8个字符"
-                        newPassword != confirmPassword -> error = "密码不匹配"
+                        currentPassword.isEmpty() -> error = currentPasswordRequired
+                        newPassword.length < 8 -> error = passwordTooShort
+                        newPassword != confirmPassword -> error = passwordMismatch
                         else -> onConfirm(currentPassword, newPassword)
                     }
                 },
@@ -317,13 +358,13 @@ fun ChangePasswordDialog(
                 if (isLoading) {
                     CircularProgressIndicator(modifier = Modifier.size(20.dp))
                 } else {
-                    Text("确定 OK")
+                    Text(stringResource(R.string.common_confirm))
                 }
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss, enabled = !isLoading) {
-                Text("取消 Cancel")
+                Text(stringResource(R.string.common_cancel))
             }
         }
     )
@@ -336,6 +377,14 @@ fun ChangePasswordDialog(
 fun AboutDialog(
     onDismiss: () -> Unit
 ) {
+    val context = LocalContext.current
+    val versionName = remember {
+        runCatching {
+            @Suppress("DEPRECATION")
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName
+        }.getOrNull().orEmpty()
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss,
         icon = {
@@ -346,21 +395,21 @@ fun AboutDialog(
                 tint = MaterialTheme.colorScheme.primary
             )
         },
-        title = { Text("QuickVault 随取") },
+        title = { Text(stringResource(R.string.app_name)) },
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "版本 Version: ${BuildConfig.VERSION_NAME}",
+                    text = stringResource(R.string.about_version, versionName),
                     style = MaterialTheme.typography.bodyMedium
                 )
 
                 Divider(modifier = Modifier.padding(vertical = 8.dp))
 
                 Text(
-                    text = "安全的本地信息管理应用\nSecure local information manager",
+                    text = stringResource(R.string.about_description),
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
@@ -368,7 +417,7 @@ fun AboutDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "• AES-256-GCM 加密\n• 本地优先，无云同步\n• 开源软件",
+                    text = stringResource(R.string.about_features),
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
@@ -376,7 +425,69 @@ fun AboutDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("关闭 Close")
+                Text(stringResource(R.string.common_close))
+            }
+        }
+    )
+}
+
+/**
+ * 语言选择对话框
+ */
+@Composable
+fun LanguageDialog(
+    currentLanguage: LanguageManager.Language,
+    availableLanguages: List<LanguageManager.Language>,
+    onDismiss: () -> Unit,
+    onSelectLanguage: (LanguageManager.Language) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Language,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        },
+        title = { Text(stringResource(R.string.settings_language_select_title)) },
+        text = {
+            Column {
+                availableLanguages.forEach { language ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onSelectLanguage(language) }
+                            .padding(vertical = 12.dp, horizontal = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = language.nativeName,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            Text(
+                                text = language.displayName,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        if (language == currentLanguage) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = stringResource(R.string.common_selected),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.common_cancel))
             }
         }
     )

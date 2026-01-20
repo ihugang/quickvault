@@ -205,10 +205,10 @@ struct EditItemSheet: View {
             }
             .ignoresSafeArea()
         }
-        .alert("相机不可用 / Camera unavailable", isPresented: $showingCameraUnavailableAlert) {
-            Button("好的 / OK", role: .cancel) {}
+        .alert(localizationManager.localizedString("items.images.camera.unavailable"), isPresented: $showingCameraUnavailableAlert) {
+            Button(localizationManager.localizedString("common.ok"), role: .cancel) {}
         } message: {
-            Text("请在系统设置中允许访问相机 / Allow camera access in Settings")
+            Text(localizationManager.localizedString("items.images.camera.permission"))
         }
     }
     

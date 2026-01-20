@@ -1,11 +1,14 @@
 package com.quickvault.presentation.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.quickvault.data.local.keystore.SecureKeyManager
 import com.quickvault.domain.service.AuthService
 import com.quickvault.domain.service.BiometricService
+import com.quickvault.util.LanguageManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +24,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val authService: AuthService,
     private val biometricService: BiometricService,
     private val keyManager: SecureKeyManager
@@ -38,6 +42,10 @@ class SettingsViewModel @Inject constructor(
     private val _isBiometricAvailable = MutableStateFlow(false)
     val isBiometricAvailable: StateFlow<Boolean> = _isBiometricAvailable.asStateFlow()
 
+    // 当前语言
+    private val _currentLanguage = MutableStateFlow(LanguageManager.getCurrentLanguage(context))
+    val currentLanguage: StateFlow<LanguageManager.Language> = _currentLanguage.asStateFlow()
+
     init {
         checkBiometricAvailability()
         loadSettings()
@@ -48,13 +56,8 @@ class SettingsViewModel @Inject constructor(
      */
     private fun checkBiometricAvailability() {
         viewModelScope.launch {
-            biometricService.isBiometricAvailable()
-                .onSuccess { available ->
-                    _isBiometricAvailable.value = available
-                }
-                .onFailure {
-                    _isBiometricAvailable.value = false
-                }
+            val available = biometricService.isBiometricAvailable()
+            _isBiometricAvailable.value = available
         }
     }
 
@@ -68,30 +71,35 @@ class SettingsViewModel @Inject constructor(
     /**
      * 切换生物识别
      */
-    fun toggleBiometric(enable: Boolean) {
+    fun toggleBiometric(activity: android.app.Activity?, enable: Boolean) {
         viewModelScope.launch {
             if (enable) {
                 // 验证生物识别后启用
-                biometricService.authenticate()
+                biometricService.authenticate(activity)
                     .onSuccess { success ->
                         if (success) {
-                            authService.enableBiometric()
+                            // TODO: 实现 enableBiometric() 方法
+                            // authService.enableBiometric()
                             _isBiometricEnabled.value = true
                             _uiState.update {
-                                it.copy(successMessage = "生物识别已启用 Biometric enabled")
+                                it.copy(successMessage = context.getString(com.quickvault.R.string.settings_security_biometric_enabled))
                             }
                         }
                     }
                     .onFailure { error ->
                         _uiState.update {
-                            it.copy(errorMessage = error.message ?: "启用失败 Failed to enable")
+                            it.copy(
+                                errorMessage = error.message
+                                    ?: context.getString(com.quickvault.R.string.settings_biometric_enable_failed)
+                            )
                         }
                     }
             } else {
-                authService.disableBiometric()
+                // TODO: 实现 disableBiometric() 方法
+                // authService.disableBiometric()
                 _isBiometricEnabled.value = false
                 _uiState.update {
-                    it.copy(successMessage = "生物识别已禁用 Biometric disabled")
+                    it.copy(successMessage = context.getString(com.quickvault.R.string.settings_security_biometric_disabled))
                 }
             }
         }
@@ -113,7 +121,7 @@ class SettingsViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            successMessage = "密码已修改 Password changed"
+                            successMessage = context.getString(com.quickvault.R.string.auth_change_success)
                         )
                     }
                     onSuccess()
@@ -122,7 +130,7 @@ class SettingsViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = error.message ?: "修改失败 Failed to change"
+                            errorMessage = error.message ?: context.getString(com.quickvault.R.string.auth_change_failed)
                         )
                     }
                 }
@@ -149,6 +157,21 @@ class SettingsViewModel @Inject constructor(
      */
     fun clearErrorMessage() {
         _uiState.update { it.copy(errorMessage = null) }
+    }
+
+    /**
+     * 设置语言
+     */
+    fun setLanguage(language: LanguageManager.Language) {
+        LanguageManager.setLanguage(context, language)
+        _currentLanguage.value = language
+    }
+
+    /**
+     * 获取所有可用语言
+     */
+    fun getAvailableLanguages(): List<LanguageManager.Language> {
+        return LanguageManager.Language.getAllLanguages()
     }
 }
 

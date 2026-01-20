@@ -14,8 +14,9 @@ interface BiometricService {
     /**
      * 执行生物识别认证
      * 对应 iOS 的 LAContext.evaluatePolicy
+     * @param activity 用于显示生物识别提示的 Activity（可选）
      */
-    suspend fun authenticate(): Result<Boolean>
+    suspend fun authenticate(activity: android.app.Activity? = null): Result<Boolean>
 
     /**
      * 获取生物识别类型（指纹、面部等）

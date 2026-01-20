@@ -49,15 +49,18 @@ fun CardEditorScreen(
             TopAppBar(
                 title = {
                     Text(
-                        if (uiState.isEditMode) "编辑卡片 Edit Card"
-                        else "新建卡片 New Card"
+                        if (uiState.isEditMode) {
+                            stringResource(R.string.card_editor_title_edit)
+                        } else {
+                            stringResource(R.string.card_editor_title_new)
+                        }
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "取消"
+                            contentDescription = stringResource(R.string.common_cancel)
                         )
                     }
                 },
@@ -77,7 +80,7 @@ fun CardEditorScreen(
                                 strokeWidth = 2.dp
                             )
                         } else {
-                            Text("保存 Save")
+                            Text(stringResource(R.string.common_save))
                         }
                     }
                 }
@@ -114,7 +117,7 @@ fun CardEditorScreen(
                 item {
                     Column {
                         Text(
-                            text = "卡片类型 Card Type",
+                            text = stringResource(R.string.card_editor_type_label),
                             style = MaterialTheme.typography.labelLarge
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -144,7 +147,7 @@ fun CardEditorScreen(
                 OutlinedTextField(
                     value = title,
                     onValueChange = { viewModel.setTitle(it) },
-                    label = { Text("标题 Title *") },
+                    label = { Text(stringResource(R.string.card_editor_title_label)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
@@ -156,8 +159,8 @@ fun CardEditorScreen(
                 OutlinedTextField(
                     value = group,
                     onValueChange = { viewModel.setGroup(it) },
-                    label = { Text("分组 Group") },
-                    placeholder = { Text("默认 Default") },
+                    label = { Text(stringResource(R.string.card_editor_group_label)) },
+                    placeholder = { Text(stringResource(R.string.card_editor_group_placeholder)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
@@ -169,7 +172,7 @@ fun CardEditorScreen(
                 Divider()
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "字段 Fields",
+                    text = stringResource(R.string.card_editor_fields_title),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -190,7 +193,7 @@ fun CardEditorScreen(
                 Divider()
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "标签 Tags",
+                    text = stringResource(R.string.card_editor_tags_title),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -204,7 +207,7 @@ fun CardEditorScreen(
                     OutlinedTextField(
                         value = tagInput,
                         onValueChange = { tagInput = it },
-                        label = { Text("添加标签 Add tag") },
+                        label = { Text(stringResource(R.string.card_editor_add_tag_label)) },
                         modifier = Modifier.weight(1f),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
@@ -219,7 +222,7 @@ fun CardEditorScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = "添加标签"
+                            contentDescription = stringResource(R.string.card_editor_add_tag_action)
                         )
                     }
                 }
@@ -240,7 +243,7 @@ fun CardEditorScreen(
                                 trailingIcon = {
                                     Icon(
                                         imageVector = Icons.Default.Close,
-                                        contentDescription = "删除标签",
+                                        contentDescription = stringResource(R.string.card_editor_remove_tag_action),
                                         modifier = Modifier.size(18.dp)
                                     )
                                 }
@@ -318,7 +321,7 @@ fun CardTypePickerDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("选择卡片类型 Select Card Type") },
+        title = { Text(stringResource(R.string.card_editor_type_picker_title)) },
         text = {
             Column {
                 CardTypeOption(
@@ -340,7 +343,7 @@ fun CardTypePickerDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("确定 OK")
+                Text(stringResource(R.string.common_confirm))
             }
         }
     )
@@ -371,11 +374,12 @@ fun CardTypeOption(
 /**
  * 获取卡片类型名称
  */
+@Composable
 private fun getCardTypeName(type: String): String {
     return when (type) {
-        CardServiceImpl.CARD_TYPE_ADDRESS -> "地址卡片 Address"
-        CardServiceImpl.CARD_TYPE_INVOICE -> "发票卡片 Invoice"
-        CardServiceImpl.CARD_TYPE_GENERAL -> "通用文本 General Text"
+        CardServiceImpl.CARD_TYPE_ADDRESS -> stringResource(R.string.cards_type_address)
+        CardServiceImpl.CARD_TYPE_INVOICE -> stringResource(R.string.cards_type_invoice)
+        CardServiceImpl.CARD_TYPE_GENERAL -> stringResource(R.string.cards_type_general)
         else -> type
     }
 }
@@ -383,11 +387,12 @@ private fun getCardTypeName(type: String): String {
 /**
  * 获取卡片类型描述
  */
+@Composable
 private fun getCardTypeDescription(type: String): String {
     return when (type) {
-        CardServiceImpl.CARD_TYPE_ADDRESS -> "收件地址、手机号等 Recipient info"
-        CardServiceImpl.CARD_TYPE_INVOICE -> "公司名称、税号、银行账号 Company info"
-        CardServiceImpl.CARD_TYPE_GENERAL -> "自定义文本内容 Custom text"
+        CardServiceImpl.CARD_TYPE_ADDRESS -> stringResource(R.string.card_editor_type_address_desc)
+        CardServiceImpl.CARD_TYPE_INVOICE -> stringResource(R.string.card_editor_type_invoice_desc)
+        CardServiceImpl.CARD_TYPE_GENERAL -> stringResource(R.string.card_editor_type_general_desc)
         else -> ""
     }
 }
@@ -395,21 +400,22 @@ private fun getCardTypeDescription(type: String): String {
 /**
  * 获取字段显示名称（中英双语）
  */
+@Composable
 private fun getFieldDisplayName(fieldKey: String): String {
     return when (fieldKey) {
-        "recipient" -> "收件人 Recipient"
-        "phone" -> "手机号 Phone"
-        "province" -> "省 Province"
-        "city" -> "市 City"
-        "district" -> "区 District"
-        "address" -> "详细地址 Address"
-        "postalCode" -> "邮编 Postal Code"
-        "notes" -> "备注 Notes"
-        "companyName" -> "公司名称 Company Name"
-        "taxId" -> "税号 Tax ID"
-        "bankName" -> "开户行 Bank Name"
-        "bankAccount" -> "银行账号 Bank Account"
-        "content" -> "内容 Content"
+        "recipient" -> stringResource(R.string.field_recipient)
+        "phone" -> stringResource(R.string.field_phone)
+        "province" -> stringResource(R.string.field_province)
+        "city" -> stringResource(R.string.field_city)
+        "district" -> stringResource(R.string.field_district)
+        "address" -> stringResource(R.string.field_address)
+        "postalCode" -> stringResource(R.string.field_postalcode)
+        "notes" -> stringResource(R.string.field_notes)
+        "companyName" -> stringResource(R.string.field_companyname)
+        "taxId" -> stringResource(R.string.field_taxid)
+        "bankName" -> stringResource(R.string.field_bankname)
+        "bankAccount" -> stringResource(R.string.field_bankaccount)
+        "content" -> stringResource(R.string.field_content)
         else -> fieldKey
     }
 }

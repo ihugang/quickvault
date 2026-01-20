@@ -3,11 +3,14 @@ package com.quickvault.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.content.Context
 import com.quickvault.data.model.CardDTO
 import com.quickvault.data.model.CardFieldDTO
 import com.quickvault.domain.service.CardService
 import com.quickvault.domain.service.impl.CardServiceImpl
+import com.quickvault.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,6 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CardEditorViewModel @Inject constructor(
     private val cardService: CardService,
+    @ApplicationContext private val context: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -83,7 +87,7 @@ class CardEditorViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = error.message ?: "加载失败 Load failed"
+                            errorMessage = error.message ?: context.getString(R.string.card_editor_error_load)
                         )
                     }
                 }
@@ -177,7 +181,7 @@ class CardEditorViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = error.message ?: "保存失败 Save failed"
+                            errorMessage = error.message ?: context.getString(R.string.card_editor_error_save)
                         )
                     }
                 }

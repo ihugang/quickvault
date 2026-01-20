@@ -184,7 +184,7 @@ struct ItemListView: View {
                         viewModel.sortOption = option
                     } label: {
                         HStack {
-                            Text(option.rawValue)
+                            Text(option.localizedString)
                             if viewModel.sortOption == option {
                                 Image(systemName: "checkmark")
                             }
@@ -195,7 +195,7 @@ struct ItemListView: View {
                 HStack(spacing: 4) {
                     Image(systemName: "arrow.up.arrow.down")
                         .font(.caption)
-                    Text(viewModel.sortOption.rawValue)
+                    Text(viewModel.sortOption.localizedString)
                         .font(.caption.weight(.medium))
                 }
                 .padding(.horizontal, 12)

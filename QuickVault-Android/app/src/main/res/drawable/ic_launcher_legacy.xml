@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 为不支持自适应图标的旧设备提供的备用图标 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- 背景圆形 -->
+    <path
+        android:fillColor="#3B82F6"
+        android:pathData="M24,24m-24,0a24,24 0,1,1 48,0a24,24 0,1,1 -48,0"/>
+
+    <!-- 锁的弧形部分 -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M 18,19 L 18,15 Q 18,10 24,10 Q 30,10 30,15 L 30,19"
+        android:fillColor="#00000000"/>
+
+    <!-- 锁的主体 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 14,19 L 34,19 Q 36,19 36,21 L 36,34 Q 36,36 34,36 L 14,36 Q 12,36 12,34 L 12,21 Q 12,19 14,19 Z"/>
+
+    <!-- 锁孔 -->
+    <path
+        android:fillColor="#3B82F6"
+        android:pathData="M 24,23 m -2.5,0 a 2.5,2.5 0 1,1 5,0 a 2.5,2.5 0 1,1 -5,0"/>
+    <path
+        android:fillColor="#3B82F6"
+        android:pathData="M 22.5,25.5 L 25.5,25.5 L 25.5,31 L 22.5,31 Z"/>
+</vector>

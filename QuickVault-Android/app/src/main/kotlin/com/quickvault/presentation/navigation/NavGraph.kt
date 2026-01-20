@@ -5,6 +5,8 @@ import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.StringRes
+import com.quickvault.R
 
 /**
  * 导航路由
@@ -25,24 +27,24 @@ object Routes {
  */
 sealed class Screen(
     val route: String,
-    val label: String,
+    @StringRes val labelRes: Int,
     val icon: ImageVector
 ) {
     object Cards : Screen(
         route = "cards",
-        label = "卡片",
+        labelRes = R.string.nav_cards,
         icon = Icons.Default.CreditCard
     )
 
     object Search : Screen(
         route = "search",
-        label = "搜索",
+        labelRes = R.string.nav_search,
         icon = Icons.Default.Search
     )
 
     object Settings : Screen(
         route = "settings",
-        label = "设置",
+        labelRes = R.string.nav_settings,
         icon = Icons.Default.Settings
     )
 }

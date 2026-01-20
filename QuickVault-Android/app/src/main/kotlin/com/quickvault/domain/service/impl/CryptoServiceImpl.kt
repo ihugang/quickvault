@@ -5,6 +5,7 @@ import com.google.crypto.tink.Aead
 import com.google.crypto.tink.KeyTemplates
 import com.google.crypto.tink.aead.AeadConfig
 import com.google.crypto.tink.integration.android.AndroidKeysetManager
+import com.quickvault.R
 import com.quickvault.data.local.keystore.SecureKeyManager
 import com.quickvault.domain.service.CryptoService
 import com.quickvault.util.Constants
@@ -49,7 +50,10 @@ class CryptoServiceImpl @Inject constructor(
             val plaintext = data.toByteArray(Charsets.UTF_8)
             aead.encrypt(plaintext, null)
         } catch (e: Exception) {
-            throw CryptoException("加密失败 Encryption failed: ${e.message}", e)
+            throw CryptoException(
+                context.getString(R.string.crypto_error_encrypt, e.message ?: ""),
+                e
+            )
         }
     }
 
@@ -62,7 +66,10 @@ class CryptoServiceImpl @Inject constructor(
             val plaintext = aead.decrypt(data, null)
             String(plaintext, Charsets.UTF_8)
         } catch (e: Exception) {
-            throw CryptoException("解密失败 Decryption failed: ${e.message}", e)
+            throw CryptoException(
+                context.getString(R.string.crypto_error_decrypt, e.message ?: ""),
+                e
+            )
         }
     }
 
@@ -74,7 +81,10 @@ class CryptoServiceImpl @Inject constructor(
         try {
             aead.encrypt(data, null)
         } catch (e: Exception) {
-            throw CryptoException("文件加密失败 File encryption failed: ${e.message}", e)
+            throw CryptoException(
+                context.getString(R.string.crypto_error_encrypt_file, e.message ?: ""),
+                e
+            )
         }
     }
 
@@ -86,7 +96,10 @@ class CryptoServiceImpl @Inject constructor(
         try {
             aead.decrypt(data, null)
         } catch (e: Exception) {
-            throw CryptoException("文件解密失败 File decryption failed: ${e.message}", e)
+            throw CryptoException(
+                context.getString(R.string.crypto_error_decrypt_file, e.message ?: ""),
+                e
+            )
         }
     }
 
@@ -107,7 +120,10 @@ class CryptoServiceImpl @Inject constructor(
             val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
             return factory.generateSecret(spec).encoded
         } catch (e: Exception) {
-            throw CryptoException("密钥派生失败 Key derivation failed: ${e.message}", e)
+            throw CryptoException(
+                context.getString(R.string.crypto_error_derive_key, e.message ?: ""),
+                e
+            )
         }
     }
 
@@ -129,7 +145,10 @@ class CryptoServiceImpl @Inject constructor(
             val hash = digest.digest(password.toByteArray(Charsets.UTF_8))
             return hash.joinToString("") { "%02x".format(it) }
         } catch (e: Exception) {
-            throw CryptoException("密码哈希失败 Password hashing failed: ${e.message}", e)
+            throw CryptoException(
+                context.getString(R.string.crypto_error_hash_password, e.message ?: ""),
+                e
+            )
         }
     }
 }

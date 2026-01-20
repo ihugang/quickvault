@@ -65,7 +65,7 @@ fun CardsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.FilterList,
-                                contentDescription = "分组过滤"
+                                contentDescription = stringResource(R.string.cards_filter_groups)
                             )
                         }
                     }
@@ -78,7 +78,7 @@ fun CardsScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "添加卡片"
+                    contentDescription = stringResource(R.string.cards_add)
                 )
             }
         }
@@ -98,15 +98,15 @@ fun CardsScreen(
             )
 
             // 当前分组显示
-            if (selectedGroup != null) {
+            selectedGroup?.let { group ->
                 FilterChip(
                     selected = true,
                     onClick = { viewModel.setSelectedGroup(null) },
-                    label = { Text("分组: $selectedGroup") },
+                    label = { Text(stringResource(R.string.cards_group_filter_label, group)) },
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "清除分组过滤",
+                            contentDescription = stringResource(R.string.cards_group_filter_clear),
                             modifier = Modifier.size(18.dp)
                         )
                     },
@@ -168,11 +168,11 @@ fun SearchBar(
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
-        placeholder = { Text("搜索卡片... Search cards...") },
+        placeholder = { Text(stringResource(R.string.search_placeholder)) },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "搜索"
+                contentDescription = stringResource(R.string.common_search)
             )
         },
         trailingIcon = {
@@ -180,7 +180,7 @@ fun SearchBar(
                 IconButton(onClick = { onQueryChange("") }) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "清除搜索"
+                        contentDescription = stringResource(R.string.search_clear)
                     )
                 }
             }
@@ -299,7 +299,7 @@ fun CardItem(
             if (card.isPinned) {
                 Icon(
                     imageVector = Icons.Default.PushPin,
-                    contentDescription = "已置顶",
+                    contentDescription = stringResource(R.string.cards_pinned),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )
@@ -311,7 +311,7 @@ fun CardItem(
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
-                        contentDescription = "更多操作"
+                        contentDescription = stringResource(R.string.common_more_actions)
                     )
                 }
 
@@ -320,7 +320,15 @@ fun CardItem(
                     onDismissRequest = { showMenu = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text(if (card.isPinned) "取消置顶" else "置顶") },
+                        text = {
+                            Text(
+                                if (card.isPinned) {
+                                    stringResource(R.string.cards_unpin)
+                                } else {
+                                    stringResource(R.string.cards_pin)
+                                }
+                            )
+                        },
                         onClick = {
                             onTogglePin()
                             showMenu = false
@@ -334,7 +342,7 @@ fun CardItem(
                     )
 
                     DropdownMenuItem(
-                        text = { Text("编辑") },
+                        text = { Text(stringResource(R.string.cards_edit)) },
                         onClick = {
                             onClick()
                             showMenu = false
@@ -348,7 +356,7 @@ fun CardItem(
                     )
 
                     DropdownMenuItem(
-                        text = { Text("删除", color = MaterialTheme.colorScheme.error) },
+                        text = { Text(stringResource(R.string.cards_delete), color = MaterialTheme.colorScheme.error) },
                         onClick = {
                             onDelete()
                             showMenu = false
@@ -396,9 +404,9 @@ fun EmptyState(
 
             Text(
                 text = when {
-                    searchQuery.isNotEmpty() -> "未找到匹配的卡片\nNo cards found"
-                    selectedGroup != null -> "该分组暂无卡片\nNo cards in this group"
-                    else -> "暂无卡片\n点击 + 添加第一张卡片\nNo cards yet\nTap + to add your first card"
+                    searchQuery.isNotEmpty() -> stringResource(R.string.cards_empty_search_title)
+                    selectedGroup != null -> stringResource(R.string.cards_empty_group_title)
+                    else -> stringResource(R.string.cards_empty_default)
                 },
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -420,13 +428,13 @@ fun GroupFilterDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("选择分组 Select Group") },
+        title = { Text(stringResource(R.string.cards_group_filter_title)) },
         text = {
             LazyColumn {
                 // "全部" 选项
                 item {
                     ListItem(
-                        headlineContent = { Text("全部 All") },
+                        headlineContent = { Text(stringResource(R.string.cards_all)) },
                         modifier = Modifier.clickable { onSelectGroup(null) },
                         leadingContent = {
                             RadioButton(
@@ -454,7 +462,7 @@ fun GroupFilterDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("确定 OK")
+                Text(stringResource(R.string.common_confirm))
             }
         }
     )

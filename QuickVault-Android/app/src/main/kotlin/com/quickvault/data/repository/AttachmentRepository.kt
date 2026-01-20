@@ -7,6 +7,7 @@ import com.quickvault.data.local.database.entity.AttachmentEntity
 import com.quickvault.data.model.AttachmentDTO
 import com.quickvault.domain.service.CryptoService
 import com.quickvault.domain.service.WatermarkService
+import com.quickvault.domain.service.WatermarkStyle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.io.ByteArrayOutputStream
@@ -169,11 +170,15 @@ class AttachmentRepository @Inject constructor(
 
     /**
      * 为图片添加水印
-     * 对应 iOS 的 WatermarkService.addWatermark()
+     * 对应 iOS 的 WatermarkService.applyWatermark()
      */
-    private fun addWatermarkToImage(imageData: ByteArray): ByteArray {
+    private fun addWatermarkToImage(imageData: ByteArray, watermarkText: String = "QuickVault"): ByteArray {
         val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
-        val watermarkedBitmap = watermarkService.addWatermark(bitmap)
+        val watermarkedBitmap = watermarkService.applyWatermark(
+            bitmap = bitmap,
+            text = watermarkText,
+            style = WatermarkStyle()
+        )
 
         val outputStream = ByteArrayOutputStream()
         watermarkedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)

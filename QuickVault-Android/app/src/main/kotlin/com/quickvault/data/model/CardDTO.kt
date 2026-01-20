@@ -31,21 +31,6 @@ data class CardFieldDTO(
 )
 
 /**
- * 附件数据传输对象
- * 对应 iOS 的 AttachmentDTO
- */
-data class AttachmentDTO(
-    val id: String = UUID.randomUUID().toString(),
-    val cardId: String,
-    val fileName: String,
-    val mimeType: String,
-    val fileSize: Long,
-    val hasWatermark: Boolean = false,
-    val watermarkText: String? = null,
-    val createdAt: Long = System.currentTimeMillis()
-)
-
-/**
  * 卡片模板定义
  * 对应 iOS 的 CardTemplate.swift
  */
