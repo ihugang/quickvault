@@ -59,6 +59,7 @@ class Migration_2_3(
     
     /**
      * 迁移附件数据
+     * 使用逐行查询避免CursorWindow溢出
      */
     private fun migrateAttachmentData(database: SupportSQLiteDatabase) {
         val attachmentsDir = File(context.filesDir, "attachments").apply {
@@ -68,56 +69,71 @@ class Migration_2_3(
             if (!exists()) mkdirs()
         }
         
-        // 查询所有附件
-        val cursor = database.query("SELECT * FROM attachments")
-        
+        // 先获取所有附件ID（只查询ID，避免加载BLOB数据）
+        val ids = mutableListOf<String>()
+        val idCursor = database.query("SELECT id FROM attachments")
         try {
-            val idIndex = cursor.getColumnIndex("id")
-            val itemIdIndex = cursor.getColumnIndex("item_id")
-            val fileNameIndex = cursor.getColumnIndex("file_name")
-            val fileTypeIndex = cursor.getColumnIndex("file_type")
-            val fileSizeIndex = cursor.getColumnIndex("file_size")
-            val displayOrderIndex = cursor.getColumnIndex("display_order")
-            val encryptedDataIndex = cursor.getColumnIndex("encrypted_data")
-            val thumbnailDataIndex = cursor.getColumnIndex("thumbnail_data")
-            val createdAtIndex = cursor.getColumnIndex("created_at")
-            
-            while (cursor.moveToNext()) {
-                val id = cursor.getString(idIndex)
-                val itemId = cursor.getString(itemIdIndex)
-                val fileName = cursor.getString(fileNameIndex)
-                val fileType = cursor.getString(fileTypeIndex)
-                val fileSize = cursor.getLong(fileSizeIndex)
-                val displayOrder = cursor.getInt(displayOrderIndex)
-                val encryptedData = cursor.getBlob(encryptedDataIndex)
-                val thumbnailData = if (!cursor.isNull(thumbnailDataIndex)) {
-                    cursor.getBlob(thumbnailDataIndex)
-                } else null
-                val createdAt = cursor.getLong(createdAtIndex)
-                
-                // 保存加密数据到文件
-                val file = File(attachmentsDir, id)
-                file.writeBytes(encryptedData)
-                val filePath = "attachments/$id"
-                
-                // 保存缩略图（如果有）
-                val thumbnailPath = thumbnailData?.let { data ->
-                    val thumbnailFile = File(thumbnailsDir, id)
-                    thumbnailFile.writeBytes(data)
-                    "thumbnails/$id"
-                }
-                
-                // 插入到新表
-                database.execSQL("""
-                    INSERT INTO attachments_new 
-                    (id, item_id, file_name, file_type, file_size, display_order, encrypted_file_path, thumbnail_file_path, created_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """.trimIndent(), arrayOf(
-                    id, itemId, fileName, fileType, fileSize, displayOrder, filePath, thumbnailPath, createdAt
-                ))
+            val idIndex = idCursor.getColumnIndex("id")
+            while (idCursor.moveToNext()) {
+                ids.add(idCursor.getString(idIndex))
             }
         } finally {
-            cursor.close()
+            idCursor.close()
+        }
+        
+        // 逐个处理每个附件（每次只加载一行，避免CursorWindow溢出）
+        for (id in ids) {
+            val cursor = database.query(
+                "SELECT * FROM attachments WHERE id = ?",
+                arrayOf(id)
+            )
+            
+            try {
+                if (cursor.moveToFirst()) {
+                    val itemIdIndex = cursor.getColumnIndex("item_id")
+                    val fileNameIndex = cursor.getColumnIndex("file_name")
+                    val fileTypeIndex = cursor.getColumnIndex("file_type")
+                    val fileSizeIndex = cursor.getColumnIndex("file_size")
+                    val displayOrderIndex = cursor.getColumnIndex("display_order")
+                    val encryptedDataIndex = cursor.getColumnIndex("encrypted_data")
+                    val thumbnailDataIndex = cursor.getColumnIndex("thumbnail_data")
+                    val createdAtIndex = cursor.getColumnIndex("created_at")
+                    
+                    val itemId = cursor.getString(itemIdIndex)
+                    val fileName = cursor.getString(fileNameIndex)
+                    val fileType = cursor.getString(fileTypeIndex)
+                    val fileSize = cursor.getLong(fileSizeIndex)
+                    val displayOrder = cursor.getInt(displayOrderIndex)
+                    val encryptedData = cursor.getBlob(encryptedDataIndex)
+                    val thumbnailData = if (!cursor.isNull(thumbnailDataIndex)) {
+                        cursor.getBlob(thumbnailDataIndex)
+                    } else null
+                    val createdAt = cursor.getLong(createdAtIndex)
+                    
+                    // 保存加密数据到文件
+                    val file = File(attachmentsDir, id)
+                    file.writeBytes(encryptedData)
+                    val filePath = "attachments/$id"
+                    
+                    // 保存缩略图（如果有）
+                    val thumbnailPath = thumbnailData?.let { data ->
+                        val thumbnailFile = File(thumbnailsDir, id)
+                        thumbnailFile.writeBytes(data)
+                        "thumbnails/$id"
+                    }
+                    
+                    // 插入到新表
+                    database.execSQL("""
+                        INSERT INTO attachments_new 
+                        (id, item_id, file_name, file_type, file_size, display_order, encrypted_file_path, thumbnail_file_path, created_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """.trimIndent(), arrayOf(
+                        id, itemId, fileName, fileType, fileSize, displayOrder, filePath, thumbnailPath, createdAt
+                    ))
+                }
+            } finally {
+                cursor.close()
+            }
         }
     }
 }
