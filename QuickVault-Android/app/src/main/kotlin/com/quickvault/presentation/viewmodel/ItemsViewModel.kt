@@ -23,17 +23,22 @@ class ItemsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ItemsUiState())
     val uiState: StateFlow<ItemsUiState> = _uiState.asStateFlow()
 
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+    private val _selectedTags = MutableStateFlow<Set<String>>(emptySet())
+    val selectedTags: StateFlow<Set<String>> = _selectedTags.asStateFlow()
+    
+    // 获取所有标签
+    val allTags: StateFlow<List<String>> = itemService.getAllTags()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val items: StateFlow<List<ItemDTO>> = itemService.getAllItems()
-        .combine(_searchQuery) { items, query ->
-            if (query.isBlank()) {
+        .combine(_selectedTags) { items, selectedTags ->
+            if (selectedTags.isEmpty()) {
                 items
             } else {
-                items.filter {
-                    it.title.contains(query, ignoreCase = true) ||
-                        it.tags.any { tag -> tag.contains(query, ignoreCase = true) }
+                items.filter { item ->
+                    selectedTags.any { tag ->
+                        item.tags.any { itemTag -> itemTag.equals(tag, ignoreCase = true) }
+                    }
                 }
             }
         }
@@ -47,8 +52,18 @@ class ItemsViewModel @Inject constructor(
         list.filter { !it.isPinned }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    fun setSearchQuery(query: String) {
-        _searchQuery.value = query
+    fun toggleTagFilter(tag: String) {
+        val current = _selectedTags.value.toMutableSet()
+        if (current.contains(tag)) {
+            current.remove(tag)
+        } else {
+            current.add(tag)
+        }
+        _selectedTags.value = current
+    }
+    
+    fun clearTagFilters() {
+        _selectedTags.value = emptySet()
     }
 
     fun togglePin(itemId: String) {

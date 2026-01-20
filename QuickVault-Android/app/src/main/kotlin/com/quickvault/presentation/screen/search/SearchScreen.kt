@@ -21,6 +21,7 @@ import com.quickvault.R
 import com.quickvault.data.model.ItemDTO
 import com.quickvault.data.model.ItemType
 import com.quickvault.presentation.viewmodel.ItemsViewModel
+import com.quickvault.presentation.viewmodel.SearchViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,10 +39,10 @@ import java.util.*
 @Composable
 fun SearchScreen(
     onNavigateToItemDetail: (String) -> Unit,
-    viewModel: ItemsViewModel = hiltViewModel()
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
     val searchQuery by viewModel.searchQuery.collectAsState()
-    val items by viewModel.items.collectAsState()
+    val searchResults by viewModel.searchResults.collectAsState()
 
     val focusRequester = remember { FocusRequester() }
 
@@ -70,11 +71,11 @@ fun SearchScreen(
                 SearchEmptyState()
             } else {
                 // 搜索结果
-                if (items.isEmpty()) {
+                if (searchResults.isEmpty()) {
                     SearchNoResults(query = searchQuery)
                 } else {
                     SearchResults(
-                        items = items,
+                        items = searchResults,
                         query = searchQuery,
                         onItemClick = { item -> onNavigateToItemDetail(item.id) }
                     )

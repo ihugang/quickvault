@@ -514,7 +514,7 @@
     <!-- ABOUT -->
     <string name="about_version">Version: %1$s</string>
     <string name="about_description">Secure local information manager</string>
-    <string name="about_features">• AES-256-GCM encryption\n• Local-first, no cloud sync\n• Open-source software</string>
+    <string name="about_features">• AES-256-GCM encryption\n• Local-first, no cloud sync\n</string>
 
     <!-- MESSAGES -->
     <string name="cards_error_toggle_pin">Failed to toggle pin</string>

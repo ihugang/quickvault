@@ -10,6 +10,7 @@ import com.quickvault.data.repository.ItemRepository
 import com.quickvault.domain.service.ItemService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -230,5 +231,13 @@ class ItemServiceImpl @Inject constructor(
         val attachment = itemRepository.getAttachmentById(fileId)
             ?: return Result.failure(IllegalArgumentException("File not found"))
         return Result.success(attachment.data)
+    }
+    
+    override fun getAllTags(): Flow<List<String>> {
+        return getAllItems().map { items: List<ItemDTO> ->
+            items.flatMap { item: ItemDTO -> item.tags }
+                .distinct()
+                .sorted()
+        }
     }
 }

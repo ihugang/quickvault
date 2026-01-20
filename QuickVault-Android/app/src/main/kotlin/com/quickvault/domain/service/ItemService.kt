@@ -29,4 +29,7 @@ interface ItemService {
     
     suspend fun getImageFullData(imageId: String): Result<ByteArray>
     suspend fun getFileData(fileId: String): Result<ByteArray>
+    
+    // 获取所有标签
+    fun getAllTags(): kotlinx.coroutines.flow.Flow<List<String>>
 }
