@@ -339,6 +339,8 @@
     <!-- Items - Files -->
     <string name="items_files_select">选择文件</string>
     <string name="items_files_count">%d 个文件</string>
+    <string name="items_files_existing">已有：%d 个文件</string>
+    <string name="items_files_new">新增：%d 个文件</string>
     <string name="items_files_section">文件</string>
     <string name="items_files_limit">最多可选择 10 个文件，单个文件不超过 10MB</string>
     <!-- Items - Detail Files -->
@@ -362,6 +364,8 @@
     <string name="items_images_camera_unavailable">相机不可用</string>
     <string name="items_images_camera_permission">请在系统设置中允许访问相机</string>
     <string name="items_images_count">%d 张</string>
+    <string name="items_images_existing">已有：%d 张</string>
+    <string name="items_images_new">新增：%d 张</string>
     <string name="items_images_section">图片</string>
     <string name="items_images_limit">最多可选择 10 张图片</string>
     <string name="items_tags_section">标签（可选）</string>

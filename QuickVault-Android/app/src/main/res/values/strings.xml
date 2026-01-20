@@ -328,6 +328,8 @@
     <!-- Items - Files -->
     <string name="items_files_select">Select Files</string>
     <string name="items_files_count">%d files</string>
+    <string name="items_files_existing">Existing: %d files</string>
+    <string name="items_files_new">New: %d files</string>
     <string name="items_files_section">Files</string>
     <string name="items_files_limit">Up to 10 files, each file no more than 10MB</string>
     <!-- Items - Detail Files -->
@@ -351,6 +353,8 @@
     <string name="items_images_camera_unavailable">Camera Unavailable</string>
     <string name="items_images_camera_permission">Allow camera access in Settings</string>
     <string name="items_images_count">%d images</string>
+    <string name="items_images_existing">Existing: %d images</string>
+    <string name="items_images_new">New: %d images</string>
     <string name="items_images_section">Images</string>
     <string name="items_images_limit">Up to 10 images can be selected</string>
     <string name="items_tags_section">Tags (Optional)</string>

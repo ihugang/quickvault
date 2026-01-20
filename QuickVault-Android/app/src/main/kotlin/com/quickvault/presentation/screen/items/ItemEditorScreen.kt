@@ -65,6 +65,8 @@ fun ItemEditorScreen(
     val textContent by viewModel.textContent.collectAsState()
     val images by viewModel.images.collectAsState()
     val files by viewModel.files.collectAsState()
+    val imageMetadata by viewModel.imageMetadata.collectAsState()
+    val fileMetadata by viewModel.fileMetadata.collectAsState()
 
     val context = LocalContext.current
     val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
@@ -176,10 +178,50 @@ fun ItemEditorScreen(
                         Text(stringResource(R.string.items_images_select))
                     }
                 }
+                
+                // 显示已有图片（编辑模式）
+                if (uiState.isEditMode && imageMetadata.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = stringResource(R.string.items_images_existing, imageMetadata.size),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
+                }
+                items(imageMetadata.chunked(3)) { rowImages ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        rowImages.forEach { image ->
+                            ExistingImageThumbnailCard(
+                                imageData = image.thumbnailData,
+                                fileName = image.fileName,
+                                onRemove = { viewModel.removeExistingImage(image.id) },
+                                onClick = {
+                                    coroutineScope.launch {
+                                        val fullData = viewModel.getImageFullData(image.id)
+                                        if (fullData != null) {
+                                            selectedImageData = fullData
+                                            selectedImageName = image.fileName
+                                        }
+                                    }
+                                },
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                        repeat(3 - rowImages.size) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
+                }
+                
+                // 显示新添加的图片
                 if (images.isNotEmpty()) {
                     item {
                         Text(
-                            text = stringResource(R.string.items_images_count, images.size),
+                            text = stringResource(R.string.items_images_new, images.size),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -203,7 +245,6 @@ fun ItemEditorScreen(
                                 modifier = Modifier.weight(1f)
                             )
                         }
-                        // 填充空白空间
                         repeat(3 - rowImages.size) {
                             Spacer(modifier = Modifier.weight(1f))
                         }
@@ -215,6 +256,34 @@ fun ItemEditorScreen(
                         filePicker.launch(arrayOf("*/*"))
                     }) {
                         Text(stringResource(R.string.items_files_select))
+                    }
+                }
+                
+                // 显示已有文件（编辑模式）
+                if (uiState.isEditMode && fileMetadata.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = stringResource(R.string.items_files_existing, fileMetadata.size),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
+                }
+                items(fileMetadata) { file ->
+                    AttachmentRow(
+                        name = file.fileName,
+                        onRemove = { viewModel.removeExistingFile(file.id) }
+                    )
+                }
+                
+                // 显示新添加的文件
+                if (files.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = stringResource(R.string.items_files_new, files.size),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
                 itemsIndexed(files) { index, file ->
@@ -367,6 +436,52 @@ private fun ImageThumbnailCard(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.common_delete),
                     tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .background(
+                            MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+                            CircleShape
+                        )
+                        .padding(2.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ExistingImageThumbnailCard(
+    imageData: ByteArray,
+    fileName: String,
+    onRemove: () -> Unit,
+    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.aspectRatio(1f),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+        onClick = onClick
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            // 显示图片缩略图
+            Image(
+                bitmap = android.graphics.BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+                    .asImageBitmap(),
+                contentDescription = fileName,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            // 删除按钮
+            IconButton(
+                onClick = onRemove,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(R.string.common_delete),
+                    tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier
                         .size(20.dp)
                         .background(

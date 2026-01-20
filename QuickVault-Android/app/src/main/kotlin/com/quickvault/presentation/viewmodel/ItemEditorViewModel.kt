@@ -138,6 +138,30 @@ class ItemEditorViewModel @Inject constructor(
     fun removeFile(index: Int) {
         _files.value = _files.value.toMutableList().apply { removeAt(index) }
     }
+    
+    fun removeExistingImage(imageId: String) {
+        viewModelScope.launch {
+            itemService.removeAttachment(imageId)
+                .onSuccess {
+                    _imageMetadata.value = _imageMetadata.value.filter { it.id != imageId }
+                }
+                .onFailure { error ->
+                    _uiState.update { it.copy(errorMessage = error.message) }
+                }
+        }
+    }
+    
+    fun removeExistingFile(fileId: String) {
+        viewModelScope.launch {
+            itemService.removeAttachment(fileId)
+                .onSuccess {
+                    _fileMetadata.value = _fileMetadata.value.filter { it.id != fileId }
+                }
+                .onFailure { error ->
+                    _uiState.update { it.copy(errorMessage = error.message) }
+                }
+        }
+    }
 
     fun save(onSuccess: () -> Unit) {
         viewModelScope.launch {
