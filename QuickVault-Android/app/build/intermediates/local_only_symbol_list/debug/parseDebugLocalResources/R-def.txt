@@ -27,8 +27,6 @@ color md_theme_light_secondaryContainer
 color md_theme_light_surface
 color success
 color warning
-drawable ic_launcher_background
-drawable ic_launcher_foreground
 drawable ic_launcher_legacy
 mipmap ic_launcher
 mipmap ic_launcher_round
