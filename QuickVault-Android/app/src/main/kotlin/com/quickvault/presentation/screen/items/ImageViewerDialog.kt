@@ -218,6 +218,7 @@ private fun WatermarkSettingsPanel(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .windowInsetsPadding(WindowInsets.navigationBars) // 面板避开底部导航栏
             .heightIn(max = 500.dp), // 限制最大高度，避免遮挡顶部内容
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
         shadowElevation = 24.dp,
@@ -227,7 +228,7 @@ private fun WatermarkSettingsPanel(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(scrollState) // 添加滚动功能
-                .padding(horizontal = 20.dp, vertical = 24.dp),
+                .padding(start = 20.dp, end = 20.dp, top = 32.dp, bottom = 24.dp), // 增加顶部 padding
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             // 标题栏和开关
