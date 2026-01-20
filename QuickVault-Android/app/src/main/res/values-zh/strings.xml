@@ -304,6 +304,11 @@
     <string name="settings_appearance_auto">自动</string>
     <string name="settings_appearance_light">浅色</string>
     <string name="settings_appearance_dark">深色</string>
+    <string name="settings_theme">显示模式</string>
+    <string name="settings_theme_system">跟随系统</string>
+    <string name="settings_theme_light">浅色模式</string>
+    <string name="settings_theme_dark">深色模式</string>
+    <string name="settings_theme_select_title">选择显示模式</string>
     <string name="settings_language">语言</string>
     <string name="settings_language_title">应用语言</string>
     <string name="settings_language_system">跟随系统</string>

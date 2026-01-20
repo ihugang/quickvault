@@ -444,6 +444,11 @@
     <string name="settings_security_cleardata_footer">⚠️ 此操作将永久删除所有卡片、图片和文件，且无法恢复！</string>
     <string name="settings_security_cleardata_success">已删除所有数据</string>
     <string name="settings_tab">设置</string>
+    <string name="settings_theme">显示模式</string>
+    <string name="settings_theme_dark">深色模式</string>
+    <string name="settings_theme_light">浅色模式</string>
+    <string name="settings_theme_select_title">选择显示模式</string>
+    <string name="settings_theme_system">跟随系统</string>
     <string name="settings_title">设置</string>
     <string name="tags_label">标签：%1$s</string>
     <string name="validation_bank_invalid">银行账号格式错误（16-19位数字）</string>
