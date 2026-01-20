@@ -18,6 +18,7 @@
     <string name="common_copy">复制</string>
     <string name="common_share">分享</string>
     <string name="common_search">搜索</string>
+    <string name="common_open">打开</string>
 
     <!-- APP -->
     <string name="app_name">随取</string>
@@ -414,6 +415,8 @@
     <string name="error_storage">存储错误</string>
     <string name="error_biometric_unavailable">生物识别认证不可用</string>
     <string name="error_biometric_notEnrolled">未设置生物识别数据</string>
+    <string name="error_no_app_preview">未找到可打开此文件的应用</string>
+    <string name="error_preview_failed">无法打开文件</string>
 
     <!-- PROMO -->
     <string name="promo_photopc_title">PhotoPc</string>

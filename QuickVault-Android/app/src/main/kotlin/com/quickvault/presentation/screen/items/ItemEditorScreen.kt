@@ -50,6 +50,7 @@ import com.quickvault.presentation.viewmodel.ItemEditorViewModel
 import com.quickvault.util.getFileName
 import com.quickvault.util.getMimeType
 import com.quickvault.util.readBytesFromUri
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,6 +67,7 @@ fun ItemEditorScreen(
     val files by viewModel.files.collectAsState()
 
     val context = LocalContext.current
+    val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
 
     var tagInput by remember { mutableStateOf("") }
     var selectedImageData by remember { mutableStateOf<ByteArray?>(null) }
@@ -265,20 +267,54 @@ fun ItemEditorScreen(
         ImageViewerDialog(
             imageData = imageData,
             fileName = selectedImageName,
+            imageCount = images.size,
             watermarkService = com.quickvault.domain.service.impl.WatermarkServiceImpl(context),
             onDismiss = { selectedImageData = null },
-            onShareImage = { bitmap ->
-                // 分享图片功能
-                try {
-                    val imageUri = saveBitmapToCache(context, bitmap, "shared_image.jpg")
-                    val shareIntent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
-                        type = "image/jpeg"
-                        putExtra(android.content.Intent.EXTRA_STREAM, imageUri)
-                        addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            onShare = { bitmap, style, text, applyToAll ->
+                val watermarkService = com.quickvault.domain.service.impl.WatermarkServiceImpl(context)
+                
+                coroutineScope.launch {
+                    try {
+                        val uris = java.util.ArrayList<Uri>()
+                        
+                        if (applyToAll && images.size > 1) {
+                            // 批量处理所有图片
+                            images.forEach { image ->
+                                val original = android.graphics.BitmapFactory.decodeByteArray(image.data, 0, image.data.size)
+                                
+                                val watermarked = watermarkService.applyWatermark(
+                                    bitmap = original,
+                                    text = text,
+                                    style = style
+                                )
+                                
+                                val uri = saveBitmapToCache(context, watermarked, "shared_${image.fileName}")
+                                uris.add(uri)
+                            }
+                        } else {
+                            // 仅分享当前图片
+                            val uri = saveBitmapToCache(context, bitmap, "shared_image.jpg")
+                            uris.add(uri)
+                        }
+                        
+                        if (uris.isNotEmpty()) {
+                            val shareIntent = android.content.Intent().apply {
+                                if (uris.size > 1) {
+                                    action = android.content.Intent.ACTION_SEND_MULTIPLE
+                                    putParcelableArrayListExtra(android.content.Intent.EXTRA_STREAM, uris)
+                                    type = "image/*"
+                                } else {
+                                    action = android.content.Intent.ACTION_SEND
+                                    putExtra(android.content.Intent.EXTRA_STREAM, uris.first())
+                                    type = "image/jpeg"
+                                }
+                                addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            }
+                            context.startActivity(android.content.Intent.createChooser(shareIntent, context.getString(R.string.watermark_share)))
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
-                    context.startActivity(android.content.Intent.createChooser(shareIntent, context.getString(R.string.watermark_share)))
-                } catch (e: Exception) {
-                    e.printStackTrace()
                 }
             }
         )

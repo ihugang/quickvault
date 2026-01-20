@@ -18,6 +18,7 @@
     <string name="common_copy">Copy</string>
     <string name="common_share">Share</string>
     <string name="common_search">Search</string>
+    <string name="common_open">Open</string>
 
     <!-- APP -->
     <string name="app_name">QuickHold</string>
@@ -406,6 +407,8 @@
     <string name="error_storage">Storage error</string>
     <string name="error_biometric_unavailable">Biometric authentication is not available</string>
     <string name="error_biometric_notEnrolled">No biometric data enrolled</string>
+    <string name="error_no_app_preview">No app found to open this file</string>
+    <string name="error_preview_failed">Failed to open file</string>
 
     <!-- PROMO -->
     <string name="promo_photopc_title">PhotoPc</string>

@@ -28,4 +28,5 @@ interface ItemService {
     suspend fun getShareableFiles(id: String): Result<List<Triple<ByteArray, String, String>>>
     
     suspend fun getImageFullData(imageId: String): Result<ByteArray>
+    suspend fun getFileData(fileId: String): Result<ByteArray>
 }

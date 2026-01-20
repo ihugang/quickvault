@@ -43,9 +43,10 @@ import com.quickvault.domain.service.WatermarkStyle
 fun ImageViewerDialog(
     imageData: ByteArray,
     fileName: String,
+    imageCount: Int = 1, // 图片数量
     watermarkService: WatermarkService,
     onDismiss: () -> Unit,
-    onShareImage: (Bitmap) -> Unit = {} // 分享图片回调
+    onShare: (Bitmap, WatermarkStyle, String, Boolean) -> Unit = { _, _, _, _ -> } // 分享回调：Bitmap, Style, Text, applyToAll
 ) {
     var scale by remember { mutableStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
@@ -57,22 +58,29 @@ fun ImageViewerDialog(
     var fontSize by remember { mutableStateOf(80f) }
     var opacity by remember { mutableStateOf(0.3f) }
     var lineSpacing by remember { mutableStateOf(1.1f) } // 0.8=密集, 1.1=正常, 1.5=稀疏
+    
+    // 应用范围设置
+    var applyToAll by remember { mutableStateOf(false) }
 
     val originalBitmap = remember(imageData) {
         BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
     }
 
     // 实时生成带水印的图片
-    val displayBitmap = remember(enableWatermark, watermarkText, fontSize, opacity, lineSpacing) {
+    val currentStyle = remember(fontSize, opacity, lineSpacing) {
+        WatermarkStyle(
+            fontSize = fontSize,
+            opacity = opacity,
+            lineSpacing = lineSpacing
+        )
+    }
+
+    val displayBitmap = remember(enableWatermark, watermarkText, currentStyle) {
         if (enableWatermark && watermarkText.isNotBlank()) {
             watermarkService.applyWatermark(
                 bitmap = originalBitmap,
                 text = watermarkText,
-                style = WatermarkStyle(
-                    fontSize = fontSize,
-                    opacity = opacity,
-                    lineSpacing = lineSpacing
-                )
+                style = currentStyle
             )
         } else {
             originalBitmap
@@ -123,7 +131,9 @@ fun ImageViewerDialog(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { onShareImage(displayBitmap) }) {
+                        IconButton(onClick = { 
+                            onShare(displayBitmap, currentStyle, watermarkText, applyToAll) 
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Share,
                                 contentDescription = stringResource(R.string.watermark_share),
@@ -194,6 +204,9 @@ fun ImageViewerDialog(
                     exit = slideOutVertically(targetOffsetY = { it })
                 ) {
                     WatermarkSettingsPanel(
+                        imageCount = imageCount,
+                        applyToAll = applyToAll,
+                        onApplyToAllChange = { applyToAll = it },
                         enableWatermark = enableWatermark,
                         onEnableWatermarkChange = { enableWatermark = it },
                         watermarkText = watermarkText,
@@ -216,6 +229,9 @@ fun ImageViewerDialog(
  */
 @Composable
 private fun WatermarkSettingsPanel(
+    imageCount: Int,
+    applyToAll: Boolean,
+    onApplyToAllChange: (Boolean) -> Unit,
     enableWatermark: Boolean,
     onEnableWatermarkChange: (Boolean) -> Unit,
     watermarkText: String,
@@ -275,6 +291,58 @@ private fun WatermarkSettingsPanel(
             Divider()
 
             if (enableWatermark) {
+                // 应用范围（多张图片时显示）
+                if (imageCount > 1) {
+                    Column {
+                        Text(
+                            text = stringResource(R.string.watermark_scope),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .pointerInput(Unit) {
+                                        detectTransformGestures { _, _, _, _ ->
+                                            onApplyToAllChange(false)
+                                        }
+                                    }
+                                    .pointerInput(Unit) { } // 拦截点击
+                            ) {
+                                RadioButton(
+                                    selected = !applyToAll,
+                                    onClick = { onApplyToAllChange(false) }
+                                )
+                                Text(
+                                    text = stringResource(R.string.watermark_scope_current),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.padding(start = 4.dp)
+                                )
+                            }
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                RadioButton(
+                                    selected = applyToAll,
+                                    onClick = { onApplyToAllChange(true) }
+                                )
+                                Text(
+                                    text = stringResource(R.string.watermark_scope_all, imageCount),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.padding(start = 4.dp)
+                                )
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
                 // 水印文字输入
                 OutlinedTextField(
                     value = watermarkText,

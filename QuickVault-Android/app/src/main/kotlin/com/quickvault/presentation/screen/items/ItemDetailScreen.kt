@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,9 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Photo
 import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.filled.Share
+import android.content.ClipData
+import android.content.ClipboardManager
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -62,6 +66,7 @@ fun ItemDetailScreen(
     var selectedImageName by remember { mutableStateOf("") }
     var isLoadingImage by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
+    val context = androidx.compose.ui.platform.LocalContext.current
 
     Scaffold(
         topBar = {
@@ -83,6 +88,38 @@ fun ItemDetailScreen(
                             contentDescription = stringResource(R.string.items_pinned),
                             tint = if (isPinned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                    }
+                    // 分享按钮
+                    if (itemType == ItemType.TEXT || (itemType == ItemType.IMAGE && imageMetadata.isNotEmpty())) {
+                        IconButton(onClick = {
+                            if (itemType == ItemType.TEXT) {
+                                // 文本分享：复制到剪贴板并打开系统分享
+                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                val clip = ClipData.newPlainText("content", textContent)
+                                clipboard.setPrimaryClip(clip)
+                                
+                                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                    type = "text/plain"
+                                    putExtra(Intent.EXTRA_TEXT, textContent)
+                                }
+                                context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.common_share)))
+                            } else if (itemType == ItemType.IMAGE && imageMetadata.isNotEmpty()) {
+                                // 图片分享：打开第一张图片的查看器
+                                val firstImage = imageMetadata.first()
+                                isLoadingImage = true
+                                selectedImageName = firstImage.fileName
+                                coroutineScope.launch {
+                                    val fullData = viewModel.getImageFullData(firstImage.id)
+                                    selectedImageData = fullData
+                                    isLoadingImage = false
+                                }
+                            }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = stringResource(R.string.common_share)
+                            )
+                        }
                     }
                     // 编辑按钮
                     IconButton(onClick = {
@@ -238,7 +275,32 @@ fun ItemDetailScreen(
                                 fileMetadata.forEach { file ->
                                     FileInfoCard(
                                         fileName = file.fileName,
-                                        mimeType = file.mimeType
+                                        mimeType = file.mimeType,
+                                        onClick = {
+                                            // 预览文件：保存到缓存并调用系统预览
+                                            coroutineScope.launch {
+                                                try {
+                                                    val fileData = viewModel.getFileData(file.id)
+                                                    if (fileData != null) {
+                                                        val uri = saveFileToCache(context, fileData, file.fileName)
+                                                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                                                            setDataAndType(uri, file.mimeType)
+                                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                                        }
+                                                        try {
+                                                            context.startActivity(intent)
+                                                        } catch (e: android.content.ActivityNotFoundException) {
+                                                            android.widget.Toast.makeText(context, context.getString(R.string.error_no_app_preview), android.widget.Toast.LENGTH_SHORT).show()
+                                                        } catch (e: Exception) {
+                                                            android.widget.Toast.makeText(context, context.getString(R.string.error_preview_failed), android.widget.Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    }
+                                                } catch (e: Exception) {
+                                                    e.printStackTrace()
+                                                    android.widget.Toast.makeText(context, context.getString(R.string.error_preview_failed), android.widget.Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        }
                                     )
                                 }
                             }
@@ -304,33 +366,72 @@ fun ItemDetailScreen(
     // 图片查看器
     selectedImageData?.let { imageData ->
         val context = androidx.compose.ui.platform.LocalContext.current
-        ImageViewerDialog(
-            imageData = imageData,
-            fileName = selectedImageName,
-            watermarkService = androidx.hilt.navigation.compose.hiltViewModel<ItemEditorViewModel>().run {
-                // 使用依赖注入的 WatermarkService
-                // TODO: 需要在ViewModel中暴露watermarkService
-                com.quickvault.domain.service.impl.WatermarkServiceImpl(
-                    androidx.compose.ui.platform.LocalContext.current
-                )
-            },
-            onDismiss = { selectedImageData = null },
-            onShareImage = { bitmap ->
-                // 分享图片功能
-                try {
-                    val imageUri = saveBitmapToCache(context, bitmap, "shared_image.jpg")
-                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                        type = "image/jpeg"
-                        putExtra(Intent.EXTRA_STREAM, imageUri)
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            ImageViewerDialog(
+                imageData = imageData,
+                fileName = selectedImageName,
+                imageCount = imageMetadata.size,
+                watermarkService = androidx.hilt.navigation.compose.hiltViewModel<ItemEditorViewModel>().run {
+                    com.quickvault.domain.service.impl.WatermarkServiceImpl(
+                        androidx.compose.ui.platform.LocalContext.current
+                    )
+                },
+                onDismiss = { selectedImageData = null },
+                onShare = { bitmap, style, text, applyToAll ->
+                    val watermarkService = com.quickvault.domain.service.impl.WatermarkServiceImpl(context)
+                    
+                    coroutineScope.launch {
+                        try {
+                            val uris = ArrayList<Uri>()
+                            
+                            if (applyToAll && imageMetadata.size > 1) {
+                                // 批量处理所有图片
+                                // 显示加载中提示（实际应该用Toast或Dialog，此处简化）
+                                
+                                imageMetadata.forEach { meta ->
+                                    // 1. 获取原图
+                                    val fullData = viewModel.getImageFullData(meta.id)
+                                    if (fullData != null) {
+                                        val original = android.graphics.BitmapFactory.decodeByteArray(fullData, 0, fullData.size)
+                                        
+                                        // 2. 应用水印
+                                        val watermarked = watermarkService.applyWatermark(
+                                            bitmap = original,
+                                            text = text,
+                                            style = style
+                                        )
+                                        
+                                        // 3. 保存并记录URI
+                                        val uri = saveBitmapToCache(context, watermarked, "shared_${meta.fileName}")
+                                        uris.add(uri)
+                                    }
+                                }
+                            } else {
+                                // 仅分享当前图片
+                                val uri = saveBitmapToCache(context, bitmap, "shared_image.jpg")
+                                uris.add(uri)
+                            }
+                            
+                            if (uris.isNotEmpty()) {
+                                val shareIntent = Intent().apply {
+                                    if (uris.size > 1) {
+                                        action = Intent.ACTION_SEND_MULTIPLE
+                                        putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
+                                        type = "image/*"
+                                    } else {
+                                        action = Intent.ACTION_SEND
+                                        putExtra(Intent.EXTRA_STREAM, uris.first())
+                                        type = "image/jpeg"
+                                    }
+                                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                }
+                                context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.watermark_share)))
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
-                    context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.watermark_share)))
-                } catch (e: Exception) {
-                    e.printStackTrace()
                 }
-            }
-        )
-    }
+            )  }
 }
 
 @Composable
@@ -456,9 +557,9 @@ private fun ImageInfoCard(fileName: String, index: Int) {
 }
 
 @Composable
-private fun FileInfoCard(fileName: String, mimeType: String) {
+private fun FileInfoCard(fileName: String, mimeType: String, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
@@ -521,6 +622,23 @@ private fun saveBitmapToCache(context: Context, bitmap: Bitmap, fileName: String
     file.outputStream().use { outputStream ->
         bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)
     }
+    return androidx.core.content.FileProvider.getUriForFile(
+        context,
+        "${context.packageName}.fileprovider",
+        file
+    )
+}
+
+/**
+ * 将文件数据保存到缓存目录并返回FileProvider URI
+ */
+private fun saveFileToCache(context: Context, data: ByteArray, fileName: String): Uri {
+    val cacheDir = java.io.File(context.cacheDir, "shared_files")
+    if (!cacheDir.exists()) {
+        cacheDir.mkdirs()
+    }
+    val file = java.io.File(cacheDir, fileName)
+    file.writeBytes(data)
     return androidx.core.content.FileProvider.getUriForFile(
         context,
         "${context.packageName}.fileprovider",

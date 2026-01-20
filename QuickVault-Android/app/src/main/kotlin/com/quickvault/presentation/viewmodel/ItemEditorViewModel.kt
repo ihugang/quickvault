@@ -220,6 +220,10 @@ class ItemEditorViewModel @Inject constructor(
     suspend fun getImageFullData(imageId: String): ByteArray? {
         return itemService.getImageFullData(imageId).getOrNull()
     }
+
+    suspend fun getFileData(fileId: String): ByteArray? {
+        return itemService.getFileData(fileId).getOrNull()
+    }
 }
 
 data class ItemEditorUiState(

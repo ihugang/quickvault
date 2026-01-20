@@ -172,7 +172,7 @@ fun MainScreenWithNavigation() {
         NavHost(
             navController = navController,
             startDestination = Screen.Items.route,
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding())
         ) {
             // 项目列表
             composable(Screen.Items.route) {

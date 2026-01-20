@@ -2,4 +2,5 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 缓存目录，用于临时共享文件 -->
     <cache-path name="shared_images" path="shared/" />
+    <cache-path name="shared_files" path="shared_files/" />
 </paths>

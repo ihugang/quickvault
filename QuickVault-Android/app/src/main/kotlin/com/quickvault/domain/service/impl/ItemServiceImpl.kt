@@ -225,4 +225,10 @@ class ItemServiceImpl @Inject constructor(
             ?: return Result.failure(IllegalArgumentException("Image not found"))
         return Result.success(attachment.data)
     }
+
+    override suspend fun getFileData(fileId: String): Result<ByteArray> {
+        val attachment = itemRepository.getAttachmentById(fileId)
+            ?: return Result.failure(IllegalArgumentException("File not found"))
+        return Result.success(attachment.data)
+    }
 }
