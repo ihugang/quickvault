@@ -2,16 +2,16 @@ package com.quickvault.di
 
 import android.content.Context
 import com.quickvault.data.local.keystore.SecureKeyManager
-import com.quickvault.data.repository.CardRepository
+import com.quickvault.data.repository.ItemRepository
 import com.quickvault.domain.service.AuthService
 import com.quickvault.domain.service.BiometricService
-import com.quickvault.domain.service.CardService
 import com.quickvault.domain.service.CryptoService
+import com.quickvault.domain.service.ItemService
 import com.quickvault.domain.service.WatermarkService
 import com.quickvault.domain.service.impl.AuthServiceImpl
 import com.quickvault.domain.service.impl.BiometricServiceImpl
-import com.quickvault.domain.service.impl.CardServiceImpl
 import com.quickvault.domain.service.impl.CryptoServiceImpl
+import com.quickvault.domain.service.impl.ItemServiceImpl
 import com.quickvault.domain.service.impl.WatermarkServiceImpl
 import com.quickvault.domain.validation.ValidationService
 import dagger.Module
@@ -75,12 +75,11 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideCardService(
-        cardRepository: CardRepository,
-        validationService: ValidationService,
+    fun provideItemService(
+        itemRepository: ItemRepository,
         @ApplicationContext context: Context
-    ): CardService {
-        return CardServiceImpl(cardRepository, validationService, context)
+    ): ItemService {
+        return ItemServiceImpl(itemRepository, context)
     }
 
     @Provides

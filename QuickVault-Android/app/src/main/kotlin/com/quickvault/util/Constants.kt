@@ -7,7 +7,7 @@ package com.quickvault.util
 object Constants {
     // Database
     const val DATABASE_NAME = "quickvault.db"
-    const val DATABASE_VERSION = 1
+    const val DATABASE_VERSION = 2
 
     // Encryption
     const val PBKDF2_ITERATIONS = 100_000
@@ -36,12 +36,4 @@ object Constants {
     const val WATERMARK_DEFAULT_ANGLE = -45f
     const val WATERMARK_DEFAULT_FONT_SIZE = 80f
 
-    // Card Types
-    const val CARD_TYPE_ADDRESS = "Address"
-    const val CARD_TYPE_INVOICE = "Invoice"
-    const val CARD_TYPE_GENERAL = "GeneralText"
-
-    // Card Groups
-    const val GROUP_PERSONAL = "Personal"
-    const val GROUP_COMPANY = "Company"
 }

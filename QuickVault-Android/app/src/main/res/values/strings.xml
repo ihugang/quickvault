@@ -318,6 +318,7 @@
     <string name="items_detail_files">Files</string>
     <string name="items_detail_files_count">%d files</string>
     <string name="items_create_title">Create %s</string>
+    <string name="items_edit_title">Edit Item</string>
     <string name="items_create_selecttype">Select Type</string>
     <string name="items_create_button">Create</string>
     <string name="items_info_basic">Basic Info</string>
@@ -383,6 +384,7 @@
     <string name="items_created_success">Created successfully</string>
     <string name="items_updated_success">Updated successfully</string>
     <string name="items_deleted_success">Deleted successfully</string>
+    <string name="items_error_not_found">Item not found</string>
 
     <!-- ERROR -->
     <string name="error_generic">Something went wrong</string>

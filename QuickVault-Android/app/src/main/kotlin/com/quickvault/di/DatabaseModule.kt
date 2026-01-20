@@ -3,9 +3,8 @@ package com.quickvault.di
 import android.content.Context
 import androidx.room.Room
 import com.quickvault.data.local.database.QuickVaultDatabase
-import com.quickvault.data.local.database.dao.CardDao
-import com.quickvault.data.local.database.dao.CardFieldDao
 import com.quickvault.data.local.database.dao.AttachmentDao
+import com.quickvault.data.local.database.dao.ItemDao
 import com.quickvault.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -38,14 +37,8 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideCardDao(database: QuickVaultDatabase): CardDao {
-        return database.cardDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideCardFieldDao(database: QuickVaultDatabase): CardFieldDao {
-        return database.cardFieldDao()
+    fun provideItemDao(database: QuickVaultDatabase): ItemDao {
+        return database.itemDao()
     }
 
     @Provides

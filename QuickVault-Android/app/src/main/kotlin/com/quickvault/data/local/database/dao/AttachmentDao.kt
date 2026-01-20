@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.Flow
 interface AttachmentDao {
 
     /**
-     * 获取卡片的所有附件
-     * 对应 iOS 的 fetchAttachments(for cardId:)
+     * 获取项目的所有附件
+     * 对应 iOS 的 fetchAttachments(for itemId:)
      */
-    @Query("SELECT * FROM attachments WHERE card_id = :cardId ORDER BY created_at DESC")
-    fun getAttachmentsByCardId(cardId: String): Flow<List<AttachmentEntity>>
+    @Query("SELECT * FROM attachments WHERE item_id = :itemId ORDER BY display_order ASC")
+    fun getAttachmentsByItemId(itemId: String): Flow<List<AttachmentEntity>>
 
     /**
      * 根据 ID 获取附件
@@ -37,21 +37,21 @@ interface AttachmentDao {
     suspend fun deleteAttachment(attachmentId: String)
 
     /**
-     * 删除卡片的所有附件
+     * 删除项目的所有附件
      * （通常由 ForeignKey CASCADE 自动处理，此方法用于手动清理）
      */
-    @Query("DELETE FROM attachments WHERE card_id = :cardId")
-    suspend fun deleteAttachmentsByCardId(cardId: String)
+    @Query("DELETE FROM attachments WHERE item_id = :itemId")
+    suspend fun deleteAttachmentsByItemId(itemId: String)
 
     /**
      * 获取附件数量
      */
-    @Query("SELECT COUNT(*) FROM attachments WHERE card_id = :cardId")
-    suspend fun getAttachmentCount(cardId: String): Int
+    @Query("SELECT COUNT(*) FROM attachments WHERE item_id = :itemId")
+    suspend fun getAttachmentCount(itemId: String): Int
 
     /**
-     * 获取卡片所有附件的总大小
+     * 获取项目所有附件的总大小
      */
-    @Query("SELECT SUM(file_size) FROM attachments WHERE card_id = :cardId")
-    suspend fun getTotalAttachmentSize(cardId: String): Long?
+    @Query("SELECT SUM(file_size) FROM attachments WHERE item_id = :itemId")
+    suspend fun getTotalAttachmentSize(itemId: String): Long?
 }

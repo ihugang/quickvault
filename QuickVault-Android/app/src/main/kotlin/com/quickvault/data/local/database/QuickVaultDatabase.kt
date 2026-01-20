@@ -2,12 +2,11 @@ package com.quickvault.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.quickvault.data.local.database.dao.CardDao
-import com.quickvault.data.local.database.dao.CardFieldDao
 import com.quickvault.data.local.database.dao.AttachmentDao
-import com.quickvault.data.local.database.entity.CardEntity
-import com.quickvault.data.local.database.entity.CardFieldEntity
+import com.quickvault.data.local.database.dao.ItemDao
 import com.quickvault.data.local.database.entity.AttachmentEntity
+import com.quickvault.data.local.database.entity.ItemEntity
+import com.quickvault.data.local.database.entity.TextContentEntity
 
 /**
  * QuickVault 数据库
@@ -15,16 +14,15 @@ import com.quickvault.data.local.database.entity.AttachmentEntity
  */
 @Database(
     entities = [
-        CardEntity::class,
-        CardFieldEntity::class,
+        ItemEntity::class,
+        TextContentEntity::class,
         AttachmentEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class QuickVaultDatabase : RoomDatabase() {
 
-    abstract fun cardDao(): CardDao
-    abstract fun cardFieldDao(): CardFieldDao
+    abstract fun itemDao(): ItemDao
     abstract fun attachmentDao(): AttachmentDao
 }

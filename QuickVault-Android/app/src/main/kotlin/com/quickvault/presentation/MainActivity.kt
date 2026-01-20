@@ -22,8 +22,9 @@ import com.quickvault.presentation.navigation.Routes
 import com.quickvault.presentation.navigation.Screen
 import com.quickvault.presentation.screen.auth.SetupScreen
 import com.quickvault.presentation.screen.auth.UnlockScreen
-import com.quickvault.presentation.screen.cards.CardEditorScreen
-import com.quickvault.presentation.screen.cards.CardsScreen
+import com.quickvault.data.model.ItemType
+import com.quickvault.presentation.screen.items.ItemEditorScreen
+import com.quickvault.presentation.screen.items.ItemsScreen
 import com.quickvault.presentation.screen.search.SearchScreen
 import com.quickvault.presentation.screen.settings.SettingsScreen
 import com.quickvault.presentation.screen.splash.SplashScreen
@@ -116,7 +117,7 @@ fun QuickVaultApp() {
                 )
             }
 
-            // 主界面（带底部导航和卡片功能）
+            // 主界面（带底部导航和项目功能）
             composable(Routes.MAIN) {
                 MainScreenWithNavigation()
             }
@@ -135,7 +136,7 @@ fun MainScreenWithNavigation() {
     val currentDestination = navBackStackEntry?.destination
 
     val screens = listOf(
-        Screen.Cards,
+        Screen.Items,
         Screen.Search,
         Screen.Settings
     )
@@ -169,19 +170,17 @@ fun MainScreenWithNavigation() {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Cards.route,
+            startDestination = Screen.Items.route,
             modifier = Modifier.padding(paddingValues)
         ) {
-            // 卡片列表
-            composable(Screen.Cards.route) {
-                CardsScreen(
-                    onNavigateToCardEditor = { cardId ->
-                        val route = if (cardId != null) {
-                            "card_editor/$cardId"
-                        } else {
-                            "card_editor"
-                        }
-                        navController.navigate(route)
+            // 项目列表
+            composable(Screen.Items.route) {
+                ItemsScreen(
+                    onCreateItem = { type ->
+                        navController.navigate("item_editor?itemType=${type.name}")
+                    },
+                    onEditItem = { itemId ->
+                        navController.navigate("item_editor/$itemId")
                     }
                 )
             }
@@ -189,8 +188,8 @@ fun MainScreenWithNavigation() {
             // 搜索
             composable(Screen.Search.route) {
                 SearchScreen(
-                    onNavigateToCardEditor = { cardId ->
-                        navController.navigate("card_editor/$cardId")
+                    onNavigateToItemEditor = { itemId ->
+                        navController.navigate("item_editor/$itemId")
                     }
                 )
             }
@@ -206,23 +205,31 @@ fun MainScreenWithNavigation() {
                 )
             }
 
-            // 卡片编辑器 - 新建（无参数）
-            composable("card_editor") {
-                CardEditorScreen(
+            // 项目编辑器 - 新建（带可选类型）
+            composable(
+                route = "item_editor?itemType={itemType}",
+                arguments = listOf(
+                    navArgument("itemType") {
+                        type = NavType.StringType
+                        defaultValue = ItemType.TEXT.name
+                    }
+                )
+            ) {
+                ItemEditorScreen(
                     onNavigateBack = { navController.popBackStack() }
                 )
             }
 
-            // 卡片编辑器 - 编辑（带 cardId）
+            // 项目编辑器 - 编辑（带 itemId）
             composable(
-                route = "card_editor/{cardId}",
+                route = "item_editor/{itemId}",
                 arguments = listOf(
-                    navArgument("cardId") {
+                    navArgument("itemId") {
                         type = NavType.StringType
                     }
                 )
             ) {
-                CardEditorScreen(
+                ItemEditorScreen(
                     onNavigateBack = { navController.popBackStack() }
                 )
             }

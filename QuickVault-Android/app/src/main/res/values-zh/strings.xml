@@ -329,6 +329,7 @@
     <string name="items_detail_files">文件</string>
     <string name="items_detail_files_count">%d 个文件</string>
     <string name="items_create_title">创建%s</string>
+    <string name="items_edit_title">编辑卡片</string>
     <string name="items_create_selecttype">选择类型</string>
     <string name="items_create_button">创建</string>
     <string name="items_info_basic">基本信息</string>
@@ -370,6 +371,7 @@
     <string name="items_created_success">创建成功</string>
     <string name="items_updated_success">更新成功</string>
     <string name="items_deleted_success">删除成功</string>
+    <string name="items_error_not_found">未找到该卡片</string>
 
     <!-- WATERMARK -->
     <string name="watermark_settings">水印设置</string>

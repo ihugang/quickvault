@@ -18,8 +18,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.quickvault.R
-import com.quickvault.data.model.CardDTO
-import com.quickvault.presentation.viewmodel.CardsViewModel
+import com.quickvault.data.model.ItemDTO
+import com.quickvault.data.model.ItemType
+import com.quickvault.presentation.viewmodel.ItemsViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,11 +37,11 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    onNavigateToCardEditor: (String) -> Unit,
-    viewModel: CardsViewModel = hiltViewModel()
+    onNavigateToItemEditor: (String) -> Unit,
+    viewModel: ItemsViewModel = hiltViewModel()
 ) {
     val searchQuery by viewModel.searchQuery.collectAsState()
-    val cards by viewModel.cards.collectAsState()
+    val items by viewModel.items.collectAsState()
 
     val focusRequester = remember { FocusRequester() }
 
@@ -69,13 +70,13 @@ fun SearchScreen(
                 SearchEmptyState()
             } else {
                 // 搜索结果
-                if (cards.isEmpty()) {
+                if (items.isEmpty()) {
                     SearchNoResults(query = searchQuery)
                 } else {
                     SearchResults(
-                        cards = cards,
+                        items = items,
                         query = searchQuery,
-                        onCardClick = { card -> onNavigateToCardEditor(card.id) }
+                        onItemClick = { item -> onNavigateToItemEditor(item.id) }
                     )
                 }
             }
@@ -218,14 +219,14 @@ fun SearchNoResults(query: String) {
  */
 @Composable
 fun SearchResults(
-    cards: List<CardDTO>,
+    items: List<ItemDTO>,
     query: String,
-    onCardClick: (CardDTO) -> Unit
+    onItemClick: (ItemDTO) -> Unit
 ) {
     Column {
         // 结果统计
         Text(
-            text = stringResource(R.string.search_results_count, cards.size),
+            text = stringResource(R.string.search_results_count, items.size),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -237,11 +238,11 @@ fun SearchResults(
         LazyColumn(
             contentPadding = PaddingValues(vertical = 8.dp)
         ) {
-            items(cards, key = { it.id }) { card ->
+            items(items, key = { it.id }) { item ->
                 SearchResultItem(
-                    card = card,
+                    item = item,
                     query = query,
-                    onClick = { onCardClick(card) }
+                    onClick = { onItemClick(item) }
                 )
             }
         }
@@ -254,7 +255,7 @@ fun SearchResults(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchResultItem(
-    card: CardDTO,
+    item: ItemDTO,
     query: String,
     onClick: () -> Unit
 ) {
@@ -264,7 +265,7 @@ fun SearchResultItem(
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = if (card.isPinned) {
+            containerColor = if (item.isPinned) {
                 MaterialTheme.colorScheme.primaryContainer
             } else {
                 MaterialTheme.colorScheme.surface
@@ -279,12 +280,12 @@ fun SearchResultItem(
         ) {
             // 卡片图标
             Icon(
-                imageVector = when (card.cardType) {
-                    "address" -> Icons.Default.LocationOn
-                    "invoice" -> Icons.Default.Receipt
-                    else -> Icons.Default.TextFields
+                imageVector = when (item.type) {
+                    ItemType.TEXT -> Icons.Default.TextFields
+                    ItemType.IMAGE -> Icons.Default.Photo
+                    ItemType.FILE -> Icons.Default.AttachFile
                 },
-                contentDescription = card.cardType,
+                contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(32.dp)
             )
@@ -297,7 +298,7 @@ fun SearchResultItem(
             ) {
                 // 标题（高亮匹配文字）
                 Text(
-                    text = card.title,
+                    text = item.title,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -306,12 +307,14 @@ fun SearchResultItem(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 // 匹配的字段（显示第一个匹配的字段）
-                val matchedField = card.fields.find {
-                    it.value.contains(query, ignoreCase = true)
+                val previewText = when (item.type) {
+                    ItemType.TEXT -> item.textContent?.take(80).orEmpty()
+                    ItemType.IMAGE -> stringResource(R.string.items_detail_images_count, item.images?.size ?: 0)
+                    ItemType.FILE -> stringResource(R.string.items_detail_files_count, item.files?.size ?: 0)
                 }
-                if (matchedField != null) {
+                if (previewText.isNotBlank()) {
                     Text(
-                        text = "${matchedField.label}: ${matchedField.value}",
+                        text = previewText,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -323,13 +326,13 @@ fun SearchResultItem(
 
                 // 分组和时间
                 Text(
-                    text = "${card.group} • ${formatDate(card.updatedAt)}",
+                    text = formatDate(item.updatedAt),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 // 标签（如果匹配）
-                val matchedTags = card.tags.filter {
+                val matchedTags = item.tags.filter {
                     it.contains(query, ignoreCase = true)
                 }
                 if (matchedTags.isNotEmpty()) {
@@ -346,10 +349,10 @@ fun SearchResultItem(
             }
 
             // 置顶图标
-            if (card.isPinned) {
+            if (item.isPinned) {
                 Icon(
                     imageVector = Icons.Default.PushPin,
-                    contentDescription = stringResource(R.string.cards_pinned),
+                    contentDescription = stringResource(R.string.items_pinned),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )

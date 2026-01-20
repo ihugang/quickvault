@@ -1,7 +1,7 @@
 package com.quickvault.presentation.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CreditCard
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -17,8 +17,8 @@ object Routes {
     const val SETUP = "setup"
     const val UNLOCK = "unlock"
     const val MAIN = "main"
-    const val CARD_DETAIL = "card_detail/{cardId}"
-    const val CARD_EDITOR = "card_editor?cardId={cardId}"
+    const val ITEM_DETAIL = "item_detail/{itemId}"
+    const val ITEM_EDITOR = "item_editor?itemType={itemType}"
 }
 
 /**
@@ -30,10 +30,10 @@ sealed class Screen(
     @StringRes val labelRes: Int,
     val icon: ImageVector
 ) {
-    object Cards : Screen(
-        route = "cards",
-        labelRes = R.string.nav_cards,
-        icon = Icons.Default.CreditCard
+    object Items : Screen(
+        route = "items",
+        labelRes = R.string.items_tab,
+        icon = Icons.Default.Description
     )
 
     object Search : Screen(

@@ -38,3 +38,13 @@ dsa_priv.pem
 # Sensitive data
 *.keychain
 *.p12
+
+# Android / Gradle
+.gradle/
+build/
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+local.properties

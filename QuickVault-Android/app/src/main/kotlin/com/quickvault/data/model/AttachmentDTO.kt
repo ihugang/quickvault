@@ -8,10 +8,11 @@ package com.quickvault.data.model
  */
 data class AttachmentDTO(
     val id: String,
-    val cardId: String,
+    val itemId: String,
     val fileName: String,
     val fileType: String,
     val fileSize: Long,
+    val displayOrder: Int,
     val data: ByteArray, // 解密后的文件数据
     val thumbnail: ByteArray? = null, // 解密后的缩略图数据
     val createdAt: Long
@@ -50,10 +51,11 @@ data class AttachmentDTO(
         other as AttachmentDTO
 
         if (id != other.id) return false
-        if (cardId != other.cardId) return false
+        if (itemId != other.itemId) return false
         if (fileName != other.fileName) return false
         if (fileType != other.fileType) return false
         if (fileSize != other.fileSize) return false
+        if (displayOrder != other.displayOrder) return false
         if (!data.contentEquals(other.data)) return false
         if (thumbnail != null) {
             if (other.thumbnail == null) return false
@@ -66,10 +68,11 @@ data class AttachmentDTO(
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        result = 31 * result + cardId.hashCode()
+        result = 31 * result + itemId.hashCode()
         result = 31 * result + fileName.hashCode()
         result = 31 * result + fileType.hashCode()
         result = 31 * result + fileSize.hashCode()
+        result = 31 * result + displayOrder
         result = 31 * result + data.contentHashCode()
         result = 31 * result + (thumbnail?.contentHashCode() ?: 0)
         result = 31 * result + createdAt.hashCode()

@@ -8,7 +8,7 @@ import androidx.room.*
  *
  * 字段说明：
  * - id: 附件唯一标识
- * - cardId: 所属卡片 ID（外键）
+ * - itemId: 所属项目 ID（外键）
  * - fileName: 原始文件名
  * - fileType: 文件 MIME 类型（image/jpeg, application/pdf 等）
  * - fileSize: 文件大小（字节）
@@ -20,21 +20,21 @@ import androidx.room.*
     tableName = "attachments",
     foreignKeys = [
         ForeignKey(
-            entity = CardEntity::class,
+            entity = ItemEntity::class,
             parentColumns = ["id"],
-            childColumns = ["card_id"],
-            onDelete = ForeignKey.CASCADE // 卡片删除时级联删除附件
+            childColumns = ["item_id"],
+            onDelete = ForeignKey.CASCADE // 项目删除时级联删除附件
         )
     ],
-    indices = [Index(value = ["card_id"])]
+    indices = [Index(value = ["item_id"])]
 )
 data class AttachmentEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: String,
 
-    @ColumnInfo(name = "card_id")
-    val cardId: String,
+    @ColumnInfo(name = "item_id")
+    val itemId: String,
 
     @ColumnInfo(name = "file_name")
     val fileName: String,
@@ -44,6 +44,9 @@ data class AttachmentEntity(
 
     @ColumnInfo(name = "file_size")
     val fileSize: Long,
+
+    @ColumnInfo(name = "display_order")
+    val displayOrder: Int,
 
     @ColumnInfo(name = "encrypted_data", typeAffinity = ColumnInfo.BLOB)
     val encryptedData: ByteArray,
@@ -61,10 +64,11 @@ data class AttachmentEntity(
         other as AttachmentEntity
 
         if (id != other.id) return false
-        if (cardId != other.cardId) return false
+        if (itemId != other.itemId) return false
         if (fileName != other.fileName) return false
         if (fileType != other.fileType) return false
         if (fileSize != other.fileSize) return false
+        if (displayOrder != other.displayOrder) return false
         if (!encryptedData.contentEquals(other.encryptedData)) return false
         if (thumbnailData != null) {
             if (other.thumbnailData == null) return false
@@ -77,10 +81,11 @@ data class AttachmentEntity(
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        result = 31 * result + cardId.hashCode()
+        result = 31 * result + itemId.hashCode()
         result = 31 * result + fileName.hashCode()
         result = 31 * result + fileType.hashCode()
         result = 31 * result + fileSize.hashCode()
+        result = 31 * result + displayOrder
         result = 31 * result + encryptedData.contentHashCode()
         result = 31 * result + (thumbnailData?.contentHashCode() ?: 0)
         result = 31 * result + createdAt.hashCode()

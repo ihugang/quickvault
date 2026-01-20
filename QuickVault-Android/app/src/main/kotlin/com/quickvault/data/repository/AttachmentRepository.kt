@@ -34,11 +34,11 @@ class AttachmentRepository @Inject constructor(
     }
 
     /**
-     * 获取卡片的所有附件（解密后）
-     * 对应 iOS 的 fetchAttachments(for cardId:)
+     * 获取项目的所有附件（解密后）
+     * 对应 iOS 的 fetchAttachments(for itemId:)
      */
-    fun getAttachmentsByCardId(cardId: String): Flow<List<AttachmentDTO>> {
-        return attachmentDao.getAttachmentsByCardId(cardId)
+    fun getAttachmentsByItemId(itemId: String): Flow<List<AttachmentDTO>> {
+        return attachmentDao.getAttachmentsByItemId(itemId)
             .map { entities ->
                 entities.map { it.toDTO() }
             }
@@ -55,18 +55,19 @@ class AttachmentRepository @Inject constructor(
      * 添加附件
      * 对应 iOS 的 addAttachment(to cardId:, data:, fileName:, fileType:)
      *
-     * @param cardId 卡片 ID
+     * @param itemId 项目 ID
      * @param data 文件原始数据
      * @param fileName 文件名
      * @param fileType MIME 类型
      * @param addWatermark 是否添加水印（仅图片）
      */
     suspend fun addAttachment(
-        cardId: String,
+        itemId: String,
         data: ByteArray,
         fileName: String,
         fileType: String,
-        addWatermark: Boolean = true
+        addWatermark: Boolean = true,
+        displayOrder: Int = 0
     ): AttachmentDTO {
         val now = System.currentTimeMillis()
 
@@ -91,10 +92,11 @@ class AttachmentRepository @Inject constructor(
         // 4. 创建实体并保存
         val entity = AttachmentEntity(
             id = UUID.randomUUID().toString(),
-            cardId = cardId,
+            itemId = itemId,
             fileName = fileName,
             fileType = fileType,
             fileSize = data.size.toLong(),
+            displayOrder = displayOrder,
             encryptedData = encryptedData,
             thumbnailData = encryptedThumbnail,
             createdAt = now
@@ -105,10 +107,11 @@ class AttachmentRepository @Inject constructor(
         // 5. 返回 DTO
         return AttachmentDTO(
             id = entity.id,
-            cardId = cardId,
+            itemId = itemId,
             fileName = fileName,
             fileType = fileType,
             fileSize = data.size.toLong(),
+            displayOrder = displayOrder,
             data = processedData,
             thumbnail = encryptedThumbnail?.let { cryptoService.decryptFile(it) },
             createdAt = now
@@ -124,24 +127,24 @@ class AttachmentRepository @Inject constructor(
     }
 
     /**
-     * 删除卡片的所有附件
+     * 删除项目的所有附件
      */
-    suspend fun deleteAttachmentsByCardId(cardId: String) {
-        attachmentDao.deleteAttachmentsByCardId(cardId)
+    suspend fun deleteAttachmentsByItemId(itemId: String) {
+        attachmentDao.deleteAttachmentsByItemId(itemId)
     }
 
     /**
      * 获取附件数量
      */
-    suspend fun getAttachmentCount(cardId: String): Int {
-        return attachmentDao.getAttachmentCount(cardId)
+    suspend fun getAttachmentCount(itemId: String): Int {
+        return attachmentDao.getAttachmentCount(itemId)
     }
 
     /**
      * 获取附件总大小
      */
-    suspend fun getTotalAttachmentSize(cardId: String): Long {
-        return attachmentDao.getTotalAttachmentSize(cardId) ?: 0L
+    suspend fun getTotalAttachmentSize(itemId: String): Long {
+        return attachmentDao.getTotalAttachmentSize(itemId) ?: 0L
     }
 
     /**
@@ -158,10 +161,11 @@ class AttachmentRepository @Inject constructor(
 
         return AttachmentDTO(
             id = id,
-            cardId = cardId,
+            itemId = itemId,
             fileName = fileName,
             fileType = fileType,
             fileSize = fileSize,
+            displayOrder = displayOrder,
             data = decryptedData,
             thumbnail = decryptedThumbnail,
             createdAt = createdAt
