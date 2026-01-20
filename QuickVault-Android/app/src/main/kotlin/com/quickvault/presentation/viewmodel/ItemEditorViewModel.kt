@@ -86,6 +86,14 @@ class ItemEditorViewModel @Inject constructor(
                 }
         }
     }
+    
+    /**
+     * 重新加载项目数据
+     * 用于从编辑画面返回后刷新详细画面
+     */
+    fun refresh() {
+        itemId?.let { loadItem(it) }
+    }
 
     private fun applyItem(item: ItemDTO) {
         _title.value = item.title
