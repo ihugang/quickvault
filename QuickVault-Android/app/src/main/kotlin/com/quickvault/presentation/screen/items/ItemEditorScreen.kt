@@ -1,6 +1,5 @@
 package com.quickvault.presentation.screen.items
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -10,7 +9,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,7 +57,6 @@ fun ItemEditorScreen(
     val context = LocalContext.current
 
     var tagInput by remember { mutableStateOf("") }
-    var showTypeDialog by remember { mutableStateOf(false) }
 
     val imagePicker = rememberLauncherForActivityResult(
         ActivityResultContracts.GetMultipleContents()
@@ -136,14 +132,6 @@ fun ItemEditorScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {
-                if (!uiState.isEditMode) {
-                    TextButton(onClick = { showTypeDialog = true }) {
-                        Text(stringResource(R.string.items_create_selecttype))
-                    }
-                }
-            }
-
             item {
                 OutlinedTextField(
                     value = title,
@@ -230,35 +218,6 @@ fun ItemEditorScreen(
                 }
             }
         }
-    }
-
-    if (showTypeDialog && !uiState.isEditMode) {
-        AlertDialog(
-            onDismissRequest = { showTypeDialog = false },
-            title = { Text(stringResource(R.string.items_create_selecttype)) },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TextButton(onClick = {
-                        viewModel.setItemType(ItemType.TEXT)
-                        showTypeDialog = false
-                    }) { Text(stringResource(R.string.items_type_text)) }
-                    TextButton(onClick = {
-                        viewModel.setItemType(ItemType.IMAGE)
-                        showTypeDialog = false
-                    }) { Text(stringResource(R.string.items_type_image)) }
-                    TextButton(onClick = {
-                        viewModel.setItemType(ItemType.FILE)
-                        showTypeDialog = false
-                    }) { Text(stringResource(R.string.items_type_file)) }
-                }
-            },
-            confirmButton = {},
-            dismissButton = {
-                TextButton(onClick = { showTypeDialog = false }) {
-                    Text(stringResource(R.string.common_cancel))
-                }
-            }
-        )
     }
 }
 
