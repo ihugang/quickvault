@@ -171,6 +171,10 @@ class ItemEditorViewModel @Inject constructor(
         }
     }
 
+    fun setLoading(loading: Boolean) {
+        _uiState.update { it.copy(isLoading = loading) }
+    }
+
     fun save(onSuccess: () -> Unit) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }

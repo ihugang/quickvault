@@ -69,6 +69,8 @@ fun ItemDetailScreen(
     var selectedImageData by remember { mutableStateOf<ByteArray?>(null) }
     var selectedImageName by remember { mutableStateOf("") }
     var isLoadingImage by remember { mutableStateOf(false) }
+    var selectedFiles by remember { mutableStateOf(setOf<String>()) }
+    var showShareDialog by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val context = androidx.compose.ui.platform.LocalContext.current
     
@@ -288,12 +290,52 @@ fun ItemDetailScreen(
                 // 文件
                 if (fileMetadata.isNotEmpty()) {
                     item {
-                        DetailSection(title = stringResource(R.string.items_files_count, fileMetadata.size)) {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.items_files_count, fileMetadata.size),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                if (selectedFiles.isNotEmpty()) {
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        TextButton(onClick = {
+                                            selectedFiles = emptySet()
+                                        }) {
+                                            Text(stringResource(R.string.common_cancel))
+                                        }
+                                        FilledTonalButton(onClick = {
+                                            showShareDialog = true
+                                        }) {
+                                            Icon(
+                                                imageVector = Icons.Default.Share,
+                                                contentDescription = null,
+                                                modifier = Modifier.size(18.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text(stringResource(R.string.items_detail_share_files))
+                                        }
+                                    }
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 fileMetadata.forEach { file ->
                                     FileInfoCard(
                                         fileName = file.fileName,
                                         mimeType = file.mimeType,
+                                        isSelected = selectedFiles.contains(file.id),
+                                        onSelectionChange = { isSelected ->
+                                            selectedFiles = if (isSelected) {
+                                                selectedFiles + file.id
+                                            } else {
+                                                selectedFiles - file.id
+                                            }
+                                        },
                                         onClick = {
                                             // 预览文件：保存到缓存并调用系统预览
                                             coroutineScope.launch {
@@ -365,6 +407,78 @@ fun ItemDetailScreen(
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
+                    Text(stringResource(R.string.common_cancel))
+                }
+            }
+        )
+    }
+
+    // 文件分享对话框
+    if (showShareDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showShareDialog = false
+            },
+            title = { Text(stringResource(R.string.items_detail_share_files)) },
+            text = {
+                Text(stringResource(R.string.items_detail_share_files_confirm, selectedFiles.size, selectedFiles.size))
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            try {
+                                val uris = ArrayList<Uri>()
+                                selectedFiles.forEach { fileId ->
+                                    val file = fileMetadata.find { it.id == fileId }
+                                    if (file != null) {
+                                        val fileData = viewModel.getFileData(fileId)
+                                        if (fileData != null) {
+                                            val uri = saveFileToCache(context, fileData, file.fileName)
+                                            uris.add(uri)
+                                        }
+                                    }
+                                }
+                                
+                                if (uris.isNotEmpty()) {
+                                    val shareIntent = Intent().apply {
+                                        if (uris.size > 1) {
+                                            action = Intent.ACTION_SEND_MULTIPLE
+                                            putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
+                                            type = "*/*"
+                                        } else {
+                                            action = Intent.ACTION_SEND
+                                            putExtra(Intent.EXTRA_STREAM, uris.first())
+                                            val file = fileMetadata.find { it.id == selectedFiles.first() }
+                                            type = file?.mimeType ?: "*/*"
+                                        }
+                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                    }
+                                    context.startActivity(
+                                        Intent.createChooser(
+                                            shareIntent,
+                                            context.getString(R.string.items_detail_share_files)
+                                        )
+                                    )
+                                    selectedFiles = emptySet()
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                android.widget.Toast.makeText(
+                                    context,
+                                    context.getString(R.string.error_share_failed),
+                                    android.widget.Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                        showShareDialog = false
+                    }
+                ) {
+                    Text(stringResource(R.string.common_share))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showShareDialog = false }) {
                     Text(stringResource(R.string.common_cancel))
                 }
             }
@@ -575,11 +689,21 @@ private fun ImageInfoCard(fileName: String, index: Int) {
 }
 
 @Composable
-private fun FileInfoCard(fileName: String, mimeType: String, onClick: () -> Unit) {
+private fun FileInfoCard(
+    fileName: String,
+    mimeType: String,
+    isSelected: Boolean = false,
+    onSelectionChange: (Boolean) -> Unit = {},
+    onClick: () -> Unit
+) {
     Card(
-        modifier = Modifier.fillMaxWidth().clickable { onClick() },
+        modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = if (isSelected) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            }
         )
     ) {
         Row(
@@ -588,6 +712,11 @@ private fun FileInfoCard(fileName: String, mimeType: String, onClick: () -> Unit
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Checkbox(
+                checked = isSelected,
+                onCheckedChange = onSelectionChange
+            )
+            Spacer(modifier = Modifier.width(12.dp))
             Icon(
                 imageVector = Icons.Default.Folder,
                 contentDescription = null,
@@ -595,7 +724,11 @@ private fun FileInfoCard(fileName: String, mimeType: String, onClick: () -> Unit
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { onClick() }
+            ) {
                 Text(
                     text = fileName,
                     style = MaterialTheme.typography.bodyMedium,

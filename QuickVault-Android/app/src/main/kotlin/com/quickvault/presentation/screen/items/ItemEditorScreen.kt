@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.quickvault.R
@@ -78,26 +79,44 @@ fun ItemEditorScreen(
     val imagePicker = rememberLauncherForActivityResult(
         ActivityResultContracts.GetMultipleContents()
     ) { uris ->
-        val newImages = uris.mapNotNull { uri ->
-            readBytesFromUri(context, uri)?.let { bytes ->
-                ImageData(bytes, getFileName(context, uri))
+        if (uris.isNotEmpty()) {
+            viewModel.setLoading(true)
+            coroutineScope.launch {
+                try {
+                    val newImages = uris.mapNotNull { uri ->
+                        readBytesFromUri(context, uri)?.let { bytes ->
+                            ImageData(bytes, getFileName(context, uri))
+                        }
+                    }
+                    if (newImages.isNotEmpty()) {
+                        viewModel.addImages(newImages)
+                    }
+                } finally {
+                    viewModel.setLoading(false)
+                }
             }
-        }
-        if (newImages.isNotEmpty()) {
-            viewModel.addImages(newImages)
         }
     }
 
     val filePicker = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenMultipleDocuments()
     ) { uris ->
-        val newFiles = uris.mapNotNull { uri ->
-            readBytesFromUri(context, uri)?.let { bytes ->
-                FileData(bytes, getFileName(context, uri), getMimeType(context, uri))
+        if (uris.isNotEmpty()) {
+            viewModel.setLoading(true)
+            coroutineScope.launch {
+                try {
+                    val newFiles = uris.mapNotNull { uri ->
+                        readBytesFromUri(context, uri)?.let { bytes ->
+                            FileData(bytes, getFileName(context, uri), getMimeType(context, uri))
+                        }
+                    }
+                    if (newFiles.isNotEmpty()) {
+                        viewModel.addFiles(newFiles)
+                    }
+                } finally {
+                    viewModel.setLoading(false)
+                }
             }
-        }
-        if (newFiles.isNotEmpty()) {
-            viewModel.addFiles(newFiles)
         }
     }
 
@@ -390,15 +409,33 @@ fun ItemEditorScreen(
             }
         )
     }
+    
+    // 全屏加载指示器
+    if (uiState.isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    }
 }
 
 @Composable
 private fun AttachmentRow(name: String, onRemove: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = name, maxLines = 1)
+        Text(
+            text = name,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f)
+        )
         IconButton(onClick = onRemove) {
             Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(R.string.common_delete))
         }
