@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -38,8 +39,6 @@ import com.quickvault.util.LanguageManager
 import com.quickvault.util.ThemeManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 
 /**
  * 主 Activity
@@ -59,10 +58,13 @@ class MainActivity : FragmentActivity() {
         super.attachBaseContext(LanguageManager.wrap(newBase))
     }
 
-    private val _currentTheme = mutableStateOf(themeManager.getThemeMode())
+    private lateinit var _currentTheme: androidx.compose.runtime.MutableState<com.quickvault.util.ThemeMode>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 初始化主题状态
+        _currentTheme = mutableStateOf(themeManager.getThemeMode())
 
         // 注册生命周期观察者（自动锁定）
         lifecycle.addObserver(appLifecycleObserver)
