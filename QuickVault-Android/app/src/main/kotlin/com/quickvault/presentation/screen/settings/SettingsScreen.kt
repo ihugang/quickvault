@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.quickvault.R
+import com.quickvault.presentation.MainActivity
 import com.quickvault.presentation.viewmodel.SettingsViewModel
 import com.quickvault.util.LanguageManager
 import com.quickvault.util.extensions.findActivity
@@ -41,10 +42,12 @@ fun SettingsScreen(
     val isBiometricEnabled by viewModel.isBiometricEnabled.collectAsState()
     val isBiometricAvailable by viewModel.isBiometricAvailable.collectAsState()
     val currentLanguage by viewModel.currentLanguage.collectAsState()
+    val currentTheme by viewModel.currentTheme.collectAsState()
 
     var showChangePasswordDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }
+    var showThemeDialog by remember { mutableStateOf(false) }
 
     // 显示成功消息
     LaunchedEffect(uiState.successMessage) {
@@ -128,6 +131,22 @@ fun SettingsScreen(
                 )
             }
 
+            // 主题设置
+            item {
+                SettingsClickableItem(
+                    title = stringResource(R.string.settings_theme),
+                    subtitle = stringResource(
+                        when (currentTheme) {
+                            com.quickvault.util.ThemeMode.SYSTEM -> R.string.settings_theme_system
+                            com.quickvault.util.ThemeMode.LIGHT -> R.string.settings_theme_light
+                            com.quickvault.util.ThemeMode.DARK -> R.string.settings_theme_dark
+                        }
+                    ),
+                    icon = Icons.Default.Palette,
+                    onClick = { showThemeDialog = true }
+                )
+            }
+
             // 关于
             item {
                 SettingsClickableItem(
@@ -201,6 +220,20 @@ fun SettingsScreen(
                 (context as? Activity)?.let {
                     LanguageManager.restartActivity(it)
                 }
+            }
+        )
+    }
+
+    // 主题选择对话框
+    if (showThemeDialog) {
+        ThemeDialog(
+            currentTheme = currentTheme,
+            onDismiss = { showThemeDialog = false },
+            onSelectTheme = { theme ->
+                viewModel.setTheme(theme)
+                // 直接调用MainActivity的主题切换方法
+                (activity as? MainActivity)?.updateTheme(theme)
+                showThemeDialog = false
             }
         )
     }
@@ -490,5 +523,67 @@ fun LanguageDialog(
                 Text(stringResource(R.string.common_cancel))
             }
         }
+    )
+}
+
+/**
+ * 主题选择对话框
+ */
+@Composable
+fun ThemeDialog(
+    currentTheme: com.quickvault.util.ThemeMode,
+    onDismiss: () -> Unit,
+    onSelectTheme: (com.quickvault.util.ThemeMode) -> Unit
+) {
+    val themes = listOf(
+        com.quickvault.util.ThemeMode.SYSTEM to R.string.settings_theme_system,
+        com.quickvault.util.ThemeMode.LIGHT to R.string.settings_theme_light,
+        com.quickvault.util.ThemeMode.DARK to R.string.settings_theme_dark
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Palette,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        },
+        title = { Text(stringResource(R.string.settings_theme_select_title)) },
+        text = {
+            Column {
+                themes.forEach { (theme, nameRes) ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onSelectTheme(theme) }
+                            .padding(vertical = 12.dp, horizontal = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = stringResource(nameRes),
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        if (theme == currentTheme) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = stringResource(R.string.common_selected),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.common_cancel))
+            }
+        },
+        confirmButton = {}
     )
 }

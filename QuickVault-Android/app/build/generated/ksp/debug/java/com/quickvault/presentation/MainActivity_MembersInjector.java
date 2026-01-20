@@ -1,6 +1,7 @@
 package com.quickvault.presentation;
 
 import com.quickvault.presentation.lifecycle.AppLifecycleObserver;
+import com.quickvault.util.ThemeManager;
 import dagger.MembersInjector;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.InjectedFieldSignature;
@@ -23,23 +24,34 @@ import javax.inject.Provider;
 public final class MainActivity_MembersInjector implements MembersInjector<MainActivity> {
   private final Provider<AppLifecycleObserver> appLifecycleObserverProvider;
 
-  public MainActivity_MembersInjector(Provider<AppLifecycleObserver> appLifecycleObserverProvider) {
+  private final Provider<ThemeManager> themeManagerProvider;
+
+  public MainActivity_MembersInjector(Provider<AppLifecycleObserver> appLifecycleObserverProvider,
+      Provider<ThemeManager> themeManagerProvider) {
     this.appLifecycleObserverProvider = appLifecycleObserverProvider;
+    this.themeManagerProvider = themeManagerProvider;
   }
 
   public static MembersInjector<MainActivity> create(
-      Provider<AppLifecycleObserver> appLifecycleObserverProvider) {
-    return new MainActivity_MembersInjector(appLifecycleObserverProvider);
+      Provider<AppLifecycleObserver> appLifecycleObserverProvider,
+      Provider<ThemeManager> themeManagerProvider) {
+    return new MainActivity_MembersInjector(appLifecycleObserverProvider, themeManagerProvider);
   }
 
   @Override
   public void injectMembers(MainActivity instance) {
     injectAppLifecycleObserver(instance, appLifecycleObserverProvider.get());
+    injectThemeManager(instance, themeManagerProvider.get());
   }
 
   @InjectedFieldSignature("com.quickvault.presentation.MainActivity.appLifecycleObserver")
   public static void injectAppLifecycleObserver(MainActivity instance,
       AppLifecycleObserver appLifecycleObserver) {
     instance.appLifecycleObserver = appLifecycleObserver;
+  }
+
+  @InjectedFieldSignature("com.quickvault.presentation.MainActivity.themeManager")
+  public static void injectThemeManager(MainActivity instance, ThemeManager themeManager) {
+    instance.themeManager = themeManager;
   }
 }

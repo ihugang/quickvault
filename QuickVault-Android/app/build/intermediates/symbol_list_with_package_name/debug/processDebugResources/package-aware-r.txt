@@ -408,6 +408,7 @@ color foreground_material_dark
 color foreground_material_light
 color highlighted_text_material_dark
 color highlighted_text_material_light
+color ic_launcher_background
 color material_blue_grey_800
 color material_blue_grey_900
 color material_blue_grey_950
@@ -954,6 +955,7 @@ layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 string abc_action_bar_home_description
 string abc_action_bar_up_description
@@ -1197,6 +1199,7 @@ string error_generic
 string error_network
 string error_no_app_preview
 string error_preview_failed
+string error_share_failed
 string error_storage
 string export_action
 string export_add_watermark
@@ -1325,6 +1328,8 @@ string items_detail_images
 string items_detail_images_count
 string items_detail_pin
 string items_detail_pinned
+string items_detail_share_files
+string items_detail_share_files_confirm
 string items_detail_share_images
 string items_detail_share_text
 string items_detail_tags
@@ -1526,6 +1531,11 @@ string settings_security_cleardata_confirm_title
 string settings_security_cleardata_footer
 string settings_security_cleardata_success
 string settings_tab
+string settings_theme
+string settings_theme_dark
+string settings_theme_light
+string settings_theme_select_title
+string settings_theme_system
 string settings_title
 string status_bar_notification_info_overflow
 string switch_role

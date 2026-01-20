@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,8 +35,11 @@ import com.quickvault.presentation.theme.QuickVaultTheme
 import android.content.Context
 import com.quickvault.presentation.lifecycle.AppLifecycleObserver
 import com.quickvault.util.LanguageManager
+import com.quickvault.util.ThemeManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 /**
  * 主 Activity
@@ -46,10 +51,15 @@ class MainActivity : FragmentActivity() {
     @Inject
     lateinit var appLifecycleObserver: AppLifecycleObserver
 
+    @Inject
+    lateinit var themeManager: ThemeManager
+
     override fun attachBaseContext(newBase: Context) {
         // 应用语言设置
         super.attachBaseContext(LanguageManager.wrap(newBase))
     }
+
+    private val _currentTheme = mutableStateOf(themeManager.getThemeMode())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,10 +68,18 @@ class MainActivity : FragmentActivity() {
         lifecycle.addObserver(appLifecycleObserver)
 
         setContent {
-            QuickVaultTheme {
+            QuickVaultTheme(themeMode = _currentTheme.value) {
                 QuickVaultApp()
             }
         }
+    }
+
+    /**
+     * 更新主题模式
+     */
+    fun updateTheme(themeMode: com.quickvault.util.ThemeMode) {
+        themeManager.setThemeMode(themeMode)
+        _currentTheme.value = themeMode
     }
 }
 

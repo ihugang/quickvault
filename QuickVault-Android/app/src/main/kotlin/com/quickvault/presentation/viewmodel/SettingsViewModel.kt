@@ -7,6 +7,8 @@ import com.quickvault.data.local.keystore.SecureKeyManager
 import com.quickvault.domain.service.AuthService
 import com.quickvault.domain.service.BiometricService
 import com.quickvault.util.LanguageManager
+import com.quickvault.util.ThemeManager
+import com.quickvault.util.ThemeMode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
@@ -27,7 +29,8 @@ class SettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val authService: AuthService,
     private val biometricService: BiometricService,
-    private val keyManager: SecureKeyManager
+    private val keyManager: SecureKeyManager,
+    private val themeManager: ThemeManager
 ) : ViewModel() {
 
     // UI 状态
@@ -45,6 +48,10 @@ class SettingsViewModel @Inject constructor(
     // 当前语言
     private val _currentLanguage = MutableStateFlow(LanguageManager.getCurrentLanguage(context))
     val currentLanguage: StateFlow<LanguageManager.Language> = _currentLanguage.asStateFlow()
+
+    // 当前主题模式
+    private val _currentTheme = MutableStateFlow(themeManager.getThemeMode())
+    val currentTheme: StateFlow<ThemeMode> = _currentTheme.asStateFlow()
 
     init {
         checkBiometricAvailability()
@@ -172,6 +179,14 @@ class SettingsViewModel @Inject constructor(
      */
     fun getAvailableLanguages(): List<LanguageManager.Language> {
         return LanguageManager.Language.getAllLanguages()
+    }
+
+    /**
+     * 设置主题模式
+     */
+    fun setTheme(mode: ThemeMode) {
+        themeManager.setThemeMode(mode)
+        _currentTheme.value = mode
     }
 }
 

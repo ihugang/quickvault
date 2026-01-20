@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="error">#F44336</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
     <color name="md_theme_dark_background">#1A1C1E</color>
     <color name="md_theme_dark_onBackground">#E2E2E6</color>
     <color name="md_theme_dark_onPrimary">#003258</color>
@@ -225,6 +226,7 @@
     <string name="error_network">Network error</string>
     <string name="error_no_app_preview">No app found to open this file</string>
     <string name="error_preview_failed">Failed to open file</string>
+    <string name="error_share_failed">分享失败 / Share failed</string>
     <string name="error_storage">Storage error</string>
     <string name="export_action">Export</string>
     <string name="export_add_watermark">Add Watermark</string>
@@ -336,6 +338,8 @@
     <string name="items_detail_images_count">%d images</string>
     <string name="items_detail_pin">Pin</string>
     <string name="items_detail_pinned">Pinned</string>
+    <string name="items_detail_share_files">分享文件 / Share Files</string>
+    <string name="items_detail_share_files_confirm">确认分享 %d 个文件？ / Share %d files?</string>
     <string name="items_detail_share_images">Share Images</string>
     <string name="items_detail_share_text">Share Text</string>
     <string name="items_detail_tags">Tags</string>
@@ -472,6 +476,11 @@
     <string name="settings_security_cleardata_footer">⚠️ This will permanently delete all cards, images, and files. This action cannot be undone!</string>
     <string name="settings_security_cleardata_success">All data has been cleared</string>
     <string name="settings_tab">Settings</string>
+    <string name="settings_theme">显示模式 / Theme</string>
+    <string name="settings_theme_dark">深色模式 / Dark</string>
+    <string name="settings_theme_light">浅色模式 / Light</string>
+    <string name="settings_theme_select_title">选择显示模式 / Select Theme</string>
+    <string name="settings_theme_system">跟随系统 / System</string>
     <string name="settings_title">Settings</string>
     <string name="tags_label">Tags: %1$s</string>
     <string name="validation_bank_invalid">Invalid bank account (16-19 digits)</string>

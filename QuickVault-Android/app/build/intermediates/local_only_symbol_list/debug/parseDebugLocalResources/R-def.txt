@@ -1,6 +1,7 @@
 R_DEF: Internal format may change without notice
 local
 color error
+color ic_launcher_background
 color md_theme_dark_background
 color md_theme_dark_onBackground
 color md_theme_dark_onPrimary
@@ -29,6 +30,7 @@ color success
 color warning
 drawable ic_launcher_legacy
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 string about_description
 string about_features
@@ -228,6 +230,7 @@ string error_generic
 string error_network
 string error_no_app_preview
 string error_preview_failed
+string error_share_failed
 string error_storage
 string export_action
 string export_add_watermark
@@ -339,6 +342,8 @@ string items_detail_images
 string items_detail_images_count
 string items_detail_pin
 string items_detail_pinned
+string items_detail_share_files
+string items_detail_share_files_confirm
 string items_detail_share_images
 string items_detail_share_text
 string items_detail_tags
@@ -475,6 +480,11 @@ string settings_security_cleardata_confirm_title
 string settings_security_cleardata_footer
 string settings_security_cleardata_success
 string settings_tab
+string settings_theme
+string settings_theme_dark
+string settings_theme_light
+string settings_theme_select_title
+string settings_theme_system
 string settings_title
 string tags_label
 string validation_bank_invalid
