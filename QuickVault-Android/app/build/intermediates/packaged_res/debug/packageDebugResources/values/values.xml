@@ -29,7 +29,7 @@
     <color name="success">#4CAF50</color>
     <color name="warning">#FF9800</color>
     <string name="about_description">Secure local information manager</string>
-    <string name="about_features">• AES-256-GCM encryption\n• Local-first, no cloud sync\n• Open-source software</string>
+    <string name="about_features">• AES-256-GCM encryption\n• Local-first, no cloud sync\n</string>
     <string name="about_version">Version: %1$s</string>
     <string name="app_name">QuickHold</string>
     <string name="app_tagline">Secure your digital life</string>
@@ -339,7 +339,7 @@
     <string name="items_detail_pin">Pin</string>
     <string name="items_detail_pinned">Pinned</string>
     <string name="items_detail_share_files">分享文件 / Share Files</string>
-    <string name="items_detail_share_files_confirm">确认分享 %d 个文件？ / Share %d files?</string>
+    <string formatted="false" name="items_detail_share_files_confirm">确认分享 %d 个文件？ / Share %d files?</string>
     <string name="items_detail_share_images">Share Images</string>
     <string name="items_detail_share_text">Share Text</string>
     <string name="items_detail_tags">Tags</string>

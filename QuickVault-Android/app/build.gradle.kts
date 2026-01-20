@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
 }
@@ -108,6 +109,10 @@ dependencies {
     // Security - 加密 (对应 iOS CryptoKit)
     implementation("androidx.security:security-crypto-ktx:1.1.0-alpha06")
     implementation("com.google.crypto.tink:tink-android:1.12.0")
+    
+    // 网络请求 - 用于设备报告功能
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     // Biometric (对应 iOS LocalAuthentication)
     implementation("androidx.biometric:biometric-ktx:1.2.0-alpha05")

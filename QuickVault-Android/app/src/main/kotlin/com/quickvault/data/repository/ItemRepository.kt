@@ -192,4 +192,8 @@ class ItemRepository @Inject constructor(
     }
     
     suspend fun getAttachmentById(attachmentId: String) = attachmentRepository.getAttachmentById(attachmentId)
+    
+    suspend fun countItemsByType(type: ItemType): Int {
+        return itemDao.countItemsByType(type.name.lowercase())
+    }
 }

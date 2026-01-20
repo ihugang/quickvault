@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about_description">安全的本地信息管理应用</string>
-    <string name="about_features">• AES-256-GCM 加密\n• 本地优先，无云同步\n• 开源软件</string>
+    <string name="about_features">• AES-256-GCM 加密\n• 本地优先，无云同步\n</string>
     <string name="about_version">版本：%1$s</string>
     <string name="app_name">随取</string>
     <string name="app_tagline">守护您的数字生活</string>

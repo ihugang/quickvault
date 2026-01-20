@@ -4,24 +4,7 @@
             "outputFile": "com.quickvault.app-mergeDebugResources-2:/values-sv/values-sv.xml",
             "map": [
                 {
-                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/fbbf022734bab2d72ecbe7389abb7c59/transformed/jetified-foundation-release/res/values-sv/values-sv.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,145",
-                        "endColumns": "89,88",
-                        "endOffsets": "140,229"
-                    },
-                    "to": {
-                        "startLines": "131,132",
-                        "startColumns": "4,4",
-                        "startOffsets": "13830,13920",
-                        "endColumns": "89,88",
-                        "endOffsets": "13915,14004"
-                    }
-                },
-                {
-                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/dbeb91aa8b62dffa1f04812dca556614/transformed/biometric-1.2.0-alpha05/res/values-sv/values-sv.xml",
+                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/49d0c54759134b537750ef2081ac61e7/transformed/biometric-1.2.0-alpha05/res/values-sv/values-sv.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -38,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/26ca2285eee3ac01d3e609ea289264ab/transformed/jetified-material3-release/res/values-sv/values-sv.xml",
+                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/4bafb1f739d85b1d8d12b4719809a472/transformed/jetified-material3-release/res/values-sv/values-sv.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -55,7 +38,24 @@
                     }
                 },
                 {
-                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/d40e03ce33daa54d9e579825da37e8ab/transformed/core-1.12.0/res/values-sv/values-sv.xml",
+                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/d8bda16f8193e8824e3e97284d411485/transformed/jetified-ui-release/res/values-sv/values-sv.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,198,286,382,481,569,645,733,822,903,967,1031,1117,1207,1276,1354,1421",
+                        "endColumns": "92,87,95,98,87,75,87,88,80,63,63,85,89,68,77,66,119",
+                        "endOffsets": "193,281,377,476,564,640,728,817,898,962,1026,1112,1202,1271,1349,1416,1536"
+                    },
+                    "to": {
+                        "startLines": "38,39,41,43,44,60,61,118,119,120,121,122,123,126,128,129,130",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "3790,3883,4080,4262,4361,6401,6477,12723,12812,12893,12957,13021,13107,13395,13565,13643,13710",
+                        "endColumns": "92,87,95,98,87,75,87,88,80,63,63,85,89,68,77,66,119",
+                        "endOffsets": "3878,3966,4171,4356,4444,6472,6560,12807,12888,12952,13016,13102,13192,13459,13638,13705,13825"
+                    }
+                },
+                {
+                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/e831b9575bdc28ef5d013061e8dd5cae/transformed/core-1.12.0/res/values-sv/values-sv.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -72,7 +72,24 @@
                     }
                 },
                 {
-                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/dc8f1a4ac77e4ae6332719d3d44fa7ca/transformed/appcompat-1.6.1/res/values-sv/values-sv.xml",
+                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/b6ff5933004d56339c33e164811de2b3/transformed/jetified-foundation-release/res/values-sv/values-sv.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,145",
+                        "endColumns": "89,88",
+                        "endOffsets": "140,229"
+                    },
+                    "to": {
+                        "startLines": "131,132",
+                        "startColumns": "4,4",
+                        "startOffsets": "13830,13920",
+                        "endColumns": "89,88",
+                        "endOffsets": "13915,14004"
+                    }
+                },
+                {
+                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/c5d3c22a13fdd48f794b4e8b53224f3c/transformed/appcompat-1.6.1/res/values-sv/values-sv.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -86,23 +103,6 @@
                         "startOffsets": "105,208,311,422,506,608,721,798,873,966,1061,1156,1250,1352,1447,1544,1642,1738,1831,1911,2017,2116,2212,2317,2420,2522,2676,13315",
                         "endColumns": "102,102,110,83,101,112,76,74,92,94,94,93,101,94,96,97,95,92,79,105,98,95,104,102,101,153,101,79",
                         "endOffsets": "203,306,417,501,603,716,793,868,961,1056,1151,1245,1347,1442,1539,1637,1733,1826,1906,2012,2111,2207,2312,2415,2517,2671,2773,13390"
-                    }
-                },
-                {
-                    "source": "/Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/c5d7e67284f94c105e2a7d4eef02298c/transformed/jetified-ui-release/res/values-sv/values-sv.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,198,286,382,481,569,645,733,822,903,967,1031,1117,1207,1276,1354,1421",
-                        "endColumns": "92,87,95,98,87,75,87,88,80,63,63,85,89,68,77,66,119",
-                        "endOffsets": "193,281,377,476,564,640,728,817,898,962,1026,1112,1202,1271,1349,1416,1536"
-                    },
-                    "to": {
-                        "startLines": "38,39,41,43,44,60,61,118,119,120,121,122,123,126,128,129,130",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "3790,3883,4080,4262,4361,6401,6477,12723,12812,12893,12957,13021,13107,13395,13565,13643,13710",
-                        "endColumns": "92,87,95,98,87,75,87,88,80,63,63,85,89,68,77,66,119",
-                        "endOffsets": "3878,3966,4171,4356,4444,6472,6560,12807,12888,12952,13016,13102,13192,13459,13638,13705,13825"
                     }
                 }
             ]

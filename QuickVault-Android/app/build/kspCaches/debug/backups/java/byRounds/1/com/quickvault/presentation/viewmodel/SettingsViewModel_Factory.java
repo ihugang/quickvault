@@ -4,6 +4,7 @@ import android.content.Context;
 import com.quickvault.data.local.keystore.SecureKeyManager;
 import com.quickvault.domain.service.AuthService;
 import com.quickvault.domain.service.BiometricService;
+import com.quickvault.domain.service.DeviceReportService;
 import com.quickvault.util.ThemeManager;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
@@ -36,31 +37,37 @@ public final class SettingsViewModel_Factory implements Factory<SettingsViewMode
 
   private final Provider<ThemeManager> themeManagerProvider;
 
+  private final Provider<DeviceReportService> deviceReportServiceProvider;
+
   public SettingsViewModel_Factory(Provider<Context> contextProvider,
       Provider<AuthService> authServiceProvider,
       Provider<BiometricService> biometricServiceProvider,
-      Provider<SecureKeyManager> keyManagerProvider, Provider<ThemeManager> themeManagerProvider) {
+      Provider<SecureKeyManager> keyManagerProvider, Provider<ThemeManager> themeManagerProvider,
+      Provider<DeviceReportService> deviceReportServiceProvider) {
     this.contextProvider = contextProvider;
     this.authServiceProvider = authServiceProvider;
     this.biometricServiceProvider = biometricServiceProvider;
     this.keyManagerProvider = keyManagerProvider;
     this.themeManagerProvider = themeManagerProvider;
+    this.deviceReportServiceProvider = deviceReportServiceProvider;
   }
 
   @Override
   public SettingsViewModel get() {
-    return newInstance(contextProvider.get(), authServiceProvider.get(), biometricServiceProvider.get(), keyManagerProvider.get(), themeManagerProvider.get());
+    return newInstance(contextProvider.get(), authServiceProvider.get(), biometricServiceProvider.get(), keyManagerProvider.get(), themeManagerProvider.get(), deviceReportServiceProvider.get());
   }
 
   public static SettingsViewModel_Factory create(Provider<Context> contextProvider,
       Provider<AuthService> authServiceProvider,
       Provider<BiometricService> biometricServiceProvider,
-      Provider<SecureKeyManager> keyManagerProvider, Provider<ThemeManager> themeManagerProvider) {
-    return new SettingsViewModel_Factory(contextProvider, authServiceProvider, biometricServiceProvider, keyManagerProvider, themeManagerProvider);
+      Provider<SecureKeyManager> keyManagerProvider, Provider<ThemeManager> themeManagerProvider,
+      Provider<DeviceReportService> deviceReportServiceProvider) {
+    return new SettingsViewModel_Factory(contextProvider, authServiceProvider, biometricServiceProvider, keyManagerProvider, themeManagerProvider, deviceReportServiceProvider);
   }
 
   public static SettingsViewModel newInstance(Context context, AuthService authService,
-      BiometricService biometricService, SecureKeyManager keyManager, ThemeManager themeManager) {
-    return new SettingsViewModel(context, authService, biometricService, keyManager, themeManager);
+      BiometricService biometricService, SecureKeyManager keyManager, ThemeManager themeManager,
+      DeviceReportService deviceReportService) {
+    return new SettingsViewModel(context, authService, biometricService, keyManager, themeManager, deviceReportService);
   }
 }

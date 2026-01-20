@@ -401,7 +401,7 @@
     <string name="items_detail_share_text">Share Text</string>
     <string name="items_detail_share_images">Share Images</string>
     <string name="items_detail_share_files">分享文件 / Share Files</string>
-    <string name="items_detail_share_files_confirm">确认分享 %d 个文件？ / Share %d files?</string>
+    <string name="items_detail_share_files_confirm" formatted="false">确认分享 %d 个文件？ / Share %d files?</string>
     <string name="items_delete_confirm">Are you sure you want to delete this item?</string>
     <string name="items_delete_title">Confirm Delete</string>
     <string name="items_delete_message">This action cannot be undone</string>

@@ -6,11 +6,13 @@ import com.quickvault.data.repository.ItemRepository
 import com.quickvault.domain.service.AuthService
 import com.quickvault.domain.service.BiometricService
 import com.quickvault.domain.service.CryptoService
+import com.quickvault.domain.service.DeviceReportService
 import com.quickvault.domain.service.ItemService
 import com.quickvault.domain.service.WatermarkService
 import com.quickvault.domain.service.impl.AuthServiceImpl
 import com.quickvault.domain.service.impl.BiometricServiceImpl
 import com.quickvault.domain.service.impl.CryptoServiceImpl
+import com.quickvault.domain.service.impl.DeviceReportServiceImpl
 import com.quickvault.domain.service.impl.ItemServiceImpl
 import com.quickvault.domain.service.impl.WatermarkServiceImpl
 import com.quickvault.domain.validation.ValidationService
@@ -88,5 +90,14 @@ object ServiceModule {
         @ApplicationContext context: Context
     ): WatermarkService {
         return WatermarkServiceImpl(context)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideDeviceReportService(
+        @ApplicationContext context: Context,
+        itemRepository: ItemRepository
+    ): DeviceReportService {
+        return DeviceReportServiceImpl(context, itemRepository)
     }
 }

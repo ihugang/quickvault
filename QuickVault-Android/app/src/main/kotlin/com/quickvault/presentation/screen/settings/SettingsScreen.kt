@@ -147,6 +147,25 @@ fun SettingsScreen(
                 )
             }
 
+            item {
+                Divider(modifier = Modifier.padding(vertical = 8.dp))
+            }
+
+            // 开发者信息区域
+            item {
+                SectionHeader(title = "开发者信息 / Developer Info")
+            }
+
+            // 显示设备ID
+            item {
+                SettingsClickableItem(
+                    title = "设备ID",
+                    subtitle = viewModel.getDeviceId(),
+                    icon = Icons.Default.PhoneAndroid,
+                    onClick = { /* 可以复制到剪贴板 */ }
+                )
+            }
+
             // 关于
             item {
                 SettingsClickableItem(
@@ -163,7 +182,8 @@ fun SettingsScreen(
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .clickable { viewModel.clearMessages() },
                         colors = CardDefaults.cardColors(
                             containerColor = if (uiState.errorMessage != null) {
                                 MaterialTheme.colorScheme.errorContainer
@@ -172,15 +192,29 @@ fun SettingsScreen(
                             }
                         )
                     ) {
-                        Text(
-                            text = uiState.successMessage ?: uiState.errorMessage ?: "",
+                        Row(
                             modifier = Modifier.padding(16.dp),
-                            color = if (uiState.errorMessage != null) {
-                                MaterialTheme.colorScheme.onErrorContainer
-                            } else {
-                                MaterialTheme.colorScheme.onPrimaryContainer
-                            }
-                        )
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = uiState.successMessage ?: uiState.errorMessage ?: "",
+                                modifier = Modifier.weight(1f),
+                                color = if (uiState.errorMessage != null) {
+                                    MaterialTheme.colorScheme.onErrorContainer
+                                } else {
+                                    MaterialTheme.colorScheme.onPrimaryContainer
+                                }
+                            )
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "清除消息",
+                                tint = if (uiState.errorMessage != null) {
+                                    MaterialTheme.colorScheme.onErrorContainer
+                                } else {
+                                    MaterialTheme.colorScheme.onPrimaryContainer
+                                }
+                            )
+                        }
                     }
                 }
             }

@@ -168,7 +168,7 @@ public class DeviceReportService: ObservableObject {
     let osName = "macOS"
     let osVersion = ProcessInfo.processInfo.operatingSystemVersionString
     let deviceModel = "Mac"
-    let os: Int8 = 2 // macOS
+    let os: Int8 = 3 // macOS
     #endif
 
     let appVersion = Bundle.main.appVersion

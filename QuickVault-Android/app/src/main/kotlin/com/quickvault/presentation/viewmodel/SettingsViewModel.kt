@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.quickvault.data.local.keystore.SecureKeyManager
 import com.quickvault.domain.service.AuthService
 import com.quickvault.domain.service.BiometricService
+import com.quickvault.domain.service.DeviceReportService
 import com.quickvault.util.LanguageManager
 import com.quickvault.util.ThemeManager
 import com.quickvault.util.ThemeMode
@@ -30,7 +31,8 @@ class SettingsViewModel @Inject constructor(
     private val authService: AuthService,
     private val biometricService: BiometricService,
     private val keyManager: SecureKeyManager,
-    private val themeManager: ThemeManager
+    private val themeManager: ThemeManager,
+    private val deviceReportService: DeviceReportService
 ) : ViewModel() {
 
     // UI 状态
@@ -187,6 +189,71 @@ class SettingsViewModel @Inject constructor(
     fun setTheme(mode: ThemeMode) {
         themeManager.setThemeMode(mode)
         _currentTheme.value = mode
+    }
+    
+    /**
+     * 强制报告设备信息（用于测试）
+     */
+    fun forceReportDevice() {
+        viewModelScope.launch {
+            try {
+                _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+                
+                val result = deviceReportService.forceReportDevice()
+                if (result.isSuccess) {
+                    val response = result.getOrNull()
+                    if (response?.success == true) {
+                        val hostCount = response.data?.hosts?.size ?: 0
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            successMessage = "设备报告成功！发现 $hostCount 个远程主机"
+                        )
+                    } else {
+                        _uiState.value = _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = "设备报告失败: ${response?.errorMessage ?: "未知错误"}"
+                        )
+                    }
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = "设备报告失败: ${result.exceptionOrNull()?.message}"
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    errorMessage = "设备报告错误: ${e.message}"
+                )
+            }
+        }
+    }
+    
+    /**
+     * 重置设备报告状态
+     */
+    fun resetDeviceReportStatus() {
+        deviceReportService.resetReportStatus()
+        _uiState.value = _uiState.value.copy(
+            successMessage = "设备报告状态已重置"
+        )
+    }
+    
+    /**
+     * 获取设备ID
+     */
+    fun getDeviceId(): String {
+        return deviceReportService.getDeviceId()
+    }
+    
+    /**
+     * 清除消息状态
+     */
+    fun clearMessages() {
+        _uiState.value = _uiState.value.copy(
+            errorMessage = null,
+            successMessage = null
+        )
     }
 }
 

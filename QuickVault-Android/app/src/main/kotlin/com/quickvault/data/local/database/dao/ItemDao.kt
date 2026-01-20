@@ -54,4 +54,7 @@ interface ItemDao {
 
     @Query("DELETE FROM attachments WHERE item_id = :itemId")
     suspend fun deleteAttachmentsByItemId(itemId: String)
+    
+    @Query("SELECT COUNT(*) FROM items WHERE type = :type")
+    suspend fun countItemsByType(type: String): Int
 }
