@@ -78,8 +78,11 @@ class WatermarkServiceImpl @Inject constructor(
         // 计算对角线长度
         val diagonalLength = sqrt((width * width + height * height).toDouble()).toFloat()
 
-        // 使用 lineSpacing 作为间距倍数
-        val spacing = textWidth * WATERMARK_SPACING_FACTOR * style.lineSpacing
+        // 计算行列间距
+        // 水平间距：基于文字宽度，由 lineSpacing 控制密度
+        val xSpacing = textWidth * WATERMARK_SPACING_FACTOR * style.lineSpacing
+        // 垂直间距：基于文字高度，通常垂直间距需要比水平间距大一些，避免过于拥挤
+        val ySpacing = textHeight * 4.0f * style.lineSpacing
 
         // 保存画布状态
         canvas.save()
@@ -90,14 +93,21 @@ class WatermarkServiceImpl @Inject constructor(
         // 旋转画布
         canvas.rotate(style.angle)
 
-        // 计算需要绘制的水印数量（覆盖整个对角线）
-        val count = (diagonalLength / spacing).toInt() + 2
+        // 计算需要绘制的行列数（覆盖整个对角线区域）
+        val xCount = (diagonalLength / xSpacing).toInt() + 2
+        val yCount = (diagonalLength / ySpacing).toInt() + 2
 
-        // 绘制重复水印
-        for (i in -count..count) {
-            val x = i * spacing
-            val y = 0f
-            canvas.drawText(text, x - textWidth / 2, y + textHeight / 2, paint)
+        // 绘制重复平铺水印
+        for (j in -yCount..yCount) {
+            for (i in -xCount..xCount) {
+                // 添加交错效果（错位平铺），让水印看起来更自然
+                val staggerOffset = if (j % 2 != 0) xSpacing / 2f else 0f
+                
+                val x = i * xSpacing + staggerOffset
+                val y = j * ySpacing
+                
+                canvas.drawText(text, x - textWidth / 2, y + textHeight / 2, paint)
+            }
         }
 
         // 恢复画布

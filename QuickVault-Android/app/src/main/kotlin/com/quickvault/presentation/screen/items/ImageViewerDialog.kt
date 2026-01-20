@@ -56,7 +56,7 @@ fun ImageViewerDialog(
     var watermarkText by remember { mutableStateOf("机密 / Confidential") }
     var fontSize by remember { mutableStateOf(80f) }
     var opacity by remember { mutableStateOf(0.3f) }
-    var lineSpacing by remember { mutableStateOf(1.5f) } // 1.0=密集, 1.5=正常, 2.0=稀疏
+    var lineSpacing by remember { mutableStateOf(1.1f) } // 0.8=密集, 1.1=正常, 1.5=稀疏
 
     val originalBitmap = remember(imageData) {
         BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
@@ -293,16 +293,16 @@ private fun WatermarkSettingsPanel(
                     Slider(
                         value = fontSize,
                         onValueChange = onFontSizeChange,
-                        valueRange = 40f..120f,
-                        steps = 7
+                        valueRange = 20f..120f,
+                        steps = 10
                     )
                 }
 
                 // 行间距
                 Column {
                     val spacingLabel = when {
-                        lineSpacing <= 1.0f -> stringResource(R.string.watermark_spacing_dense)
-                        lineSpacing >= 2.0f -> stringResource(R.string.watermark_spacing_sparse)
+                        lineSpacing <= 0.95f -> stringResource(R.string.watermark_spacing_dense)
+                        lineSpacing >= 1.3f -> stringResource(R.string.watermark_spacing_sparse)
                         else -> stringResource(R.string.watermark_spacing_normal)
                     }
                     Text(
@@ -314,20 +314,20 @@ private fun WatermarkSettingsPanel(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         FilterChip(
-                            selected = lineSpacing <= 1.0f,
-                            onClick = { onLineSpacingChange(1.0f) },
+                            selected = lineSpacing <= 0.95f,
+                            onClick = { onLineSpacingChange(0.8f) },
                             label = { Text(stringResource(R.string.watermark_spacing_dense)) },
                             modifier = Modifier.weight(1f)
                         )
                         FilterChip(
-                            selected = lineSpacing > 1.0f && lineSpacing < 2.0f,
-                            onClick = { onLineSpacingChange(1.5f) },
+                            selected = lineSpacing > 0.95f && lineSpacing < 1.3f,
+                            onClick = { onLineSpacingChange(1.1f) },
                             label = { Text(stringResource(R.string.watermark_spacing_normal)) },
                             modifier = Modifier.weight(1f)
                         )
                         FilterChip(
-                            selected = lineSpacing >= 2.0f,
-                            onClick = { onLineSpacingChange(2.0f) },
+                            selected = lineSpacing >= 1.3f,
+                            onClick = { onLineSpacingChange(1.5f) },
                             label = { Text(stringResource(R.string.watermark_spacing_sparse)) },
                             modifier = Modifier.weight(1f)
                         )
