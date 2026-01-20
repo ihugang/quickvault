@@ -176,6 +176,7 @@
     <string name="common_loading">加载中...</string>
     <string name="common_more_actions">更多操作</string>
     <string name="common_ok">确定</string>
+    <string name="common_open">打开</string>
     <string name="common_optional">可选</string>
     <string name="common_retry">重试</string>
     <string name="common_save">保存</string>
@@ -195,6 +196,8 @@
     <string name="error_encryption">加密错误</string>
     <string name="error_generic">出现错误</string>
     <string name="error_network">网络错误</string>
+    <string name="error_no_app_preview">未找到可打开此文件的应用</string>
+    <string name="error_preview_failed">无法打开文件</string>
     <string name="error_storage">存储错误</string>
     <string name="export_action">导出</string>
     <string name="export_add_watermark">添加水印</string>
@@ -316,7 +319,9 @@
     <string name="items_empty_subtitle">点击右上角 + 创建第一张卡片</string>
     <string name="items_error_not_found">未找到该卡片</string>
     <string name="items_files_count">%d 个文件</string>
+    <string name="items_files_existing">已有：%d 个文件</string>
     <string name="items_files_limit">最多可选择 10 个文件，单个文件不超过 10MB</string>
+    <string name="items_files_new">新增：%d 个文件</string>
     <string name="items_files_section">文件</string>
     <string name="items_files_select">选择文件</string>
     <string name="items_image_number">图片 #%d</string>
@@ -324,7 +329,9 @@
     <string name="items_images_camera_permission">请在系统设置中允许访问相机</string>
     <string name="items_images_camera_unavailable">相机不可用</string>
     <string name="items_images_count">%d 张</string>
+    <string name="items_images_existing">已有：%d 张</string>
     <string name="items_images_limit">最多可选择 10 张图片</string>
+    <string name="items_images_new">新增：%d 张</string>
     <string name="items_images_section">图片</string>
     <string name="items_images_select">选择图片</string>
     <string name="items_info">信息</string>

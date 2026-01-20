@@ -208,6 +208,7 @@ string common_feature_in_development
 string common_loading
 string common_more_actions
 string common_ok
+string common_open
 string common_optional
 string common_retry
 string common_save
@@ -227,6 +228,8 @@ string error_decryption
 string error_encryption
 string error_generic
 string error_network
+string error_no_app_preview
+string error_preview_failed
 string error_storage
 string export_action
 string export_add_watermark
@@ -349,7 +352,9 @@ string items_empty_search_subtitle
 string items_empty_subtitle
 string items_error_not_found
 string items_files_count
+string items_files_existing
 string items_files_limit
+string items_files_new
 string items_files_section
 string items_files_select
 string items_image_number
@@ -357,7 +362,9 @@ string items_images_camera
 string items_images_camera_permission
 string items_images_camera_unavailable
 string items_images_count
+string items_images_existing
 string items_images_limit
+string items_images_new
 string items_images_section
 string items_images_select
 string items_info

@@ -2,6 +2,7 @@ package com.quickvault.di
 
 import android.content.Context
 import androidx.room.Room
+import com.quickvault.data.local.database.Migration_2_3
 import com.quickvault.data.local.database.QuickVaultDatabase
 import com.quickvault.data.local.database.dao.AttachmentDao
 import com.quickvault.data.local.database.dao.ItemDao
@@ -31,7 +32,7 @@ object DatabaseModule {
             QuickVaultDatabase::class.java,
             Constants.DATABASE_NAME
         )
-            .fallbackToDestructiveMigration()  // 开发阶段，生产环境需要 Migration
+            .addMigrations(Migration_2_3(context))
             .build()
     }
 

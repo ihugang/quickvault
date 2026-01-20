@@ -12,8 +12,8 @@ import androidx.room.*
  * - fileName: 原始文件名
  * - fileType: 文件 MIME 类型（image/jpeg, application/pdf 等）
  * - fileSize: 文件大小（字节）
- * - encryptedData: 加密后的文件数据
- * - thumbnailData: 加密后的缩略图数据（仅图片）
+ * - encryptedFilePath: 加密后的文件在文件系统中的路径
+ * - thumbnailFilePath: 加密后的缩略图在文件系统中的路径（仅图片）
  * - createdAt: 创建时间戳
  */
 @Entity(
@@ -48,11 +48,11 @@ data class AttachmentEntity(
     @ColumnInfo(name = "display_order")
     val displayOrder: Int,
 
-    @ColumnInfo(name = "encrypted_data", typeAffinity = ColumnInfo.BLOB)
-    val encryptedData: ByteArray,
+    @ColumnInfo(name = "encrypted_file_path")
+    val encryptedFilePath: String,
 
-    @ColumnInfo(name = "thumbnail_data", typeAffinity = ColumnInfo.BLOB)
-    val thumbnailData: ByteArray? = null,
+    @ColumnInfo(name = "thumbnail_file_path")
+    val thumbnailFilePath: String? = null,
 
     @ColumnInfo(name = "created_at")
     val createdAt: Long
@@ -69,11 +69,8 @@ data class AttachmentEntity(
         if (fileType != other.fileType) return false
         if (fileSize != other.fileSize) return false
         if (displayOrder != other.displayOrder) return false
-        if (!encryptedData.contentEquals(other.encryptedData)) return false
-        if (thumbnailData != null) {
-            if (other.thumbnailData == null) return false
-            if (!thumbnailData.contentEquals(other.thumbnailData)) return false
-        } else if (other.thumbnailData != null) return false
+        if (encryptedFilePath != other.encryptedFilePath) return false
+        if (thumbnailFilePath != other.thumbnailFilePath) return false
         if (createdAt != other.createdAt) return false
 
         return true
@@ -86,8 +83,8 @@ data class AttachmentEntity(
         result = 31 * result + fileType.hashCode()
         result = 31 * result + fileSize.hashCode()
         result = 31 * result + displayOrder
-        result = 31 * result + encryptedData.contentHashCode()
-        result = 31 * result + (thumbnailData?.contentHashCode() ?: 0)
+        result = 31 * result + encryptedFilePath.hashCode()
+        result = 31 * result + (thumbnailFilePath?.hashCode() ?: 0)
         result = 31 * result + createdAt.hashCode()
         return result
     }

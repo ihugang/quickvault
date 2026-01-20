@@ -38,7 +38,7 @@ public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(2) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(3) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS `items` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `tags_json` TEXT NOT NULL, `is_pinned` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`id`))");
@@ -47,10 +47,10 @@ public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_items_is_pinned` ON `items` (`is_pinned`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `item_texts` (`id` TEXT NOT NULL, `item_id` TEXT NOT NULL, `encrypted_content` BLOB NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`item_id`) REFERENCES `items`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_item_texts_item_id` ON `item_texts` (`item_id`)");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `attachments` (`id` TEXT NOT NULL, `item_id` TEXT NOT NULL, `file_name` TEXT NOT NULL, `file_type` TEXT NOT NULL, `file_size` INTEGER NOT NULL, `display_order` INTEGER NOT NULL, `encrypted_data` BLOB NOT NULL, `thumbnail_data` BLOB, `created_at` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`item_id`) REFERENCES `items`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `attachments` (`id` TEXT NOT NULL, `item_id` TEXT NOT NULL, `file_name` TEXT NOT NULL, `file_type` TEXT NOT NULL, `file_size` INTEGER NOT NULL, `display_order` INTEGER NOT NULL, `encrypted_file_path` TEXT NOT NULL, `thumbnail_file_path` TEXT, `created_at` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`item_id`) REFERENCES `items`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_attachments_item_id` ON `attachments` (`item_id`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c3e617abb85f84700272b444a067f1ea')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9fc5c8210cd9a24bbb1c6cfa516f14d2')");
       }
 
       @Override
@@ -145,8 +145,8 @@ public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
         _columnsAttachments.put("file_type", new TableInfo.Column("file_type", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAttachments.put("file_size", new TableInfo.Column("file_size", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAttachments.put("display_order", new TableInfo.Column("display_order", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsAttachments.put("encrypted_data", new TableInfo.Column("encrypted_data", "BLOB", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsAttachments.put("thumbnail_data", new TableInfo.Column("thumbnail_data", "BLOB", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsAttachments.put("encrypted_file_path", new TableInfo.Column("encrypted_file_path", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsAttachments.put("thumbnail_file_path", new TableInfo.Column("thumbnail_file_path", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAttachments.put("created_at", new TableInfo.Column("created_at", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysAttachments = new HashSet<TableInfo.ForeignKey>(1);
         _foreignKeysAttachments.add(new TableInfo.ForeignKey("items", "CASCADE", "NO ACTION", Arrays.asList("item_id"), Arrays.asList("id")));
@@ -161,7 +161,7 @@ public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "c3e617abb85f84700272b444a067f1ea", "e6956d5479cd521626b8015e8edd2929");
+    }, "9fc5c8210cd9a24bbb1c6cfa516f14d2", "a7eafb2c59aa5627524f7fbeeaaff981");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;

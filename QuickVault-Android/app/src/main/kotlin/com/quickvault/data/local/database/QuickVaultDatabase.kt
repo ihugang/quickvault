@@ -18,7 +18,7 @@ import com.quickvault.data.local.database.entity.TextContentEntity
         TextContentEntity::class,
         AttachmentEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 abstract class QuickVaultDatabase : RoomDatabase() {

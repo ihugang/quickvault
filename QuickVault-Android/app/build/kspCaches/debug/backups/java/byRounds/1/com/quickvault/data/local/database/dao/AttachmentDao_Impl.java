@@ -47,7 +47,7 @@ public final class AttachmentDao_Impl implements AttachmentDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `attachments` (`id`,`item_id`,`file_name`,`file_type`,`file_size`,`display_order`,`encrypted_data`,`thumbnail_data`,`created_at`) VALUES (?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `attachments` (`id`,`item_id`,`file_name`,`file_type`,`file_size`,`display_order`,`encrypted_file_path`,`thumbnail_file_path`,`created_at`) VALUES (?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -59,11 +59,11 @@ public final class AttachmentDao_Impl implements AttachmentDao {
         statement.bindString(4, entity.getFileType());
         statement.bindLong(5, entity.getFileSize());
         statement.bindLong(6, entity.getDisplayOrder());
-        statement.bindBlob(7, entity.getEncryptedData());
-        if (entity.getThumbnailData() == null) {
+        statement.bindString(7, entity.getEncryptedFilePath());
+        if (entity.getThumbnailFilePath() == null) {
           statement.bindNull(8);
         } else {
-          statement.bindBlob(8, entity.getThumbnailData());
+          statement.bindString(8, entity.getThumbnailFilePath());
         }
         statement.bindLong(9, entity.getCreatedAt());
       }
@@ -175,8 +175,8 @@ public final class AttachmentDao_Impl implements AttachmentDao {
           final int _cursorIndexOfFileType = CursorUtil.getColumnIndexOrThrow(_cursor, "file_type");
           final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "file_size");
           final int _cursorIndexOfDisplayOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "display_order");
-          final int _cursorIndexOfEncryptedData = CursorUtil.getColumnIndexOrThrow(_cursor, "encrypted_data");
-          final int _cursorIndexOfThumbnailData = CursorUtil.getColumnIndexOrThrow(_cursor, "thumbnail_data");
+          final int _cursorIndexOfEncryptedFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "encrypted_file_path");
+          final int _cursorIndexOfThumbnailFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "thumbnail_file_path");
           final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "created_at");
           final List<AttachmentEntity> _result = new ArrayList<AttachmentEntity>(_cursor.getCount());
           while (_cursor.moveToNext()) {
@@ -193,17 +193,17 @@ public final class AttachmentDao_Impl implements AttachmentDao {
             _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
             final int _tmpDisplayOrder;
             _tmpDisplayOrder = _cursor.getInt(_cursorIndexOfDisplayOrder);
-            final byte[] _tmpEncryptedData;
-            _tmpEncryptedData = _cursor.getBlob(_cursorIndexOfEncryptedData);
-            final byte[] _tmpThumbnailData;
-            if (_cursor.isNull(_cursorIndexOfThumbnailData)) {
-              _tmpThumbnailData = null;
+            final String _tmpEncryptedFilePath;
+            _tmpEncryptedFilePath = _cursor.getString(_cursorIndexOfEncryptedFilePath);
+            final String _tmpThumbnailFilePath;
+            if (_cursor.isNull(_cursorIndexOfThumbnailFilePath)) {
+              _tmpThumbnailFilePath = null;
             } else {
-              _tmpThumbnailData = _cursor.getBlob(_cursorIndexOfThumbnailData);
+              _tmpThumbnailFilePath = _cursor.getString(_cursorIndexOfThumbnailFilePath);
             }
             final long _tmpCreatedAt;
             _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            _item = new AttachmentEntity(_tmpId,_tmpItemId,_tmpFileName,_tmpFileType,_tmpFileSize,_tmpDisplayOrder,_tmpEncryptedData,_tmpThumbnailData,_tmpCreatedAt);
+            _item = new AttachmentEntity(_tmpId,_tmpItemId,_tmpFileName,_tmpFileType,_tmpFileSize,_tmpDisplayOrder,_tmpEncryptedFilePath,_tmpThumbnailFilePath,_tmpCreatedAt);
             _result.add(_item);
           }
           return _result;
@@ -217,6 +217,66 @@ public final class AttachmentDao_Impl implements AttachmentDao {
         _statement.release();
       }
     });
+  }
+
+  @Override
+  public Object getAttachmentsByItemIdSync(final String itemId,
+      final Continuation<? super List<AttachmentEntity>> $completion) {
+    final String _sql = "SELECT * FROM attachments WHERE item_id = ? ORDER BY display_order ASC";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    _statement.bindString(_argIndex, itemId);
+    final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
+    return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<List<AttachmentEntity>>() {
+      @Override
+      @NonNull
+      public List<AttachmentEntity> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfItemId = CursorUtil.getColumnIndexOrThrow(_cursor, "item_id");
+          final int _cursorIndexOfFileName = CursorUtil.getColumnIndexOrThrow(_cursor, "file_name");
+          final int _cursorIndexOfFileType = CursorUtil.getColumnIndexOrThrow(_cursor, "file_type");
+          final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "file_size");
+          final int _cursorIndexOfDisplayOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "display_order");
+          final int _cursorIndexOfEncryptedFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "encrypted_file_path");
+          final int _cursorIndexOfThumbnailFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "thumbnail_file_path");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "created_at");
+          final List<AttachmentEntity> _result = new ArrayList<AttachmentEntity>(_cursor.getCount());
+          while (_cursor.moveToNext()) {
+            final AttachmentEntity _item;
+            final String _tmpId;
+            _tmpId = _cursor.getString(_cursorIndexOfId);
+            final String _tmpItemId;
+            _tmpItemId = _cursor.getString(_cursorIndexOfItemId);
+            final String _tmpFileName;
+            _tmpFileName = _cursor.getString(_cursorIndexOfFileName);
+            final String _tmpFileType;
+            _tmpFileType = _cursor.getString(_cursorIndexOfFileType);
+            final long _tmpFileSize;
+            _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
+            final int _tmpDisplayOrder;
+            _tmpDisplayOrder = _cursor.getInt(_cursorIndexOfDisplayOrder);
+            final String _tmpEncryptedFilePath;
+            _tmpEncryptedFilePath = _cursor.getString(_cursorIndexOfEncryptedFilePath);
+            final String _tmpThumbnailFilePath;
+            if (_cursor.isNull(_cursorIndexOfThumbnailFilePath)) {
+              _tmpThumbnailFilePath = null;
+            } else {
+              _tmpThumbnailFilePath = _cursor.getString(_cursorIndexOfThumbnailFilePath);
+            }
+            final long _tmpCreatedAt;
+            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            _item = new AttachmentEntity(_tmpId,_tmpItemId,_tmpFileName,_tmpFileType,_tmpFileSize,_tmpDisplayOrder,_tmpEncryptedFilePath,_tmpThumbnailFilePath,_tmpCreatedAt);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+          _statement.release();
+        }
+      }
+    }, $completion);
   }
 
   @Override
@@ -239,8 +299,8 @@ public final class AttachmentDao_Impl implements AttachmentDao {
           final int _cursorIndexOfFileType = CursorUtil.getColumnIndexOrThrow(_cursor, "file_type");
           final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "file_size");
           final int _cursorIndexOfDisplayOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "display_order");
-          final int _cursorIndexOfEncryptedData = CursorUtil.getColumnIndexOrThrow(_cursor, "encrypted_data");
-          final int _cursorIndexOfThumbnailData = CursorUtil.getColumnIndexOrThrow(_cursor, "thumbnail_data");
+          final int _cursorIndexOfEncryptedFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "encrypted_file_path");
+          final int _cursorIndexOfThumbnailFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "thumbnail_file_path");
           final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "created_at");
           final AttachmentEntity _result;
           if (_cursor.moveToFirst()) {
@@ -256,17 +316,17 @@ public final class AttachmentDao_Impl implements AttachmentDao {
             _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
             final int _tmpDisplayOrder;
             _tmpDisplayOrder = _cursor.getInt(_cursorIndexOfDisplayOrder);
-            final byte[] _tmpEncryptedData;
-            _tmpEncryptedData = _cursor.getBlob(_cursorIndexOfEncryptedData);
-            final byte[] _tmpThumbnailData;
-            if (_cursor.isNull(_cursorIndexOfThumbnailData)) {
-              _tmpThumbnailData = null;
+            final String _tmpEncryptedFilePath;
+            _tmpEncryptedFilePath = _cursor.getString(_cursorIndexOfEncryptedFilePath);
+            final String _tmpThumbnailFilePath;
+            if (_cursor.isNull(_cursorIndexOfThumbnailFilePath)) {
+              _tmpThumbnailFilePath = null;
             } else {
-              _tmpThumbnailData = _cursor.getBlob(_cursorIndexOfThumbnailData);
+              _tmpThumbnailFilePath = _cursor.getString(_cursorIndexOfThumbnailFilePath);
             }
             final long _tmpCreatedAt;
             _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            _result = new AttachmentEntity(_tmpId,_tmpItemId,_tmpFileName,_tmpFileType,_tmpFileSize,_tmpDisplayOrder,_tmpEncryptedData,_tmpThumbnailData,_tmpCreatedAt);
+            _result = new AttachmentEntity(_tmpId,_tmpItemId,_tmpFileName,_tmpFileType,_tmpFileSize,_tmpDisplayOrder,_tmpEncryptedFilePath,_tmpThumbnailFilePath,_tmpCreatedAt);
           } else {
             _result = null;
           }

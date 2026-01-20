@@ -4,6 +4,7 @@ import com.quickvault.data.local.database.dao.ItemDao
 import com.quickvault.data.local.database.dao.ItemWithContents
 import com.quickvault.data.local.database.entity.ItemEntity
 import com.quickvault.data.local.database.entity.TextContentEntity
+import com.quickvault.data.local.storage.FileStorageService
 import com.quickvault.data.model.FileDTO
 import com.quickvault.data.model.ImageDTO
 import com.quickvault.data.model.ItemDTO
@@ -20,7 +21,8 @@ import javax.inject.Singleton
 class ItemRepository @Inject constructor(
     private val itemDao: ItemDao,
     private val attachmentRepository: AttachmentRepository,
-    private val cryptoService: CryptoService
+    private val cryptoService: CryptoService,
+    private val fileStorageService: FileStorageService
 ) {
 
     fun getAllItems(): Flow<List<ItemDTO>> {
@@ -136,7 +138,10 @@ class ItemRepository @Inject constructor(
                     fileName = it.fileName,
                     fileSize = it.fileSize,
                     displayOrder = it.displayOrder,
-                    thumbnailData = it.thumbnailData?.let { data -> cryptoService.decryptFile(data) }
+                    thumbnailData = it.thumbnailFilePath?.let { path ->
+                        fileStorageService.readThumbnail(path).getOrNull()
+                            ?.let { encryptedData -> cryptoService.decryptFile(encryptedData) }
+                    }
                 )
             }
         val files = attachments
@@ -148,7 +153,10 @@ class ItemRepository @Inject constructor(
                     fileSize = it.fileSize,
                     mimeType = it.fileType,
                     displayOrder = it.displayOrder,
-                    thumbnailData = it.thumbnailData?.let { data -> cryptoService.decryptFile(data) }
+                    thumbnailData = it.thumbnailFilePath?.let { path ->
+                        fileStorageService.readThumbnail(path).getOrNull()
+                            ?.let { encryptedData -> cryptoService.decryptFile(encryptedData) }
+                    }
                 )
             }
         return ItemDTO(

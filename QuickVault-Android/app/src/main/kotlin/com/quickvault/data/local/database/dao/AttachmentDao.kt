@@ -19,6 +19,12 @@ interface AttachmentDao {
     fun getAttachmentsByItemId(itemId: String): Flow<List<AttachmentEntity>>
 
     /**
+     * 同步获取项目的所有附件（用于删除时获取文件路径）
+     */
+    @Query("SELECT * FROM attachments WHERE item_id = :itemId ORDER BY display_order ASC")
+    suspend fun getAttachmentsByItemIdSync(itemId: String): List<AttachmentEntity>
+
+    /**
      * 根据 ID 获取附件
      */
     @Query("SELECT * FROM attachments WHERE id = :attachmentId")

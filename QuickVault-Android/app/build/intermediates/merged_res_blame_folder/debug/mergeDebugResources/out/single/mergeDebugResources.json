@@ -16,6 +16,10 @@
         "source": "/Volumes/SN770/Users/shrek/.gradle/daemon/9.0-milestone-1/com.quickvault.app-main-6:/xml/data_extraction_rules.xml"
     },
     {
+        "merged": "/Volumes/SN770/Users/shrek/.gradle/daemon/9.0-milestone-1/com.quickvault.app-debug-4:/xml_file_paths.xml.flat",
+        "source": "/Volumes/SN770/Users/shrek/.gradle/daemon/9.0-milestone-1/com.quickvault.app-main-6:/xml/file_paths.xml"
+    },
+    {
         "merged": "/Volumes/SN770/Users/shrek/.gradle/daemon/9.0-milestone-1/com.quickvault.app-debug-4:/mipmap-xhdpi_ic_launcher_round.png.flat",
         "source": "/Volumes/SN770/Users/shrek/.gradle/daemon/9.0-milestone-1/com.quickvault.app-main-6:/mipmap-xhdpi/ic_launcher_round.png"
     },
