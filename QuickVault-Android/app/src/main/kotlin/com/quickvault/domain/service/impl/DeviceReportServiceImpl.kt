@@ -7,9 +7,10 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.quickvault.data.model.DeviceReportRequestData
 import com.quickvault.data.model.DeviceReportError
+import com.quickvault.data.model.DeviceReportResponseData
 import com.quickvault.data.model.ItemType
-import com.quickvault.data.model.RemoteHosts
 import com.quickvault.data.model.RemoteInvokeResults
+import com.quickvault.domain.service.VersionInfo
 import com.quickvault.data.repository.ItemRepository
 import com.quickvault.domain.service.DeviceReportService
 import com.quickvault.util.NetworkUtil
@@ -43,6 +44,7 @@ class DeviceReportServiceImpl @Inject constructor(
         private const val DEVICE_ID_KEY = "report_device_id"
         private const val REPORT_STATUS_KEY = "has_reported_device"
         private const val ENCRYPTED_PREFS_NAME = "device_report_prefs"
+        private const val LAST_VERSION_CHECK_KEY = "last_version_check"
     }
     
     private val json = Json {
@@ -84,7 +86,7 @@ class DeviceReportServiceImpl @Inject constructor(
         }
     }
     
-    override suspend fun forceReportDevice(itemCount: Int): Result<RemoteInvokeResults<RemoteHosts>> {
+    override suspend fun forceReportDevice(itemCount: Int): Result<RemoteInvokeResults<DeviceReportResponseData>> {
         return withContext(Dispatchers.IO) {
             try {
                 val itemCounts = getItemCounts()
@@ -94,6 +96,12 @@ class DeviceReportServiceImpl @Inject constructor(
                     docNum = itemCounts.file
                 )
                 val response = sendReportRequest(payload)
+                
+                // 保存最新版本检查时间
+                encryptedPrefs.edit()
+                    .putLong(LAST_VERSION_CHECK_KEY, System.currentTimeMillis())
+                    .apply()
+                
                 Result.success(response)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to report device", e)
@@ -155,7 +163,7 @@ class DeviceReportServiceImpl @Inject constructor(
         )
     }
     
-    private suspend fun sendReportRequest(payload: DeviceReportRequestData): RemoteInvokeResults<RemoteHosts> {
+    private suspend fun sendReportRequest(payload: DeviceReportRequestData): RemoteInvokeResults<DeviceReportResponseData> {
         val url = "$API_BASE_URL/Device/ReportDevice"
         val jsonPayload = json.encodeToString(DeviceReportRequestData.serializer(), payload)
         
@@ -181,7 +189,7 @@ class DeviceReportServiceImpl @Inject constructor(
         Log.d(TAG, "🔁 [DeviceReport] 响应(${response.code}): $responseBody")
         
         return try {
-            json.decodeFromString<RemoteInvokeResults<RemoteHosts>>(responseBody)
+            json.decodeFromString<RemoteInvokeResults<DeviceReportResponseData>>(responseBody)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to decode response", e)
             throw DeviceReportError.DecodingError
@@ -221,6 +229,63 @@ class DeviceReportServiceImpl @Inject constructor(
                 Log.e(TAG, "Failed to get item counts", e)
                 ItemCounts(0, 0, 0)
             }
+        }
+    }
+    
+    override suspend fun checkVersionUpdate(): VersionInfo? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = forceReportDevice(0)
+                if (result.isSuccess) {
+                    val response = result.getOrNull()
+                    val data = response?.data
+                    if (data != null) {
+                        val currentVersion = getAppVersion()
+                        val latestVersion = data.newestVersion
+                        val hasUpdate = compareVersions(currentVersion, latestVersion) < 0
+                        
+                        Log.d(TAG, "Version check: current=$currentVersion, latest=$latestVersion, hasUpdate=$hasUpdate")
+                        
+                        return@withContext VersionInfo(
+                            currentVersion = currentVersion,
+                            latestVersion = latestVersion,
+                            hasUpdate = hasUpdate,
+                            downloadUrl = data.downloadUrl
+                        )
+                    }
+                }
+                null
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to check version update", e)
+                null
+            }
+        }
+    }
+    
+    /**
+     * 比较版本号
+     * @return -1 if version1 < version2, 0 if equal, 1 if version1 > version2
+     */
+    private fun compareVersions(version1: String, version2: String): Int {
+        try {
+            val v1Parts = version1.split(".").map { it.toIntOrNull() ?: 0 }
+            val v2Parts = version2.split(".").map { it.toIntOrNull() ?: 0 }
+            
+            val maxLength = maxOf(v1Parts.size, v2Parts.size)
+            
+            for (i in 0 until maxLength) {
+                val v1Part = v1Parts.getOrElse(i) { 0 }
+                val v2Part = v2Parts.getOrElse(i) { 0 }
+                
+                when {
+                    v1Part < v2Part -> return -1
+                    v1Part > v2Part -> return 1
+                }
+            }
+            return 0
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to compare versions: $version1 vs $version2", e)
+            return 0
         }
     }
     

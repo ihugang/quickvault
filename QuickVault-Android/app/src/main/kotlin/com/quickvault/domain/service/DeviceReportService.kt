@@ -1,7 +1,17 @@
 package com.quickvault.domain.service
 
-import com.quickvault.data.model.RemoteHosts
+import com.quickvault.data.model.DeviceReportResponseData
 import com.quickvault.data.model.RemoteInvokeResults
+
+/**
+ * 版本信息数据类
+ */
+data class VersionInfo(
+    val currentVersion: String,
+    val latestVersion: String,
+    val hasUpdate: Boolean,
+    val downloadUrl: String
+)
 
 /**
  * 设备报告服务接口
@@ -18,7 +28,13 @@ interface DeviceReportService {
      * 强制报告设备信息（用于测试）
      * Force report device information (for testing)
      */
-    suspend fun forceReportDevice(itemCount: Int = 0): Result<RemoteInvokeResults<RemoteHosts>>
+    suspend fun forceReportDevice(itemCount: Int = 0): Result<RemoteInvokeResults<DeviceReportResponseData>>
+    
+    /**
+     * 检查版本更新
+     * Check for version updates
+     */
+    suspend fun checkVersionUpdate(): VersionInfo?
     
     /**
      * 重置报告状态（用于测试）

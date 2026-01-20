@@ -48,6 +48,20 @@ data class RemoteHosts(
 )
 
 /**
+ * 设备报告响应数据
+ */
+@Serializable
+data class DeviceReportResponseData(
+    val token: String,
+    val newestVersion: String,
+    val downloadUrl: String,
+    val hosts: List<RemoteHost>? = null,
+    val wanIp: String? = null,
+    val code: String? = null,
+    val memberNo: String? = null
+)
+
+/**
  * API响应结果模型
  */
 @Serializable

@@ -15,7 +15,7 @@ android {
         minSdk = 26  // Android 8.0+ (支持 BiometricPrompt)
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0.0"
+        versionName = "1.00"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,6 +21,7 @@ import com.quickvault.presentation.MainActivity
 import com.quickvault.presentation.viewmodel.SettingsViewModel
 import com.quickvault.util.LanguageManager
 import com.quickvault.util.extensions.findActivity
+import com.quickvault.domain.service.VersionInfo
 
 /**
  * 设置界面
@@ -38,16 +40,24 @@ fun SettingsScreen(
 ) {
     val context = LocalContext.current
     val activity = context.findActivity()
+    val uriHandler = LocalUriHandler.current
     val uiState by viewModel.uiState.collectAsState()
     val isBiometricEnabled by viewModel.isBiometricEnabled.collectAsState()
     val isBiometricAvailable by viewModel.isBiometricAvailable.collectAsState()
     val currentLanguage by viewModel.currentLanguage.collectAsState()
     val currentTheme by viewModel.currentTheme.collectAsState()
+    val versionInfo by viewModel.versionInfo.collectAsState()
 
     var showChangePasswordDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(showAboutDialog) {
+        if (showAboutDialog) {
+            viewModel.checkVersionUpdate()
+        }
+    }
 
     // 显示成功消息
     LaunchedEffect(uiState.successMessage) {
@@ -237,7 +247,18 @@ fun SettingsScreen(
     // 关于对话框
     if (showAboutDialog) {
         AboutDialog(
-            onDismiss = { showAboutDialog = false }
+            versionInfo = versionInfo,
+            onDismiss = { showAboutDialog = false },
+            onUpdateClick = {
+                val url = if (!versionInfo?.downloadUrl.isNullOrBlank()) {
+                    versionInfo?.downloadUrl ?: ""
+                } else {
+                    "https://timehound.vip"
+                }
+                if (url.isNotBlank()) {
+                    uriHandler.openUri(url)
+                }
+            }
         )
     }
 
@@ -442,7 +463,9 @@ fun ChangePasswordDialog(
  */
 @Composable
 fun AboutDialog(
-    onDismiss: () -> Unit
+    versionInfo: VersionInfo?,
+    onDismiss: () -> Unit,
+    onUpdateClick: () -> Unit
 ) {
     val context = LocalContext.current
     val versionName = remember {
@@ -472,6 +495,21 @@ fun AboutDialog(
                     text = stringResource(R.string.about_version, versionName),
                     style = MaterialTheme.typography.bodyMedium
                 )
+
+                if (versionInfo?.hasUpdate == true) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = stringResource(
+                            R.string.about_update_available,
+                            versionInfo.latestVersion
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    TextButton(onClick = onUpdateClick) {
+                        Text(stringResource(R.string.about_update_action))
+                    }
+                }
 
                 Divider(modifier = Modifier.padding(vertical = 8.dp))
 

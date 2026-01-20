@@ -271,6 +271,11 @@ fun SearchResultItem(
             } else {
                 MaterialTheme.colorScheme.surface
             }
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        border = androidx.compose.foundation.BorderStroke(
+            width = 1.dp, 
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
         )
     ) {
         Row(

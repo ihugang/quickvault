@@ -7,6 +7,7 @@ import com.quickvault.data.local.keystore.SecureKeyManager
 import com.quickvault.domain.service.AuthService
 import com.quickvault.domain.service.BiometricService
 import com.quickvault.domain.service.DeviceReportService
+import com.quickvault.domain.service.VersionInfo
 import com.quickvault.util.LanguageManager
 import com.quickvault.util.ThemeManager
 import com.quickvault.util.ThemeMode
@@ -55,6 +56,10 @@ class SettingsViewModel @Inject constructor(
     private val _currentTheme = MutableStateFlow(themeManager.getThemeMode())
     val currentTheme: StateFlow<ThemeMode> = _currentTheme.asStateFlow()
 
+    // 版本更新信息
+    private val _versionInfo = MutableStateFlow<VersionInfo?>(null)
+    val versionInfo: StateFlow<VersionInfo?> = _versionInfo.asStateFlow()
+
     init {
         checkBiometricAvailability()
         loadSettings()
@@ -75,6 +80,16 @@ class SettingsViewModel @Inject constructor(
      */
     private fun loadSettings() {
         _isBiometricEnabled.value = keyManager.isBiometricEnabled()
+    }
+
+    /**
+     * 检查版本更新信息
+     */
+    fun checkVersionUpdate() {
+        viewModelScope.launch {
+            val info = deviceReportService.checkVersionUpdate()
+            _versionInfo.value = info
+        }
     }
 
     /**
