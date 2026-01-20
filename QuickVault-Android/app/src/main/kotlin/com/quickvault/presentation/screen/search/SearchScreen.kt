@@ -37,7 +37,7 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    onNavigateToItemEditor: (String) -> Unit,
+    onNavigateToItemDetail: (String) -> Unit,
     viewModel: ItemsViewModel = hiltViewModel()
 ) {
     val searchQuery by viewModel.searchQuery.collectAsState()
@@ -76,7 +76,7 @@ fun SearchScreen(
                     SearchResults(
                         items = items,
                         query = searchQuery,
-                        onItemClick = { item -> onNavigateToItemEditor(item.id) }
+                        onItemClick = { item -> onNavigateToItemDetail(item.id) }
                     )
                 }
             }

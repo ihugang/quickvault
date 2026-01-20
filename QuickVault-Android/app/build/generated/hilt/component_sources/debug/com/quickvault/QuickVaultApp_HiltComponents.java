@@ -5,8 +5,8 @@ import com.quickvault.di.DatabaseModule;
 import com.quickvault.di.ServiceModule;
 import com.quickvault.presentation.MainActivity_GeneratedInjector;
 import com.quickvault.presentation.screen.auth.AuthViewModel_HiltModules;
-import com.quickvault.presentation.viewmodel.CardEditorViewModel_HiltModules;
-import com.quickvault.presentation.viewmodel.CardsViewModel_HiltModules;
+import com.quickvault.presentation.viewmodel.ItemEditorViewModel_HiltModules;
+import com.quickvault.presentation.viewmodel.ItemsViewModel_HiltModules;
 import com.quickvault.presentation.viewmodel.SettingsViewModel_HiltModules;
 import dagger.Binds;
 import dagger.Component;
@@ -162,10 +162,10 @@ public final class QuickVaultApp_HiltComponents {
   @Subcomponent(
       modules = {
           AuthViewModel_HiltModules.KeyModule.class,
-          CardEditorViewModel_HiltModules.KeyModule.class,
-          CardsViewModel_HiltModules.KeyModule.class,
           HiltWrapper_ActivityRetainedComponentManager_LifecycleModule.class,
           HiltWrapper_SavedStateHandleModule.class,
+          ItemEditorViewModel_HiltModules.KeyModule.class,
+          ItemsViewModel_HiltModules.KeyModule.class,
           ActivityCBuilderModule.class,
           ViewModelCBuilderModule.class,
           SettingsViewModel_HiltModules.KeyModule.class
@@ -205,9 +205,9 @@ public final class QuickVaultApp_HiltComponents {
   @Subcomponent(
       modules = {
           AuthViewModel_HiltModules.BindsModule.class,
-          CardEditorViewModel_HiltModules.BindsModule.class,
-          CardsViewModel_HiltModules.BindsModule.class,
           HiltWrapper_HiltViewModelFactory_ViewModelModule.class,
+          ItemEditorViewModel_HiltModules.BindsModule.class,
+          ItemsViewModel_HiltModules.BindsModule.class,
           SettingsViewModel_HiltModules.BindsModule.class
       }
   )

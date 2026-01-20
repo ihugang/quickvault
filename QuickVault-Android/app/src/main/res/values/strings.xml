@@ -9,6 +9,7 @@
     <string name="common_done">Done</string>
     <string name="common_add">Add</string>
     <string name="common_close">Close</string>
+    <string name="common_back">Back</string>
     <string name="common_confirm">Confirm</string>
     <string name="common_error">Error</string>
     <string name="common_success">Success</string>
@@ -211,6 +212,20 @@
     <string name="export_watermark_spacing_normal">Normal</string>
     <string name="export_watermark_spacing_sparse">Sparse</string>
     <string name="export_watermark_opacity">Opacity</string>
+    <string name="watermark_default_text">Confidential / 机密</string>
+    <string name="watermark_settings">Watermark Settings</string>
+    <string name="watermark_text">Watermark Text</string>
+    <string name="watermark_opacity">Opacity: %d%%</string>
+    <string name="watermark_angle">Angle: %d°</string>
+    <string name="watermark_remove">Remove Watermark</string>
+    <string name="watermark_enable">Enable Watermark</string>
+    <string name="watermark_font_size">Font Size: %d</string>
+    <string name="watermark_spacing">Line Spacing</string>
+    <string name="watermark_spacing_dense">Dense</string>
+    <string name="watermark_spacing_normal">Normal</string>
+    <string name="watermark_spacing_sparse">Sparse</string>
+    <string name="common_apply">Apply</string>
+    <string name="image_add_watermark">Add Watermark</string>
     <string name="export_preview">Preview</string>
     <string name="export_advanced_options">Advanced Options</string>
     <string name="export_size_compression">Size &amp; Compression</string>
@@ -322,9 +337,13 @@
     <string name="items_create_selecttype">Select Type</string>
     <string name="items_create_button">Create</string>
     <string name="items_info_basic">Basic Info</string>
+    <string name="items_info">Information</string>
     <string name="items_info_title">Title</string>
     <string name="items_info_title_hint">Set a clear title for the item</string>
     <string name="items_content">Content</string>
+    <string name="items_created">Created</string>
+    <string name="items_modified">Modified</string>
+    <string name="items_image_number">Image #%d</string>
     <string name="items_content_characters">%d characters</string>
     <string name="items_images_select">Select Images</string>
     <string name="items_images_camera">Take Photo</string>
@@ -355,17 +374,10 @@
     <string name="items_detaWatermark"></string>
 
     <!-- WATERMARK -->
-    <string name="watermark_settings">Watermark Settings</string>
     <string name="watermark_collapse">Collapse</string>
     <string name="watermark_add">Add Watermark</string>
-    <string name="watermark_text">Watermark Text (e.g.: For XX Use Only)</string>
     <string name="watermark_text_placeholder">e.g.: For XX Use Only</string>
     <string name="watermark_fontsize">Font Size</string>
-    <string name="watermark_spacing">Line Spacing</string>
-    <string name="watermark_spacing_dense">Dense</string>
-    <string name="watermark_spacing_normal">Normal</string>
-    <string name="watermark_spacing_sparse">Sparse</string>
-    <string name="watermark_opacity">Opacity</string>
     <string name="watermark_preview">Preview</string>
     <string name="watermark_share">Share</string>
     <string name="watermark_scope">Share Scope</string>
@@ -543,7 +555,4 @@
     <string name="crypto_error_decrypt_file">File decryption failed: %1$s</string>
     <string name="crypto_error_derive_key">Key derivation failed: %1$s</string>
     <string name="crypto_error_hash_password">Password hashing failed: %1$s</string>
-
-    <!-- WATERMARK -->
-    <string name="watermark_default_text">QuickVault</string>
 </resources>

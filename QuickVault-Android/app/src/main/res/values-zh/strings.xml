@@ -9,6 +9,7 @@
     <string name="common_done">完成</string>
     <string name="common_add">添加</string>
     <string name="common_close">关闭</string>
+    <string name="common_back">返回</string>
     <string name="common_confirm">确认</string>
     <string name="common_error">错误</string>
     <string name="common_success">成功</string>
@@ -222,6 +223,20 @@
     <string name="export_watermark_spacing_normal">正常</string>
     <string name="export_watermark_spacing_sparse">稀疏</string>
     <string name="export_watermark_opacity">透明度</string>
+    <string name="watermark_default_text">机密 / Confidential</string>
+    <string name="watermark_settings">水印设置</string>
+    <string name="watermark_text">水印文字</string>
+    <string name="watermark_opacity">透明度：%d%%</string>
+    <string name="watermark_angle">角度：%d°</string>
+    <string name="watermark_remove">移除水印</string>
+    <string name="watermark_enable">启用水印</string>
+    <string name="watermark_font_size">字体大小：%d</string>
+    <string name="watermark_spacing">行间距</string>
+    <string name="watermark_spacing_dense">密集</string>
+    <string name="watermark_spacing_normal">正常</string>
+    <string name="watermark_spacing_sparse">稀疏</string>
+    <string name="common_apply">应用</string>
+    <string name="image_add_watermark">添加水印</string>
     <string name="export_preview">预览</string>
     <string name="export_advanced_options">高级选项</string>
     <string name="export_size_compression">尺寸与压缩</string>
@@ -333,9 +348,13 @@
     <string name="items_create_selecttype">选择类型</string>
     <string name="items_create_button">创建</string>
     <string name="items_info_basic">基本信息</string>
+    <string name="items_info">信息</string>
     <string name="items_info_title">标题</string>
     <string name="items_info_title_hint">为卡片设置一个清晰的标题</string>
     <string name="items_content">内容</string>
+    <string name="items_created">创建时间</string>
+    <string name="items_modified">修改时间</string>
+    <string name="items_image_number">图片 #%d</string>
     <string name="items_content_characters">%d 字符</string>
     <string name="items_images_select">选择图片</string>
     <string name="items_images_camera">拍摄照片</string>
@@ -374,17 +393,10 @@
     <string name="items_error_not_found">未找到该卡片</string>
 
     <!-- WATERMARK -->
-    <string name="watermark_settings">水印设置</string>
     <string name="watermark_collapse">收起</string>
     <string name="watermark_add">添加水印</string>
-    <string name="watermark_text">水印文字（例如：仅供XX使用）</string>
     <string name="watermark_text_placeholder">例如：仅供XX使用</string>
     <string name="watermark_fontsize">字体大小</string>
-    <string name="watermark_spacing">行间距</string>
-    <string name="watermark_spacing_dense">密集</string>
-    <string name="watermark_spacing_normal">正常</string>
-    <string name="watermark_spacing_sparse">稀疏</string>
-    <string name="watermark_opacity">透明度</string>
     <string name="watermark_preview">预览</string>
     <string name="watermark_share">分享</string>
     <string name="watermark_scope">分享范围</string>
@@ -540,7 +552,4 @@
     <string name="crypto_error_decrypt_file">文件解密失败：%1$s</string>
     <string name="crypto_error_derive_key">密钥派生失败：%1$s</string>
     <string name="crypto_error_hash_password">密码哈希失败：%1$s</string>
-
-    <!-- WATERMARK -->
-    <string name="watermark_default_text">随取</string>
 </resources>

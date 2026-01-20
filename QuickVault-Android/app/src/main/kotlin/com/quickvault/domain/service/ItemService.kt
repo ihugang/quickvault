@@ -26,4 +26,6 @@ interface ItemService {
     suspend fun getShareableText(id: String): Result<String>
     suspend fun getShareableImages(id: String): Result<List<ByteArray>>
     suspend fun getShareableFiles(id: String): Result<List<Triple<ByteArray, String, String>>>
+    
+    suspend fun getImageFullData(imageId: String): Result<ByteArray>
 }

@@ -78,8 +78,8 @@ class WatermarkServiceImpl @Inject constructor(
         // 计算对角线长度
         val diagonalLength = sqrt((width * width + height * height).toDouble()).toFloat()
 
-        // 计算水印间距
-        val spacing = textWidth * WATERMARK_SPACING_FACTOR
+        // 使用 lineSpacing 作为间距倍数
+        val spacing = textWidth * WATERMARK_SPACING_FACTOR * style.lineSpacing
 
         // 保存画布状态
         canvas.save()

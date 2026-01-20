@@ -162,6 +162,8 @@
     <string name="cards_unpin">取消置顶</string>
     <string name="cards_updated">更新时间</string>
     <string name="common_add">添加</string>
+    <string name="common_apply">应用</string>
+    <string name="common_back">返回</string>
     <string name="common_cancel">取消</string>
     <string name="common_close">关闭</string>
     <string name="common_confirm">确认</string>
@@ -263,6 +265,7 @@
     <string name="field_province">省份</string>
     <string name="field_recipient">收件人</string>
     <string name="field_taxid">税号</string>
+    <string name="image_add_watermark">添加水印</string>
     <string name="intro_button_continue">我知道了，开始使用</string>
     <string name="intro_feature_encryption_description">采用 AES-256-GCM 加密算法，所有敏感数据都经过加密存储，即使设备丢失也无法被破解。</string>
     <string name="intro_feature_encryption_title">数据加密保护</string>
@@ -286,6 +289,7 @@
     <string name="items_create_selecttype">选择类型</string>
     <string name="items_create_text">创建文本卡片</string>
     <string name="items_create_title">创建%s</string>
+    <string name="items_created">创建时间</string>
     <string name="items_created_success">创建成功</string>
     <string name="items_delete_confirm">确定要删除这张卡片吗?</string>
     <string name="items_delete_message">此操作不可恢复</string>
@@ -305,14 +309,17 @@
     <string name="items_detail_share_text">分享文本</string>
     <string name="items_detail_tags">标签</string>
     <string name="items_detail_unpin">取消置顶</string>
+    <string name="items_edit_title">编辑卡片</string>
     <string name="items_empty">还没有卡片</string>
     <string name="items_empty_search">未找到结果</string>
     <string name="items_empty_search_subtitle">试试其他搜索关键词</string>
     <string name="items_empty_subtitle">点击右上角 + 创建第一张卡片</string>
+    <string name="items_error_not_found">未找到该卡片</string>
     <string name="items_files_count">%d 个文件</string>
     <string name="items_files_limit">最多可选择 10 个文件，单个文件不超过 10MB</string>
     <string name="items_files_section">文件</string>
     <string name="items_files_select">选择文件</string>
+    <string name="items_image_number">图片 #%d</string>
     <string name="items_images_camera">拍摄照片</string>
     <string name="items_images_camera_permission">请在系统设置中允许访问相机</string>
     <string name="items_images_camera_unavailable">相机不可用</string>
@@ -320,10 +327,12 @@
     <string name="items_images_limit">最多可选择 10 张图片</string>
     <string name="items_images_section">图片</string>
     <string name="items_images_select">选择图片</string>
+    <string name="items_info">信息</string>
     <string name="items_info_basic">基本信息</string>
     <string name="items_info_title">标题</string>
     <string name="items_info_title_hint">为卡片设置一个清晰的标题</string>
     <string name="items_loading">加载中...</string>
+    <string name="items_modified">修改时间</string>
     <string name="items_pinned">置顶</string>
     <string name="items_search_placeholder">搜索标题或标签...</string>
     <string name="items_sort_created">创建时间</string>
@@ -444,13 +453,17 @@
     <string name="validation_title_required">标题不能为空</string>
     <string name="validation_title_too_long">标题过长（最多%1$d字符）</string>
     <string name="watermark_add">添加水印</string>
+    <string name="watermark_angle">角度：%d°</string>
     <string name="watermark_collapse">收起</string>
-    <string name="watermark_default_text">随取</string>
+    <string name="watermark_default_text">机密 / Confidential</string>
+    <string name="watermark_enable">启用水印</string>
+    <string name="watermark_font_size">字体大小：%d</string>
     <string name="watermark_fontsize">字体大小</string>
     <string name="watermark_hint">水印将以对角线平铺方式覆盖在图片上</string>
-    <string name="watermark_opacity">透明度</string>
+    <string name="watermark_opacity">透明度：%d%%</string>
     <string name="watermark_preparing">准备中...</string>
     <string name="watermark_preview">预览</string>
+    <string name="watermark_remove">移除水印</string>
     <string name="watermark_scope">分享范围</string>
     <string name="watermark_scope_all">全部图片（%d张）</string>
     <string name="watermark_scope_current">仅此图片</string>
@@ -461,6 +474,6 @@
     <string name="watermark_spacing_dense">密集</string>
     <string name="watermark_spacing_normal">正常</string>
     <string name="watermark_spacing_sparse">稀疏</string>
-    <string name="watermark_text">水印文字（例如：仅供XX使用）</string>
+    <string name="watermark_text">水印文字</string>
     <string name="watermark_text_placeholder">例如：仅供XX使用</string>
 </resources>

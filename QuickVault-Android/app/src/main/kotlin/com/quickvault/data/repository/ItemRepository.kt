@@ -182,4 +182,6 @@ class ItemRepository @Inject constructor(
             List(array.length()) { index -> array.getString(index) }
         }.getOrDefault(emptyList())
     }
+    
+    suspend fun getAttachmentById(attachmentId: String) = attachmentRepository.getAttachmentById(attachmentId)
 }

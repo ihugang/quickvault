@@ -48,7 +48,7 @@ import java.util.Locale
 @Composable
 fun ItemsScreen(
     onCreateItem: (ItemType) -> Unit,
-    onEditItem: (String) -> Unit,
+    onViewItem: (String) -> Unit,
     viewModel: ItemsViewModel = hiltViewModel()
 ) {
     val items by viewModel.items.collectAsState()
@@ -100,7 +100,7 @@ fun ItemsScreen(
                             SectionHeader(title = stringResource(R.string.items_pinned))
                         }
                         items(pinnedItems, key = { it.id }) { item ->
-                            ItemRow(item = item, onEditItem = onEditItem, onTogglePin = {
+                            ItemRow(item = item, onViewItem = onViewItem, onTogglePin = {
                                 viewModel.togglePin(item.id)
                             })
                         }
@@ -111,7 +111,7 @@ fun ItemsScreen(
                             SectionHeader(title = stringResource(R.string.items_all))
                         }
                         items(unpinnedItems, key = { it.id }) { item ->
-                            ItemRow(item = item, onEditItem = onEditItem, onTogglePin = {
+                            ItemRow(item = item, onViewItem = onViewItem, onTogglePin = {
                                 viewModel.togglePin(item.id)
                             })
                         }
@@ -169,14 +169,14 @@ private fun SectionHeader(title: String) {
 @Composable
 private fun ItemRow(
     item: ItemDTO,
-    onEditItem: (String) -> Unit,
+    onViewItem: (String) -> Unit,
     onTogglePin: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp)
-            .clickable { onEditItem(item.id) },
+            .clickable { onViewItem(item.id) },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(

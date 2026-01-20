@@ -2,6 +2,7 @@ package com.quickvault.presentation.screen.items
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.view.WindowManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -13,7 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,10 +24,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.DialogWindowProvider
 import com.quickvault.R
 import com.quickvault.domain.service.WatermarkService
 import com.quickvault.domain.service.WatermarkStyle
@@ -41,7 +44,8 @@ fun ImageViewerDialog(
     imageData: ByteArray,
     fileName: String,
     watermarkService: WatermarkService,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onShareImage: (Bitmap) -> Unit = {} // 分享图片回调
 ) {
     var scale by remember { mutableStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
@@ -82,6 +86,13 @@ fun ImageViewerDialog(
             decorFitsSystemWindows = false
         )
     ) {
+        val window = (LocalView.current.parent as? DialogWindowProvider)?.window
+        SideEffect {
+            window?.attributes = window?.attributes?.apply {
+                layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            }
+        }
+        
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -90,7 +101,8 @@ fun ImageViewerDialog(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .windowInsetsPadding(WindowInsets.systemBars) // Column 整体避开顶部状态栏和底部导航栏
+                    // .windowInsetsPadding(WindowInsets.safeDrawing) // 移除根容器的 safeDrawing，改为各组件单独处理
+
             ) {
                 // 顶部操作栏
                 TopAppBar(
@@ -111,17 +123,19 @@ fun ImageViewerDialog(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { showWatermarkSettings = !showWatermarkSettings }) {
+                        IconButton(onClick = { onShareImage(displayBitmap) }) {
                             Icon(
-                                imageVector = Icons.Default.Settings,
-                                contentDescription = stringResource(R.string.watermark_settings),
-                                tint = if (showWatermarkSettings) MaterialTheme.colorScheme.primary else Color.White
+                                imageVector = Icons.Default.Share,
+                                contentDescription = stringResource(R.string.watermark_share),
+                                tint = Color.White
                             )
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = Color.Black.copy(alpha = 0.7f)
-                    )
+                    ),
+                    windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top)
+
                 )
                 
                 // 图片显示区域
@@ -218,8 +232,7 @@ private fun WatermarkSettingsPanel(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.navigationBars) // 面板避开底部导航栏
-            .heightIn(max = 500.dp), // 限制最大高度，避免遮挡顶部内容
+            .heightIn(max = 800.dp), // 限制最大高度，避免遮挡顶部内容
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
         shadowElevation = 24.dp,
         tonalElevation = 8.dp
@@ -228,8 +241,12 @@ private fun WatermarkSettingsPanel(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(scrollState) // 添加滚动功能
-                .padding(start = 20.dp, end = 20.dp, top = 32.dp, bottom = 24.dp), // 增加顶部 padding
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+                // 背景铺到底部边缘；内容避开底部手势条/导航栏与键盘，并在左右避开缺口
+                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                .navigationBarsPadding()
+                .imePadding()
+                .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 72.dp), // 增加底部空间，避免内容被遮挡
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // 标题栏和开关
             Row(
@@ -240,7 +257,7 @@ private fun WatermarkSettingsPanel(
                 Column {
                     Text(
                         text = stringResource(R.string.watermark_settings),
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(

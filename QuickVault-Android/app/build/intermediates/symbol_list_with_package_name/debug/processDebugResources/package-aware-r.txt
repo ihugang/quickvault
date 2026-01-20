@@ -1158,6 +1158,8 @@ string cards_updated
 string close_drawer
 string close_sheet
 string common_add
+string common_apply
+string common_back
 string common_cancel
 string common_close
 string common_confirm
@@ -1279,6 +1281,7 @@ string fingerprint_prompt_message
 string generic_error_no_device_credential
 string generic_error_no_keyguard
 string generic_error_user_canceled
+string image_add_watermark
 string in_progress
 string indeterminate
 string intro_button_continue
@@ -1304,6 +1307,7 @@ string items_create_image
 string items_create_selecttype
 string items_create_text
 string items_create_title
+string items_created
 string items_created_success
 string items_delete_confirm
 string items_delete_message
@@ -1324,14 +1328,17 @@ string items_detail_share_images
 string items_detail_share_text
 string items_detail_tags
 string items_detail_unpin
+string items_edit_title
 string items_empty
 string items_empty_search
 string items_empty_search_subtitle
 string items_empty_subtitle
+string items_error_not_found
 string items_files_count
 string items_files_limit
 string items_files_section
 string items_files_select
+string items_image_number
 string items_images_camera
 string items_images_camera_permission
 string items_images_camera_unavailable
@@ -1339,10 +1346,12 @@ string items_images_count
 string items_images_limit
 string items_images_section
 string items_images_select
+string items_info
 string items_info_basic
 string items_info_title
 string items_info_title_hint
 string items_loading
+string items_modified
 string items_pinned
 string items_search_placeholder
 string items_sort_created
@@ -1541,13 +1550,17 @@ string validation_taxid_required
 string validation_title_required
 string validation_title_too_long
 string watermark_add
+string watermark_angle
 string watermark_collapse
 string watermark_default_text
+string watermark_enable
+string watermark_font_size
 string watermark_fontsize
 string watermark_hint
 string watermark_opacity
 string watermark_preparing
 string watermark_preview
+string watermark_remove
 string watermark_scope
 string watermark_scope_all
 string watermark_scope_current
@@ -1970,3 +1983,4 @@ styleable View android_theme android_focusable paddingEnd paddingStart theme
 styleable ViewBackgroundHelper android_background backgroundTint backgroundTintMode
 styleable ViewStubCompat android_id android_layout android_inflatedId
 xml data_extraction_rules
+xml file_paths

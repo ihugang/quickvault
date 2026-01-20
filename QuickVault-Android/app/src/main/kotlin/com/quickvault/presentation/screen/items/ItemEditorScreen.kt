@@ -1,15 +1,23 @@
 package com.quickvault.presentation.screen.items
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,7 +34,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -57,6 +68,8 @@ fun ItemEditorScreen(
     val context = LocalContext.current
 
     var tagInput by remember { mutableStateOf("") }
+    var selectedImageData by remember { mutableStateOf<ByteArray?>(null) }
+    var selectedImageName by remember { mutableStateOf("") }
 
     val imagePicker = rememberLauncherForActivityResult(
         ActivityResultContracts.GetMultipleContents()
@@ -161,11 +174,38 @@ fun ItemEditorScreen(
                         Text(stringResource(R.string.items_images_select))
                     }
                 }
-                itemsIndexed(images) { index, image ->
-                    AttachmentRow(
-                        name = image.fileName,
-                        onRemove = { viewModel.removeImage(index) }
-                    )
+                if (images.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = stringResource(R.string.items_images_count, images.size),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+                items(images.chunked(3)) { rowImages ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        rowImages.forEachIndexed { indexInRow, image ->
+                            val index = images.indexOf(image)
+                            ImageThumbnailCard(
+                                imageData = image.data,
+                                fileName = image.fileName,
+                                onRemove = { viewModel.removeImage(index) },
+                                onClick = {
+                                    selectedImageData = image.data
+                                    selectedImageName = image.fileName
+                                },
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                        // 填充空白空间
+                        repeat(3 - rowImages.size) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
                 }
             } else if (itemType == ItemType.FILE) {
                 item {
@@ -219,6 +259,30 @@ fun ItemEditorScreen(
             }
         }
     }
+
+    // 图片查看器
+    selectedImageData?.let { imageData ->
+        ImageViewerDialog(
+            imageData = imageData,
+            fileName = selectedImageName,
+            watermarkService = com.quickvault.domain.service.impl.WatermarkServiceImpl(context),
+            onDismiss = { selectedImageData = null },
+            onShareImage = { bitmap ->
+                // 分享图片功能
+                try {
+                    val imageUri = saveBitmapToCache(context, bitmap, "shared_image.jpg")
+                    val shareIntent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                        type = "image/jpeg"
+                        putExtra(android.content.Intent.EXTRA_STREAM, imageUri)
+                        addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    context.startActivity(android.content.Intent.createChooser(shareIntent, context.getString(R.string.watermark_share)))
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -235,10 +299,75 @@ private fun AttachmentRow(name: String, onRemove: () -> Unit) {
 }
 
 @Composable
+private fun ImageThumbnailCard(
+    imageData: ByteArray,
+    fileName: String,
+    onRemove: () -> Unit,
+    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.aspectRatio(1f),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+        onClick = onClick
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            // 显示图片
+            Image(
+                bitmap = android.graphics.BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+                    .asImageBitmap(),
+                contentDescription = fileName,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            // 删除按钮
+            IconButton(
+                onClick = onRemove,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(R.string.common_delete),
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .background(
+                            MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+                            CircleShape
+                        )
+                        .padding(2.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun typeLabel(type: ItemType): String {
     return when (type) {
         ItemType.TEXT -> stringResource(R.string.items_type_text)
         ItemType.IMAGE -> stringResource(R.string.items_type_image)
         ItemType.FILE -> stringResource(R.string.items_type_file)
     }
+}
+
+/**
+ * 将Bitmap保存到缓存目录并返回FileProvider URI
+ */
+private fun saveBitmapToCache(context: Context, bitmap: Bitmap, fileName: String): Uri {
+    val cacheDir = java.io.File(context.cacheDir, "shared")
+    if (!cacheDir.exists()) {
+        cacheDir.mkdirs()
+    }
+    val file = java.io.File(cacheDir, fileName)
+    file.outputStream().use { outputStream ->
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)
+    }
+    return androidx.core.content.FileProvider.getUriForFile(
+        context,
+        "${context.packageName}.fileprovider",
+        file
+    )
 }

@@ -4,7 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.quickvault.data.model.FileData
+import com.quickvault.data.model.FileDTO
 import com.quickvault.data.model.ImageData
+import com.quickvault.data.model.ImageDTO
 import com.quickvault.data.model.ItemDTO
 import com.quickvault.data.model.ItemType
 import com.quickvault.domain.service.ItemService
@@ -48,6 +50,21 @@ class ItemEditorViewModel @Inject constructor(
     private val _files = MutableStateFlow<List<FileData>>(emptyList())
     val files: StateFlow<List<FileData>> = _files.asStateFlow()
 
+    private val _imageMetadata = MutableStateFlow<List<ImageDTO>>(emptyList())
+    val imageMetadata: StateFlow<List<ImageDTO>> = _imageMetadata.asStateFlow()
+
+    private val _fileMetadata = MutableStateFlow<List<FileDTO>>(emptyList())
+    val fileMetadata: StateFlow<List<FileDTO>> = _fileMetadata.asStateFlow()
+
+    private val _createdAt = MutableStateFlow(0L)
+    val createdAt: StateFlow<Long> = _createdAt.asStateFlow()
+
+    private val _updatedAt = MutableStateFlow(0L)
+    val updatedAt: StateFlow<Long> = _updatedAt.asStateFlow()
+
+    private val _isPinned = MutableStateFlow(false)
+    val isPinned: StateFlow<Boolean> = _isPinned.asStateFlow()
+
     init {
         if (itemId == null) {
             initialType?.let { _itemType.value = it }
@@ -62,7 +79,7 @@ class ItemEditorViewModel @Inject constructor(
             itemService.getItem(id)
                 .onSuccess { item ->
                     applyItem(item)
-                    _uiState.update { it.copy(isLoading = false, isEditMode = true) }
+                    _uiState.update { it.copy(isLoading = false, isEditMode = true, itemId = id) }
                 }
                 .onFailure { error ->
                     _uiState.update { it.copy(isLoading = false, errorMessage = error.message) }
@@ -75,6 +92,11 @@ class ItemEditorViewModel @Inject constructor(
         _tags.value = item.tags
         _itemType.value = item.type
         _textContent.value = item.textContent ?: ""
+        _createdAt.value = item.createdAt
+        _updatedAt.value = item.updatedAt
+        _isPinned.value = item.isPinned
+        _imageMetadata.value = item.images ?: emptyList()
+        _fileMetadata.value = item.files ?: emptyList()
     }
 
     fun setTitle(value: String) {
@@ -167,10 +189,42 @@ class ItemEditorViewModel @Inject constructor(
         }
         return result.map { }
     }
+
+    fun togglePin() {
+        itemId?.let { id ->
+            viewModelScope.launch {
+                itemService.togglePin(id)
+                    .onSuccess {
+                        _isPinned.value = !_isPinned.value
+                    }
+            }
+        }
+    }
+
+    fun delete(onSuccess: () -> Unit) {
+        itemId?.let { id ->
+            viewModelScope.launch {
+                _uiState.update { it.copy(isLoading = true) }
+                itemService.deleteItem(id)
+                    .onSuccess {
+                        _uiState.update { it.copy(isLoading = false) }
+                        onSuccess()
+                    }
+                    .onFailure { error ->
+                        _uiState.update { it.copy(isLoading = false, errorMessage = error.message) }
+                    }
+            }
+        }
+    }
+    
+    suspend fun getImageFullData(imageId: String): ByteArray? {
+        return itemService.getImageFullData(imageId).getOrNull()
+    }
 }
 
 data class ItemEditorUiState(
     val isLoading: Boolean = false,
     val isEditMode: Boolean = false,
+    val itemId: String? = null,
     val errorMessage: String? = null
 )

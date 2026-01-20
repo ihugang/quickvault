@@ -23,6 +23,7 @@ import com.quickvault.presentation.navigation.Screen
 import com.quickvault.presentation.screen.auth.SetupScreen
 import com.quickvault.presentation.screen.auth.UnlockScreen
 import com.quickvault.data.model.ItemType
+import com.quickvault.presentation.screen.items.ItemDetailScreen
 import com.quickvault.presentation.screen.items.ItemEditorScreen
 import com.quickvault.presentation.screen.items.ItemsScreen
 import com.quickvault.presentation.screen.search.SearchScreen
@@ -179,8 +180,8 @@ fun MainScreenWithNavigation() {
                     onCreateItem = { type ->
                         navController.navigate("item_editor?itemType=${type.name}")
                     },
-                    onEditItem = { itemId ->
-                        navController.navigate("item_editor/$itemId")
+                    onViewItem = { itemId ->
+                        navController.navigate("item_detail/$itemId")
                     }
                 )
             }
@@ -188,8 +189,8 @@ fun MainScreenWithNavigation() {
             // 搜索
             composable(Screen.Search.route) {
                 SearchScreen(
-                    onNavigateToItemEditor = { itemId ->
-                        navController.navigate("item_editor/$itemId")
+                    onNavigateToItemDetail = { itemId ->
+                        navController.navigate("item_detail/$itemId")
                     }
                 )
             }
@@ -201,6 +202,23 @@ fun MainScreenWithNavigation() {
                         // 锁定后返回解锁界面
                         // 需要从父导航控制器导航
                         // TODO: 实现应用级别的锁定状态管理
+                    }
+                )
+            }
+
+            // 项目详细画面
+            composable(
+                route = "item_detail/{itemId}",
+                arguments = listOf(
+                    navArgument("itemId") {
+                        type = NavType.StringType
+                    }
+                )
+            ) {
+                ItemDetailScreen(
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToEdit = { itemId ->
+                        navController.navigate("item_editor/$itemId")
                     }
                 )
             }

@@ -8,33 +8,34 @@ import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.quickvault.data.local.database.QuickVaultDatabase;
-import com.quickvault.data.local.database.dao.CardDao;
-import com.quickvault.data.local.database.dao.CardFieldDao;
+import com.quickvault.data.local.database.dao.AttachmentDao;
+import com.quickvault.data.local.database.dao.ItemDao;
 import com.quickvault.data.local.keystore.SecureKeyManager;
-import com.quickvault.data.repository.CardRepository;
-import com.quickvault.di.DatabaseModule_ProvideCardDaoFactory;
-import com.quickvault.di.DatabaseModule_ProvideCardFieldDaoFactory;
+import com.quickvault.data.repository.AttachmentRepository;
+import com.quickvault.data.repository.ItemRepository;
+import com.quickvault.di.DatabaseModule_ProvideAttachmentDaoFactory;
 import com.quickvault.di.DatabaseModule_ProvideDatabaseFactory;
+import com.quickvault.di.DatabaseModule_ProvideItemDaoFactory;
 import com.quickvault.di.ServiceModule_ProvideAuthServiceFactory;
 import com.quickvault.di.ServiceModule_ProvideBiometricServiceFactory;
-import com.quickvault.di.ServiceModule_ProvideCardServiceFactory;
 import com.quickvault.di.ServiceModule_ProvideCryptoServiceFactory;
+import com.quickvault.di.ServiceModule_ProvideItemServiceFactory;
 import com.quickvault.di.ServiceModule_ProvideSecureKeyManagerFactory;
-import com.quickvault.di.ServiceModule_ProvideValidationServiceFactory;
+import com.quickvault.di.ServiceModule_ProvideWatermarkServiceFactory;
 import com.quickvault.domain.service.AuthService;
 import com.quickvault.domain.service.BiometricService;
-import com.quickvault.domain.service.CardService;
 import com.quickvault.domain.service.CryptoService;
-import com.quickvault.domain.validation.ValidationService;
+import com.quickvault.domain.service.ItemService;
+import com.quickvault.domain.service.WatermarkService;
 import com.quickvault.presentation.MainActivity;
 import com.quickvault.presentation.MainActivity_MembersInjector;
 import com.quickvault.presentation.lifecycle.AppLifecycleObserver;
 import com.quickvault.presentation.screen.auth.AuthViewModel;
 import com.quickvault.presentation.screen.auth.AuthViewModel_HiltModules_KeyModule_ProvideFactory;
-import com.quickvault.presentation.viewmodel.CardEditorViewModel;
-import com.quickvault.presentation.viewmodel.CardEditorViewModel_HiltModules_KeyModule_ProvideFactory;
-import com.quickvault.presentation.viewmodel.CardsViewModel;
-import com.quickvault.presentation.viewmodel.CardsViewModel_HiltModules_KeyModule_ProvideFactory;
+import com.quickvault.presentation.viewmodel.ItemEditorViewModel;
+import com.quickvault.presentation.viewmodel.ItemEditorViewModel_HiltModules_KeyModule_ProvideFactory;
+import com.quickvault.presentation.viewmodel.ItemsViewModel;
+import com.quickvault.presentation.viewmodel.ItemsViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.quickvault.presentation.viewmodel.SettingsViewModel;
 import com.quickvault.presentation.viewmodel.SettingsViewModel_HiltModules_KeyModule_ProvideFactory;
 import dagger.hilt.android.ActivityRetainedLifecycle;
@@ -395,7 +396,7 @@ public final class DaggerQuickVaultApp_HiltComponents_SingletonC {
 
     @Override
     public Set<String> getViewModelKeys() {
-      return SetBuilder.<String>newSetBuilder(4).add(AuthViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(CardEditorViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(CardsViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(SettingsViewModel_HiltModules_KeyModule_ProvideFactory.provide()).build();
+      return SetBuilder.<String>newSetBuilder(4).add(AuthViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(ItemEditorViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(ItemsViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(SettingsViewModel_HiltModules_KeyModule_ProvideFactory.provide()).build();
     }
 
     @Override
@@ -431,9 +432,9 @@ public final class DaggerQuickVaultApp_HiltComponents_SingletonC {
 
     private Provider<AuthViewModel> authViewModelProvider;
 
-    private Provider<CardEditorViewModel> cardEditorViewModelProvider;
+    private Provider<ItemEditorViewModel> itemEditorViewModelProvider;
 
-    private Provider<CardsViewModel> cardsViewModelProvider;
+    private Provider<ItemsViewModel> itemsViewModelProvider;
 
     private Provider<SettingsViewModel> settingsViewModelProvider;
 
@@ -451,14 +452,14 @@ public final class DaggerQuickVaultApp_HiltComponents_SingletonC {
     private void initialize(final SavedStateHandle savedStateHandleParam,
         final ViewModelLifecycle viewModelLifecycleParam) {
       this.authViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 0);
-      this.cardEditorViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 1);
-      this.cardsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
+      this.itemEditorViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 1);
+      this.itemsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
       this.settingsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 3);
     }
 
     @Override
     public Map<String, javax.inject.Provider<ViewModel>> getHiltViewModelMap() {
-      return MapBuilder.<String, javax.inject.Provider<ViewModel>>newMapBuilder(4).put("com.quickvault.presentation.screen.auth.AuthViewModel", ((Provider) authViewModelProvider)).put("com.quickvault.presentation.viewmodel.CardEditorViewModel", ((Provider) cardEditorViewModelProvider)).put("com.quickvault.presentation.viewmodel.CardsViewModel", ((Provider) cardsViewModelProvider)).put("com.quickvault.presentation.viewmodel.SettingsViewModel", ((Provider) settingsViewModelProvider)).build();
+      return MapBuilder.<String, javax.inject.Provider<ViewModel>>newMapBuilder(4).put("com.quickvault.presentation.screen.auth.AuthViewModel", ((Provider) authViewModelProvider)).put("com.quickvault.presentation.viewmodel.ItemEditorViewModel", ((Provider) itemEditorViewModelProvider)).put("com.quickvault.presentation.viewmodel.ItemsViewModel", ((Provider) itemsViewModelProvider)).put("com.quickvault.presentation.viewmodel.SettingsViewModel", ((Provider) settingsViewModelProvider)).build();
     }
 
     @Override
@@ -490,11 +491,11 @@ public final class DaggerQuickVaultApp_HiltComponents_SingletonC {
           case 0: // com.quickvault.presentation.screen.auth.AuthViewModel 
           return (T) new AuthViewModel(singletonCImpl.provideAuthServiceProvider.get(), ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 1: // com.quickvault.presentation.viewmodel.CardEditorViewModel 
-          return (T) new CardEditorViewModel(singletonCImpl.provideCardServiceProvider.get(), ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule), viewModelCImpl.savedStateHandle);
+          case 1: // com.quickvault.presentation.viewmodel.ItemEditorViewModel 
+          return (T) new ItemEditorViewModel(singletonCImpl.provideItemServiceProvider.get(), viewModelCImpl.savedStateHandle);
 
-          case 2: // com.quickvault.presentation.viewmodel.CardsViewModel 
-          return (T) new CardsViewModel(singletonCImpl.provideCardServiceProvider.get(), ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
+          case 2: // com.quickvault.presentation.viewmodel.ItemsViewModel 
+          return (T) new ItemsViewModel(singletonCImpl.provideItemServiceProvider.get());
 
           case 3: // com.quickvault.presentation.viewmodel.SettingsViewModel 
           return (T) new SettingsViewModel(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule), singletonCImpl.provideAuthServiceProvider.get(), singletonCImpl.provideBiometricServiceProvider.get(), singletonCImpl.provideSecureKeyManagerProvider.get());
@@ -591,15 +592,17 @@ public final class DaggerQuickVaultApp_HiltComponents_SingletonC {
 
     private Provider<QuickVaultDatabase> provideDatabaseProvider;
 
-    private Provider<CardDao> provideCardDaoProvider;
+    private Provider<ItemDao> provideItemDaoProvider;
 
-    private Provider<CardFieldDao> provideCardFieldDaoProvider;
+    private Provider<AttachmentDao> provideAttachmentDaoProvider;
 
-    private Provider<CardRepository> cardRepositoryProvider;
+    private Provider<WatermarkService> provideWatermarkServiceProvider;
 
-    private Provider<ValidationService> provideValidationServiceProvider;
+    private Provider<AttachmentRepository> attachmentRepositoryProvider;
 
-    private Provider<CardService> provideCardServiceProvider;
+    private Provider<ItemRepository> itemRepositoryProvider;
+
+    private Provider<ItemService> provideItemServiceProvider;
 
     private SingletonCImpl(ApplicationContextModule applicationContextModuleParam) {
       this.applicationContextModule = applicationContextModuleParam;
@@ -615,11 +618,12 @@ public final class DaggerQuickVaultApp_HiltComponents_SingletonC {
       this.provideAuthServiceProvider = DoubleCheck.provider(new SwitchingProvider<AuthService>(singletonCImpl, 1));
       this.appLifecycleObserverProvider = DoubleCheck.provider(new SwitchingProvider<AppLifecycleObserver>(singletonCImpl, 0));
       this.provideDatabaseProvider = DoubleCheck.provider(new SwitchingProvider<QuickVaultDatabase>(singletonCImpl, 8));
-      this.provideCardDaoProvider = DoubleCheck.provider(new SwitchingProvider<CardDao>(singletonCImpl, 7));
-      this.provideCardFieldDaoProvider = DoubleCheck.provider(new SwitchingProvider<CardFieldDao>(singletonCImpl, 9));
-      this.cardRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<CardRepository>(singletonCImpl, 6));
-      this.provideValidationServiceProvider = DoubleCheck.provider(new SwitchingProvider<ValidationService>(singletonCImpl, 10));
-      this.provideCardServiceProvider = DoubleCheck.provider(new SwitchingProvider<CardService>(singletonCImpl, 5));
+      this.provideItemDaoProvider = DoubleCheck.provider(new SwitchingProvider<ItemDao>(singletonCImpl, 7));
+      this.provideAttachmentDaoProvider = DoubleCheck.provider(new SwitchingProvider<AttachmentDao>(singletonCImpl, 10));
+      this.provideWatermarkServiceProvider = DoubleCheck.provider(new SwitchingProvider<WatermarkService>(singletonCImpl, 11));
+      this.attachmentRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<AttachmentRepository>(singletonCImpl, 9));
+      this.itemRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<ItemRepository>(singletonCImpl, 6));
+      this.provideItemServiceProvider = DoubleCheck.provider(new SwitchingProvider<ItemService>(singletonCImpl, 5));
     }
 
     @Override
@@ -670,23 +674,26 @@ public final class DaggerQuickVaultApp_HiltComponents_SingletonC {
           case 4: // com.quickvault.domain.service.BiometricService 
           return (T) ServiceModule_ProvideBiometricServiceFactory.provideBiometricService(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 5: // com.quickvault.domain.service.CardService 
-          return (T) ServiceModule_ProvideCardServiceFactory.provideCardService(singletonCImpl.cardRepositoryProvider.get(), singletonCImpl.provideValidationServiceProvider.get(), ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
+          case 5: // com.quickvault.domain.service.ItemService 
+          return (T) ServiceModule_ProvideItemServiceFactory.provideItemService(singletonCImpl.itemRepositoryProvider.get(), ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 6: // com.quickvault.data.repository.CardRepository 
-          return (T) new CardRepository(singletonCImpl.provideCardDaoProvider.get(), singletonCImpl.provideCardFieldDaoProvider.get(), singletonCImpl.provideCryptoServiceProvider.get());
+          case 6: // com.quickvault.data.repository.ItemRepository 
+          return (T) new ItemRepository(singletonCImpl.provideItemDaoProvider.get(), singletonCImpl.attachmentRepositoryProvider.get(), singletonCImpl.provideCryptoServiceProvider.get());
 
-          case 7: // com.quickvault.data.local.database.dao.CardDao 
-          return (T) DatabaseModule_ProvideCardDaoFactory.provideCardDao(singletonCImpl.provideDatabaseProvider.get());
+          case 7: // com.quickvault.data.local.database.dao.ItemDao 
+          return (T) DatabaseModule_ProvideItemDaoFactory.provideItemDao(singletonCImpl.provideDatabaseProvider.get());
 
           case 8: // com.quickvault.data.local.database.QuickVaultDatabase 
           return (T) DatabaseModule_ProvideDatabaseFactory.provideDatabase(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 9: // com.quickvault.data.local.database.dao.CardFieldDao 
-          return (T) DatabaseModule_ProvideCardFieldDaoFactory.provideCardFieldDao(singletonCImpl.provideDatabaseProvider.get());
+          case 9: // com.quickvault.data.repository.AttachmentRepository 
+          return (T) new AttachmentRepository(singletonCImpl.provideAttachmentDaoProvider.get(), singletonCImpl.provideCryptoServiceProvider.get(), singletonCImpl.provideWatermarkServiceProvider.get());
 
-          case 10: // com.quickvault.domain.validation.ValidationService 
-          return (T) ServiceModule_ProvideValidationServiceFactory.provideValidationService(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
+          case 10: // com.quickvault.data.local.database.dao.AttachmentDao 
+          return (T) DatabaseModule_ProvideAttachmentDaoFactory.provideAttachmentDao(singletonCImpl.provideDatabaseProvider.get());
+
+          case 11: // com.quickvault.domain.service.WatermarkService 
+          return (T) ServiceModule_ProvideWatermarkServiceFactory.provideWatermarkService(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
           default: throw new AssertionError(id);
         }

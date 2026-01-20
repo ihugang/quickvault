@@ -36,5 +36,6 @@ data class WatermarkStyle(
     val fontSize: Float = 80f,
     val opacity: Float = 0.3f,
     val angle: Float = -45f,  // 对角线 -45 度
+    val lineSpacing: Float = 1.5f,  // 行间距倍数：1.0=密集, 1.5=正常, 2.0=稀疏
     val color: Int = android.graphics.Color.GRAY
 )

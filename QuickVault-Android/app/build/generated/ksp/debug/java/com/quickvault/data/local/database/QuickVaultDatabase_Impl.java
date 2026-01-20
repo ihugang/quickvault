@@ -13,10 +13,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import com.quickvault.data.local.database.dao.AttachmentDao;
 import com.quickvault.data.local.database.dao.AttachmentDao_Impl;
-import com.quickvault.data.local.database.dao.CardDao;
-import com.quickvault.data.local.database.dao.CardDao_Impl;
-import com.quickvault.data.local.database.dao.CardFieldDao;
-import com.quickvault.data.local.database.dao.CardFieldDao_Impl;
+import com.quickvault.data.local.database.dao.ItemDao;
+import com.quickvault.data.local.database.dao.ItemDao_Impl;
 import java.lang.Class;
 import java.lang.Override;
 import java.lang.String;
@@ -33,34 +31,32 @@ import javax.annotation.processing.Generated;
 @Generated("androidx.room.RoomProcessor")
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
-  private volatile CardDao _cardDao;
-
-  private volatile CardFieldDao _cardFieldDao;
+  private volatile ItemDao _itemDao;
 
   private volatile AttachmentDao _attachmentDao;
 
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(1) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(2) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS `cards` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `card_type` TEXT NOT NULL, `group` TEXT NOT NULL, `is_pinned` INTEGER NOT NULL, `tags_json` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_cards_title` ON `cards` (`title`)");
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_cards_group` ON `cards` (`group`)");
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_cards_is_pinned` ON `cards` (`is_pinned`)");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `card_fields` (`id` TEXT NOT NULL, `card_id` TEXT NOT NULL, `label` TEXT NOT NULL, `encrypted_value` BLOB NOT NULL, `is_required` INTEGER NOT NULL, `display_order` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`card_id`) REFERENCES `cards`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_card_fields_card_id` ON `card_fields` (`card_id`)");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `attachments` (`id` TEXT NOT NULL, `card_id` TEXT NOT NULL, `file_name` TEXT NOT NULL, `file_type` TEXT NOT NULL, `file_size` INTEGER NOT NULL, `encrypted_data` BLOB NOT NULL, `thumbnail_data` BLOB, `created_at` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`card_id`) REFERENCES `cards`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_attachments_card_id` ON `attachments` (`card_id`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `items` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `tags_json` TEXT NOT NULL, `is_pinned` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`id`))");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_items_title` ON `items` (`title`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_items_type` ON `items` (`type`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_items_is_pinned` ON `items` (`is_pinned`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `item_texts` (`id` TEXT NOT NULL, `item_id` TEXT NOT NULL, `encrypted_content` BLOB NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`item_id`) REFERENCES `items`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_item_texts_item_id` ON `item_texts` (`item_id`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `attachments` (`id` TEXT NOT NULL, `item_id` TEXT NOT NULL, `file_name` TEXT NOT NULL, `file_type` TEXT NOT NULL, `file_size` INTEGER NOT NULL, `display_order` INTEGER NOT NULL, `encrypted_data` BLOB NOT NULL, `thumbnail_data` BLOB, `created_at` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`item_id`) REFERENCES `items`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_attachments_item_id` ON `attachments` (`item_id`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b06c2b631c168c9d8344da95f17a5cd0')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c3e617abb85f84700272b444a067f1ea')");
       }
 
       @Override
       public void dropAllTables(@NonNull final SupportSQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS `cards`");
-        db.execSQL("DROP TABLE IF EXISTS `card_fields`");
+        db.execSQL("DROP TABLE IF EXISTS `items`");
+        db.execSQL("DROP TABLE IF EXISTS `item_texts`");
         db.execSQL("DROP TABLE IF EXISTS `attachments`");
         final List<? extends RoomDatabase.Callback> _callbacks = mCallbacks;
         if (_callbacks != null) {
@@ -106,58 +102,56 @@ public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
       @NonNull
       public RoomOpenHelper.ValidationResult onValidateSchema(
           @NonNull final SupportSQLiteDatabase db) {
-        final HashMap<String, TableInfo.Column> _columnsCards = new HashMap<String, TableInfo.Column>(8);
-        _columnsCards.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCards.put("title", new TableInfo.Column("title", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCards.put("card_type", new TableInfo.Column("card_type", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCards.put("group", new TableInfo.Column("group", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCards.put("is_pinned", new TableInfo.Column("is_pinned", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCards.put("tags_json", new TableInfo.Column("tags_json", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCards.put("created_at", new TableInfo.Column("created_at", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCards.put("updated_at", new TableInfo.Column("updated_at", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        final HashSet<TableInfo.ForeignKey> _foreignKeysCards = new HashSet<TableInfo.ForeignKey>(0);
-        final HashSet<TableInfo.Index> _indicesCards = new HashSet<TableInfo.Index>(3);
-        _indicesCards.add(new TableInfo.Index("index_cards_title", false, Arrays.asList("title"), Arrays.asList("ASC")));
-        _indicesCards.add(new TableInfo.Index("index_cards_group", false, Arrays.asList("group"), Arrays.asList("ASC")));
-        _indicesCards.add(new TableInfo.Index("index_cards_is_pinned", false, Arrays.asList("is_pinned"), Arrays.asList("ASC")));
-        final TableInfo _infoCards = new TableInfo("cards", _columnsCards, _foreignKeysCards, _indicesCards);
-        final TableInfo _existingCards = TableInfo.read(db, "cards");
-        if (!_infoCards.equals(_existingCards)) {
-          return new RoomOpenHelper.ValidationResult(false, "cards(com.quickvault.data.local.database.entity.CardEntity).\n"
-                  + " Expected:\n" + _infoCards + "\n"
-                  + " Found:\n" + _existingCards);
+        final HashMap<String, TableInfo.Column> _columnsItems = new HashMap<String, TableInfo.Column>(7);
+        _columnsItems.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsItems.put("title", new TableInfo.Column("title", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsItems.put("type", new TableInfo.Column("type", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsItems.put("tags_json", new TableInfo.Column("tags_json", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsItems.put("is_pinned", new TableInfo.Column("is_pinned", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsItems.put("created_at", new TableInfo.Column("created_at", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsItems.put("updated_at", new TableInfo.Column("updated_at", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysItems = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesItems = new HashSet<TableInfo.Index>(3);
+        _indicesItems.add(new TableInfo.Index("index_items_title", false, Arrays.asList("title"), Arrays.asList("ASC")));
+        _indicesItems.add(new TableInfo.Index("index_items_type", false, Arrays.asList("type"), Arrays.asList("ASC")));
+        _indicesItems.add(new TableInfo.Index("index_items_is_pinned", false, Arrays.asList("is_pinned"), Arrays.asList("ASC")));
+        final TableInfo _infoItems = new TableInfo("items", _columnsItems, _foreignKeysItems, _indicesItems);
+        final TableInfo _existingItems = TableInfo.read(db, "items");
+        if (!_infoItems.equals(_existingItems)) {
+          return new RoomOpenHelper.ValidationResult(false, "items(com.quickvault.data.local.database.entity.ItemEntity).\n"
+                  + " Expected:\n" + _infoItems + "\n"
+                  + " Found:\n" + _existingItems);
         }
-        final HashMap<String, TableInfo.Column> _columnsCardFields = new HashMap<String, TableInfo.Column>(6);
-        _columnsCardFields.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCardFields.put("card_id", new TableInfo.Column("card_id", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCardFields.put("label", new TableInfo.Column("label", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCardFields.put("encrypted_value", new TableInfo.Column("encrypted_value", "BLOB", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCardFields.put("is_required", new TableInfo.Column("is_required", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsCardFields.put("display_order", new TableInfo.Column("display_order", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        final HashSet<TableInfo.ForeignKey> _foreignKeysCardFields = new HashSet<TableInfo.ForeignKey>(1);
-        _foreignKeysCardFields.add(new TableInfo.ForeignKey("cards", "CASCADE", "NO ACTION", Arrays.asList("card_id"), Arrays.asList("id")));
-        final HashSet<TableInfo.Index> _indicesCardFields = new HashSet<TableInfo.Index>(1);
-        _indicesCardFields.add(new TableInfo.Index("index_card_fields_card_id", false, Arrays.asList("card_id"), Arrays.asList("ASC")));
-        final TableInfo _infoCardFields = new TableInfo("card_fields", _columnsCardFields, _foreignKeysCardFields, _indicesCardFields);
-        final TableInfo _existingCardFields = TableInfo.read(db, "card_fields");
-        if (!_infoCardFields.equals(_existingCardFields)) {
-          return new RoomOpenHelper.ValidationResult(false, "card_fields(com.quickvault.data.local.database.entity.CardFieldEntity).\n"
-                  + " Expected:\n" + _infoCardFields + "\n"
-                  + " Found:\n" + _existingCardFields);
+        final HashMap<String, TableInfo.Column> _columnsItemTexts = new HashMap<String, TableInfo.Column>(4);
+        _columnsItemTexts.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsItemTexts.put("item_id", new TableInfo.Column("item_id", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsItemTexts.put("encrypted_content", new TableInfo.Column("encrypted_content", "BLOB", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsItemTexts.put("created_at", new TableInfo.Column("created_at", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysItemTexts = new HashSet<TableInfo.ForeignKey>(1);
+        _foreignKeysItemTexts.add(new TableInfo.ForeignKey("items", "CASCADE", "NO ACTION", Arrays.asList("item_id"), Arrays.asList("id")));
+        final HashSet<TableInfo.Index> _indicesItemTexts = new HashSet<TableInfo.Index>(1);
+        _indicesItemTexts.add(new TableInfo.Index("index_item_texts_item_id", false, Arrays.asList("item_id"), Arrays.asList("ASC")));
+        final TableInfo _infoItemTexts = new TableInfo("item_texts", _columnsItemTexts, _foreignKeysItemTexts, _indicesItemTexts);
+        final TableInfo _existingItemTexts = TableInfo.read(db, "item_texts");
+        if (!_infoItemTexts.equals(_existingItemTexts)) {
+          return new RoomOpenHelper.ValidationResult(false, "item_texts(com.quickvault.data.local.database.entity.TextContentEntity).\n"
+                  + " Expected:\n" + _infoItemTexts + "\n"
+                  + " Found:\n" + _existingItemTexts);
         }
-        final HashMap<String, TableInfo.Column> _columnsAttachments = new HashMap<String, TableInfo.Column>(8);
+        final HashMap<String, TableInfo.Column> _columnsAttachments = new HashMap<String, TableInfo.Column>(9);
         _columnsAttachments.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsAttachments.put("card_id", new TableInfo.Column("card_id", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsAttachments.put("item_id", new TableInfo.Column("item_id", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAttachments.put("file_name", new TableInfo.Column("file_name", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAttachments.put("file_type", new TableInfo.Column("file_type", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAttachments.put("file_size", new TableInfo.Column("file_size", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsAttachments.put("display_order", new TableInfo.Column("display_order", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAttachments.put("encrypted_data", new TableInfo.Column("encrypted_data", "BLOB", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAttachments.put("thumbnail_data", new TableInfo.Column("thumbnail_data", "BLOB", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAttachments.put("created_at", new TableInfo.Column("created_at", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysAttachments = new HashSet<TableInfo.ForeignKey>(1);
-        _foreignKeysAttachments.add(new TableInfo.ForeignKey("cards", "CASCADE", "NO ACTION", Arrays.asList("card_id"), Arrays.asList("id")));
+        _foreignKeysAttachments.add(new TableInfo.ForeignKey("items", "CASCADE", "NO ACTION", Arrays.asList("item_id"), Arrays.asList("id")));
         final HashSet<TableInfo.Index> _indicesAttachments = new HashSet<TableInfo.Index>(1);
-        _indicesAttachments.add(new TableInfo.Index("index_attachments_card_id", false, Arrays.asList("card_id"), Arrays.asList("ASC")));
+        _indicesAttachments.add(new TableInfo.Index("index_attachments_item_id", false, Arrays.asList("item_id"), Arrays.asList("ASC")));
         final TableInfo _infoAttachments = new TableInfo("attachments", _columnsAttachments, _foreignKeysAttachments, _indicesAttachments);
         final TableInfo _existingAttachments = TableInfo.read(db, "attachments");
         if (!_infoAttachments.equals(_existingAttachments)) {
@@ -167,7 +161,7 @@ public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "b06c2b631c168c9d8344da95f17a5cd0", "9ae8f88296682af742bced67cdeec5fb");
+    }, "c3e617abb85f84700272b444a067f1ea", "e6956d5479cd521626b8015e8edd2929");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -178,7 +172,7 @@ public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     final HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "cards","card_fields","attachments");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "items","item_texts","attachments");
   }
 
   @Override
@@ -194,8 +188,8 @@ public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
       if (_supportsDeferForeignKeys) {
         _db.execSQL("PRAGMA defer_foreign_keys = TRUE");
       }
-      _db.execSQL("DELETE FROM `cards`");
-      _db.execSQL("DELETE FROM `card_fields`");
+      _db.execSQL("DELETE FROM `items`");
+      _db.execSQL("DELETE FROM `item_texts`");
       _db.execSQL("DELETE FROM `attachments`");
       super.setTransactionSuccessful();
     } finally {
@@ -214,8 +208,7 @@ public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
   @NonNull
   protected Map<Class<?>, List<Class<?>>> getRequiredTypeConverters() {
     final HashMap<Class<?>, List<Class<?>>> _typeConvertersMap = new HashMap<Class<?>, List<Class<?>>>();
-    _typeConvertersMap.put(CardDao.class, CardDao_Impl.getRequiredConverters());
-    _typeConvertersMap.put(CardFieldDao.class, CardFieldDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(ItemDao.class, ItemDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(AttachmentDao.class, AttachmentDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
@@ -236,29 +229,15 @@ public final class QuickVaultDatabase_Impl extends QuickVaultDatabase {
   }
 
   @Override
-  public CardDao cardDao() {
-    if (_cardDao != null) {
-      return _cardDao;
+  public ItemDao itemDao() {
+    if (_itemDao != null) {
+      return _itemDao;
     } else {
       synchronized(this) {
-        if(_cardDao == null) {
-          _cardDao = new CardDao_Impl(this);
+        if(_itemDao == null) {
+          _itemDao = new ItemDao_Impl(this);
         }
-        return _cardDao;
-      }
-    }
-  }
-
-  @Override
-  public CardFieldDao cardFieldDao() {
-    if (_cardFieldDao != null) {
-      return _cardFieldDao;
-    } else {
-      synchronized(this) {
-        if(_cardFieldDao == null) {
-          _cardFieldDao = new CardFieldDao_Impl(this);
-        }
-        return _cardFieldDao;
+        return _itemDao;
       }
     }
   }

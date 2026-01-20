@@ -39,7 +39,7 @@ public final class AttachmentDao_Impl implements AttachmentDao {
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteAttachment;
 
-  private final SharedSQLiteStatement __preparedStmtOfDeleteAttachmentsByCardId;
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAttachmentsByItemId;
 
   public AttachmentDao_Impl(@NonNull final RoomDatabase __db) {
     this.__db = __db;
@@ -47,24 +47,25 @@ public final class AttachmentDao_Impl implements AttachmentDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `attachments` (`id`,`card_id`,`file_name`,`file_type`,`file_size`,`encrypted_data`,`thumbnail_data`,`created_at`) VALUES (?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `attachments` (`id`,`item_id`,`file_name`,`file_type`,`file_size`,`display_order`,`encrypted_data`,`thumbnail_data`,`created_at`) VALUES (?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
       protected void bind(@NonNull final SupportSQLiteStatement statement,
           @NonNull final AttachmentEntity entity) {
         statement.bindString(1, entity.getId());
-        statement.bindString(2, entity.getCardId());
+        statement.bindString(2, entity.getItemId());
         statement.bindString(3, entity.getFileName());
         statement.bindString(4, entity.getFileType());
         statement.bindLong(5, entity.getFileSize());
-        statement.bindBlob(6, entity.getEncryptedData());
+        statement.bindLong(6, entity.getDisplayOrder());
+        statement.bindBlob(7, entity.getEncryptedData());
         if (entity.getThumbnailData() == null) {
-          statement.bindNull(7);
+          statement.bindNull(8);
         } else {
-          statement.bindBlob(7, entity.getThumbnailData());
+          statement.bindBlob(8, entity.getThumbnailData());
         }
-        statement.bindLong(8, entity.getCreatedAt());
+        statement.bindLong(9, entity.getCreatedAt());
       }
     };
     this.__preparedStmtOfDeleteAttachment = new SharedSQLiteStatement(__db) {
@@ -75,11 +76,11 @@ public final class AttachmentDao_Impl implements AttachmentDao {
         return _query;
       }
     };
-    this.__preparedStmtOfDeleteAttachmentsByCardId = new SharedSQLiteStatement(__db) {
+    this.__preparedStmtOfDeleteAttachmentsByItemId = new SharedSQLiteStatement(__db) {
       @Override
       @NonNull
       public String createQuery() {
-        final String _query = "DELETE FROM attachments WHERE card_id = ?";
+        final String _query = "DELETE FROM attachments WHERE item_id = ?";
         return _query;
       }
     };
@@ -131,15 +132,15 @@ public final class AttachmentDao_Impl implements AttachmentDao {
   }
 
   @Override
-  public Object deleteAttachmentsByCardId(final String cardId,
+  public Object deleteAttachmentsByItemId(final String itemId,
       final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
       public Unit call() throws Exception {
-        final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAttachmentsByCardId.acquire();
+        final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAttachmentsByItemId.acquire();
         int _argIndex = 1;
-        _stmt.bindString(_argIndex, cardId);
+        _stmt.bindString(_argIndex, itemId);
         try {
           __db.beginTransaction();
           try {
@@ -150,18 +151,18 @@ public final class AttachmentDao_Impl implements AttachmentDao {
             __db.endTransaction();
           }
         } finally {
-          __preparedStmtOfDeleteAttachmentsByCardId.release(_stmt);
+          __preparedStmtOfDeleteAttachmentsByItemId.release(_stmt);
         }
       }
     }, $completion);
   }
 
   @Override
-  public Flow<List<AttachmentEntity>> getAttachmentsByCardId(final String cardId) {
-    final String _sql = "SELECT * FROM attachments WHERE card_id = ? ORDER BY created_at DESC";
+  public Flow<List<AttachmentEntity>> getAttachmentsByItemId(final String itemId) {
+    final String _sql = "SELECT * FROM attachments WHERE item_id = ? ORDER BY display_order ASC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
-    _statement.bindString(_argIndex, cardId);
+    _statement.bindString(_argIndex, itemId);
     return CoroutinesRoom.createFlow(__db, false, new String[] {"attachments"}, new Callable<List<AttachmentEntity>>() {
       @Override
       @NonNull
@@ -169,10 +170,11 @@ public final class AttachmentDao_Impl implements AttachmentDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfCardId = CursorUtil.getColumnIndexOrThrow(_cursor, "card_id");
+          final int _cursorIndexOfItemId = CursorUtil.getColumnIndexOrThrow(_cursor, "item_id");
           final int _cursorIndexOfFileName = CursorUtil.getColumnIndexOrThrow(_cursor, "file_name");
           final int _cursorIndexOfFileType = CursorUtil.getColumnIndexOrThrow(_cursor, "file_type");
           final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "file_size");
+          final int _cursorIndexOfDisplayOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "display_order");
           final int _cursorIndexOfEncryptedData = CursorUtil.getColumnIndexOrThrow(_cursor, "encrypted_data");
           final int _cursorIndexOfThumbnailData = CursorUtil.getColumnIndexOrThrow(_cursor, "thumbnail_data");
           final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "created_at");
@@ -181,14 +183,16 @@ public final class AttachmentDao_Impl implements AttachmentDao {
             final AttachmentEntity _item;
             final String _tmpId;
             _tmpId = _cursor.getString(_cursorIndexOfId);
-            final String _tmpCardId;
-            _tmpCardId = _cursor.getString(_cursorIndexOfCardId);
+            final String _tmpItemId;
+            _tmpItemId = _cursor.getString(_cursorIndexOfItemId);
             final String _tmpFileName;
             _tmpFileName = _cursor.getString(_cursorIndexOfFileName);
             final String _tmpFileType;
             _tmpFileType = _cursor.getString(_cursorIndexOfFileType);
             final long _tmpFileSize;
             _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
+            final int _tmpDisplayOrder;
+            _tmpDisplayOrder = _cursor.getInt(_cursorIndexOfDisplayOrder);
             final byte[] _tmpEncryptedData;
             _tmpEncryptedData = _cursor.getBlob(_cursorIndexOfEncryptedData);
             final byte[] _tmpThumbnailData;
@@ -199,7 +203,7 @@ public final class AttachmentDao_Impl implements AttachmentDao {
             }
             final long _tmpCreatedAt;
             _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            _item = new AttachmentEntity(_tmpId,_tmpCardId,_tmpFileName,_tmpFileType,_tmpFileSize,_tmpEncryptedData,_tmpThumbnailData,_tmpCreatedAt);
+            _item = new AttachmentEntity(_tmpId,_tmpItemId,_tmpFileName,_tmpFileType,_tmpFileSize,_tmpDisplayOrder,_tmpEncryptedData,_tmpThumbnailData,_tmpCreatedAt);
             _result.add(_item);
           }
           return _result;
@@ -230,10 +234,11 @@ public final class AttachmentDao_Impl implements AttachmentDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfCardId = CursorUtil.getColumnIndexOrThrow(_cursor, "card_id");
+          final int _cursorIndexOfItemId = CursorUtil.getColumnIndexOrThrow(_cursor, "item_id");
           final int _cursorIndexOfFileName = CursorUtil.getColumnIndexOrThrow(_cursor, "file_name");
           final int _cursorIndexOfFileType = CursorUtil.getColumnIndexOrThrow(_cursor, "file_type");
           final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "file_size");
+          final int _cursorIndexOfDisplayOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "display_order");
           final int _cursorIndexOfEncryptedData = CursorUtil.getColumnIndexOrThrow(_cursor, "encrypted_data");
           final int _cursorIndexOfThumbnailData = CursorUtil.getColumnIndexOrThrow(_cursor, "thumbnail_data");
           final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "created_at");
@@ -241,14 +246,16 @@ public final class AttachmentDao_Impl implements AttachmentDao {
           if (_cursor.moveToFirst()) {
             final String _tmpId;
             _tmpId = _cursor.getString(_cursorIndexOfId);
-            final String _tmpCardId;
-            _tmpCardId = _cursor.getString(_cursorIndexOfCardId);
+            final String _tmpItemId;
+            _tmpItemId = _cursor.getString(_cursorIndexOfItemId);
             final String _tmpFileName;
             _tmpFileName = _cursor.getString(_cursorIndexOfFileName);
             final String _tmpFileType;
             _tmpFileType = _cursor.getString(_cursorIndexOfFileType);
             final long _tmpFileSize;
             _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
+            final int _tmpDisplayOrder;
+            _tmpDisplayOrder = _cursor.getInt(_cursorIndexOfDisplayOrder);
             final byte[] _tmpEncryptedData;
             _tmpEncryptedData = _cursor.getBlob(_cursorIndexOfEncryptedData);
             final byte[] _tmpThumbnailData;
@@ -259,7 +266,7 @@ public final class AttachmentDao_Impl implements AttachmentDao {
             }
             final long _tmpCreatedAt;
             _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            _result = new AttachmentEntity(_tmpId,_tmpCardId,_tmpFileName,_tmpFileType,_tmpFileSize,_tmpEncryptedData,_tmpThumbnailData,_tmpCreatedAt);
+            _result = new AttachmentEntity(_tmpId,_tmpItemId,_tmpFileName,_tmpFileType,_tmpFileSize,_tmpDisplayOrder,_tmpEncryptedData,_tmpThumbnailData,_tmpCreatedAt);
           } else {
             _result = null;
           }
@@ -273,12 +280,12 @@ public final class AttachmentDao_Impl implements AttachmentDao {
   }
 
   @Override
-  public Object getAttachmentCount(final String cardId,
+  public Object getAttachmentCount(final String itemId,
       final Continuation<? super Integer> $completion) {
-    final String _sql = "SELECT COUNT(*) FROM attachments WHERE card_id = ?";
+    final String _sql = "SELECT COUNT(*) FROM attachments WHERE item_id = ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
-    _statement.bindString(_argIndex, cardId);
+    _statement.bindString(_argIndex, itemId);
     final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
     return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<Integer>() {
       @Override
@@ -304,12 +311,12 @@ public final class AttachmentDao_Impl implements AttachmentDao {
   }
 
   @Override
-  public Object getTotalAttachmentSize(final String cardId,
+  public Object getTotalAttachmentSize(final String itemId,
       final Continuation<? super Long> $completion) {
-    final String _sql = "SELECT SUM(file_size) FROM attachments WHERE card_id = ?";
+    final String _sql = "SELECT SUM(file_size) FROM attachments WHERE item_id = ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
-    _statement.bindString(_argIndex, cardId);
+    _statement.bindString(_argIndex, itemId);
     final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
     return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<Long>() {
       @Override

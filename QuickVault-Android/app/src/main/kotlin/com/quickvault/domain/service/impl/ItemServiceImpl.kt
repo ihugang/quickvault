@@ -219,4 +219,10 @@ class ItemServiceImpl @Inject constructor(
         } ?: emptyList()
         return Result.success(files)
     }
+    
+    override suspend fun getImageFullData(imageId: String): Result<ByteArray> {
+        val attachment = itemRepository.getAttachmentById(imageId)
+            ?: return Result.failure(IllegalArgumentException("Image not found"))
+        return Result.success(attachment.data)
+    }
 }

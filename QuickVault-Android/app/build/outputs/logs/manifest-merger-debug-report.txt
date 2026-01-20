@@ -1,9 +1,20 @@
 -- Merging decision tree log ---
+provider#androidx.core.content.FileProvider
+INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:35:9-43:20
+	android:grantUriPermissions
+		ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:39:13-47
+	android:authorities
+		INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml
+		ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:37:13-64
+	android:exported
+		ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:38:13-37
+	android:name
+		ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:36:13-62
 manifest
-ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:2:1-35:12
+ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:2:1-46:12
+INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:2:1-46:12
+INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:2:1-46:12
+INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:2:1-46:12
 MERGED from [androidx.hilt:hilt-navigation-compose:1.1.0] /Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/2c250958394dd4f95e6e8694bd440884/transformed/jetified-hilt-navigation-compose-1.1.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.hilt:hilt-navigation:1.1.0] /Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/25536d8c3f151e5b44137ce200b394d8/transformed/jetified-hilt-navigation-1.1.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.navigation:navigation-common:2.7.7] /Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/01010ff5127b7d554a00a96ba40c649d/transformed/navigation-common-2.7.7/AndroidManifest.xml:17:1-22:12
@@ -110,8 +121,8 @@ MERGED from [androidx.biometric:biometric:1.2.0-alpha05] /Volumes/SN770/Users/sh
 	android:name
 		ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:6:22-69
 application
-ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:11:5-33:19
-INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:11:5-33:19
+ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:11:5-44:19
+INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:11:5-44:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.6.1] /Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/ff6ee86045350e397a044c84c9c220f3/transformed/jetified-ui-tooling-release/AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.6.1] /Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/ff6ee86045350e397a044c84c9c220f3/transformed/jetified-ui-tooling-release/AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.work:work-runtime:2.9.0] /Volumes/SN770/Users/shrek/.gradle/caches/9.0-milestone-1/transforms/5e53e3e64f09ac1bb9a9d72fdf730826/transformed/work-runtime-2.9.0/AndroidManifest.xml:28:5-143:19
@@ -176,6 +187,12 @@ category#android.intent.category.LAUNCHER
 ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:30:17-77
 	android:name
 		ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:30:27-74
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:40:13-42:54
+	android:resource
+		ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:42:17-51
+	android:name
+		ADDED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml:41:17-67
 uses-sdk
 INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Volumes/SN770/Downloads/Dev/2026/Products/QuickVault/QuickVault-Android/app/src/main/AndroidManifest.xml
