@@ -195,21 +195,23 @@ fun ItemEditorScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         rowImages.forEach { image ->
-                            ExistingImageThumbnailCard(
-                                imageData = image.thumbnailData,
-                                fileName = image.fileName,
-                                onRemove = { viewModel.removeExistingImage(image.id) },
-                                onClick = {
-                                    coroutineScope.launch {
-                                        val fullData = viewModel.getImageFullData(image.id)
-                                        if (fullData != null) {
-                                            selectedImageData = fullData
-                                            selectedImageName = image.fileName
+                            image.thumbnailData?.let { thumbnailData ->
+                                ExistingImageThumbnailCard(
+                                    imageData = thumbnailData,
+                                    fileName = image.fileName,
+                                    onRemove = { viewModel.removeExistingImage(image.id) },
+                                    onClick = {
+                                        coroutineScope.launch {
+                                            val fullData = viewModel.getImageFullData(image.id)
+                                            if (fullData != null) {
+                                                selectedImageData = fullData
+                                                selectedImageName = image.fileName
+                                            }
                                         }
-                                    }
-                                },
-                                modifier = Modifier.weight(1f)
-                            )
+                                    },
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
                         }
                         repeat(3 - rowImages.size) {
                             Spacer(modifier = Modifier.weight(1f))
