@@ -100,6 +100,7 @@
 
 // MARK: - Settings
 "settings.title" = "Asetukset";
+"settings.tab" = "Asetukset";
 "settings.security" = "Turvallisuus";
 "settings.security.biometric" = "Face ID / Touch ID";
 "settings.security.biometric.enable" = "Ota biometrinen todennus käyttöön";

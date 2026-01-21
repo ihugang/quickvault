@@ -101,6 +101,7 @@
 
 // MARK: - Settings
 "settings.title" = "الإعدادات";
+"settings.tab" = "الإعدادات";
 "settings.security" = "الأمان";
 "settings.security.biometric" = "Face ID / Touch ID";
 "settings.security.biometric.enable" = "تفعيل المصادقة البيومترية";

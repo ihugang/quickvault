@@ -100,6 +100,7 @@
 
 // MARK: - Settings
 "settings.title" = "Instellingen";
+"settings.tab" = "Instellingen";
 "settings.security" = "Beveiliging";
 "settings.security.biometric" = "Face ID / Touch ID";
 "settings.security.biometric.enable" = "Biometrische authenticatie inschakelen";
