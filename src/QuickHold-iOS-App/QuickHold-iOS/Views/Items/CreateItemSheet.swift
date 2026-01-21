@@ -266,7 +266,7 @@ struct CreateItemSheet: View {
                     }
                 }
             }
-            .onChange(of: selectedImages) { _, newItems in
+            .onChange(of: selectedImages) { newItems in
                 Task { await loadImages(from: newItems) }
             }
 

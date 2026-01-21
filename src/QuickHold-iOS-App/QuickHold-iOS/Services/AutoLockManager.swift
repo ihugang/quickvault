@@ -144,7 +144,7 @@ struct PrivacyScreenModifier: ViewModifier {
                         .transition(.opacity)
                 }
             }
-            .onChange(of: scenePhase) { _, newPhase in
+            .onChange(of: scenePhase) { newPhase in
                 withAnimation(.easeInOut(duration: 0.2)) {
                     showPrivacyScreen = newPhase != .active
                 }

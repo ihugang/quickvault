@@ -126,6 +126,7 @@ public protocol ItemService {
   func addFiles(to itemId: UUID, files: [FileData]) async throws
   func removeImage(id: UUID) async throws
   func removeFile(id: UUID) async throws
+  func updateFileName(id: UUID, newName: String) async throws
 
   // Delete
   func deleteItem(id: UUID) async throws
@@ -364,18 +365,22 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
   }
 
   public func addImages(to itemId: UUID, images: [ImageData]) async throws {
+    print("🖼️ [ItemService] addImages: 开始添加 \(images.count) 个图片到 item \(itemId)")
     try await context.perform {
       let request = Item.fetchRequest()
       request.predicate = NSPredicate(format: "id == %@", itemId as CVarArg)
       guard let item = try self.context.fetch(request).first else {
+        print("❌ [ItemService] addImages: Item not found: \(itemId)")
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Item not found"])
       }
 
-      guard item.type == ItemType.image.rawValue else {
+      guard item.type == ItemType.image.rawValue || item.type == ItemType.file.rawValue else {
+        print("❌ [ItemService] addImages: Cannot add images to text item")
         throw NSError(domain: "ItemService", code: 400, userInfo: [NSLocalizedDescriptionKey: "Cannot add images to text item"])
       }
 
       let currentCount = item.images?.count ?? 0
+      print("🖼️ [ItemService] addImages: 当前已有 \(currentCount) 个图片")
 
       for (index, imageData) in images.enumerated() {
         let imageContent = ImageContent(context: self.context)
@@ -385,18 +390,20 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
         imageContent.fileSize = Int64(imageData.data.count)
         imageContent.displayOrder = Int16(currentCount + index)
         imageContent.createdAt = Date()
-        
+
         #if canImport(UIKit)
         if let thumbnail = self.generateThumbnail(from: imageData.data) {
           imageContent.thumbnailData = try self.cryptoService.encryptFile(thumbnail)
         }
         #endif
-        
+
         imageContent.item = item
+        print("✅ [ItemService] addImages: 成功添加图片 \(index + 1)/\(images.count)，文件名: \(imageData.fileName)，大小: \(imageData.data.count) bytes")
       }
 
       item.updatedAt = Date()
       try self.context.save()
+      print("✅ [ItemService] addImages: 成功保存 \(images.count) 个图片到 CoreData")
     }
   }
 
@@ -722,34 +729,38 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
   }
   
   public func addFiles(to itemId: UUID, files: [FileData]) async throws {
+    print("📁 [ItemService] addFiles: 开始添加 \(files.count) 个文件到 item \(itemId)")
     try await context.perform {
       let fetchRequest = Item.fetchRequest()
       fetchRequest.predicate = NSPredicate(format: "id == %@", itemId as CVarArg)
       fetchRequest.fetchLimit = 1
-      
+
       guard let item = try self.context.fetch(fetchRequest).first else {
+        print("❌ [ItemService] addFiles: Item not found: \(itemId)")
         throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Item not found"])
       }
-      
+
       guard item.type == ItemType.file.rawValue else {
+        print("❌ [ItemService] addFiles: Cannot add files to non-file item, item type: \(item.type ?? "unknown")")
         throw NSError(domain: "ItemService", code: 400, userInfo: [NSLocalizedDescriptionKey: "Cannot add files to non-file item"])
       }
-      
+
       let currentCount = (item.files?.count ?? 0)
-      
+      print("📁 [ItemService] addFiles: 当前已有 \(currentCount) 个文件")
+
       for (index, fileData) in files.enumerated() {
         let fileContent = FileContent(context: self.context)
         fileContent.id = UUID()
         fileContent.fileName = fileData.fileName
         fileContent.mimeType = fileData.mimeType
-        
+
         // 保存文件到文件系统（已加密）/ Save file to file system (encrypted)
         let relativePath = try self.fileStorageManager.saveFile(data: fileData.data, fileName: fileData.fileName)
         fileContent.fileURL = relativePath
         fileContent.fileSize = Int64(fileData.data.count)
         fileContent.displayOrder = Int16(currentCount + index)
         fileContent.createdAt = Date()
-        
+
         // Generate thumbnail for PDFs if possible
         #if canImport(UIKit)
         if fileData.mimeType == "application/pdf" {
@@ -758,12 +769,14 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
           }
         }
         #endif
-        
+
         fileContent.item = item
+        print("✅ [ItemService] addFiles: 成功添加文件 \(index + 1)/\(files.count)，文件名: \(fileData.fileName)，大小: \(fileData.data.count) bytes，MIME: \(fileData.mimeType)")
       }
-      
+
       item.updatedAt = Date()
       try self.context.save()
+      print("✅ [ItemService] addFiles: 成功保存 \(files.count) 个文件到 CoreData")
     }
   }
   
@@ -787,7 +800,23 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
       try self.context.save()
     }
   }
-  
+
+  public func updateFileName(id: UUID, newName: String) async throws {
+    try await context.perform {
+      let fetchRequest = FileContent.fetchRequest()
+      fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+      fetchRequest.fetchLimit = 1
+
+      guard let fileContent = try self.context.fetch(fetchRequest).first else {
+        throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "File not found"])
+      }
+
+      fileContent.fileName = newName
+      fileContent.item?.updatedAt = Date()
+      try self.context.save()
+    }
+  }
+
   public func getShareableFiles(id: UUID) async throws -> [(data: Data, fileName: String, mimeType: String)] {
     return try await context.perform {
       let fetchRequest = Item.fetchRequest()

@@ -7,7 +7,7 @@ let package = Package(
   // Platform Requirements / 平台要求
   platforms: [
     .macOS(.v14),
-    .iOS(.v17)
+    .iOS(.v16)
   ],
 
   // Products / 产品

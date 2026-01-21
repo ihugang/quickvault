@@ -88,8 +88,8 @@ struct ItemListView: View {
             .task {
                 await viewModel.loadItems()
             }
-            .onChange(of: scenePhase) { oldPhase, newPhase in
-                if newPhase == .active && oldPhase == .background {
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
                     // 从后台返回前台时自动刷新
                     Task {
                         await viewModel.loadItems()
@@ -213,7 +213,7 @@ struct ItemListView: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
-        .onChange(of: searchText) { _, newValue in
+        .onChange(of: searchText) { newValue in
             viewModel.searchQuery = newValue
         }
     }

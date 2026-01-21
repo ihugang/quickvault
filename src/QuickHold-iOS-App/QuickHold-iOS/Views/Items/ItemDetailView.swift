@@ -25,31 +25,36 @@ struct ItemDetailView: View {
     let item: ItemDTO
     let itemService: ItemService
     let onUpdate: () -> Void
-    
+
     @ObservedObject private var localizationManager = LocalizationManager.shared
     @Environment(\.dismiss) private var dismiss
     @State private var showingDeleteAlert = false
     @State private var showingEditSheet = false
     @State private var isLoading = false
     @State private var imageDataToShow: ImageDataWrapper?
+    @State private var currentItem: ItemDTO?  // 用于存储当前显示的 item
+
+    private var displayItem: ItemDTO {
+        currentItem ?? item
+    }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
                 // 头部信息
                 headerSection
-                
+
                 // 内容区域
                 contentSection
-                
+
                 // 标签区域
-                if !item.tags.isEmpty {
+                if !displayItem.tags.isEmpty {
                     tagsSection
                 }
-                
+
                 // 操作按钮
                 actionsSection
-                
+
                 Spacer(minLength: 40)
             }
             .padding(.horizontal, 20)
@@ -58,6 +63,14 @@ struct ItemDetailView: View {
         .background(DetailPalette.canvas)
         .navigationBarTitleDisplayMode(.inline)
         .tint(DetailPalette.primary)
+        .task {
+            currentItem = item
+        }
+        .onChange(of: showingEditSheet) { isShowing in
+            if !isShowing {
+                Task { await reloadItem() }
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
@@ -109,27 +122,27 @@ struct ItemDetailView: View {
             // 类型图标
             ZStack {
                 Circle()
-                    .fill(item.type == .text ? Color.blue.opacity(0.12) : DetailPalette.primary.opacity(0.12))
+                    .fill(displayItem.type == .text ? Color.blue.opacity(0.12) : DetailPalette.primary.opacity(0.12))
                     .frame(width: 80, height: 80)
-                
-                Image(systemName: item.type.icon)
+
+                Image(systemName: displayItem.type.icon)
                     .font(.system(size: 36))
-                    .foregroundStyle(item.type == .text ? .blue : DetailPalette.primary)
+                    .foregroundStyle(displayItem.type == .text ? .blue : DetailPalette.primary)
             }
-            
+
             // 标题
-            Text(item.title)
+            Text(displayItem.title)
                 .font(.title2.weight(.bold))
                 .multilineTextAlignment(.center)
-            
+
             // 时间信息
             HStack(spacing: 16) {
                 Label(
-                    "\(localizationManager.localizedString("items.detail.created")) \(localizationManager.formatDate(item.createdAt, dateStyle: .medium))",
+                    "\(localizationManager.localizedString("items.detail.created")) \(localizationManager.formatDate(displayItem.createdAt, dateStyle: .medium))",
                     systemImage: "calendar"
                 )
-                
-                if item.isPinned {
+
+                if displayItem.isPinned {
                     Label(localizationManager.localizedString("items.detail.pinned"), systemImage: "pin.fill")
                         .foregroundStyle(.orange)
                 }
@@ -145,11 +158,11 @@ struct ItemDetailView: View {
     @ViewBuilder
     private var contentSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            if item.type == .text {
+            if displayItem.type == .text {
                 textContentView
-            } else if item.type == .image {
+            } else if displayItem.type == .image {
                 imageContentView
-            } else if item.type == .file {
+            } else if displayItem.type == .file {
                 fileContentView
             }
         }
@@ -165,8 +178,8 @@ struct ItemDetailView: View {
                 Spacer()
             }
             .foregroundStyle(.secondary)
-            
-            if let content = item.textContent {
+
+            if let content = displayItem.textContent {
                 Text(content)
                     .font(.body)
                     .lineSpacing(4)
@@ -194,23 +207,23 @@ struct ItemDetailView: View {
                 Text(localizationManager.localizedString("items.detail.images"))
                     .font(.subheadline.weight(.semibold))
                 Spacer()
-                Text(String(format: localizationManager.localizedString("items.detail.images.count"), item.images?.count ?? 0))
+                Text(String(format: localizationManager.localizedString("items.detail.images.count"), displayItem.images?.count ?? 0))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             .foregroundStyle(.secondary)
 
-            if let images = item.images, !images.isEmpty {
+            if let images = displayItem.images, !images.isEmpty {
                 VStack(spacing: 12) {
                     ForEach(images) { image in
-                        ImageThumbnailView(image: image, itemService: itemService, item: item)
+                        ImageThumbnailView(image: image, itemService: itemService, item: displayItem)
                     }
                 }
             }
         }
         .fullScreenCover(item: $imageDataToShow) { wrapper in
             if let uiImage = UIImage(data: wrapper.data) {
-                FullImageView(image: uiImage, item: item, itemService: itemService)
+                FullImageView(image: uiImage, item: displayItem, itemService: itemService)
             }
         }
     }
@@ -224,16 +237,16 @@ struct ItemDetailView: View {
                 Text(localizationManager.localizedString("items.detail.files"))
                     .font(.subheadline.weight(.semibold))
                 Spacer()
-                Text(String(format: localizationManager.localizedString("items.detail.files.count"), item.files?.count ?? 0))
+                Text(String(format: localizationManager.localizedString("items.detail.files.count"), displayItem.files?.count ?? 0))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             .foregroundStyle(.secondary)
             
-            if let files = item.files, !files.isEmpty {
+            if let files = displayItem.files, !files.isEmpty {
                 VStack(spacing: 8) {
                     ForEach(files) { file in
-                        FileThumbnailView(file: file, itemService: itemService, item: item)
+                        FileThumbnailView(file: file, itemService: itemService, item: displayItem)
                     }
                 }
             }
@@ -253,7 +266,7 @@ struct ItemDetailView: View {
             .foregroundStyle(.secondary)
             
             FlowLayout(spacing: 8) {
-                ForEach(item.tags, id: \.self) { tag in
+                ForEach(displayItem.tags, id: \.self) { tag in
                     Text(tag)
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(DetailPalette.primary)
@@ -272,7 +285,7 @@ struct ItemDetailView: View {
 
     private var actionsSection: some View {
         VStack(spacing: 12) {
-            if item.type == .text {
+            if displayItem.type == .text {
                 Button {
                     Task { await shareText() }
                 } label: {
@@ -294,7 +307,7 @@ struct ItemDetailView: View {
                     )
                 }
                 .disabled(isLoading)
-            } else if item.type == .image {
+            } else if displayItem.type == .image {
                 Button {
                     Task { await openFirstImage() }
                 } label: {
@@ -321,7 +334,18 @@ struct ItemDetailView: View {
     }
     
     // MARK: - Actions
-    
+
+    private func reloadItem() async {
+        do {
+            let refreshedItem = try await itemService.fetchItem(id: item.id)
+            await MainActor.run {
+                currentItem = refreshedItem
+            }
+        } catch {
+            print("Error reloading item: \(error)")
+        }
+    }
+
     private func togglePin() async {
         do {
             _ = try await itemService.togglePin(id: item.id)
@@ -694,7 +718,7 @@ struct FullImageView: View {
             Toggle(localizationManager.localizedString("watermark.add"), isOn: $useWatermark)
                 .toggleStyle(.switch)
                 .tint(DetailPalette.primary)
-                .onChange(of: useWatermark) { _, _ in
+                .onChange(of: useWatermark) { _ in
                     isTextFieldFocused = false
                     updatePreview()
                 }
@@ -708,7 +732,7 @@ struct FullImageView: View {
                     .onSubmit {
                         isTextFieldFocused = false
                     }
-                    .onChange(of: watermarkText) { _, _ in
+                    .onChange(of: watermarkText) { _ in
                         updatePreview()
                     }
                 
@@ -723,7 +747,7 @@ struct FullImageView: View {
                     .font(.subheadline)
                     Slider(value: $watermarkFontSize, in: 20...80, step: 1)
                         .tint(DetailPalette.primary)
-                        .onChange(of: watermarkFontSize) { _, _ in
+                        .onChange(of: watermarkFontSize) { _ in
                             isTextFieldFocused = false
                             updatePreview()
                         }
@@ -739,7 +763,7 @@ struct FullImageView: View {
                         }
                     }
                     .pickerStyle(.segmented)
-                    .onChange(of: watermarkSpacing) { _, _ in
+                    .onChange(of: watermarkSpacing) { _ in
                         isTextFieldFocused = false
                         updatePreview()
                     }
@@ -756,7 +780,7 @@ struct FullImageView: View {
                     .font(.subheadline)
                     Slider(value: $watermarkOpacity, in: 0.1...1.0, step: 0.05)
                         .tint(DetailPalette.primary)
-                        .onChange(of: watermarkOpacity) { _, _ in
+                        .onChange(of: watermarkOpacity) { _ in
                             isTextFieldFocused = false
                             updatePreview()
                         }
@@ -953,7 +977,7 @@ struct WatermarkConfigSheet: View {
                 
                 Section {
                     Toggle(localizationManager.localizedString("watermark.add"), isOn: $useWatermark)
-                        .onChange(of: useWatermark) { _, _ in
+                        .onChange(of: useWatermark) { _ in
                             updatePreview()
                         }
                     
@@ -964,7 +988,7 @@ struct WatermarkConfigSheet: View {
                                 Text(localizationManager.localizedString("watermark.text.placeholder"))
                                     .foregroundColor(.secondary)
                             }
-                            .onChange(of: watermarkText) { _, _ in
+                            .onChange(of: watermarkText) { _ in
                                 updatePreview()
                             }
                         
@@ -976,7 +1000,7 @@ struct WatermarkConfigSheet: View {
                                     .foregroundStyle(.secondary)
                             }
                             Slider(value: $watermarkFontSize, in: 20...80, step: 1)
-                                .onChange(of: watermarkFontSize) { _, _ in
+                                .onChange(of: watermarkFontSize) { _ in
                                     updatePreview()
                                 }
                         }
@@ -992,7 +1016,7 @@ struct WatermarkConfigSheet: View {
                                 }
                             }
                             .pickerStyle(.segmented)
-                            .onChange(of: watermarkSpacing) { _, _ in
+                            .onChange(of: watermarkSpacing) { _ in
                                 updatePreview()
                             }
                         }
@@ -1005,7 +1029,7 @@ struct WatermarkConfigSheet: View {
                                     .foregroundStyle(.secondary)
                             }
                             Slider(value: $watermarkOpacity, in: 0.1...1.0, step: 0.05)
-                                .onChange(of: watermarkOpacity) { _, _ in
+                                .onChange(of: watermarkOpacity) { _ in
                                     updatePreview()
                                 }
                         }

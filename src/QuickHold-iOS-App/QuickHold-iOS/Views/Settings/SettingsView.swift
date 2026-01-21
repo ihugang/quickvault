@@ -21,7 +21,7 @@ struct SettingsView: View {
                             Text(localizationManager.localizedString(timeout.localizationKey)).tag(timeout)
                         }
                     }
-                    .onChange(of: viewModel.autoLockTimeout) { _, newValue in
+                    .onChange(of: viewModel.autoLockTimeout) { newValue in
                         viewModel.saveAutoLockTimeout(newValue)
                     }
                     
@@ -69,7 +69,7 @@ struct SettingsView: View {
                             Text(localizationManager.localizedString(mode.localizationKey)).tag(mode)
                         }
                     }
-                    .onChange(of: viewModel.appearanceMode) { _, newValue in
+                    .onChange(of: viewModel.appearanceMode) { newValue in
                         viewModel.saveAppearanceMode(newValue)
                     }
                 } header: {
