@@ -320,6 +320,8 @@
 
 // Items - Files
 "items.files.select" = "选择文件";
+"items.files.select.media" = "选择图片/视频";
+"items.files.camera" = "拍摄照片/视频";
 "items.files.count" = "%d 个文件";
 "items.files.section" = "文件";
 "items.files.limit" = "最多可选择 10 个文件，单个文件不超过 10MB";

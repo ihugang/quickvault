@@ -599,7 +599,7 @@ struct EditItemSheet: View {
             } label: {
                 HStack {
                     Image(systemName: "camera")
-                    Text(localizationManager.localizedString("items.images.camera"))
+                    Text(localizationManager.localizedString("items.files.camera"))
                     Spacer()
                 }
             }
@@ -609,7 +609,7 @@ struct EditItemSheet: View {
             PhotosPicker(selection: $selectedImages, maxSelectionCount: 10, matching: .any(of: [.images, .videos])) {
                 HStack {
                     Image(systemName: "photo.badge.plus")
-                    Text(localizationManager.localizedString("items.images.select"))
+                    Text(localizationManager.localizedString("items.files.select.media"))
                     Spacer()
                     if !newFileData.isEmpty {
                         Text("+\(newFileData.count)")

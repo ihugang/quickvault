@@ -273,6 +273,8 @@
 
 // Items - Files
 "items.files.select" = "اختر ملفات";
+"items.files.select.media" = "Select Photos/Videos";
+"items.files.camera" = "Take Photo/Video";
 "items.files.count" = "%d ملفات";
 "items.files.section" = "الملفات";
 "items.files.limit" = "حتى 10 ملفات، كل ملف لا يزيد عن 10 ميغابايت";

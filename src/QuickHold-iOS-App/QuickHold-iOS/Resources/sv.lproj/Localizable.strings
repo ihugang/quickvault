@@ -285,6 +285,8 @@
 "items.type.file.desc" = "Lagra olika filer med PDF-förhandsgranskningsstöd";
 
 "items.files.select" = "Välj filer";
+"items.files.select.media" = "Select Photos/Videos";
+"items.files.camera" = "Take Photo/Video";
 "items.files.count" = "%d filer";
 "items.files.section" = "Filer";
 "items.files.limit" = "Upp till 10 filer, varje fil högst 10MB";

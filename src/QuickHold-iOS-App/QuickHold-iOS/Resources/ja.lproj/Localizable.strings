@@ -309,6 +309,8 @@
 
 // Items - Files
 "items.files.select" = "ファイルを選択";
+"items.files.select.media" = "写真/動画を選択";
+"items.files.camera" = "写真/動画を撮影";
 "items.files.count" = "%d件のファイル";
 "items.files.section" = "ファイル";
 "items.files.limit" = "最大10ファイル、各ファイル10MB以下";

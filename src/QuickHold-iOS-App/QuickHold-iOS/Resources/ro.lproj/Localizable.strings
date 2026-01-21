@@ -302,6 +302,8 @@
 "items.type.file.desc" = "Stochează diverse fișiere cu previzualizare PDF";
 
 "items.files.select" = "Selectează Fișiere";
+"items.files.select.media" = "Select Photos/Videos";
+"items.files.camera" = "Take Photo/Video";
 "items.files.count" = "%d fișiere";
 "items.files.section" = "Fișiere";
 "items.files.limit" = "Până la 10 fișiere, fiecare nu mai mult de 10MB";

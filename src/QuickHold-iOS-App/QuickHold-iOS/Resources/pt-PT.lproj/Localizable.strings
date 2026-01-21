@@ -272,6 +272,8 @@
 
 // Items - Files
 "items.files.select" = "Selecionar ficheiros";
+"items.files.select.media" = "Select Photos/Videos";
+"items.files.camera" = "Take Photo/Video";
 "items.files.count" = "%d ficheiros";
 "items.files.section" = "Ficheiros";
 "items.files.limit" = "Até 10 ficheiros, cada um até 10MB";

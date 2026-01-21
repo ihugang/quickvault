@@ -272,6 +272,8 @@
 
 // Items - Files
 "items.files.select" = "Επιλέξτε αρχεία";
+"items.files.select.media" = "Select Photos/Videos";
+"items.files.camera" = "Take Photo/Video";
 "items.files.count" = "%d αρχεία";
 "items.files.section" = "Αρχεία";
 "items.files.limit" = "Μέχρι 10 αρχεία, κάθε αρχείο έως 10MB";
