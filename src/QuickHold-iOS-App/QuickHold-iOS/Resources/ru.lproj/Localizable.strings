@@ -285,8 +285,8 @@
 "items.type.file.desc" = "Сохраняйте различные файлы с поддержкой предпросмотра PDF";
 
 "items.files.select" = "Выберите файлы";
-"items.files.select.media" = "Select Photos/Videos";
-"items.files.camera" = "Take Photo/Video";
+"items.files.select.media" = "Выбрать фото/видео";
+"items.files.camera" = "Снять фото/видео";
 "items.files.count" = "%d файлов";
 "items.files.section" = "Файлы";
 "items.files.limit" = "До 10 файлов, каждый файл не более 10 МБ";

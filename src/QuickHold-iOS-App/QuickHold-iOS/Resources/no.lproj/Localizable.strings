@@ -272,8 +272,8 @@
 
 // Items - Files
 "items.files.select" = "Velg filer";
-"items.files.select.media" = "Select Photos/Videos";
-"items.files.camera" = "Take Photo/Video";
+"items.files.select.media" = "Velg bilder/videoer";
+"items.files.camera" = "Ta bilde/video";
 "items.files.count" = "%d filer";
 "items.files.section" = "Filer";
 "items.files.limit" = "Opptil 10 filer, hver under 10MB";

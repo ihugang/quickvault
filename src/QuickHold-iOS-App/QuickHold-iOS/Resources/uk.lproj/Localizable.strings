@@ -285,8 +285,8 @@
 "items.type.file.desc" = "Зберігайте різні файли з підтримкою попереднього перегляду PDF";
 
 "items.files.select" = "Виберіть файли";
-"items.files.select.media" = "Select Photos/Videos";
-"items.files.camera" = "Take Photo/Video";
+"items.files.select.media" = "Вибрати фото/відео";
+"items.files.camera" = "Зняти фото/відео";
 "items.files.count" = "%d файлів";
 "items.files.section" = "Файли";
 "items.files.limit" = "До 10 файлів, кожен файл не більше 10 МБ";

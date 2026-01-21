@@ -272,8 +272,8 @@
 
 // Items - Files
 "items.files.select" = "Valitse tiedostot";
-"items.files.select.media" = "Select Photos/Videos";
-"items.files.camera" = "Take Photo/Video";
+"items.files.select.media" = "Valitse kuvia/videoita";
+"items.files.camera" = "Ota kuva/video";
 "items.files.count" = "%d tiedostoa";
 "items.files.section" = "Tiedostot";
 "items.files.limit" = "Enintään 10 tiedostoa, kukin alle 10 Mt";

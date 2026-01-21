@@ -272,8 +272,8 @@
 
 // Items - Files
 "items.files.select" = "Fájlok kiválasztása";
-"items.files.select.media" = "Select Photos/Videos";
-"items.files.camera" = "Take Photo/Video";
+"items.files.select.media" = "Válassz fotókat/videókat";
+"items.files.camera" = "Készíts fotót/videót";
 "items.files.count" = "%d fájl";
 "items.files.section" = "Fájlok";
 "items.files.limit" = "Legfeljebb 10 fájl, fájlonként max. 10 MB";

@@ -272,8 +272,8 @@
 
 // Items - Files
 "items.files.select" = "Selecteer bestanden";
-"items.files.select.media" = "Select Photos/Videos";
-"items.files.camera" = "Take Photo/Video";
+"items.files.select.media" = "Selecteer foto's/video's";
+"items.files.camera" = "Maak foto/video";
 "items.files.count" = "%d bestanden";
 "items.files.section" = "Bestanden";
 "items.files.limit" = "Tot 10 bestanden, elk onder 10 MB";

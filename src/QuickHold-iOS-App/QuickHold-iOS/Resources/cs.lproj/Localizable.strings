@@ -272,8 +272,8 @@
 
 // Items - Files
 "items.files.select" = "Vyberte soubory";
-"items.files.select.media" = "Select Photos/Videos";
-"items.files.camera" = "Take Photo/Video";
+"items.files.select.media" = "Vybrat fotky/videa";
+"items.files.camera" = "Pořídit fotku/video";
 "items.files.count" = "%d souborů";
 "items.files.section" = "Soubory";
 "items.files.limit" = "Až 10 souborů, každý do 10 MB";
