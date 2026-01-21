@@ -352,6 +352,11 @@
 "settings.security.cleardata.confirm.password" = "Indtast adgangskode";
 "settings.security.cleardata.confirm.delete" = "Slet alle data";
 "settings.security.cleardata.success" = "Alle data er slettet";
+"settings.appearance" = "Udseende";
+"settings.appearance.title" = "Visning";
+"settings.appearance.auto" = "Auto";
+"settings.appearance.light" = "Lys";
+"settings.appearance.dark" = "Mørk";
 
 
 // MARK: - Introduction

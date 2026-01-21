@@ -353,6 +353,11 @@
 "settings.security.cleardata.confirm.password" = "أدخل كلمة المرور";
 "settings.security.cleardata.confirm.delete" = "حذف كل البيانات";
 "settings.security.cleardata.success" = "تم مسح كل البيانات";
+"settings.appearance" = "المظهر";
+"settings.appearance.title" = "العرض";
+"settings.appearance.auto" = "تلقائي";
+"settings.appearance.light" = "فاتح";
+"settings.appearance.dark" = "داكن";
 
 
 // MARK: - Introduction

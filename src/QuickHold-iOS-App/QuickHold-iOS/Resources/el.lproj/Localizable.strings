@@ -352,6 +352,11 @@
 "settings.security.cleardata.confirm.password" = "Εισάγετε κωδικό";
 "settings.security.cleardata.confirm.delete" = "Διαγραφή όλων των δεδομένων";
 "settings.security.cleardata.success" = "Όλα τα δεδομένα διαγράφηκαν";
+"settings.appearance" = "Εμφάνιση";
+"settings.appearance.title" = "Προβολή";
+"settings.appearance.auto" = "Αυτόματο";
+"settings.appearance.light" = "Φωτεινό";
+"settings.appearance.dark" = "Σκοτεινό";
 
 
 // MARK: - Introduction

@@ -352,6 +352,11 @@
 "settings.security.cleardata.confirm.password" = "Inserisci password";
 "settings.security.cleardata.confirm.delete" = "Elimina tutti i dati";
 "settings.security.cleardata.success" = "Tutti i dati sono stati eliminati";
+"settings.appearance" = "Aspetto";
+"settings.appearance.title" = "Visualizzazione";
+"settings.appearance.auto" = "Automatico";
+"settings.appearance.light" = "Chiaro";
+"settings.appearance.dark" = "Scuro";
 
 
 // MARK: - Introduction

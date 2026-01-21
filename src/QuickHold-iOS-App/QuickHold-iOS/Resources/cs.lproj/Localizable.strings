@@ -352,6 +352,11 @@
 "settings.security.cleardata.confirm.password" = "Zadejte heslo";
 "settings.security.cleardata.confirm.delete" = "Vymazat všechna data";
 "settings.security.cleardata.success" = "Všechna data byla vymazána";
+"settings.appearance" = "Vzhled";
+"settings.appearance.title" = "Zobrazení";
+"settings.appearance.auto" = "Automaticky";
+"settings.appearance.light" = "Světlý";
+"settings.appearance.dark" = "Tmavý";
 
 
 // MARK: - Introduction

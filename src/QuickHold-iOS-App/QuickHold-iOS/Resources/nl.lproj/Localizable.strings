@@ -352,6 +352,11 @@
 "settings.security.cleardata.confirm.password" = "Voer wachtwoord in";
 "settings.security.cleardata.confirm.delete" = "Alles wissen";
 "settings.security.cleardata.success" = "Alle gegevens zijn gewist";
+"settings.appearance" = "Uiterlijk";
+"settings.appearance.title" = "Weergave";
+"settings.appearance.auto" = "Automatisch";
+"settings.appearance.light" = "Licht";
+"settings.appearance.dark" = "Donker";
 
 
 // MARK: - Introduction

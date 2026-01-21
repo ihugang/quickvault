@@ -352,6 +352,11 @@
 "settings.security.cleardata.confirm.password" = "Adja meg a jelszót";
 "settings.security.cleardata.confirm.delete" = "Összes adat törlése";
 "settings.security.cleardata.success" = "Minden adat törölve";
+"settings.appearance" = "Megjelenés";
+"settings.appearance.title" = "Megjelenítés";
+"settings.appearance.auto" = "Automatikus";
+"settings.appearance.light" = "Világos";
+"settings.appearance.dark" = "Sötét";
 
 
 // MARK: - Introduction

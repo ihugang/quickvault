@@ -124,6 +124,13 @@
 "settings.data.reset" = "Resetează Toate Datele";
 "settings.data.reset.confirm" = "Aceasta va șterge toate cardurile și setările. Această acțiune nu poate fi anulată.";
 
+// MARK: - Appearance
+"settings.appearance" = "Aspect";
+"settings.appearance.title" = "Afișare";
+"settings.appearance.auto" = "Automat";
+"settings.appearance.light" = "Luminos";
+"settings.appearance.dark" = "Întunecat";
+
 // MARK: - Errors
 "error.generic" = "Ceva nu a funcționat";
 "error.network" = "Eroare de rețea";

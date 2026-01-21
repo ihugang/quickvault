@@ -352,6 +352,11 @@
 "settings.security.cleardata.confirm.password" = "Syötä salasana";
 "settings.security.cleardata.confirm.delete" = "Poista kaikki tiedot";
 "settings.security.cleardata.success" = "Kaikki tiedot on poistettu";
+"settings.appearance" = "Ulkoasu";
+"settings.appearance.title" = "Näyttö";
+"settings.appearance.auto" = "Automaattinen";
+"settings.appearance.light" = "Vaalea";
+"settings.appearance.dark" = "Tumma";
 
 
 // MARK: - Introduction
