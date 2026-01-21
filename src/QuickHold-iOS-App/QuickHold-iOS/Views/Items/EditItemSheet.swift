@@ -416,7 +416,17 @@ struct EditItemSheet: View {
     private func addCapturedImage(_ image: UIImage) {
         guard let data = image.jpegData(compressionQuality: 0.9) else { return }
         let fileName = "camera_\(Date().timeIntervalSince1970).jpg"
-        newImageData.append(ImageData(data: data, fileName: fileName))
+
+        // 根据卡片类型决定添加到哪个数组
+        if item.type == .file {
+            // 文件卡片：作为普通文件添加
+            newFileData.append(FileData(data: data, fileName: fileName, mimeType: "image/jpeg"))
+            print("📸 [EditItemSheet] addCapturedImage: 添加拍摄照片到 newFileData，文件名: \(fileName)，大小: \(data.count) bytes")
+        } else {
+            // 图片卡片：作为图片添加
+            newImageData.append(ImageData(data: data, fileName: fileName))
+            print("📸 [EditItemSheet] addCapturedImage: 添加拍摄照片到 newImageData，文件名: \(fileName)，大小: \(data.count) bytes")
+        }
     }
 
     private func requestCameraAccessAndPresent() {

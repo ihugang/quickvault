@@ -111,7 +111,7 @@ struct ItemDetailView: View {
             Text(localizationManager.localizedString("items.delete.message"))
         }
         .sheet(isPresented: $showingEditSheet) {
-            EditItemSheet(item: item, itemService: itemService, onUpdate: onUpdate)
+            EditItemSheet(item: displayItem, itemService: itemService, onUpdate: onUpdate)
         }
     }
     
