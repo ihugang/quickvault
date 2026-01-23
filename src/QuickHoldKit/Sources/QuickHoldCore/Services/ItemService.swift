@@ -125,6 +125,7 @@ public protocol ItemService {
   func addImages(to itemId: UUID, images: [ImageData]) async throws
   func addFiles(to itemId: UUID, files: [FileData]) async throws
   func removeImage(id: UUID) async throws
+  func updateImageContent(imageId: UUID, imageData: Data) async throws
   func removeFile(id: UUID) async throws
   func updateFileName(id: UUID, newName: String) async throws
 
@@ -419,6 +420,33 @@ public final class ItemServiceImpl: ItemService, @unchecked Sendable {
       self.context.delete(imageContent)
       item?.updatedAt = Date()
       try self.context.save()
+    }
+  }
+  
+  public func updateImageContent(imageId: UUID, imageData: Data) async throws {
+    try await context.perform {
+      let request = ImageContent.fetchRequest()
+      request.predicate = NSPredicate(format: "id == %@", imageId as CVarArg)
+      guard let imageContent = try self.context.fetch(request).first else {
+        throw NSError(domain: "ItemService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Image not found"])
+      }
+      
+      // 更新加密的图片数据
+      imageContent.encryptedData = try self.cryptoService.encryptFile(imageData)
+      imageContent.fileSize = Int64(imageData.count)
+      
+      // 更新缩略图
+      #if canImport(UIKit)
+      if let thumbnail = self.generateThumbnail(from: imageData) {
+        imageContent.thumbnailData = try self.cryptoService.encryptFile(thumbnail)
+      }
+      #endif
+      
+      // 更新 Item 的修改时间
+      imageContent.item?.updatedAt = Date()
+      try self.context.save()
+      
+      print("✅ [ItemService] Successfully updated image content for imageId: \(imageId)")
     }
   }
 

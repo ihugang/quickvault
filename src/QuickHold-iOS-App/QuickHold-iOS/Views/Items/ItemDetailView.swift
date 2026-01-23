@@ -197,13 +197,11 @@ struct ItemDetailView: View {
                     .textSelection(.enabled)
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(DetailPalette.card)
-                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .overlay(
+                    .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(DetailPalette.border, lineWidth: 1)
+                            .fill(DetailPalette.card)
                     )
-                        .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
+                    .shadow(color: .black.opacity(0.03), radius: 6, y: 2)
             }
         }
     }
@@ -224,16 +222,31 @@ struct ItemDetailView: View {
             .foregroundStyle(.secondary)
 
             if let images = displayItem.images, !images.isEmpty {
-                VStack(spacing: 12) {
+                VStack(spacing: 8) {
                     ForEach(images) { image in
                         ImageThumbnailView(image: image, itemService: itemService, item: displayItem)
                     }
                 }
+                .padding(12)
+                .background(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(DetailPalette.card)
+                )
+                .shadow(color: .black.opacity(0.03), radius: 6, y: 2)
             }
         }
         .fullScreenCover(item: $imageDataToShow) { wrapper in
             if let uiImage = UIImage(data: wrapper.data) {
-                FullImageView(image: uiImage, item: displayItem, itemService: itemService)
+                FullImageView(
+                    image: uiImage,
+                    imageId: wrapper.imageId,
+                    item: displayItem,
+                    itemService: itemService,
+                    onImageUpdated: {
+                        // 图片更新后重新加载 item
+                        Task { await reloadItem() }
+                    }
+                )
             }
         }
     }
@@ -259,6 +272,12 @@ struct ItemDetailView: View {
                         FileThumbnailView(file: file, itemService: itemService, item: displayItem)
                     }
                 }
+                .padding(12)
+                .background(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(DetailPalette.card)
+                )
+                .shadow(color: .black.opacity(0.03), radius: 6, y: 2)
             }
         }
     }
@@ -403,7 +422,7 @@ struct ItemDetailView: View {
         do {
             let imageData = try await itemService.getDecryptedImage(imageId: firstImage.id)
             await MainActor.run {
-                imageDataToShow = ImageDataWrapper(data: imageData)
+                imageDataToShow = ImageDataWrapper(data: imageData, imageId: firstImage.id)
             }
         } catch {
             print("Error loading first image: \(error)")
@@ -445,6 +464,7 @@ struct ItemDetailView: View {
 struct ImageDataWrapper: Identifiable {
     let id = UUID()
     let data: Data
+    let imageId: UUID  // 图片ID，用于保存旋转
 }
 
 struct ImageThumbnailView: View {
@@ -455,6 +475,7 @@ struct ImageThumbnailView: View {
     @State private var imageDataToShow: ImageDataWrapper?
     @State private var displayImageData: Data?
     @State private var isLoading = true
+    @State private var refreshTrigger = UUID()  // 新增：刷新触发器
     
     var body: some View {
         Button {
@@ -489,10 +510,19 @@ struct ImageThumbnailView: View {
         }
         .fullScreenCover(item: $imageDataToShow) { wrapper in
             if let uiImage = UIImage(data: wrapper.data) {
-                FullImageView(image: uiImage, item: item, itemService: itemService)
-                    .onAppear {
-                        print("✅ [FullImageView] Displayed image from \(wrapper.data.count) bytes")
+                FullImageView(
+                    image: uiImage,
+                    imageId: wrapper.imageId,
+                    item: item,
+                    itemService: itemService,
+                    onImageUpdated: {
+                        // 图片更新后重新加载
+                        Task { await refreshImage() }
                     }
+                )
+                .onAppear {
+                    print("✅ [FullImageView] Displayed image from \(wrapper.data.count) bytes")
+                }
             } else {
                 ZStack {
                     Color.black.ignoresSafeArea()
@@ -551,13 +581,13 @@ struct ImageThumbnailView: View {
         // 优先使用已加载的displayImageData
         if let displayData = displayImageData {
             print("✅ [ImageThumbnailView] Using display image data: \(displayData.count) bytes")
-            imageDataToShow = ImageDataWrapper(data: displayData)
+            imageDataToShow = ImageDataWrapper(data: displayData, imageId: image.id)
         } else {
             print("🔍 [ImageThumbnailView] Loading fresh image data")
             do {
                 let freshData = try await itemService.getDecryptedImage(imageId: image.id)
                 print("✅ [ImageThumbnailView] Fresh image loaded: \(freshData.count) bytes")
-                imageDataToShow = ImageDataWrapper(data: freshData)
+                imageDataToShow = ImageDataWrapper(data: freshData, imageId: image.id)
             } catch {
                 print("❌ [ImageThumbnailView] Error loading image: \(error)")
             }
@@ -569,14 +599,29 @@ struct ImageThumbnailView: View {
             print("❌ [ImageThumbnailView] imageDataToShow is still nil")
         }
     }
+    
+    private func refreshImage() async {
+        print("🔄 [ImageThumbnailView] Refreshing image after rotation")
+        isLoading = true
+        do {
+            displayImageData = try await itemService.getDecryptedImage(imageId: image.id)
+            print("✅ [ImageThumbnailView] Image refreshed: \(displayImageData?.count ?? 0) bytes")
+            refreshTrigger = UUID()
+        } catch {
+            print("❌ [ImageThumbnailView] Error refreshing image: \(error)")
+        }
+        isLoading = false
+    }
 }
 
 // MARK: - Full Image View
 
 struct FullImageView: View {
     let image: UIImage
+    let imageId: UUID  // 新增：图片ID，用于保存旋转后的图片
     let item: ItemDTO
     let itemService: ItemService
+    let onImageUpdated: () -> Void  // 新增：图片更新回调
     
     @ObservedObject private var localizationManager = LocalizationManager.shared
     @Environment(\.dismiss) private var dismiss
@@ -590,12 +635,17 @@ struct FullImageView: View {
     @State private var isSharing = false
     @State private var previewImage: UIImage?
     @State private var shareAllImages = true
+    @State private var rotationAngle: Angle = .zero  // 旋转角度
+    @State private var isSavingRotation = false  // 保存旋转状态
+    @State private var rotatedImage: UIImage?  // 旋转后的图片
     
-    init(image: UIImage, item: ItemDTO, itemService: ItemService) {
+    init(image: UIImage, imageId: UUID, item: ItemDTO, itemService: ItemService, onImageUpdated: @escaping () -> Void) {
         self.image = image
+        self.imageId = imageId
         self.item = item
         self.itemService = itemService
-        print("✅ [FullImageView] Initialized with image size: \(image.size)")
+        self.onImageUpdated = onImageUpdated
+        print("✅ [FullImageView] Initialized with image size: \(image.size), imageId: \(imageId)")
     }
     
     var body: some View {
@@ -613,6 +663,7 @@ struct FullImageView: View {
                             Image(uiImage: previewImage ?? image)
                                 .resizable()
                                 .scaledToFit()
+                                .rotationEffect(rotationAngle)
                         }
                         .frame(maxHeight: geometry.size.height * 0.5) // 占上半部分
                         .id(previewImage?.hashValue ?? image.hashValue)
@@ -624,6 +675,7 @@ struct FullImageView: View {
                             Image(uiImage: previewImage ?? image)
                                 .resizable()
                                 .scaledToFit()
+                                .rotationEffect(rotationAngle)
                         }
                         .id(previewImage?.hashValue ?? image.hashValue)
                     }
@@ -636,7 +688,77 @@ struct FullImageView: View {
             VStack(spacing: 0) {
                 // 顶部按钮栏
                 HStack {
+                    // 左旋转按钮
+                    Button {
+                        rotateImageLeft()
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(Color.black.opacity(0.5))
+                                .frame(width: 44, height: 44)
+                            Image(systemName: "rotate.left")
+                                .font(.system(size: 20))
+                                .foregroundStyle(.white)
+                        }
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.leading)
+                    .disabled(isSavingRotation)
+                    
+                    // 右旋转按钮
+                    Button {
+                        rotateImageRight()
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(Color.black.opacity(0.5))
+                                .frame(width: 44, height: 44)
+                            Image(systemName: "rotate.right")
+                                .font(.system(size: 20))
+                                .foregroundStyle(.white)
+                        }
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.leading, 8)
+                    .disabled(isSavingRotation)
+                    
                     Spacer()
+
+                    // 保存按钮（旋转后显示）
+                    if rotationAngle != .zero {
+                        Button {
+                            Task { await saveRotation() }
+                        } label: {
+                            if isSavingRotation {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.black.opacity(0.5))
+                                        .frame(width: 44, height: 44)
+                                    ProgressView()
+                                        .tint(.white)
+                                }
+                                .frame(width: 44, height: 44)
+                            } else {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.green.opacity(0.8))
+                                        .frame(width: 44, height: 44)
+                                    Image(systemName: "checkmark")
+                                        .font(.title2.weight(.bold))
+                                        .foregroundStyle(.white)
+                                }
+                                .frame(width: 44, height: 44)
+                                .contentShape(Rectangle())
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(isSavingRotation)
+                        .padding(.trailing, 8)
+                    }
 
                     Button {
                         dismiss()
@@ -937,6 +1059,84 @@ struct FullImageView: View {
         
         print("✅ [FullImageView] Presenting share sheet")
         topController.present(activityVC, animated: true)
+    }
+    
+    // MARK: - Rotation Functions
+    
+    private func rotateImageLeft() {
+        withAnimation(.spring(response: 0.3)) {
+            rotationAngle -= .degrees(90)
+        }
+        let currentDegrees = rotationAngle.degrees
+        let normalizedDegrees = currentDegrees.truncatingRemainder(dividingBy: 360)
+        print("↺ [FullImageView] Rotate LEFT - Total: \(currentDegrees)°, Normalized: \(normalizedDegrees)°")
+    }
+    
+    private func rotateImageRight() {
+        withAnimation(.spring(response: 0.3)) {
+            rotationAngle += .degrees(90)
+        }
+        let currentDegrees = rotationAngle.degrees
+        let normalizedDegrees = currentDegrees.truncatingRemainder(dividingBy: 360)
+        print("↻ [FullImageView] Rotate RIGHT - Total: \(currentDegrees)°, Normalized: \(normalizedDegrees)°")
+    }
+    
+    private func saveRotation() async {
+        guard rotationAngle != .zero else { return }
+        
+        isSavingRotation = true
+        defer { isSavingRotation = false }
+        
+        do {
+            // 计算旋转次数（每90度为一次）
+            let rotationDegrees = rotationAngle.degrees
+            // 处理负角度：-90° 相当于 270°
+            var normalizedDegrees = rotationDegrees.truncatingRemainder(dividingBy: 360)
+            if normalizedDegrees < 0 {
+                normalizedDegrees += 360
+            }
+            let rotationCount = Int(normalizedDegrees / 90) % 4
+            
+            print("🔄 [FullImageView] Rotation angle: \(rotationDegrees)°, normalized: \(normalizedDegrees)°, count: \(rotationCount)")
+            
+            guard rotationCount != 0 else {
+                print("⚠️ [FullImageView] No rotation needed")
+                return
+            }
+            
+            // 总是使用原始图片（不带水印）
+            // 旋转图片
+            var rotatedUIImage = image
+            for i in 0..<rotationCount {
+                print("🔄 [FullImageView] Rotating step \(i + 1)/\(rotationCount)")
+                rotatedUIImage = rotatedUIImage.rotate90DegreesClockwise() ?? rotatedUIImage
+            }
+            
+            // 转换为 JPEG 数据
+            guard let imageData = rotatedUIImage.jpegData(compressionQuality: 0.9) else {
+                print("❌ [FullImageView] Failed to convert rotated image to data")
+                return
+            }
+            
+            print("💾 [FullImageView] Saving rotated image, size: \(imageData.count) bytes")
+            
+            // 更新图片
+            try await itemService.updateImageContent(imageId: imageId, imageData: imageData)
+            
+            print("✅ [FullImageView] Successfully saved rotated image")
+            
+            // 通知图片已更新
+            onImageUpdated()
+            
+            // 重置旋转角度
+            await MainActor.run {
+                rotationAngle = .zero
+                // 关闭页面，让用户看到更新后的图片
+                dismiss()
+            }
+        } catch {
+            print("❌ [FullImageView] Failed to save rotation: \(error)")
+        }
     }
 }
 
@@ -1666,5 +1866,39 @@ struct ShareSheet: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
         // No update needed
+    }
+}
+
+// MARK: - UIImage Extension for Rotation
+
+extension UIImage {
+    func rotate90DegreesClockwise() -> UIImage? {
+        guard let cgImage = self.cgImage else { return nil }
+        
+        let width = cgImage.height
+        let height = cgImage.width
+        let bitsPerComponent = cgImage.bitsPerComponent
+        let bytesPerRow = cgImage.bytesPerRow
+        let colorSpace = cgImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = cgImage.bitmapInfo
+        
+        guard let context = CGContext(
+            data: nil,
+            width: width,
+            height: height,
+            bitsPerComponent: bitsPerComponent,
+            bytesPerRow: 0,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo.rawValue
+        ) else { return nil }
+        
+        context.translateBy(x: CGFloat(width) / 2, y: CGFloat(height) / 2)
+        context.rotate(by: .pi / 2)
+        context.translateBy(x: -CGFloat(height) / 2, y: -CGFloat(width) / 2)
+        
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: height, height: width))
+        
+        guard let rotatedCGImage = context.makeImage() else { return nil }
+        return UIImage(cgImage: rotatedCGImage, scale: scale, orientation: .up)
     }
 }
