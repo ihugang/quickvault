@@ -986,6 +986,8 @@ string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
 string about_description
 string about_features
+string about_update_action
+string about_update_available
 string about_version
 string androidx_startup
 string app_name

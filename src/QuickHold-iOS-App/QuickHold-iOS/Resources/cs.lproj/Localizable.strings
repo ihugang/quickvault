@@ -352,6 +352,15 @@
 "settings.security.cleardata.confirm.password" = "Zadejte heslo";
 "settings.security.cleardata.confirm.delete" = "Vymazat všechna data";
 "settings.security.cleardata.success" = "Všechna data byla vymazána";
+"settings.security.info.header" = "Ochrana dat";
+"settings.security.info.title" = "Jak jsou vaše data chráněna";
+"settings.security.info.encryption" = "AES-256 šifrování pro všechna citlivá data";
+"settings.security.info.local" = "Data šifrována před iCloud synchronizací";
+"settings.security.info.autolock" = "Automatické zamykání pro ochranu soukromí";
+"settings.security.info.offline" = "Žádné cloudové nahrávání kromě šifrované iCloud synchronizace";
+"settings.appearance.language.title" = "Vzhled a jazyk";
+"settings.more.products" = "Další produkty";
+"settings.more.products.footer" = "Prozkoumejte další užitečné nástroje od stejného vývojáře";
 "settings.appearance" = "Vzhled";
 "settings.appearance.title" = "Zobrazení";
 "settings.appearance.auto" = "Automaticky";

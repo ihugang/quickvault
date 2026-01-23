@@ -358,6 +358,15 @@
 "settings.security.cleardata.confirm.password" = "Ange lösenord";
 "settings.security.cleardata.confirm.delete" = "Radera all data";
 "settings.security.cleardata.success" = "All data har raderats";
+"settings.security.info.header" = "Dataskydd";
+"settings.security.info.title" = "Hur dina data skyddas";
+"settings.security.info.encryption" = "AES-256-kryptering för all känslig data";
+"settings.security.info.local" = "Data krypterad innan iCloud-synkronisering";
+"settings.security.info.autolock" = "Automatisk låsning för integritetsskydd";
+"settings.security.info.offline" = "Ingen molnuppladdning förutom krypterad iCloud-synkronisering";
+"settings.appearance.language.title" = "Utseende och Språk";
+"settings.more.products" = "Fler Produkter";
+"settings.more.products.footer" = "Utforska fler användbara verktyg från samma utvecklare";
 "settings.appearance" = "Utseende";
 "settings.appearance.title" = "Skärm";
 "settings.appearance.auto" = "Automatisk";

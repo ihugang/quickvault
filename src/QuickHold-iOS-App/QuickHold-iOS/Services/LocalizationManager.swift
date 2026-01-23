@@ -13,6 +13,7 @@ import SwiftUI
 enum AppLanguage: String, CaseIterable, Identifiable {
   case english = "en"
   case simplifiedChinese = "zh-Hans"
+  case traditionalChinese = "zh-Hant"
   case spanish = "es"
   case french = "fr"
   case german = "de"
@@ -40,6 +41,7 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     switch self {
     case .english: return "English"
     case .simplifiedChinese: return "简体中文"
+    case .traditionalChinese: return "繁體中文"
     case .spanish: return "Español"
     case .french: return "Français"
     case .german: return "Deutsch"

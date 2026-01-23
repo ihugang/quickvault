@@ -34,6 +34,8 @@ mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 string about_description
 string about_features
+string about_update_action
+string about_update_available
 string about_version
 string app_name
 string app_tagline

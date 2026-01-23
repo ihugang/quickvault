@@ -125,6 +125,15 @@
 "settings.data.reset.confirm" = "Aceasta va șterge toate cardurile și setările. Această acțiune nu poate fi anulată.";
 
 // MARK: - Appearance
+"settings.security.info.header" = "Protecția Datelor";
+"settings.security.info.title" = "Cum sunt protejate datele dumneavoastră";
+"settings.security.info.encryption" = "Criptare AES-256 pentru toate datele sensibile";
+"settings.security.info.local" = "Date criptate înainte de sincronizarea iCloud";
+"settings.security.info.autolock" = "Blocare automată pentru protecția intimității";
+"settings.security.info.offline" = "Fără încărcare cloud, cu excepția sincronizării criptate iCloud";
+"settings.appearance.language.title" = "Aspect și Limbă";
+"settings.more.products" = "Mai Multe Produse";
+"settings.more.products.footer" = "Explorați mai multe instrumente utile de la același dezvoltator";
 "settings.appearance" = "Aspect";
 "settings.appearance.title" = "Afișare";
 "settings.appearance.auto" = "Automat";

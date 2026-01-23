@@ -358,7 +358,16 @@
 "settings.security.cleardata.confirm.password" = "Введите пароль";
 "settings.security.cleardata.confirm.delete" = "Удалить все данные";
 "settings.security.cleardata.success" = "Все данные были удалены";
-"settings.appearance" = "Внешний вид";
+"settings.security.info.header" = "Защита Данных";
+"settings.security.info.title" = "Как защищены ваши данные";
+"settings.security.info.encryption" = "Шифрование AES-256 для всех конфиденциальных данных";
+"settings.security.info.local" = "Данные зашифрованы перед синхронизацией iCloud";
+"settings.security.info.autolock" = "Автоматическая блокировка для защиты конфиденциальности";
+"settings.security.info.offline" = "Нет загрузки в облако, кроме зашифрованной синхронизации iCloud";
+"settings.appearance.language.title" = "Внешний Вид и Язык";
+"settings.more.products" = "Больше Продуктов";
+"settings.more.products.footer" = "Изучите больше полезных инструментов от того же разработчика";
+"settings.appearance" = "Внешний Вид";
 "settings.appearance.title" = "Дисплей";
 "settings.appearance.auto" = "Автоматически";
 "settings.appearance.light" = "Светлый";

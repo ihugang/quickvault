@@ -1,0 +1,13 @@
+/*
+  InfoPlist.strings (Traditional Chinese)
+  QuickHold
+*/
+
+// App Display Name / 應用程式顯示名稱
+"CFBundleDisplayName" = "隨取";
+
+// Face ID Usage / Face ID 使用說明
+"NSFaceIDUsageDescription" = "使用 Face ID 解鎖應用程式";
+
+// Photo Library Usage / 照片圖庫使用說明
+"NSPhotoLibraryUsageDescription" = "存取照片圖庫以新增圖片附件";

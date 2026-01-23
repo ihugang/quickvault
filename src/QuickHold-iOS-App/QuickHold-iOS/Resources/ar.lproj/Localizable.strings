@@ -353,6 +353,15 @@
 "settings.security.cleardata.confirm.password" = "أدخل كلمة المرور";
 "settings.security.cleardata.confirm.delete" = "حذف كل البيانات";
 "settings.security.cleardata.success" = "تم مسح كل البيانات";
+"settings.security.info.header" = "حماية البيانات";
+"settings.security.info.title" = "كيف يتم حماية بياناتك";
+"settings.security.info.encryption" = "تشفير AES-256 لجميع البيانات الحساسة";
+"settings.security.info.local" = "البيانات مشفرة قبل مزامنة iCloud";
+"settings.security.info.autolock" = "حماية القفل التلقائي للخصوصية";
+"settings.security.info.offline" = "لا يوجد رفع سحابي باستثناء مزامنة iCloud المشفرة";
+"settings.appearance.language.title" = "المظهر واللغة";
+"settings.more.products" = "المزيد من المنتجات";
+"settings.more.products.footer" = "استكشف المزيد من الأدوات المفيدة من نفس المطور";
 "settings.appearance" = "المظهر";
 "settings.appearance.title" = "العرض";
 "settings.appearance.auto" = "تلقائي";

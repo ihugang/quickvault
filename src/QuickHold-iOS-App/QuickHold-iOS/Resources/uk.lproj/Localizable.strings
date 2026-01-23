@@ -358,7 +358,16 @@
 "settings.security.cleardata.confirm.password" = "Введіть пароль";
 "settings.security.cleardata.confirm.delete" = "Видалити всі дані";
 "settings.security.cleardata.success" = "Усі дані були видалені";
-"settings.appearance" = "Зовнішній вигляд";
+"settings.security.info.header" = "Захист Даних";
+"settings.security.info.title" = "Як захищені ваші дані";
+"settings.security.info.encryption" = "Шифрування AES-256 для всіх конфіденційних даних";
+"settings.security.info.local" = "Дані зашифровані перед синхронізацією iCloud";
+"settings.security.info.autolock" = "Автоматичне блокування для захисту конфіденційності";
+"settings.security.info.offline" = "Немає завантаження в хмару, крім зашифрованої синхронізації iCloud";
+"settings.appearance.language.title" = "Зовнішній Вигляд та Мова";
+"settings.more.products" = "Більше Продуктів";
+"settings.more.products.footer" = "Дослідіть більше корисних інструментів від того ж розробника";
+"settings.appearance" = "Зовнішній Вигляд";
 "settings.appearance.title" = "Дисплей";
 "settings.appearance.auto" = "Автоматичні";
 "settings.appearance.light" = "Світлий";

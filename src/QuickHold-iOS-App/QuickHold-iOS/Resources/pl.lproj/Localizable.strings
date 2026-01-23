@@ -352,6 +352,15 @@
 "settings.security.cleardata.confirm.password" = "Wprowadź hasło";
 "settings.security.cleardata.confirm.delete" = "Wyczyść wszystkie dane";
 "settings.security.cleardata.success" = "Wszystkie dane zostały wyczyszczone";
+"settings.security.info.header" = "Ochrona Danych";
+"settings.security.info.title" = "Jak chronione są Twoje dane";
+"settings.security.info.encryption" = "Szyfrowanie AES-256 dla wszystkich wrażliwych danych";
+"settings.security.info.local" = "Dane zaszyfrowane przed synchronizacją iCloud";
+"settings.security.info.autolock" = "Automatyczna blokada dla ochrony prywatności";
+"settings.security.info.offline" = "Brak przesyłania do chmury oprócz zaszyfrowanej synchronizacji iCloud";
+"settings.appearance.language.title" = "Wygląd i Język";
+"settings.more.products" = "Więcej Produktów";
+"settings.more.products.footer" = "Odkryj więcej przydatnych narzędzi od tego samego twórcy";
 "settings.appearance" = "Wygląd";
 "settings.appearance.title" = "Wyświetlanie";
 "settings.appearance.auto" = "Automatyczny";

@@ -259,6 +259,15 @@
 "settings.security.biometric.enabled" = "Biométrie activée";
 "settings.security.biometric.disabled" = "Biométrie désactivée";
 "settings.tab" = "Paramètres";
+"settings.security.info.header" = "Protection des Données";
+"settings.security.info.title" = "Comment vos données sont protégées";
+"settings.security.info.encryption" = "Chiffrement AES-256 pour toutes les données sensibles";
+"settings.security.info.local" = "Données chiffrées avant la synchronisation iCloud";
+"settings.security.info.autolock" = "Verrouillage automatique pour la protection de la vie privée";
+"settings.security.info.offline" = "Aucun téléchargement cloud sauf synchronisation iCloud chiffrée";
+"settings.appearance.language.title" = "Apparence et Langue";
+"settings.more.products" = "Plus de Produits";
+"settings.more.products.footer" = "Découvrez plus d'outils utiles du même développeur";
 "settings.appearance" = "Apparence";
 "settings.appearance.title" = "Affichage";
 "settings.appearance.auto" = "Auto";

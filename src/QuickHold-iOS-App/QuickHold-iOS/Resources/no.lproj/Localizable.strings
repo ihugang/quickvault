@@ -352,6 +352,15 @@
 "settings.security.cleardata.confirm.password" = "Skriv inn passord";
 "settings.security.cleardata.confirm.delete" = "Slett alle data";
 "settings.security.cleardata.success" = "Alle data er slettet";
+"settings.security.info.header" = "Databeskyttelse";
+"settings.security.info.title" = "Hvordan dataene dine beskyttes";
+"settings.security.info.encryption" = "AES-256-kryptering for alle sensitive data";
+"settings.security.info.local" = "Data kryptert før iCloud-synkronisering";
+"settings.security.info.autolock" = "Automatisk låsing for personvernbeskyttelse";
+"settings.security.info.offline" = "Ingen skyopplasting bortsett fra kryptert iCloud-synkronisering";
+"settings.appearance.language.title" = "Utseende og Språk";
+"settings.more.products" = "Flere Produkter";
+"settings.more.products.footer" = "Utforsk flere nyttige verktøy fra samme utvikler";
 "settings.appearance" = "Utseende";
 "settings.appearance.title" = "Visning";
 "settings.appearance.auto" = "Auto";

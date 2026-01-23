@@ -358,6 +358,15 @@
 "settings.security.autolock.15min" = "Nach 15 Minuten";
 "settings.security.autolock.never" = "Nie";
 "settings.security.changepassword" = "Passwort Ändern";
+"settings.security.info.header" = "Datenschutz";
+"settings.security.info.title" = "Wie Ihre Daten geschützt werden";
+"settings.security.info.encryption" = "AES-256-Verschlüsselung für alle sensiblen Daten";
+"settings.security.info.local" = "Daten vor iCloud-Synchronisierung verschlüsselt";
+"settings.security.info.autolock" = "Automatische Sperre zum Schutz der Privatsphäre";
+"settings.security.info.offline" = "Kein Cloud-Upload außer verschlüsselter iCloud-Synchronisierung";
+"settings.appearance.language.title" = "Erscheinungsbild & Sprache";
+"settings.more.products" = "Weitere Produkte";
+"settings.more.products.footer" = "Entdecken Sie weitere nützliche Tools desselben Entwicklers";
 "settings.language" = "Sprache";
 "settings.language.title" = "App-Sprache";
 "settings.language.system" = "Systemstandard";

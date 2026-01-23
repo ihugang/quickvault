@@ -30,6 +30,8 @@
     <color name="warning">#FF9800</color>
     <string name="about_description">Secure local information manager</string>
     <string name="about_features">• AES-256-GCM encryption\n• Local-first, no cloud sync\n</string>
+    <string name="about_update_action">立即下载</string>
+    <string name="about_update_available">发现新版本：%1$s</string>
     <string name="about_version">Version: %1$s</string>
     <string name="app_name">QuickHold</string>
     <string name="app_tagline">Secure your digital life</string>

@@ -260,6 +260,15 @@
 "settings.security.biometric.enabled" = "生体認証が有効";
 "settings.security.biometric.disabled" = "生体認証が無効";
 "settings.tab" = "設定";
+"settings.security.info.header" = "データ保護";
+"settings.security.info.title" = "データの保護方法";
+"settings.security.info.encryption" = "すべての機密データに AES-256 暗号化";
+"settings.security.info.local" = "iCloud 同期前にデータを暗号化";
+"settings.security.info.autolock" = "プライバシー保護のための自動ロック";
+"settings.security.info.offline" = "暗号化された iCloud 同期以外にクラウドアップロードなし";
+"settings.appearance.language.title" = "外観と言語";
+"settings.more.products" = "その他の製品";
+"settings.more.products.footer" = "同じ開発者の他の便利なツールを探す";
 "settings.appearance" = "外観";
 "settings.appearance.title" = "表示";
 "settings.appearance.auto" = "自動";

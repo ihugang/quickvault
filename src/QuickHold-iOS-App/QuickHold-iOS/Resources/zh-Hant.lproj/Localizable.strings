@@ -1,0 +1,439 @@
+/* 
+  Localizable.strings (繁體中文)
+  QuickHold
+*/
+
+// MARK: - Common
+"common.ok" = "確定";
+"common.cancel" = "取消";
+"common.save" = "儲存";
+"common.delete" = "刪除";
+"common.edit" = "編輯";
+"common.done" = "完成";
+"common.add" = "新增";
+"common.close" = "關閉";
+"common.confirm" = "確認";
+"common.error" = "錯誤";
+"common.success" = "成功";
+"common.loading" = "載入中...";
+"common.retry" = "重試";
+"common.copy" = "複製";
+"common.share" = "分享";
+"common.search" = "搜尋";
+
+// MARK: - App
+"app.name" = "隨取";
+"app.tagline" = "守護您的數位生活";
+
+// MARK: - Authentication
+"auth.welcome.title" = "歡迎使用隨取";
+"auth.welcome.subtitle" = "設定主密碼以開始使用";
+"auth.password.placeholder" = "輸入密碼";
+"auth.password.confirm" = "確認密碼";
+"auth.password.hint" = "密碼至少需要8個字元";
+"auth.password.required" = "請輸入密碼";
+"auth.password.mismatch" = "兩次輸入的密碼不一致";
+"auth.password.weak" = "密碼強度太弱";
+"auth.setup.button" = "設定密碼";
+"auth.unlock.title" = "解鎖隨取";
+"auth.unlock.button" = "解鎖";
+"auth.unlock.biometric" = "使用面容ID / 觸控ID";
+"auth.unlock.failed" = "認證失敗";
+"auth.unlock.attempts" = "剩餘 %d 次嘗試機會";
+"auth.unlock.locked" = "嘗試次數過多，請在 %d 秒後重試";
+"auth.change.title" = "更改密碼";
+"auth.change.current" = "目前密碼";
+"auth.change.new" = "新密碼";
+"auth.change.confirm" = "確認新密碼";
+"auth.change.success" = "密碼修改成功";
+"auth.change.failed" = "密碼修改失敗";
+"auth.sync.detected.title" = "偵測到其他裝置的資料";
+"auth.sync.detected.message" = "請使用您在第一台裝置上設定的相同密碼";
+"auth.sync.detected.existing.data" = "偵測到其他裝置的資料";
+"auth.sync.waiting" = "正在等待 iCloud 同步...";
+"auth.sync.retry" = "重試";
+
+// MARK: - Authentication Errors
+"auth.error.biometric.unavailable" = "觸控 ID 不可用";
+"auth.error.biometric.failed" = "觸控 ID 認證失敗";
+"auth.error.biometric.password.not.stored" = "請先使用密碼登入以啟用觸控 ID";
+"auth.error.password.incorrect" = "密碼錯誤";
+"auth.error.password.too.short" = "密碼必須至少 8 個字元";
+"auth.error.no.password" = "未設定主密碼";
+"auth.error.rate.limited" = "失敗次數過多，請等待 %d 秒";
+"auth.error.keychain" = "鑰匙圈錯誤：%@";
+"auth.error.password.mismatch.existing.data" = "密碼與其他裝置的現有資料不符。請使用您在第一台裝置上設定的相同密碼。";
+"auth.error.waiting.for.sync" = "正在等待 iCloud 同步...請稍後再試。";
+
+// MARK: - Introduction
+"intro.feature.local.title" = "本機儲存，安心可靠";
+"intro.feature.local.description" = "所有資料僅儲存在您的裝置上，不上傳到任何雲端伺服器，完全離線使用。";
+"intro.feature.encryption.title" = "資料加密保護";
+"intro.feature.encryption.description" = "採用 AES-256-GCM 加密演算法，所有敏感資料都經過加密儲存，即使裝置遺失也無法被破解。";
+"intro.feature.files.title" = "照片檔案全加密";
+"intro.feature.files.description" = "圖片、PDF 等附件均加密儲存，匯出照片時支援新增浮水印。";
+"intro.feature.privacy.title" = "絕對隱私保護";
+"intro.feature.privacy.description" = "無需註冊帳號，無需提供任何個人資訊，您的資料完全屬於您自己。";
+"intro.button.continue" = "我知道了，開始使用";
+
+// MARK: - Cards
+"cards.title" = "卡片";
+"cards.empty" = "暫無卡片";
+"cards.empty.subtitle" = "點選 + 新增您的第一張卡片";
+"cards.add" = "新增卡片";
+"cards.edit" = "編輯卡片";
+"cards.delete" = "刪除卡片";
+"cards.delete.confirm" = "確定要刪除這張卡片嗎？";
+"cards.pin" = "置頂";
+"cards.unpin" = "取消置頂";
+"cards.pinned" = "已置頂";
+"cards.all" = "全部";
+"cards.field.add" = "新增欄位";
+"cards.field.label" = "標籤";
+"cards.field.value" = "值";
+"cards.field.copyable" = "可複製";
+"cards.copied" = "已複製到剪貼簿";
+"cards.title.placeholder" = "卡片標題";
+"cards.group.placeholder" = "分組";
+"cards.group.personal" = "個人";
+"cards.group.company" = "公司";
+"cards.type.general" = "通用";
+"cards.type.login" = "登入資訊";
+"cards.type.card" = "信用卡";
+"cards.type.identity" = "身分資訊";
+"cards.type.note" = "安全筆記";
+"cards.created" = "建立時間";
+"cards.updated" = "更新時間";
+"cards.tags" = "標籤";
+"cards.tags.add" = "新增標籤";
+"cards.type.address" = "地址";
+"cards.type.invoice" = "開票資訊";
+
+// MARK: - Invoice Paste
+"invoice.paste.title" = "貼上解析";
+"invoice.paste.parse" = "貼上資訊自動填寫";
+"invoice.paste.hint" = "貼上開票資訊或收款資訊，自動解析填寫表單";
+"invoice.paste.instruction" = "請貼上開票資訊或收款資訊，系統將自動識別並填寫相應欄位";
+"invoice.paste.fromclipboard" = "從剪貼簿貼上";
+"invoice.parse.button" = "解析填寫";
+
+// MARK: - Fields
+"field.name" = "姓名";
+"field.phone" = "電話";
+"field.province" = "省份";
+"field.city" = "城市";
+"field.district" = "區縣";
+"field.address" = "詳細地址";
+"field.postalcode" = "郵遞區號";
+"field.notes" = "備註";
+"field.companyname" = "公司名稱";
+"field.taxid" = "稅號";
+"field.bankname" = "開戶銀行";
+"field.bankaccount" = "銀行帳號";
+"field.content" = "內容";
+
+// MARK: - Card Types
+"cards.type.select" = "選擇類型";
+"cards.type.idcard" = "身分證";
+"cards.type.passport" = "護照";
+"cards.type.businesslicense" = "營業執照";
+
+// MARK: - ID Card Fields
+"field.idcard.name" = "姓名";
+"field.idcard.gender" = "性別";
+"field.idcard.nationality" = "民族";
+"field.idcard.birthdate" = "出生日期";
+"field.idcard.number" = "身分證號";
+"field.idcard.address" = "住址";
+"field.idcard.issuer" = "簽發機關";
+"field.idcard.validperiod" = "有效期限";
+
+// MARK: - Business License Fields
+"field.license.companyname" = "企業名稱";
+"field.license.companytype" = "類型";
+"field.license.creditcode" = "統一社會信用代碼";
+"field.license.legalrep" = "法定代表人";
+"field.license.capital" = "註冊資本";
+"field.license.address" = "住所";
+"field.license.establishdate" = "成立日期";
+"field.license.businessterm" = "營業期限";
+"field.license.scope" = "經營範圍";
+
+// MARK: - Passport Fields
+"field.passport.name" = "姓名";
+"field.passport.nationality" = "國籍";
+"field.passport.birthdate" = "出生日期";
+"field.passport.gender" = "性別";
+"field.passport.number" = "護照號碼";
+"field.passport.issuedate" = "簽發日期";
+"field.passport.expirydate" = "有效期至";
+"field.passport.issueplace" = "簽發地點";
+"field.passport.issuer" = "簽發機關";
+
+// MARK: - Attachment Hints
+"attachment.idcard.front" = "上傳證件正面（含頭像與號碼）";
+"attachment.idcard.back" = "上傳證件背面（可選）";
+"attachment.passport.datapage" = "上傳護照資訊頁（含照片頁）";
+"attachment.license.photo" = "上傳營業執照照片";
+
+// MARK: - OCR
+"ocr.section.title" = "智慧辨識";
+"ocr.scan.photo" = "從照片辨識";
+"ocr.section.footer" = "選擇證件照片，自動提取資訊填寫表單";
+"ocr.processing" = "辨識中...";
+"ocr.photo.upload" = "上傳證件照片";
+"ocr.tap.upload" = "點選上傳照片";
+"ocr.idcard.front" = "身分證正面（含頭像與號碼）";
+"ocr.idcard.back" = "身分證背面（含簽發機關與有效期）";
+"ocr.passport.datapage" = "護照資訊頁（含照片頁）";
+"ocr.license.photo" = "營業執照照片";
+"ocr.photo.front" = "正面";
+"ocr.photo.back" = "背面";
+"ocr.hint.idcard" = "上傳身分證正反面照片，系統將自動辨識並填寫資訊。";
+"ocr.hint.passport" = "上傳護照資訊頁（含照片的一頁）。";
+"ocr.hint.license" = "上傳營業執照照片。";
+"common.optional" = "可選";
+"common.close" = "關閉";
+"attachment.document.photos" = "證件照片";
+"attachment.no.photo" = "暫無照片";
+"attachment.load.failed" = "載入圖片失敗";
+"ocr.edit.photo.hint" = "點選新增或替換證件照片";
+
+// MARK: - Export
+"export.title" = "匯出";
+"export.action" = "匯出";
+"export.image" = "匯出圖片";
+"export.images" = "匯出圖片";
+"export.images.all" = "匯出全部圖片";
+"export.text" = "匯出文字";
+"export.add.watermark" = "新增浮水印";
+"export.watermark.title" = "浮水印設定";
+"export.watermark.text" = "浮水印文字";
+"export.watermark.placeholder" = "輸入浮水印文字";
+"export.watermark.hint" = "浮水印將以半透明對角線方式覆蓋在圖片上";
+"export.watermark.fontsize" = "字號大小";
+"export.watermark.spacing" = "行距";
+"export.watermark.spacing.dense" = "密集";
+"export.watermark.spacing.normal" = "正常";
+"export.watermark.spacing.sparse" = "稀疏";
+"export.watermark.opacity" = "透明度";
+"export.preview" = "預覽";
+"export.advanced.options" = "進階選項";
+"export.size.compression" = "尺寸與壓縮";
+"export.max.width" = "最大寬度";
+"export.max.height" = "最大高度";
+"export.max.filesize" = "最大檔案大小";
+"export.pixel" = "像素";
+"export.hint.limits" = "留空表示不限制。圖片會等比例縮放以適應尺寸限制";
+"export.success" = "匯出成功";
+"export.failed" = "匯出失敗";
+"export.copied" = "已複製到剪貼簿";
+"export.images.count" = "已匯出 %d 張圖片";
+
+// MARK: - Validation
+"validation.title.required" = "標題不能為空";
+"validation.field.required" = "此欄位不能為空";
+"validation.phone.invalid" = "電話格式無效";
+"validation.taxid.invalid" = "稅號必須為18位";
+
+// MARK: - Attachments
+"attachments.title" = "附件";
+"attachments.add" = "新增附件";
+"attachments.delete" = "刪除附件";
+"attachments.delete.confirm" = "確定要刪除這個附件嗎？";
+"attachments.watermark" = "浮水印";
+"attachments.watermark.add" = "新增浮水印";
+"attachments.watermark.remove" = "移除浮水印";
+"attachments.watermark.text" = "浮水印文字";
+"attachments.share" = "分享";
+"attachments.preview" = "預覽";
+"attachments.size" = "大小：%@";
+"attachments.empty" = "暫無附件";
+"attachments.photo.library" = "照片圖庫";
+"attachments.photo.camera" = "相機";
+
+// MARK: - Search
+"search.title" = "搜尋";
+"search.placeholder" = "搜尋卡片...";
+"search.empty" = "未找到結果";
+"search.recent" = "最近搜尋";
+
+// MARK: - Settings
+"settings.title" = "設定";
+"settings.tab" = "設定";
+"settings.security" = "安全性";
+"settings.security.biometric" = "面容ID / 觸控ID";
+"settings.security.biometric.enable" = "啟用生物辨識認證";
+"settings.security.biometric.enabled" = "已啟用生物辨識";
+"settings.security.biometric.disabled" = "已停用生物辨識";
+"settings.security.autolock" = "自動鎖定";
+"settings.security.autolock.immediately" = "立即";
+"settings.security.autolock.1min" = "1分鐘後";
+"settings.security.autolock.5min" = "5分鐘後";
+"settings.security.autolock.15min" = "15分鐘後";
+"settings.security.autolock.never" = "永不";
+"settings.security.changepassword" = "更改密碼";
+"settings.security.cleardata" = "刪除所有資料";
+"settings.security.cleardata.footer" = "⚠️ 此操作將永久刪除所有卡片、圖片和檔案，且無法復原！";
+"settings.security.cleardata.confirm.title" = "確認刪除所有資料";
+"settings.security.cleardata.confirm.message" = "此操作將永久刪除所有資料，且無法復原。請輸入密碼以確認。";
+"settings.security.cleardata.confirm.password" = "輸入密碼";
+"settings.security.cleardata.confirm.delete" = "刪除所有資料";
+"settings.security.cleardata.success" = "已清除所有資料";
+"settings.security.info.header" = "資料保護";
+"settings.security.info.title" = "你的資料如何被保護";
+"settings.security.info.encryption" = "AES-256 加密演算法保護所有敏感資料";
+"settings.security.info.local" = "資料加密後透過 iCloud 同步";
+"settings.security.info.autolock" = "自動鎖定保護隱私安全";
+"settings.security.info.offline" = "除 iCloud 加密同步外，無其他雲端傳輸";
+"settings.appearance" = "外觀";
+"settings.appearance.title" = "顯示";
+"settings.appearance.auto" = "自動";
+"settings.appearance.light" = "淺色";
+"settings.appearance.dark" = "深色";
+"settings.appearance.language.title" = "外觀與語言";
+"settings.more.products" = "更多產品";
+"settings.more.products.footer" = "了解更多實用的生產力工具";
+"settings.language" = "語言";
+"settings.language.title" = "應用程式語言";
+"settings.language.system" = "跟隨系統";
+"settings.about" = "關於";
+"settings.about.version" = "版本";
+"settings.about.privacy" = "隱私政策";
+"settings.about.terms" = "服務條款";
+"settings.data" = "資料";
+"settings.data.export" = "匯出資料";
+"settings.data.import" = "匯入資料";
+"settings.data.reset" = "重設所有資料";
+"settings.data.reset.confirm" = "這將刪除您的所有卡片和設定。此操作無法復原。";
+
+// MARK: - Items (New Design)
+"items.title" = "隨取 QuickHold";
+"items.tab" = "卡片";
+"items.search.placeholder" = "搜尋標題或標籤...";
+"items.loading" = "載入中...";
+"items.empty" = "還沒有卡片";
+"items.empty.subtitle" = "點選右上角 + 建立第一張卡片";
+"items.empty.search" = "未找到結果";
+"items.empty.search.subtitle" = "試試其他搜尋關鍵字";
+"items.pinned" = "置頂";
+"items.all" = "全部";
+"items.create.text" = "建立文字卡片";
+"items.create.image" = "建立圖片卡片";
+"items.type.text" = "文字卡片";
+"items.type.image" = "圖片卡片";
+"items.type.file" = "檔案卡片";
+"items.type.text.desc" = "儲存文字資訊，便於快速分享";
+"items.type.image.desc" = "儲存圖片，支援新增浮水印分享";
+"items.type.file.desc" = "儲存各種檔案，支援PDF預覽";
+
+// Items - Files
+"items.files.select" = "選擇檔案";
+"items.files.select.media" = "選擇圖片/影片";
+"items.files.camera" = "拍攝照片/影片";
+"items.files.count" = "%d 個檔案";
+"items.files.section" = "檔案";
+"items.files.limit" = "最多可選擇 10 個檔案，單一檔案不超過 10MB";
+"items.files.delete.confirm.title" = "確認刪除檔案";
+"items.files.delete.confirm.message" = "確定要刪除這個檔案嗎？此操作無法復原。";
+
+// Items - Detail Files
+"items.detail.files" = "檔案";
+"items.detail.files.count" = "%d 個檔案";
+"items.create.title" = "建立%@";
+"items.create.selecttype" = "選擇類型";
+"items.create.button" = "建立";
+"items.info.basic" = "基本資訊";
+"items.info.title" = "標題";
+"items.info.title.hint" = "為卡片設定一個清晰的標題";
+"items.content" = "內容";
+"items.content.characters" = "%d 字元";
+"items.images.select" = "選擇圖片";
+"items.images.camera" = "拍攝照片";
+"items.images.camera.unavailable" = "相機不可用";
+"items.images.camera.permission" = "請在系統設定中允許存取相機";
+"items.images.count" = "%d 張";
+"items.images.section" = "圖片";
+"items.images.limit" = "最多可選擇 10 張圖片";
+"items.images.delete.confirm.title" = "確認刪除圖片";
+"items.images.delete.confirm.message" = "確定要刪除這張圖片嗎？此操作無法復原。";
+"items.images.duplicate.title" = "已去除重複圖片";
+"items.images.duplicate.message" = "已自動去除 %d 張重複圖片。";
+"items.files.duplicate.title" = "已去除重複檔案";
+"items.files.duplicate.message" = "已自動去除 %d 個重複檔案。";
+"items.files.rename" = "重新命名";
+"items.files.rename.title" = "重新命名檔案";
+"items.files.rename.placeholder" = "輸入新檔案名稱";
+"items.files.rename.message" = "請輸入檔案的新名稱（不含副檔名）。";
+"items.files.delete" = "刪除";
+"items.files.delete.confirm.title" = "刪除檔案";
+"items.files.delete.confirm.message" = "確定要刪除此檔案嗎？此操作無法復原。";
+"items.tags.section" = "標籤（可選）";
+"items.tags.add" = "新增";
+"items.tags.placeholder" = "輸入標籤名稱";
+"items.tags.hint" = "可選：使用標籤協助分類和搜尋";
+"items.tags.selected" = "已選擇的標籤";
+"items.tags.available" = "可選擇的標籤";
+"items.sort.created" = "建立時間";
+"items.sort.type" = "類型";
+"items.sort.updated" = "更新時間";
+"items.detail.edit" = "編輯";
+"items.detail.delete" = "刪除";
+"items.detail.pin" = "置頂";
+"items.detail.created" = "建立於";
+"items.detail.unpin" = "取消置頂";
+"items.detail.pinned" = "已置頂";
+"items.detail.content" = "內容";
+"items.detail.images" = "圖片";
+"items.detail.images.count" = "%d 張";
+"items.detail.tags" = "標籤";
+"items.detail.share.text" = "分享文字";
+"items.detail.share.images" = "分享圖片";
+"items.delete.confirm" = "確定要刪除這張卡片嗎?";
+"items.delete.title" = "確認刪除";
+"items.delete.message" = "此操作無法復原";
+"items.created.success" = "建立成功";
+"items.updated.success" = "更新成功";
+"items.deleted.success" = "刪除成功";
+
+// MARK: - Watermark
+"watermark.settings" = "浮水印設定";
+"watermark.collapse" = "收起";
+"watermark.add" = "新增浮水印";
+"watermark.text" = "浮水印文字（例如：僅供XX使用）";
+"watermark.text.placeholder" = "例如：僅供XX使用";
+"watermark.fontsize" = "字體大小";
+"watermark.spacing" = "行距";
+"watermark.spacing.dense" = "密集";
+"watermark.spacing.normal" = "正常";
+"watermark.spacing.sparse" = "稀疏";
+"watermark.opacity" = "透明度";
+"watermark.preview" = "預覽";
+"watermark.share" = "分享";
+"watermark.scope" = "分享範圍";
+"watermark.scope.current" = "僅此圖片";
+"watermark.scope.all" = "全部圖片（%d張）";
+"watermark.hint" = "浮水印將以對角線平鋪方式覆蓋在圖片上";
+"watermark.sheet.title" = "分享圖片";
+"watermark.preparing" = "準備中...";
+
+// MARK: - Errors
+"error.generic" = "發生錯誤";
+"error.network" = "網路錯誤";
+"error.encryption" = "加密錯誤";
+"error.decryption" = "解密錯誤";
+"error.storage" = "儲存錯誤";
+"error.biometric.unavailable" = "生物辨識認證不可用";
+"error.biometric.notEnrolled" = "未設定生物辨識資料";
+
+// MARK: - App Promotion
+"promo.photopc.title" = "PhotoPc";
+"promo.photopc.description" = "跨平台照片傳輸工具，無需網路，Mac和iPhone之間快速傳輸照片。";
+"promo.foxvault.title" = "FoxVault";
+"promo.foxvault.description" = "iPhone做隨身碟，私密檔案保險箱，安全加密儲存您的隱私檔案和照片。";
+
+// Login mode
+"auth.login.subtitle" = "輸入密碼登入";
+"auth.login.button" = "登入";
+"auth.switch.to.login" = "已有帳號？登入";
+"auth.switch.to.setup" = "建立新帳號";

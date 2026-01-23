@@ -352,6 +352,15 @@
 "settings.security.cleardata.confirm.password" = "Adja meg a jelszót";
 "settings.security.cleardata.confirm.delete" = "Összes adat törlése";
 "settings.security.cleardata.success" = "Minden adat törölve";
+"settings.security.info.header" = "Adatvédelem";
+"settings.security.info.title" = "Hogyan védjük az adatait";
+"settings.security.info.encryption" = "AES-256 titkosítás minden érzékeny adathoz";
+"settings.security.info.local" = "Adatok titkosítva az iCloud szinkronizálás előtt";
+"settings.security.info.autolock" = "Automatikus zárolás az adatvédelemhez";
+"settings.security.info.offline" = "Nincs felhőfeltöltés a titkosított iCloud szinkronizálás kivételével";
+"settings.appearance.language.title" = "Megjelenés és Nyelv";
+"settings.more.products" = "További Termékek";
+"settings.more.products.footer" = "Fedezzen fel további hasznos eszközöket ugyanattól a fejlesztőtől";
 "settings.appearance" = "Megjelenés";
 "settings.appearance.title" = "Megjelenítés";
 "settings.appearance.auto" = "Automatikus";

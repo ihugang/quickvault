@@ -352,6 +352,15 @@
 "settings.security.cleardata.confirm.password" = "Εισάγετε κωδικό";
 "settings.security.cleardata.confirm.delete" = "Διαγραφή όλων των δεδομένων";
 "settings.security.cleardata.success" = "Όλα τα δεδομένα διαγράφηκαν";
+"settings.security.info.header" = "Προστασία Δεδομένων";
+"settings.security.info.title" = "Πώς προστατεύονται τα δεδομένα σας";
+"settings.security.info.encryption" = "Κρυπτογράφηση AES-256 για όλα τα ευαίσθητα δεδομένα";
+"settings.security.info.local" = "Δεδομένα κρυπτογραφημένα πριν από την iCloud συγχρονισμό";
+"settings.security.info.autolock" = "Αυτόματο κλείδωμα για προστασία ιδιωτικότητας";
+"settings.security.info.offline" = "Καμία μεταφόρτωση στο cloud εκτός από κρυπτογραφημένο iCloud συγχρονισμό";
+"settings.appearance.language.title" = "Εμφάνιση & Γλώσσα";
+"settings.more.products" = "Περισσότερα Προϊόντα";
+"settings.more.products.footer" = "Εξερευνήστε περισσότερα χρήσιμα εργαλεία από τον ίδιο δημιουργό";
 "settings.appearance" = "Εμφάνιση";
 "settings.appearance.title" = "Προβολή";
 "settings.appearance.auto" = "Αυτόματο";

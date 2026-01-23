@@ -352,6 +352,15 @@
 "settings.security.cleardata.confirm.password" = "Introduza a palavra-passe";
 "settings.security.cleardata.confirm.delete" = "Eliminar todos os dados";
 "settings.security.cleardata.success" = "Todos os dados foram eliminados";
+"settings.security.info.header" = "Proteção de Dados";
+"settings.security.info.title" = "Como os seus dados são protegidos";
+"settings.security.info.encryption" = "Encriptação AES-256 para todos os dados sensíveis";
+"settings.security.info.local" = "Dados encriptados antes da sincronização do iCloud";
+"settings.security.info.autolock" = "Bloqueio automático para proteção de privacidade";
+"settings.security.info.offline" = "Sem carregamento na nuvem, exceto sincronização encriptada do iCloud";
+"settings.appearance.language.title" = "Aparência e Idioma";
+"settings.more.products" = "Mais Produtos";
+"settings.more.products.footer" = "Explore mais ferramentas úteis do mesmo programador";
 "settings.appearance" = "Aparência";
 "settings.appearance.title" = "Visualização";
 "settings.appearance.auto" = "Automático";

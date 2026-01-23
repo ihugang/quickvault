@@ -1,6 +1,15 @@
 import SwiftUI
 import QuickHoldCore
 
+// MARK: - Color Palette
+private enum SettingsPalette {
+    static let primary = Color(red: 0.20, green: 0.40, blue: 0.70)       // #3366B3
+    static let secondary = Color(red: 0.15, green: 0.65, blue: 0.60)     // #26A699
+    static let accent = Color(red: 0.95, green: 0.70, blue: 0.20)        // #F2B333
+    static let promoBackground = Color(.secondarySystemGroupedBackground)
+    static let promoBorder = Color(.separator)
+}
+
 /// Settings view / 设置视图
 struct SettingsView: View {
     @ObservedObject var viewModel: SettingsViewModel
@@ -13,181 +22,20 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // Security Section
-                Section {
-                    // Auto-Lock Timeout
-                    Picker(localizationManager.localizedString("settings.security.autolock"), selection: $viewModel.autoLockTimeout) {
-                        ForEach(AutoLockTimeout.allCases) { timeout in
-                            Text(localizationManager.localizedString(timeout.localizationKey)).tag(timeout)
-                        }
-                    }
-                    .onChange(of: viewModel.autoLockTimeout) { newValue in
-                        viewModel.saveAutoLockTimeout(newValue)
-                    }
-                    
-                    // Biometric Toggle
-                    if viewModel.isBiometricAvailable {
-                        Toggle(localizationManager.localizedString("settings.security.biometric"), isOn: Binding(
-                            get: { viewModel.isBiometricEnabled },
-                            set: { viewModel.toggleBiometric($0) }
-                        ))
-                    }
-                    
-                    // Change Password
-                    Button {
-                        showChangePassword = true
-                    } label: {
-                        HStack {
-                            Text(localizationManager.localizedString("settings.security.changepassword"))
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    .foregroundStyle(.primary)
-                    
-                    // Clear All Data (Danger Zone)
-                    Button(role: .destructive) {
-                        showClearDataConfirmation = true
-                    } label: {
-                        HStack {
-                            Text(localizationManager.localizedString("settings.security.cleardata"))
-                            Spacer()
-                        }
-                    }
-                } header: {
-                    Text(localizationManager.localizedString("settings.security"))
-                } footer: {
-                    Text(localizationManager.localizedString("settings.security.cleardata.footer"))
-                        .font(.caption)
-                }
+                // 安全说明卡 - Security Info Card
+                securityInfoSection
                 
-                // Appearance Section
-                Section {
-                    Picker(localizationManager.localizedString("settings.appearance"), selection: $viewModel.appearanceMode) {
-                        ForEach(AppearanceMode.allCases) { mode in
-                            Text(localizationManager.localizedString(mode.localizationKey)).tag(mode)
-                        }
-                    }
-                    .onChange(of: viewModel.appearanceMode) { newValue in
-                        viewModel.saveAppearanceMode(newValue)
-                    }
-                } header: {
-                    Text(localizationManager.localizedString("settings.appearance.title"))
-                }
+                // 安全与隐私 - Security & Privacy
+                securitySection
                 
-                // Language Section
-                Section {
-                    Button {
-                        showLanguagePicker = true
-                    } label: {
-                        HStack {
-                            Text(localizationManager.localizedString("settings.language"))
-                            Spacer()
-                            Text(localizationManager.isUsingSystemLanguage ?
-                                 localizationManager.localizedString("settings.language.system") :
-                                 localizationManager.currentLanguage.displayName)
-                                .foregroundStyle(.secondary)
-                            Image(systemName: "chevron.right")
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    .foregroundStyle(.primary)
-                } header: {
-                    Text(localizationManager.localizedString("settings.language.title"))
-                }
+                // 外观与语言 - Appearance & Language
+                appearanceAndLanguageSection
                 
-                // About Section
-                Section {
-                    HStack {
-                        Text(localizationManager.localizedString("settings.about.version"))
-                        Spacer()
-                        Text(viewModel.appVersion)
-                            .foregroundStyle(.secondary)
-                    }
-                } header: {
-                    Text(localizationManager.localizedString("settings.about"))
-                }
-
-                // PhotoPC Promotion Section
-                Section {
-                    HStack(alignment: .center, spacing: 8) {
-                        Image("photopc_icon")
-                            .resizable()
-                            .frame(width: 64, height: 64)
-                            .cornerRadius(12)
-                            .padding(.trailing, 8)
-                            .onTapGesture {
-                                if let url = URL(string: "https://apps.apple.com/cn/app/photopc/id1667798896?l=en-GB") {
-                                    UIApplication.shared.open(url)
-                                }
-                            }
-
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(localizationManager.localizedString("promo.photopc.title"))
-                                .foregroundColor(.blue)
-                                .font(.headline)
-                                .onTapGesture {
-                                    if let url = URL(string: "https://apps.apple.com/cn/app/photopc/id1667798896?l=en-GB") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                }
-
-                            Text(localizationManager.localizedString("promo.photopc.description"))
-                                .foregroundColor(.secondary)
-                                .font(.subheadline)
-                                .lineLimit(3)
-                                .padding(.vertical, 4)
-                                .onTapGesture {
-                                    if let url = URL(string: "https://apps.apple.com/cn/app/photopc/id1667798896?l=en-GB") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                }
-                        }
-                    }
-                } header: {
-                    Text(localizationManager.localizedString("promo.photopc.title"))
-                }
-
-                // FoxVault Promotion Section
-                Section {
-                    HStack(alignment: .center, spacing: 8) {
-                        Image("foxvault_icon")
-                            .resizable()
-                            .frame(width: 64, height: 64)
-                            .cornerRadius(12)
-                            .padding(.trailing, 8)
-                            .onTapGesture {
-                                if let url = URL(string: "https://apps.apple.com/us/app/foxvault/id6755353875") {
-                                    UIApplication.shared.open(url)
-                                }
-                            }
-
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(localizationManager.localizedString("promo.foxvault.title"))
-                                .foregroundColor(.blue)
-                                .font(.headline)
-                                .onTapGesture {
-                                    if let url = URL(string: "https://apps.apple.com/us/app/foxvault/id6755353875") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                }
-
-                            Text(localizationManager.localizedString("promo.foxvault.description"))
-                                .foregroundColor(.secondary)
-                                .font(.subheadline)
-                                .lineLimit(3)
-                                .padding(.vertical, 4)
-                                .onTapGesture {
-                                    if let url = URL(string: "https://apps.apple.com/us/app/foxvault/id6755353875") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                }
-                        }
-                    }
-                } header: {
-                    Text(localizationManager.localizedString("promo.foxvault.title"))
-                }
+                // 关于 - About
+                aboutSection
+                
+                // 更多产品 - More Products
+                moreProductsSection
             }
             .navigationTitle(localizationManager.localizedString("settings.title"))
             .environment(\.layoutDirection, localizationManager.layoutDirection)
@@ -231,6 +79,243 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+    
+    // MARK: - Security Info Section
+    
+    private var securityInfoSection: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 8) {
+                    Image(systemName: "lock.shield.fill")
+                        .font(.title2)
+                        .foregroundStyle(SettingsPalette.primary)
+                    Text(localizationManager.localizedString("settings.security.info.title"))
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                }
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    SecurityFeatureRow(
+                        icon: "key.fill",
+                        text: localizationManager.localizedString("settings.security.info.encryption")
+                    )
+                    SecurityFeatureRow(
+                        icon: "iphone.and.arrow.forward",
+                        text: localizationManager.localizedString("settings.security.info.local")
+                    )
+                    SecurityFeatureRow(
+                        icon: "hourglass",
+                        text: localizationManager.localizedString("settings.security.info.autolock")
+                    )
+                    SecurityFeatureRow(
+                        icon: "network.slash",
+                        text: localizationManager.localizedString("settings.security.info.offline")
+                    )
+                }
+            }
+            .padding(.vertical, 4)
+        } header: {
+            Text(localizationManager.localizedString("settings.security.info.header"))
+        }
+    }
+    
+    // MARK: - Security Section
+    
+    private var securitySection: some View {
+        Section {
+            // Auto-Lock Timeout
+            Picker(localizationManager.localizedString("settings.security.autolock"), selection: $viewModel.autoLockTimeout) {
+                ForEach(AutoLockTimeout.allCases) { timeout in
+                    Text(localizationManager.localizedString(timeout.localizationKey)).tag(timeout)
+                }
+            }
+            .onChange(of: viewModel.autoLockTimeout) { newValue in
+                viewModel.saveAutoLockTimeout(newValue)
+            }
+            
+            // Biometric Toggle
+            if viewModel.isBiometricAvailable {
+                Toggle(localizationManager.localizedString("settings.security.biometric"), isOn: Binding(
+                    get: { viewModel.isBiometricEnabled },
+                    set: { viewModel.toggleBiometric($0) }
+                ))
+            }
+            
+            // Change Password
+            Button {
+                showChangePassword = true
+            } label: {
+                HStack {
+                    Text(localizationManager.localizedString("settings.security.changepassword"))
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .foregroundStyle(.primary)
+            
+            // Clear All Data (Danger Zone)
+            Button(role: .destructive) {
+                showClearDataConfirmation = true
+            } label: {
+                HStack {
+                    Text(localizationManager.localizedString("settings.security.cleardata"))
+                    Spacer()
+                }
+            }
+        } header: {
+            Text(localizationManager.localizedString("settings.security"))
+        } footer: {
+            Text(localizationManager.localizedString("settings.security.cleardata.footer"))
+                .font(.caption)
+        }
+    }
+    
+    // MARK: - Appearance and Language Section
+    
+    private var appearanceAndLanguageSection: some View {
+        Section {
+            // Appearance Mode
+            Picker(localizationManager.localizedString("settings.appearance"), selection: $viewModel.appearanceMode) {
+                ForEach(AppearanceMode.allCases) { mode in
+                    Text(localizationManager.localizedString(mode.localizationKey)).tag(mode)
+                }
+            }
+            .onChange(of: viewModel.appearanceMode) { newValue in
+                viewModel.saveAppearanceMode(newValue)
+            }
+            
+            // Language Selector
+            Button {
+                showLanguagePicker = true
+            } label: {
+                HStack {
+                    Text(localizationManager.localizedString("settings.language"))
+                    Spacer()
+                    Text(localizationManager.isUsingSystemLanguage ?
+                         localizationManager.localizedString("settings.language.system") :
+                         localizationManager.currentLanguage.displayName)
+                        .foregroundStyle(.secondary)
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .foregroundStyle(.primary)
+        } header: {
+            Text(localizationManager.localizedString("settings.appearance.language.title"))
+        }
+    }
+    
+    // MARK: - About Section
+    
+    private var aboutSection: some View {
+        Section {
+            HStack {
+                Text(localizationManager.localizedString("settings.about.version"))
+                Spacer()
+                Text(viewModel.appVersion)
+                    .foregroundStyle(.secondary)
+            }
+        } header: {
+            Text(localizationManager.localizedString("settings.about"))
+        }
+    }
+    
+    // MARK: - More Products Section
+    
+    private var moreProductsSection: some View {
+        Section {
+            // PhotoPC Promo Card
+            PromoCard(
+                iconName: "photopc_icon",
+                title: localizationManager.localizedString("promo.photopc.title"),
+                description: localizationManager.localizedString("promo.photopc.description"),
+                url: "https://apps.apple.com/cn/app/photopc/id1667798896?l=en-GB"
+            )
+            
+            // FoxVault Promo Card
+            PromoCard(
+                iconName: "foxvault_icon",
+                title: localizationManager.localizedString("promo.foxvault.title"),
+                description: localizationManager.localizedString("promo.foxvault.description"),
+                url: "https://apps.apple.com/us/app/foxvault/id6755353875"
+            )
+        } header: {
+            Text(localizationManager.localizedString("settings.more.products"))
+        } footer: {
+            Text(localizationManager.localizedString("settings.more.products.footer"))
+                .font(.caption)
+        }
+    }
+}
+
+// MARK: - Security Feature Row
+
+struct SecurityFeatureRow: View {
+    let icon: String
+    let text: String
+    
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: icon)
+                .font(.body)
+                .foregroundStyle(SettingsPalette.secondary)
+                .frame(width: 24, alignment: .center)
+            
+            Text(text)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+}
+
+// MARK: - Promo Card
+
+struct PromoCard: View {
+    let iconName: String
+    let title: String
+    let description: String
+    let url: String
+    
+    var body: some View {
+        Button {
+            if let targetURL = URL(string: url) {
+                UIApplication.shared.open(targetURL)
+            }
+        } label: {
+            HStack(alignment: .top, spacing: 12) {
+                // 图标
+                Image(iconName)
+                    .resizable()
+                    .frame(width: 56, height: 56)
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+                
+                // 内容
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(title)
+                        .font(.headline)
+                        .foregroundStyle(SettingsPalette.primary)
+                    
+                    Text(description)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                }
+                
+                Spacer()
+                
+                // 箭头
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding(.vertical, 4)
+        }
+        .buttonStyle(.plain)
     }
 }
 

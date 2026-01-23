@@ -352,6 +352,15 @@
 "settings.security.cleardata.confirm.password" = "Syötä salasana";
 "settings.security.cleardata.confirm.delete" = "Poista kaikki tiedot";
 "settings.security.cleardata.success" = "Kaikki tiedot on poistettu";
+"settings.security.info.header" = "Tietosuoja";
+"settings.security.info.title" = "Kuinka tietosi suojataan";
+"settings.security.info.encryption" = "AES-256-salaus kaikille arkaluontoisille tiedoille";
+"settings.security.info.local" = "Tiedot salataan ennen iCloud-synkronointia";
+"settings.security.info.autolock" = "Automaattinen lukitus yksityisyyden suojaamiseksi";
+"settings.security.info.offline" = "Ei pilvilähetystä paitsi salattu iCloud-synkronointi";
+"settings.appearance.language.title" = "Ulkoasu ja Kieli";
+"settings.more.products" = "Lisää Tuotteita";
+"settings.more.products.footer" = "Tutustu muihin hyödyllisiin työkaluihin samalta kehittäjältä";
 "settings.appearance" = "Ulkoasu";
 "settings.appearance.title" = "Näyttö";
 "settings.appearance.auto" = "Automaattinen";

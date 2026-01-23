@@ -352,6 +352,15 @@
 "settings.security.cleardata.confirm.password" = "Voer wachtwoord in";
 "settings.security.cleardata.confirm.delete" = "Alles wissen";
 "settings.security.cleardata.success" = "Alle gegevens zijn gewist";
+"settings.security.info.header" = "Gegevensbescherming";
+"settings.security.info.title" = "Hoe uw gegevens worden beschermd";
+"settings.security.info.encryption" = "AES-256-versleuteling voor alle gevoelige gegevens";
+"settings.security.info.local" = "Gegevens versleuteld voor iCloud-synchronisatie";
+"settings.security.info.autolock" = "Automatische vergrendeling voor privacybescherming";
+"settings.security.info.offline" = "Geen cloud-upload behalve versleutelde iCloud-synchronisatie";
+"settings.appearance.language.title" = "Uiterlijk en Taal";
+"settings.more.products" = "Meer Producten";
+"settings.more.products.footer" = "Ontdek meer nuttige tools van dezelfde ontwikkelaar";
 "settings.appearance" = "Uiterlijk";
 "settings.appearance.title" = "Weergave";
 "settings.appearance.auto" = "Automatisch";
