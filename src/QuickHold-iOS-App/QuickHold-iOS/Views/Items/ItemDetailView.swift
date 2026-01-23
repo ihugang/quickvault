@@ -118,39 +118,49 @@ struct ItemDetailView: View {
     // MARK: - Header Section
     
     private var headerSection: some View {
-        VStack(spacing: 16) {
-            // 类型图标
-            ZStack {
-                Circle()
-                    .fill(displayItem.type == .text ? Color.blue.opacity(0.12) : DetailPalette.primary.opacity(0.12))
-                    .frame(width: 80, height: 80)
-
-                Image(systemName: displayItem.type.icon)
-                    .font(.system(size: 36))
-                    .foregroundStyle(displayItem.type == .text ? .blue : DetailPalette.primary)
-            }
-
-            // 标题
-            Text(displayItem.title)
-                .font(.title2.weight(.bold))
-                .multilineTextAlignment(.center)
-
-            // 时间信息
-            HStack(spacing: 16) {
-                Label(
-                    "\(localizationManager.localizedString("items.detail.created")) \(localizationManager.formatDate(displayItem.createdAt, dateStyle: .medium))",
-                    systemImage: "calendar"
-                )
-
+        VStack(alignment: .leading, spacing: 8) {
+            // 顶部：类型小图标 + 标题 + 置顶标记
+            HStack(alignment: .center, spacing: 8) {
+                ZStack {
+                    Circle()
+                        .fill(displayItem.type == .text ? Color.blue.opacity(0.12) : DetailPalette.primary.opacity(0.12))
+                        .frame(width: 24, height: 24)
+                        
+                    Image(systemName: displayItem.type.icon)
+                        .font(.caption2)
+                        .foregroundStyle(displayItem.type == .text ? .blue : DetailPalette.primary)
+                }
+                    
+                Text(displayItem.title)
+                    .font(.title3.weight(.semibold))
+                    .foregroundColor(.primary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                    
+                Spacer()
+                    
                 if displayItem.isPinned {
-                    Label(localizationManager.localizedString("items.detail.pinned"), systemImage: "pin.fill")
+                    Image(systemName: "pin.fill")
+                        .font(.caption)
                         .foregroundStyle(.orange)
                 }
+            }
+                
+            // 时间信息一行展示
+            HStack(spacing: 12) {
+                Label(
+                    localizationManager.localizedString("items.detail.created") + " " + localizationManager.formatDate(displayItem.createdAt, dateStyle: .medium),
+                    systemImage: "calendar"
+                )
+                .labelStyle(.titleAndIcon)
+                    
+                Spacer(minLength: 0)
             }
             .font(.caption)
             .foregroundStyle(.secondary)
         }
-        .padding(.vertical, 16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 8)
     }
     
     // MARK: - Content Section

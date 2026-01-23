@@ -167,14 +167,10 @@ struct ItemListView: View {
                 }
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 12)
+            .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(Color(.systemGray6))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(ListPalette.border, lineWidth: 1)
-                    )
             )
 
             // 排序选择器
@@ -198,21 +194,17 @@ struct ItemListView: View {
                     Text(viewModel.sortOption.localizedString)
                         .font(.caption.weight(.medium))
                 }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 10)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .fill(Color(.systemGray6))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .stroke(ListPalette.border, lineWidth: 1)
-                        )
                 )
                 .foregroundStyle(.primary)
             }
         }
         .padding(.horizontal, 20)
-        .padding(.vertical, 12)
+        .padding(.vertical, 8)
         .onChange(of: searchText) { newValue in
             viewModel.searchQuery = newValue
         }
@@ -263,17 +255,13 @@ struct ItemListView: View {
                     )
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 12)
+            .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.blue.opacity(0.08))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(Color.blue.opacity(0.3), lineWidth: 1.5)
-                    )
+                    .fill(Color(.systemGray6))
             )
             .padding(.horizontal, 20)
-            .padding(.vertical, 8)
+            .padding(.vertical, 4)
         }
         .buttonStyle(.plain)
         .transition(.move(edge: .top).combined(with: .opacity))
@@ -306,7 +294,7 @@ struct ItemListView: View {
             }
             .padding(.horizontal, 20)
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 4)
     }
     
     // MARK: - Create Button
@@ -477,23 +465,17 @@ struct ItemCard: View {
     @ObservedObject private var localizationManager = LocalizationManager.shared
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 8) {
             // 头部
-            HStack(alignment: .top) {
-                // 类型图标
-                itemTypeIcon
-                
-                VStack(alignment: .leading, spacing: 6) {
-                    // 标题
+            VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .center, spacing: 6) {
+                HStack(spacing: 8) {
+                    itemTypeIcon
                     Text(item.title)
                         .font(.headline)
                         .foregroundColor(.primary)
-                        .lineLimit(2)
-                    
-                    // 时间
-                    Text(localizationManager.formatRelativeDate(item.updatedAt))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
                 }
                 
                 Spacer()
@@ -526,6 +508,12 @@ struct ItemCard: View {
                 }
             }
             
+            // 时间
+            Text(localizationManager.formatRelativeDate(item.updatedAt))
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+            
             // 内容预览
             contentPreview
             
@@ -535,23 +523,21 @@ struct ItemCard: View {
             }
         }
         .padding(16)
-        .background(ListPalette.card)
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .overlay(
+        .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-            .stroke(ListPalette.border, lineWidth: 1)
+                .fill(ListPalette.card)
         )
-        .shadow(color: .black.opacity(0.06), radius: 10, y: 2)
+        .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
     }
     
     private var itemTypeIcon: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(item.type == .text ? Color.blue.opacity(0.1) : ListPalette.primary.opacity(0.12))
-                .frame(width: 44, height: 44)
+                .frame(width: 20, height: 20)
             
             Image(systemName: item.type.icon)
-                .font(.title3)
+                .font(.caption2)
                 .foregroundStyle(item.type == .text ? .blue : ListPalette.primary)
         }
     }
@@ -611,17 +597,13 @@ struct ItemCard: View {
                     HStack(spacing: 6) {
                         ForEach(item.tags, id: \.self) { tag in
                             Text(tag)
-                                .font(.caption.weight(.medium))
+                                .font(.caption)
                                 .foregroundStyle(.secondary)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 5)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
                                 .background(
                                     Capsule()
-                                        .fill(Color(.systemBackground))
-                                )
-                                .overlay(
-                                    Capsule()
-                                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                                        .fill(Color(.systemGray6))
                                 )
                         }
                     }
@@ -630,15 +612,21 @@ struct ItemCard: View {
             
             Spacer()
             
-            // 数量显示
+            // 数量显示（图标 + 数字徽章）
             if item.type == .image, let images = item.images, !images.isEmpty {
-                Text("\(images.count) \(images.count == 1 ? "image" : "images")")
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.tertiary)
+                HStack(spacing: 4) {
+                    Image(systemName: "photo.on.rectangle")
+                    Text("\(images.count)")
+                }
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.tertiary)
             } else if item.type == .file, let files = item.files, !files.isEmpty {
-                Text("\(files.count) \(files.count == 1 ? "file" : "files")")
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.tertiary)
+                HStack(spacing: 4) {
+                    Image(systemName: "doc.on.doc")
+                    Text("\(files.count)")
+                }
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.tertiary)
             }
         }
     }
