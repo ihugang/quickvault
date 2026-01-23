@@ -73,7 +73,12 @@ struct ItemListView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     syncStatusIcon
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
+                
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    // 排序按钮
+                    sortButton
+                    
+                    // 创建按钮
                     createButton
                 }
             }
@@ -147,62 +152,29 @@ struct ItemListView: View {
     // MARK: - Search Bar
 
     private var searchBar: some View {
-        HStack(spacing: 12) {
-            // 搜索框
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(.secondary)
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.secondary)
 
-                TextField(localizationManager.localizedString("items.search.placeholder"), text: $searchText)
-                    .textFieldStyle(.plain)
-                    .autocorrectionDisabled()
+            TextField(localizationManager.localizedString("items.search.placeholder"), text: $searchText)
+                .textFieldStyle(.plain)
+                .autocorrectionDisabled()
 
-                if !searchText.isEmpty {
-                    Button {
-                        searchText = ""
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
-                    }
+            if !searchText.isEmpty {
+                Button {
+                    searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
                 }
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color(.systemGray6))
-            )
-
-            // 排序选择器
-            Menu {
-                ForEach(SortOption.allCases, id: \.self) { option in
-                    Button {
-                        viewModel.sortOption = option
-                    } label: {
-                        HStack {
-                            Text(option.localizedString)
-                            if viewModel.sortOption == option {
-                                Image(systemName: "checkmark")
-                            }
-                        }
-                    }
-                }
-            } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "arrow.up.arrow.down")
-                        .font(.caption)
-                    Text(viewModel.sortOption.localizedString)
-                        .font(.caption.weight(.medium))
-                }
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Color(.systemGray6))
-                )
-                .foregroundStyle(.primary)
             }
         }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color(.systemGray6))
+        )
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
         .onChange(of: searchText) { newValue in
@@ -217,46 +189,29 @@ struct ItemListView: View {
             // 点击后标记为已读（无动画，直接刷新）
             syncMonitor.markNewItemsAsRead()
         } label: {
-            HStack(spacing: 12) {
-                // 图标
-                ZStack {
-                    Circle()
-                        .fill(Color.blue.opacity(0.1))
-                        .frame(width: 36, height: 36)
+            HStack(spacing: 10) {
+                // 图标（减小）
+                Image(systemName: "arrow.down.circle.fill")
+                    .font(.body)
+                    .foregroundStyle(.blue)
 
-                    Image(systemName: "arrow.down.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(.blue)
-                }
-
-                // 文字
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("有 \(syncMonitor.newItemCount) 个新项目")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundColor(.primary)
-
-                    Text("点击查看并标记为已读")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+                // 文字（简化）
+                Text("有 \(syncMonitor.newItemCount) 个新项目")
+                    .font(.caption.weight(.medium))
+                    .foregroundColor(.primary)
 
                 Spacer()
 
-                // 关闭按钮
+                // 关闭按钮（减小）
                 Image(systemName: "xmark")
-                    .font(.caption.weight(.semibold))
+                    .font(.caption2.weight(.semibold))
                     .foregroundStyle(.secondary)
-                    .padding(8)
-                    .background(
-                        Circle()
-                            .fill(Color(.systemGray5))
-                    )
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)  // 减小高度
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color(.systemGray6))
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Color.blue.opacity(0.06))  // 更浅的背景
             )
             .padding(.horizontal, 20)
             .padding(.vertical, 4)
@@ -266,7 +221,7 @@ struct ItemListView: View {
     }
 
     // MARK: - Tag Filter Bar
-
+        
     private var tagFilterBar: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
@@ -294,6 +249,29 @@ struct ItemListView: View {
             .padding(.horizontal, 20)
         }
         .padding(.vertical, 4)
+    }
+        
+    // MARK: - Toolbar Buttons
+        
+    /// 排序按钮（导航栏）
+    private var sortButton: some View {
+        Menu {
+            ForEach(SortOption.allCases, id: \.self) { option in
+                Button {
+                    viewModel.sortOption = option
+                } label: {
+                    HStack {
+                        Text(option.localizedString)
+                        if viewModel.sortOption == option {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+            }
+        } label: {
+            Image(systemName: "arrow.up.arrow.down")
+                .font(.body)
+        }
     }
     
     // MARK: - Create Button
@@ -464,64 +442,103 @@ struct ItemCard: View {
     @ObservedObject private var localizationManager = LocalizationManager.shared
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            // 头部
-            VStack(alignment: .leading, spacing: 4) {
-            HStack(alignment: .center, spacing: 6) {
-                HStack(spacing: 8) {
-                    itemTypeIcon
-                    Text(item.title)
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
+        VStack(alignment: .leading, spacing: 10) {
+            // 顶部行：图标 + 标题 + 时间
+            HStack(alignment: .top, spacing: 12) {
+                // 类型图标
+                itemTypeIcon
+                    
+                // 标题（允许2行）
+                Text(item.title)
+                    .font(.body.weight(.medium))
+                    .foregroundColor(.primary)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.9)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                // 右侧：时间（更突出）
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text(localizationManager.formatRelativeDate(item.updatedAt))
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(.secondary)
+                        
+                    // 置顶标记
+                    if item.isPinned {
+                        HStack(spacing: 3) {
+                            Image(systemName: "pin.fill")
+                                .font(.caption2)
+                            Text("置顶")
+                                .font(.caption2)
+                        }
+                        .foregroundStyle(.orange)
+                    }
                 }
+                .fixedSize(horizontal: true, vertical: false)
+            }
                 
+            // 内容预览（浅色，最套2行）
+            contentPreview
+                
+            // 底部行：左侧标签 + 右侧数量和状态
+            HStack(alignment: .center, spacing: 8) {
+                // 左侧：标签
+                if !item.tags.isEmpty {
+                    compactTagsView
+                } else {
+                    // 占位空间，保持布局一致
+                    Text(" ")
+                        .font(.caption2)
+                }
+                    
                 Spacer()
-
-                // 新项目标签
-                if isNew {
-                    Text("新")
-                        .font(.caption2.weight(.bold))
-                        .foregroundStyle(.white)
+                    
+                // 右侧：数量 + 状态
+                HStack(spacing: 8) {
+                    // 图片/文件数量指示
+                    if item.type == .image, let images = item.images, !images.isEmpty {
+                        HStack(spacing: 4) {
+                            Image(systemName: "photo")
+                            Text("\(images.count)")
+                        }
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                         .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
+                        .padding(.vertical, 3)
                         .background(
                             Capsule()
-                                .fill(
-                                    LinearGradient(
-                                        colors: [Color.blue, Color.blue.opacity(0.8)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
+                                .fill(Color(.systemGray6))
                         )
-                        .shadow(color: Color.blue.opacity(0.3), radius: 4, y: 2)
-                }
-
-                // 置顶标记
-                if item.isPinned {
-                    Image(systemName: "pin.fill")
+                    } else if item.type == .file, let files = item.files, !files.isEmpty {
+                        HStack(spacing: 4) {
+                            Image(systemName: "doc")
+                            Text("\(files.count)")
+                        }
                         .font(.caption)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(
+                            Capsule()
+                                .fill(Color(.systemGray6))
+                        )
+                    }
+                        
+                    // 新项目标签
+                    if isNew {
+                        Text("新")
+                            .font(.caption2.weight(.bold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 3)
+                            .background(
+                                Capsule()
+                                    .fill(Color.blue)
+                            )
+                    }
                 }
             }
-            
-            // 时间
-            Text(localizationManager.formatRelativeDate(item.updatedAt))
-                .font(.caption)
-                .foregroundStyle(.secondary)
         }
-            
-            // 内容预览
-            contentPreview
-            
-            // 标签和数量
-            if !item.tags.isEmpty || item.type == .image || item.type == .file {
-                tagsView
-            }
-        }
-        .padding(16)
+        .padding(12)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(ListPalette.card)
@@ -543,41 +560,13 @@ struct ItemCard: View {
     
     @ViewBuilder
     private var contentPreview: some View {
-        if item.type == .text, let content = item.textContent {
+        if item.type == .text, let content = item.textContent, !content.isEmpty {
             Text(content)
-                .font(.subheadline)
+                .font(.caption)
                 .foregroundStyle(.secondary)
-                .lineLimit(3)
+                .lineLimit(2)  // 减少从 3 → 2 行
                 .lineSpacing(2)
                 .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        } else if item.type == .image, let images = item.images, !images.isEmpty {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(images.prefix(4)) { image in
-                        if let thumbnailData = image.thumbnailData,
-                           let uiImage = UIImage(data: thumbnailData) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 80, height: 80)
-                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        }
-                    }
-                    
-                    if images.count > 4 {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Color(.systemGray5))
-                                .frame(width: 80, height: 80)
-                            
-                            Text("+\(images.count - 4)")
-                                .font(.headline)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                }
-            }
         }
     }
     
@@ -589,43 +578,27 @@ struct ItemCard: View {
         return formatter.string(fromByteCount: totalBytes)
     }
     
-    private var tagsView: some View {
-        HStack(spacing: 8) {
-            if !item.tags.isEmpty {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 6) {
-                        ForEach(item.tags, id: \.self) { tag in
-                            Text(tag)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(
-                                    Capsule()
-                                        .fill(Color(.systemGray6))
-                                )
-                        }
-                    }
-                }
+    // MARK: - Compact Tags View
+    
+    /// 紧凑的标签显示（最多2个 + 数量）
+    private var compactTagsView: some View {
+        HStack(spacing: 4) {
+            ForEach(item.tags.prefix(2), id: \.self) { tag in
+                Text(tag)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(
+                        Capsule()
+                            .fill(Color(.systemGray6))
+                    )
             }
             
-            Spacer()
-            
-            // 数量显示（图标 + 数字徽章）
-            if item.type == .image, let images = item.images, !images.isEmpty {
-                HStack(spacing: 4) {
-                    Image(systemName: "photo.on.rectangle")
-                    Text("\(images.count)")
-                }
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.tertiary)
-            } else if item.type == .file, let files = item.files, !files.isEmpty {
-                HStack(spacing: 4) {
-                    Image(systemName: "doc.on.doc")
-                    Text("\(files.count)")
-                }
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.tertiary)
+            if item.tags.count > 2 {
+                Text("+\(item.tags.count - 2)")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
             }
         }
     }

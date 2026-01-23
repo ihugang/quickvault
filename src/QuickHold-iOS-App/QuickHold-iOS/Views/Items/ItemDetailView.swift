@@ -118,16 +118,26 @@ struct ItemDetailView: View {
     // MARK: - Header Section
     
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            // 顶部：类型小图标 + 标题 + 置顶标记
-            HStack(alignment: .center, spacing: 8) {
+        VStack(alignment: .leading, spacing: 12) {
+            // 顶部：类型图标 + 标题 + 置顶标记
+            HStack(alignment: .center, spacing: 16) {
+                // 类型图标（放大至 40pt）
                 ZStack {
                     Circle()
-                        .fill(displayItem.type == .text ? Color.blue.opacity(0.12) : DetailPalette.primary.opacity(0.12))
-                        .frame(width: 24, height: 24)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    (displayItem.type == .text ? Color.blue : DetailPalette.primary).opacity(0.15),
+                                    (displayItem.type == .text ? Color.blue : DetailPalette.primary).opacity(0.08)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 40, height: 40)
                         
                     Image(systemName: displayItem.type.icon)
-                        .font(.caption2)
+                        .font(.system(size: 18, weight: .medium))
                         .foregroundStyle(displayItem.type == .text ? .blue : DetailPalette.primary)
                 }
                     
@@ -141,7 +151,7 @@ struct ItemDetailView: View {
                     
                 if displayItem.isPinned {
                     Image(systemName: "pin.fill")
-                        .font(.caption)
+                        .font(.body)
                         .foregroundStyle(.orange)
                 }
             }
@@ -490,10 +500,28 @@ struct ImageThumbnailView: View {
         } label: {
             Group {
                 if isLoading {
+                    // 骨架屏（加载中）
                     ZStack {
                         Rectangle()
-                            .fill(Color(.systemGray5))
-                        ProgressView()
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        Color(.systemGray6),
+                                        Color(.systemGray5),
+                                        Color(.systemGray6)
+                                    ],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                        
+                        VStack(spacing: 12) {
+                            ProgressView()
+                                .scaleEffect(1.2)
+                            Text("加载中...")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                     .frame(height: 200)
                 } else if let data = displayImageData,
@@ -503,12 +531,19 @@ struct ImageThumbnailView: View {
                         .scaledToFit()
                         .frame(maxWidth: .infinity)
                 } else {
+                    // 加载失败占位图
                     ZStack {
                         Rectangle()
-                            .fill(Color(.systemGray5))
-                        Image(systemName: "photo")
-                            .font(.largeTitle)
-                            .foregroundStyle(Color(red: 0.2, green: 0.5, blue: 0.3).opacity(0.6))
+                            .fill(Color(.systemGray6))
+                        
+                        VStack(spacing: 8) {
+                            Image(systemName: "photo.badge.exclamationmark")
+                                .font(.largeTitle)
+                                .foregroundStyle(.secondary)
+                            Text("加载失败")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                     .frame(height: 200)
                 }
