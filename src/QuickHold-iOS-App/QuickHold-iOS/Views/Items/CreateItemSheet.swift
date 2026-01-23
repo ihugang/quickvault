@@ -24,6 +24,7 @@ struct CreateItemSheet: View {
     @State private var tagInput = ""
     @State private var selectedImages: [PhotosPickerItem] = []
     @State private var imageData: [ImageData] = []
+    @State private var isLoadingImages = false
     @State private var selectedFiles: [URL] = []
     @State private var fileData: [FileData] = []
     @State private var showingDocumentPicker = false
@@ -31,6 +32,10 @@ struct CreateItemSheet: View {
     @State private var showingCameraUnavailableAlert = false
     @State private var isLoading = false
     @State private var availableTags: [String] = []
+    @State private var duplicateImageCount = 0  // 重复图片数量
+    @State private var showingDuplicateAlert = false  // 显示重复提示
+    @State private var duplicateFileCount = 0  // 重复文件数量
+    @State private var showingDuplicateFileAlert = false  // 显示文件重复提示
 
     var body: some View {
         NavigationStack {
@@ -91,6 +96,22 @@ struct CreateItemSheet: View {
             Button(localizationManager.localizedString("common.ok"), role: .cancel) {}
         } message: {
             Text(localizationManager.localizedString("items.images.camera.permission"))
+        }
+        // 重复图片提示对话框
+        .alert(localizationManager.localizedString("items.images.duplicate.title"), isPresented: $showingDuplicateAlert) {
+            Button(localizationManager.localizedString("common.ok"), role: .cancel) {
+                duplicateImageCount = 0
+            }
+        } message: {
+            Text(String(format: localizationManager.localizedString("items.images.duplicate.message"), duplicateImageCount))
+        }
+        // 重复文件提示对话框
+        .alert(localizationManager.localizedString("items.files.duplicate.title"), isPresented: $showingDuplicateFileAlert) {
+            Button(localizationManager.localizedString("common.ok"), role: .cancel) {
+                duplicateFileCount = 0
+            }
+        } message: {
+            Text(String(format: localizationManager.localizedString("items.files.duplicate.message"), duplicateFileCount))
         }
         .task {
             await loadAvailableTags()
@@ -267,7 +288,25 @@ struct CreateItemSheet: View {
                 }
             }
             .onChange(of: selectedImages) { newItems in
-                Task { await loadImages(from: newItems) }
+                guard !newItems.isEmpty else { return }
+                isLoadingImages = true
+                Task {
+                    await loadImages(from: newItems)
+                    await MainActor.run {
+                        isLoadingImages = false
+                    }
+                }
+            }
+
+            if isLoadingImages {
+                HStack(spacing: 8) {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                    Text(localizationManager.localizedString("common.loading"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
             }
 
             if !imageData.isEmpty {
@@ -405,13 +444,13 @@ struct CreateItemSheet: View {
                                         .font(.caption)
                                 }
                             }
-                            .font(.subheadline.weight(.medium))
-                            .foregroundStyle(.blue)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
                             .background(
                                 Capsule()
-                                    .fill(Color.blue.opacity(0.1))
+                                    .fill(Color(.systemGray6))
                             )
                         }
                     }
@@ -439,13 +478,13 @@ struct CreateItemSheet: View {
                                         Image(systemName: "plus.circle.fill")
                                             .font(.caption)
                                     }
-                                    .font(.subheadline.weight(.medium))
-                                    .foregroundStyle(.blue)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 6)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
                                     .background(
                                         Capsule()
-                                            .strokeBorder(Color.blue, lineWidth: 1.5)
+                                            .fill(Color(.systemGray6))
                                     )
                                 }
                                 .buttonStyle(.plain)
@@ -533,12 +572,40 @@ struct CreateItemSheet: View {
     }
     
     private func loadImages(from items: [PhotosPickerItem]) async {
-        imageData = []
-
+        var newImages: [ImageData] = []
+        var duplicateCount = 0
+        
+        // 获取已有图片的哈希值
+        var existingHashes = Set<String>()
+        for imageData in imageData {
+            let hash = imageData.data.sha256Hash()
+            existingHashes.insert(hash)
+        }
+        
+        // 加载新选择的图片
         for item in items {
             if let data = try? await item.loadTransferable(type: Data.self) {
-                let fileName = item.itemIdentifier ?? UUID().uuidString
-                imageData.append(ImageData(data: data, fileName: fileName + ".jpg"))
+                let hash = data.sha256Hash()
+                
+                // 检查是否重复
+                if existingHashes.contains(hash) {
+                    duplicateCount += 1
+                } else {
+                    let fileName = item.itemIdentifier ?? UUID().uuidString
+                    newImages.append(ImageData(data: data, fileName: fileName + ".jpg"))
+                    existingHashes.insert(hash)
+                }
+            }
+        }
+        
+        // 添加到 imageData
+        await MainActor.run {
+            imageData.append(contentsOf: newImages)
+            
+            // 如果有重复图片，显示提示
+            if duplicateCount > 0 {
+                duplicateImageCount = duplicateCount
+                showingDuplicateAlert = true
             }
         }
     }
@@ -577,7 +644,15 @@ struct CreateItemSheet: View {
     private func loadFiles(from result: Result<[URL], Error>) async {
         do {
             let urls = try result.get()
-            fileData = []
+            var newFiles: [FileData] = []
+            var duplicateCount = 0
+            
+            // 获取已有文件的哈希值
+            var existingHashes = Set<String>()
+            for fileData in fileData {
+                let hash = fileData.data.sha256Hash()
+                existingHashes.insert(hash)
+            }
             
             for url in urls {
                 // 开始访问安全作用域资源
@@ -593,10 +668,29 @@ struct CreateItemSheet: View {
                 
                 // 读取文件数据
                 let data = try Data(contentsOf: url)
-                let fileName = url.lastPathComponent
-                let mimeType = getMimeType(for: url)
+                let hash = data.sha256Hash()
                 
-                fileData.append(FileData(data: data, fileName: fileName, mimeType: mimeType))
+                // 检查是否重复
+                if existingHashes.contains(hash) {
+                    duplicateCount += 1
+                    print("⚠️ [CreateItemSheet] loadFiles: 文件 \(url.lastPathComponent) 重复，跳过")
+                } else {
+                    let fileName = url.lastPathComponent
+                    let mimeType = getMimeType(for: url)
+                    newFiles.append(FileData(data: data, fileName: fileName, mimeType: mimeType))
+                    existingHashes.insert(hash)
+                    print("📁 [CreateItemSheet] loadFiles: 成功加载文件 \(fileName)")
+                }
+            }
+            
+            await MainActor.run {
+                fileData.append(contentsOf: newFiles)
+                
+                // 如果有重复文件，显示提示
+                if duplicateCount > 0 {
+                    duplicateFileCount = duplicateCount
+                    showingDuplicateFileAlert = true
+                }
             }
         } catch {
             print("Error loading files: \(error)")

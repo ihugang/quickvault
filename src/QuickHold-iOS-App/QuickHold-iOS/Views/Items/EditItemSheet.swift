@@ -28,16 +28,26 @@ struct EditItemSheet: View {
     // 图片编辑相关 / Image editing related
     @State private var selectedImages: [PhotosPickerItem] = []
     @State private var newImageData: [ImageData] = []
+    @State private var isLoadingImages = false
     @State private var imagesToDelete: Set<UUID> = []
+    @State private var imageToPreview: UIImage?
     @State private var showingCamera = false
     @State private var showingCameraUnavailableAlert = false
+    @State private var imageToDeleteConfirm: UUID?  // 待确认删除的图片ID
+    @State private var newImageIndexToDelete: Int?  // 待确认删除的新图片索引
+    @State private var duplicateImageCount = 0  // 重复图片数量
+    @State private var showingDuplicateAlert = false  // 显示重复提示
+    @State private var duplicateFileCount = 0  // 重复文件数量
+    @State private var showingDuplicateFileAlert = false  // 显示文件重复提示
 
     // 文件编辑相关 / File editing related
     @State private var newFileData: [FileData] = []
     @State private var filesToDelete: Set<UUID> = []
     @State private var showingDocumentPicker = false
-    @State private var editedFileNames: [UUID: String] = [:]  // 跟踪修改的文件名
-    @State private var editedNewFileNames: [Int: String] = [:]  // 跟踪新文件的修改
+   @State private var editedFileNames: [UUID: String] = [:]  // 跟踪修改的文件名
+   @State private var editedNewFileNames: [Int: String] = [:]  // 跟踪新文件的修改
+    @State private var fileToDeleteConfirm: UUID?  // 待确认删除的文件ID
+    @State private var newFileIndexToDelete: Int?  // 待确认删除的新文件索引
 
     init(item: ItemDTO, itemService: ItemService, onUpdate: @escaping () -> Void) {
         self.item = item
@@ -111,11 +121,11 @@ struct EditItemSheet: View {
                                                 .font(.caption)
                                         }
                                     }
-                                    .font(.subheadline.weight(.medium))
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 6)
-                                    .background(Color.blue.opacity(0.1))
-                                    .foregroundStyle(.blue)
+                                    .font(.caption)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color(.systemGray6))
+                                    .foregroundStyle(.secondary)
                                     .clipShape(Capsule())
                                 }
                             }
@@ -143,13 +153,13 @@ struct EditItemSheet: View {
                                                 Image(systemName: "plus.circle.fill")
                                                     .font(.caption)
                                             }
-                                            .font(.subheadline.weight(.medium))
-                                            .foregroundStyle(.blue)
-                                            .padding(.horizontal, 12)
-                                            .padding(.vertical, 6)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                            .padding(.horizontal, 8)
+                                            .padding(.vertical, 4)
                                             .background(
                                                 Capsule()
-                                                    .strokeBorder(Color.blue, lineWidth: 1.5)
+                                                    .fill(Color(.systemGray6))
                                             )
                                         }
                                         .buttonStyle(.plain)
@@ -212,6 +222,9 @@ struct EditItemSheet: View {
             }
             .ignoresSafeArea()
         }
+        .fullScreenCover(item: $imageToPreview) { uiImage in
+            SimpleImagePreview(image: uiImage)
+        }
         .alert(localizationManager.localizedString("items.images.camera.unavailable"), isPresented: $showingCameraUnavailableAlert) {
             Button(localizationManager.localizedString("common.ok"), role: .cancel) {}
         } message: {
@@ -225,6 +238,78 @@ struct EditItemSheet: View {
             Task {
                 await handleFileSelection(result)
             }
+        }
+        // 图片删除确认对话框
+        .alert(localizationManager.localizedString("items.images.delete.confirm.title"), isPresented: .constant(imageToDeleteConfirm != nil)) {
+            Button(localizationManager.localizedString("common.cancel"), role: .cancel) {
+                imageToDeleteConfirm = nil
+            }
+            Button(localizationManager.localizedString("common.delete"), role: .destructive) {
+                if let imageId = imageToDeleteConfirm {
+                    imagesToDelete.insert(imageId)
+                    imageToDeleteConfirm = nil
+                }
+            }
+        } message: {
+            Text(localizationManager.localizedString("items.images.delete.confirm.message"))
+        }
+        // 新图片删除确认对话框
+        .alert(localizationManager.localizedString("items.images.delete.confirm.title"), isPresented: .constant(newImageIndexToDelete != nil)) {
+            Button(localizationManager.localizedString("common.cancel"), role: .cancel) {
+                newImageIndexToDelete = nil
+            }
+            Button(localizationManager.localizedString("common.delete"), role: .destructive) {
+                if let index = newImageIndexToDelete {
+                    newImageData.remove(at: index)
+                    newImageIndexToDelete = nil
+                }
+            }
+        } message: {
+            Text(localizationManager.localizedString("items.images.delete.confirm.message"))
+        }
+        // 文件删除确认对话框
+        .alert(localizationManager.localizedString("items.files.delete.confirm.title"), isPresented: .constant(fileToDeleteConfirm != nil)) {
+            Button(localizationManager.localizedString("common.cancel"), role: .cancel) {
+                fileToDeleteConfirm = nil
+            }
+            Button(localizationManager.localizedString("common.delete"), role: .destructive) {
+                if let fileId = fileToDeleteConfirm {
+                    filesToDelete.insert(fileId)
+                    fileToDeleteConfirm = nil
+                }
+            }
+        } message: {
+            Text(localizationManager.localizedString("items.files.delete.confirm.message"))
+        }
+        // 新文件删除确认对话框
+        .alert(localizationManager.localizedString("items.files.delete.confirm.title"), isPresented: .constant(newFileIndexToDelete != nil)) {
+            Button(localizationManager.localizedString("common.cancel"), role: .cancel) {
+                newFileIndexToDelete = nil
+            }
+            Button(localizationManager.localizedString("common.delete"), role: .destructive) {
+                if let index = newFileIndexToDelete {
+                    newFileData.remove(at: index)
+                    newFileIndexToDelete = nil
+                }
+            }
+        } message: {
+            Text(localizationManager.localizedString("items.files.delete.confirm.message"))
+        }
+        // 重复图片提示对话框
+        .alert(localizationManager.localizedString("items.images.duplicate.title"), isPresented: $showingDuplicateAlert) {
+            Button(localizationManager.localizedString("common.ok"), role: .cancel) {
+                duplicateImageCount = 0
+            }
+        } message: {
+            Text(String(format: localizationManager.localizedString("items.images.duplicate.message"), duplicateImageCount))
+        }
+        // 重复文件提示对话框
+        .alert(localizationManager.localizedString("items.files.duplicate.title"), isPresented: $showingDuplicateFileAlert) {
+            Button(localizationManager.localizedString("common.ok"), role: .cancel) {
+                duplicateFileCount = 0
+            }
+        } message: {
+            Text(String(format: localizationManager.localizedString("items.files.duplicate.message"), duplicateFileCount))
         }
     }
     
@@ -298,7 +383,25 @@ struct EditItemSheet: View {
                 }
             }
             .onChange(of: selectedImages) { newItems in
-                Task { await loadImages(from: newItems) }
+                guard !newItems.isEmpty else { return }
+                isLoadingImages = true
+                Task {
+                    await loadImages(from: newItems)
+                    await MainActor.run {
+                        isLoadingImages = false
+                    }
+                }
+            }
+
+            if isLoadingImages {
+                HStack(spacing: 8) {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                    Text(localizationManager.localizedString("common.loading"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
             }
 
             // 显示现有图片和新添加的图片
@@ -310,19 +413,38 @@ struct EditItemSheet: View {
                             if let thumbnailData = image.thumbnailData,
                                let uiImage = UIImage(data: thumbnailData) {
                                 ZStack(alignment: .topTrailing) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 100, height: 100)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                    Button {
+                                        Task {
+                                            do {
+                                                let fullImageData = try await itemService.getDecryptedImage(imageId: image.id)
+                                                if let fullImage = UIImage(data: fullImageData) {
+                                                    await MainActor.run {
+                                                        imageToPreview = fullImage
+                                                    }
+                                                }
+                                            } catch {
+                                                print("❌ [EditItemSheet] 加载原图失败: \(error)")
+                                            }
+                                        }
+                                    } label: {
+                                        Image(uiImage: uiImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                    }
+                                    .buttonStyle(.plain)
 
                                     Button {
-                                        imagesToDelete.insert(image.id)
+                                        imageToDeleteConfirm = image.id
                                     } label: {
                                         Image(systemName: "xmark.circle.fill")
                                             .font(.title3)
                                             .foregroundStyle(.white, .red)
+                                            .frame(width: 44, height: 44)
+                                            .contentShape(Rectangle())
                                     }
+                                    .buttonStyle(.plain)
                                     .offset(x: 8, y: -8)
                                 }
                             }
@@ -332,19 +454,27 @@ struct EditItemSheet: View {
                         ForEach(newImageData.indices, id: \.self) { index in
                             if let uiImage = UIImage(data: newImageData[index].data) {
                                 ZStack(alignment: .topTrailing) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 100, height: 100)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                    Button {
+                                        imageToPreview = uiImage
+                                    } label: {
+                                        Image(uiImage: uiImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                    }
+                                    .buttonStyle(.plain)
 
                                     Button {
-                                        newImageData.remove(at: index)
+                                        newImageIndexToDelete = index
                                     } label: {
                                         Image(systemName: "xmark.circle.fill")
                                             .font(.title3)
                                             .foregroundStyle(.white, .red)
+                                            .frame(width: 44, height: 44)
+                                            .contentShape(Rectangle())
                                     }
+                                    .buttonStyle(.plain)
                                     .offset(x: 8, y: -8)
                                 }
                             }
@@ -362,55 +492,148 @@ struct EditItemSheet: View {
 
     private func loadImages(from items: [PhotosPickerItem]) async {
         print("📸 [EditItemSheet] loadImages: 开始加载 \(items.count) 个项目")
-        newImageData.removeAll()
-
+        
+        var newImages: [ImageData] = []
+        var duplicateCount = 0
+        
+        // 获取现有图片的哈希值
+        var existingHashes = Set<String>()
+        
+        // 添加已经存在的图片哈希值
+        if let existingImages = item.images {
+            for image in existingImages {
+                do {
+                    let imageData = try await itemService.getDecryptedImage(imageId: image.id)
+                    let hash = imageData.sha256Hash()
+                    existingHashes.insert(hash)
+                } catch {
+                    print("⚠️ [EditItemSheet] loadImages: 无法加载现有图片 \(image.id): \(error)")
+                }
+            }
+        }
+        
+        // 添加已经在 newImageData 中的图片哈希值
+        for imageData in newImageData {
+            let hash = imageData.data.sha256Hash()
+            existingHashes.insert(hash)
+        }
+        
+        print("🔑 [EditItemSheet] loadImages: 已有 \(existingHashes.count) 个图片哈希值")
+        
+        // 加载新选择的图片
         for (index, item) in items.enumerated() {
             if let data = try? await item.loadTransferable(type: Data.self) {
-                let fileName = "image_\(UUID().uuidString).jpg"
-                newImageData.append(ImageData(data: data, fileName: fileName))
-                print("📸 [EditItemSheet] loadImages: 成功加载第 \(index + 1) 个图片，大小: \(data.count) bytes，文件名: \(fileName)")
+                let hash = data.sha256Hash()
+                
+                // 检查是否重复
+                if existingHashes.contains(hash) {
+                    duplicateCount += 1
+                    print("⚠️ [EditItemSheet] loadImages: 第 \(index + 1) 个图片重复，跳过")
+                } else {
+                    let fileName = "image_\(UUID().uuidString).jpg"
+                    newImages.append(ImageData(data: data, fileName: fileName))
+                    existingHashes.insert(hash)
+                    print("📸 [EditItemSheet] loadImages: 成功加载第 \(index + 1) 个图片，大小: \(data.count) bytes，文件名: \(fileName)")
+                }
             } else {
                 print("❌ [EditItemSheet] loadImages: 加载第 \(index + 1) 个项目失败")
             }
         }
-        print("📸 [EditItemSheet] loadImages: 完成，共加载 \(newImageData.count) 个图片到 newImageData")
+        
+        // 添加到 newImageData
+        await MainActor.run {
+            newImageData.append(contentsOf: newImages)
+            
+            // 如果有重复图片，显示提示
+            if duplicateCount > 0 {
+                duplicateImageCount = duplicateCount
+                showingDuplicateAlert = true
+            }
+        }
+        
+        print("📸 [EditItemSheet] loadImages: 完成，共加载 \(newImages.count) 个新图片，跳过 \(duplicateCount) 个重复图片")
     }
 
     private func loadImagesAsFiles(from items: [PhotosPickerItem]) async {
         print("📁 [EditItemSheet] loadImagesAsFiles: 开始加载 \(items.count) 个项目作为文件")
 
+        var newFiles: [FileData] = []
+        var duplicateCount = 0
+        
+        // 获取现有文件的哈希值
+        var existingHashes = Set<String>()
+        
+        // 添加已经存在的文件哈希值
+        if let existingFiles = item.files {
+            for file in existingFiles where !filesToDelete.contains(file.id) {
+                do {
+                    let fileData = try await itemService.getDecryptedFile(fileId: file.id)
+                    let hash = fileData.sha256Hash()
+                    existingHashes.insert(hash)
+                } catch {
+                    print("⚠️ [EditItemSheet] loadImagesAsFiles: 无法加载现有文件 \(file.id): \(error)")
+                }
+            }
+        }
+        
+        // 添加已经在 newFileData 中的文件哈希值
+        for fileData in newFileData {
+            let hash = fileData.data.sha256Hash()
+            existingHashes.insert(hash)
+        }
+
         for (index, item) in items.enumerated() {
             if let data = try? await item.loadTransferable(type: Data.self) {
-                // 尝试确定文件类型
-                let mimeType: String
-                let fileExtension: String
+                let hash = data.sha256Hash()
+                
+                // 检查是否重复
+                if existingHashes.contains(hash) {
+                    duplicateCount += 1
+                    print("⚠️ [EditItemSheet] loadImagesAsFiles: 第 \(index + 1) 个文件重复，跳过")
+                } else {
+                    // 尝试确定文件类型
+                    let mimeType: String
+                    let fileExtension: String
 
-                // 简单的 MIME 类型检测（基于数据头）
-                if data.count >= 2 {
-                    let header = data.prefix(2)
-                    if header[0] == 0xFF && header[1] == 0xD8 {
-                        mimeType = "image/jpeg"
-                        fileExtension = "jpg"
-                    } else if data.count >= 4 && header[0] == 0x89 && header[1] == 0x50 {
-                        mimeType = "image/png"
-                        fileExtension = "png"
+                    // 简单的 MIME 类型检测（基于数据头）
+                    if data.count >= 2 {
+                        let header = data.prefix(2)
+                        if header[0] == 0xFF && header[1] == 0xD8 {
+                            mimeType = "image/jpeg"
+                            fileExtension = "jpg"
+                        } else if data.count >= 4 && header[0] == 0x89 && header[1] == 0x50 {
+                            mimeType = "image/png"
+                            fileExtension = "png"
+                        } else {
+                            mimeType = "application/octet-stream"
+                            fileExtension = "dat"
+                        }
                     } else {
                         mimeType = "application/octet-stream"
                         fileExtension = "dat"
                     }
-                } else {
-                    mimeType = "application/octet-stream"
-                    fileExtension = "dat"
-                }
 
-                let fileName = "file_\(UUID().uuidString).\(fileExtension)"
-                newFileData.append(FileData(data: data, fileName: fileName, mimeType: mimeType))
-                print("📁 [EditItemSheet] loadImagesAsFiles: 成功加载第 \(index + 1) 个文件，大小: \(data.count) bytes，文件名: \(fileName)，MIME: \(mimeType)")
+                    let fileName = "file_\(UUID().uuidString).\(fileExtension)"
+                    newFiles.append(FileData(data: data, fileName: fileName, mimeType: mimeType))
+                    existingHashes.insert(hash)
+                    print("📁 [EditItemSheet] loadImagesAsFiles: 成功加载第 \(index + 1) 个文件，大小: \(data.count) bytes，文件名: \(fileName)，MIME: \(mimeType)")
+                }
             } else {
                 print("❌ [EditItemSheet] loadImagesAsFiles: 加载第 \(index + 1) 个项目失败")
             }
         }
-        print("📁 [EditItemSheet] loadImagesAsFiles: 完成，共加载 \(newFileData.count) 个文件到 newFileData")
+        
+        await MainActor.run {
+            newFileData.append(contentsOf: newFiles)
+            
+            // 如果有重复文件，显示提示
+            if duplicateCount > 0 {
+                duplicateFileCount = duplicateCount
+                showingDuplicateFileAlert = true
+            }
+        }
+        
+        print("📁 [EditItemSheet] loadImagesAsFiles: 完成，共加载 \(newFiles.count) 个新文件，跳过 \(duplicateCount) 个重复文件")
     }
 
     private func addCapturedImage(_ image: UIImage) {
@@ -457,16 +680,59 @@ struct EditItemSheet: View {
     private func handleFileSelection(_ result: Result<[URL], Error>) async {
         do {
             let urls = try result.get()
+            var newFiles: [FileData] = []
+            var duplicateCount = 0
+            
+            // 获取现有文件的哈希值
+            var existingHashes = Set<String>()
+            
+            // 添加已经存在的文件哈希值
+            if let existingFiles = item.files {
+                for file in existingFiles where !filesToDelete.contains(file.id) {
+                    do {
+                        let fileData = try await itemService.getDecryptedFile(fileId: file.id)
+                        let hash = fileData.sha256Hash()
+                        existingHashes.insert(hash)
+                    } catch {
+                        print("⚠️ [EditItemSheet] handleFileSelection: 无法加载现有文件 \(file.id): \(error)")
+                    }
+                }
+            }
+            
+            // 添加已经在 newFileData 中的文件哈希值
+            for fileData in newFileData {
+                let hash = fileData.data.sha256Hash()
+                existingHashes.insert(hash)
+            }
+            
+            // 加载新选择的文件
             for url in urls {
                 guard url.startAccessingSecurityScopedResource() else { continue }
                 defer { url.stopAccessingSecurityScopedResource() }
 
                 let data = try Data(contentsOf: url)
-                let fileName = url.lastPathComponent
-                let mimeType = url.mimeType()
-
-                await MainActor.run {
-                    newFileData.append(FileData(data: data, fileName: fileName, mimeType: mimeType))
+                let hash = data.sha256Hash()
+                
+                // 检查是否重复
+                if existingHashes.contains(hash) {
+                    duplicateCount += 1
+                    print("⚠️ [EditItemSheet] handleFileSelection: 文件 \(url.lastPathComponent) 重复，跳过")
+                } else {
+                    let fileName = url.lastPathComponent
+                    let mimeType = url.mimeType()
+                    newFiles.append(FileData(data: data, fileName: fileName, mimeType: mimeType))
+                    existingHashes.insert(hash)
+                    print("📁 [EditItemSheet] handleFileSelection: 成功加载文件 \(fileName)")
+                }
+            }
+            
+            await MainActor.run {
+                newFileData.append(contentsOf: newFiles)
+                
+                // 如果有重复文件，显示提示
+                if duplicateCount > 0 {
+                    duplicateFileCount = duplicateCount
+                    showingDuplicateFileAlert = true
                 }
             }
         } catch {
@@ -661,7 +927,7 @@ struct EditItemSheet: View {
                         Spacer()
 
                         Button {
-                            filesToDelete.insert(file.id)
+                            fileToDeleteConfirm = file.id
                         } label: {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.title3)
@@ -709,7 +975,7 @@ struct EditItemSheet: View {
                         Spacer()
 
                         Button {
-                            newFileData.remove(at: index)
+                            newFileIndexToDelete = index
                         } label: {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.title3)
@@ -737,12 +1003,15 @@ struct EditItemSheet: View {
                                         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
                                     Button {
-                                        imagesToDelete.insert(image.id)
+                                        imageToDeleteConfirm = image.id
                                     } label: {
                                         Image(systemName: "xmark.circle.fill")
                                             .font(.title3)
                                             .foregroundStyle(.white, .red)
+                                            .frame(width: 44, height: 44)
+                                            .contentShape(Rectangle())
                                     }
+                                    .buttonStyle(.plain)
                                     .offset(x: 8, y: -8)
                                 }
                             }
@@ -759,12 +1028,15 @@ struct EditItemSheet: View {
                                         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
                                     Button {
-                                        newImageData.remove(at: index)
+                                        newImageIndexToDelete = index
                                     } label: {
                                         Image(systemName: "xmark.circle.fill")
                                             .font(.title3)
                                             .foregroundStyle(.white, .red)
+                                            .frame(width: 44, height: 44)
+                                            .contentShape(Rectangle())
                                     }
+                                    .buttonStyle(.plain)
                                     .offset(x: 8, y: -8)
                                 }
                             }
@@ -857,5 +1129,109 @@ fileprivate struct FlowLayout: Layout {
             
             self.size = CGSize(width: maxWidth, height: currentY + lineHeight)
         }
+    }
+}
+
+extension UIImage: Identifiable {
+    public var id: String {
+        UUID().uuidString
+    }
+}
+
+//// MARK: - Simple Image Preview (for editing)
+//
+//struct SimpleImagePreview: View {
+//    let image: UIImage
+//    
+//    @Environment(\.dismiss) private var dismiss
+//    
+//    var body: some View {
+//        ZStack {
+//            Color.black
+//                .ignoresSafeArea()
+//            
+//            // 可缩放的图片
+//            ZoomableScrollView {
+//                Image(uiImage: image)
+//                    .resizable()
+//                    .scaledToFit()
+//            }
+//            
+//            // 顶部关闭按钮
+//            VStack {
+//                HStack {
+//                    Spacer()
+//                    
+//                    Button {
+//                        dismiss()
+//                    } label: {
+//                        Image(systemName: "xmark.circle.fill")
+//                            .font(.title2)
+//                            .foregroundStyle(.white, .black.opacity(0.5))
+//                            .frame(width: 44, height: 44)
+//                            .contentShape(Rectangle())
+//                    }
+//                    .buttonStyle(.plain)
+//                    .padding()
+//                }
+//                
+//                Spacer()
+//            }
+//        }
+//    }
+//}
+
+fileprivate struct ZoomableScrollView<Content: View>: UIViewRepresentable {
+    private var content: Content
+    
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+    
+    func makeUIView(context: Context) -> UIScrollView {
+        let scrollView = UIScrollView()
+        scrollView.delegate = context.coordinator
+        scrollView.maximumZoomScale = 4.0
+        scrollView.minimumZoomScale = 1.0
+        scrollView.bouncesZoom = true
+        
+        let hostedView = context.coordinator.hostingController.view!
+        hostedView.translatesAutoresizingMaskIntoConstraints = true
+        hostedView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        hostedView.frame = scrollView.bounds
+        scrollView.addSubview(hostedView)
+        
+        return scrollView
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(hostingController: UIHostingController(rootView: content))
+    }
+    
+    func updateUIView(_ uiView: UIScrollView, context: Context) {
+        context.coordinator.hostingController.rootView = content
+    }
+    
+    class Coordinator: NSObject, UIScrollViewDelegate {
+        var hostingController: UIHostingController<Content>
+        
+        init(hostingController: UIHostingController<Content>) {
+            self.hostingController = hostingController
+        }
+        
+        func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+            return hostingController.view
+        }
+    }
+}
+
+// MARK: - Data Extension for SHA256 Hash
+
+import CryptoKit
+
+extension Data {
+    func sha256Hash() -> String {
+        let hash = SHA256.hash(data: self)
+        return hash.compactMap { String(format: "%02x", $0) }.joined()
     }
 }

@@ -269,7 +269,14 @@ struct ItemDetailView: View {
             if let files = displayItem.files, !files.isEmpty {
                 VStack(spacing: 8) {
                     ForEach(files) { file in
-                        FileThumbnailView(file: file, itemService: itemService, item: displayItem)
+                        FileThumbnailView(
+                            file: file,
+                            itemService: itemService,
+                            item: displayItem,
+                            onFileChanged: {
+                                Task { await reloadItem() }
+                            }
+                        )
                     }
                 }
                 .padding(12)
@@ -1443,10 +1450,15 @@ struct FileThumbnailView: View {
     let file: FileDTO
     let itemService: ItemService
     let item: ItemDTO
+    let onFileChanged: () -> Void  // 文件变更回调
     
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @State private var isPreviewing = false
     @State private var fileDataToShare: Data?
     @State private var previewURL: URL?
+    @State private var showingRenameSheet = false  // 显示重命名表单
+    @State private var showingDeleteAlert = false  // 显示删除确认
+    @State private var newFileName = ""  // 新文件名
     
     var body: some View {
         Button {
@@ -1480,6 +1492,20 @@ struct FileThumbnailView: View {
                         .foregroundStyle(.primary)
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
+                        .contextMenu {
+                            Button {
+                                newFileName = (file.fileName as NSString).deletingPathExtension
+                                showingRenameSheet = true
+                            } label: {
+                                Label(localizationManager.localizedString("items.files.rename"), systemImage: "pencil")
+                            }
+                            
+                            Button(role: .destructive) {
+                                showingDeleteAlert = true
+                            } label: {
+                                Label(localizationManager.localizedString("items.files.delete"), systemImage: "trash")
+                            }
+                        }
                     
                     HStack {
                         Text(friendlyFileType(for: file.mimeType))
@@ -1540,6 +1566,27 @@ struct FileThumbnailView: View {
                 QuickLookPreview(url: url)
             }
         }
+        // 重命名表单
+        .alert(localizationManager.localizedString("items.files.rename.title"), isPresented: $showingRenameSheet) {
+            TextField(localizationManager.localizedString("items.files.rename.placeholder"), text: $newFileName)
+            Button(localizationManager.localizedString("common.cancel"), role: .cancel) {
+                newFileName = ""
+            }
+            Button(localizationManager.localizedString("common.ok")) {
+                Task { await renameFile() }
+            }
+        } message: {
+            Text(localizationManager.localizedString("items.files.rename.message"))
+        }
+        // 删除确认对话框
+        .alert(localizationManager.localizedString("items.files.delete.confirm.title"), isPresented: $showingDeleteAlert) {
+            Button(localizationManager.localizedString("common.cancel"), role: .cancel) { }
+            Button(localizationManager.localizedString("items.files.delete"), role: .destructive) {
+                Task { await deleteFile() }
+            }
+        } message: {
+            Text(localizationManager.localizedString("items.files.delete.confirm.message"))
+        }
     }
     
     private func loadAndPreviewFile() async {
@@ -1579,6 +1626,42 @@ struct FileThumbnailView: View {
             }
         } catch {
             print("❌ [File Share] Error loading file: \(error)")
+        }
+    }
+    
+    private func renameFile() async {
+        guard !newFileName.isEmpty else { return }
+        
+        // 添加原来的扩展名
+        let ext = (file.fileName as NSString).pathExtension
+        let finalFileName = ext.isEmpty ? newFileName : "\(newFileName).\(ext)"
+        
+        print("✏️ [FileThumbnailView] Renaming file \(file.id) from '\(file.fileName)' to '\(finalFileName)'")
+        
+        do {
+            try await itemService.updateFileName(id: file.id, newName: finalFileName)
+            // 触发 iCloud 同步
+            CloudSyncMonitor.shared.manualSync()
+            print("✅ [FileThumbnailView] File renamed successfully")
+            // 通知父视图刷新
+            onFileChanged()
+        } catch {
+            print("❌ [FileThumbnailView] Error renaming file: \(error)")
+        }
+    }
+    
+    private func deleteFile() async {
+        print("🗑️ [FileThumbnailView] Deleting file \(file.id): \(file.fileName)")
+        
+        do {
+            try await itemService.removeFile(id: file.id)
+            // 触发 iCloud 同步
+            CloudSyncMonitor.shared.manualSync()
+            print("✅ [FileThumbnailView] File deleted successfully")
+            // 通知父视图刷新
+            onFileChanged()
+        } catch {
+            print("❌ [FileThumbnailView] Error deleting file: \(error)")
         }
     }
     
