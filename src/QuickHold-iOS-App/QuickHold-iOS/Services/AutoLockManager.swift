@@ -141,11 +141,11 @@ struct PrivacyScreenModifier: ViewModifier {
             .overlay {
                 if showPrivacyScreen {
                     PrivacyScreenView()
-                        .transition(.opacity)
+                        .transition(AnimationConstants.opacityTransition)
                 }
             }
             .onChange(of: scenePhase) { newPhase in
-                withAnimation(.easeInOut(duration: 0.2)) {
+                withAnimation(AnimationConstants.stateChange) {
                     showPrivacyScreen = newPhase != .active
                 }
             }

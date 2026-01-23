@@ -15,6 +15,7 @@
 		100D5D66750BF36FC58E613E /* AttachmentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6273DC620CF58DD281E0BCCD /* AttachmentService.swift */; };
 		12ED24AF5375A1555CBD6461 /* CreateItemSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116249EEC68ED0C8818ACD55 /* CreateItemSheet.swift */; };
 		143E11062F232FFC00354287 /* SimpleImagePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143E11052F232FFC00354287 /* SimpleImagePreview.swift */; };
+		143E110A2F2363B300354287 /* TapFeedbackStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143E11092F2363B300354287 /* TapFeedbackStyle.swift */; };
 		14AC2ADA2F1CACB90050854F /* CloudSyncMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AC2AD92F1CACB90050854F /* CloudSyncMonitor.swift */; };
 		2E8DD52B4709D65220D1487B /* QuickVault_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C6BCD99CA469911E73D6FF /* QuickVault_iOSTests.swift */; };
 		36B8E515D09680180E8E9048 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907A0A0CDA3BB169729C3691 /* SettingsViewModel.swift */; };
@@ -66,6 +67,7 @@
 		143E11052F232FFC00354287 /* SimpleImagePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleImagePreview.swift; sourceTree = "<group>"; };
 		143E11072F23557400354287 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		143E11082F23557B00354287 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		143E11092F2363B300354287 /* TapFeedbackStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapFeedbackStyle.swift; sourceTree = "<group>"; };
 		14AC2AD92F1CACB90050854F /* CloudSyncMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSyncMonitor.swift; sourceTree = "<group>"; };
 		172D8006BAB235E94F525B28 /* QuickVaultApp.swift.old */ = {isa = PBXFileReference; lastKnownFileType = text; path = QuickVaultApp.swift.old; sourceTree = "<group>"; };
 		17BB762E4E126E8D29EFAC9F /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 		62C9B625E6B02D7E92C717B5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				143E11092F2363B300354287 /* TapFeedbackStyle.swift */,
 				BB48AD48E0A33C2FE38F5624 /* ToastView.swift */,
 			);
 			path = Common;
@@ -487,6 +490,7 @@
 				86246BFA1EE06D3CA5336D48 /* ItemDetailView.swift in Sources */,
 				9AE9F3E8D08E2215BEC1CED9 /* ItemListView.swift in Sources */,
 				83AE99B74AF949BA90049433 /* ItemListViewModel.swift in Sources */,
+				143E110A2F2363B300354287 /* TapFeedbackStyle.swift in Sources */,
 				143E11062F232FFC00354287 /* SimpleImagePreview.swift in Sources */,
 				5226BCCBBD188E25E17A2F47 /* LocalizationManager.swift in Sources */,
 				06423D36F7C5FD49A09F11C1 /* LockScreenView.swift in Sources */,

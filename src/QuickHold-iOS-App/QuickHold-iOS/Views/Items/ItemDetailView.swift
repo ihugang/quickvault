@@ -690,7 +690,7 @@ struct FullImageView: View {
                 .onAppear {
                     print("✅ [FullImageView] View appeared")
                 }
-                .animation(.easeInOut(duration: 0.3), value: showControls)
+                .animation(AnimationConstants.stateChange, value: showControls)
             
             VStack(spacing: 0) {
                 // 顶部按钮栏
@@ -785,14 +785,14 @@ struct FullImageView: View {
                 // 底部控制面板（可展开）
                 if showControls {
                     watermarkControlPanel
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .transition(AnimationConstants.sheetTransition)
                         .padding(.bottom, 8)
                 }
                 
                 // 底部按钮栏（始终显示）
                 HStack {
                     Button {
-                        withAnimation(.spring(response: 0.3)) {
+                        withAnimation(AnimationConstants.smoothSpring) {
                             showControls.toggle()
                         }
                     } label: {
@@ -1071,7 +1071,7 @@ struct FullImageView: View {
     // MARK: - Rotation Functions
     
     private func rotateImageLeft() {
-        withAnimation(.spring(response: 0.3)) {
+        withAnimation(AnimationConstants.quickSpring) {
             rotationAngle -= .degrees(90)
         }
         let currentDegrees = rotationAngle.degrees
@@ -1080,7 +1080,7 @@ struct FullImageView: View {
     }
     
     private func rotateImageRight() {
-        withAnimation(.spring(response: 0.3)) {
+        withAnimation(AnimationConstants.quickSpring) {
             rotationAngle += .degrees(90)
         }
         let currentDegrees = rotationAngle.degrees

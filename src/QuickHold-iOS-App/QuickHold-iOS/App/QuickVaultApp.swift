@@ -92,30 +92,30 @@ struct SimpleRootView: View {
             switch authViewModel.authState {
             case .initializing, .waitingForCloudSync:
                 ProgressView()
-                    .transition(.opacity)
+                    .transition(AnimationConstants.opacityTransition)
 
             case .locked:
                 LockScreenView(viewModel: authViewModel)
-                    .transition(.opacity)
+                    .transition(AnimationConstants.opacityTransition)
 
             case .unlocked:
                 MainContentView()
-                    .transition(.opacity)
+                    .transition(AnimationConstants.opacityTransition)
 
             case .setupRequired:
                 if !hasSeenIntroduction {
                     // 首次启动，显示介绍页面
                     IntroductionView(hasSeenIntroduction: $hasSeenIntroduction)
-                        .transition(.opacity)
+                        .transition(AnimationConstants.opacityTransition)
                 } else {
                     // 已看过介绍，显示密码设置页面
                     WelcomeView(viewModel: authViewModel)
-                        .transition(.opacity)
+                        .transition(AnimationConstants.opacityTransition)
                 }
             }
         }
-        .animation(.easeInOut, value: authViewModel.authState)
-        .animation(.easeInOut, value: hasSeenIntroduction)
+        .animation(AnimationConstants.stateChange, value: authViewModel.authState)
+        .animation(AnimationConstants.stateChange, value: hasSeenIntroduction)
         .preferredColorScheme(preferredColorScheme)
     }
 }

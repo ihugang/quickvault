@@ -27,8 +27,8 @@ struct ToastView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 100)
         }
-        .transition(.move(edge: .bottom).combined(with: .opacity))
-        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: message)
+        .transition(AnimationConstants.sheetTransition)
+        .animation(AnimationConstants.smoothSpring, value: message)
     }
 }
 

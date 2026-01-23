@@ -214,10 +214,8 @@ struct ItemListView: View {
 
     private var newItemsBanner: some View {
         Button {
-            // 点击后标记为已读
-            withAnimation {
-                syncMonitor.markNewItemsAsRead()
-            }
+            // 点击后标记为已读（无动画，直接刷新）
+            syncMonitor.markNewItemsAsRead()
         } label: {
             HStack(spacing: 12) {
                 // 图标
@@ -263,8 +261,8 @@ struct ItemListView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 4)
         }
-        .buttonStyle(.plain)
-        .transition(.move(edge: .top).combined(with: .opacity))
+        .pillTapFeedback()
+        .transition(AnimationConstants.opacityTransition)
     }
 
     // MARK: - Tag Filter Bar
@@ -290,6 +288,7 @@ struct ItemListView: View {
                             )
                             .foregroundStyle(viewModel.selectedTags.contains(tag) ? .white : .primary)
                     }
+                    .pillTapFeedback()
                 }
             }
             .padding(.horizontal, 20)
@@ -423,7 +422,7 @@ struct ItemListView: View {
                 } label: {
                     ItemCard(item: item, isNew: syncMonitor.isNewItem(item.id))
                 }
-                .buttonStyle(.plain)
+                .cardTapFeedback()
             }
         }
     }
@@ -451,7 +450,7 @@ struct ItemListView: View {
                 } label: {
                     ItemCard(item: item, isNew: syncMonitor.isNewItem(item.id))
                 }
-                .buttonStyle(.plain)
+                .cardTapFeedback()
             }
         }
     }
