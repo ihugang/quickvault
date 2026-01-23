@@ -343,6 +343,10 @@
 "promo.photopc.description" = "Tool voor het overdragen van foto's tussen apparaten. Verplaats foto's snel tussen Mac en iPhone zonder netwerk.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Maak van je iPhone een veilige draagbare schijf";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Foto-tijdstempel tool. Voeg stijlvolle tijdwatermerken toe in batch en leg kostbare momenten vast.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Opslaganalyse tool. Vind snel de grootste bestanden en apps en maak opslagruimte vrij.";
 
 // MARK: - Settings: Clear Data
 "settings.security.cleardata" = "Alles wissen";

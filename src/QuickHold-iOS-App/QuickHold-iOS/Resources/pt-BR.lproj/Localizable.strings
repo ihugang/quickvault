@@ -343,6 +343,10 @@
 "promo.photopc.description" = "Ferramenta de transferência de fotos entre dispositivos. Transfira fotos rapidamente entre Mac e iPhone sem rede.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Transforme o iPhone em um disco portátil seguro";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Ferramenta de carimbo de data e hora para fotos. Adicione marcas d'água temporais elegantes em lote e capture momentos preciosos.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Analisador de armazenamento. Encontre rapidamente os maiores arquivos e aplicativos e libere espaço de armazenamento.";
 
 // MARK: - Settings: Clear Data
 "settings.security.cleardata" = "Limpar todos os dados";

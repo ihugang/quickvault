@@ -378,6 +378,10 @@
 "promo.photopc.description" = "Verktyg för överföring av foton över flera plattformar. Överför foton snabbt mellan Mac och iPhone utan nätverk.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Förvandla din iPhone till en säker mobil enhet";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Foto-tidsstämpel verktyg. Lägg till stiliga tidsvattenstämplar i batch och fånga värdefulla ögonblick.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Lagringsanalys verktyg. Hitta snabbt de största filerna och apparna och frigör lagringsutrymme.";
 
 // MARK: - Introduction
 "intro.feature.local.title" = "Lokal Lagring, Pålitlig & Säker";

@@ -388,6 +388,10 @@
 "promo.photopc.description" = "クロスプラットフォーム写真転送ツール。ネットワークなしでMacとiPhone間で写真を素早く転送。";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "iPhoneを安全なモバイルドライブに変える";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "写真タイムスタンプツール。写真に多様なスタイルのタイムスタンプを一括追加し、大切な瞬間を記録。";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "ストレージ分析ツール。容量を占めるファイルやアプリを素早く見つけてストレージを解放。";
 
 // MARK: - Introduction
 "intro.feature.local.title" = "ローカルストレージ、信頼性と安全性";

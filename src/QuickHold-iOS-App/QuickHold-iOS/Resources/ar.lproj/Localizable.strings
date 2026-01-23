@@ -344,6 +344,10 @@
 "promo.photopc.description" = "أداة نقل الصور عبر الأنظمة. انقل الصور بسرعة بين Mac و iPhone بدون شبكة.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "حوّل iPhone إلى قرص محمول آمن";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "أداة الطابع الزمني للصور. أضف علامات مائية زمنية أنيقة بشكل جماعي والتقط اللحظات الثمينة.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "محلل التخزين. ابحث بسرعة عن أكبر الملفات والتطبيقات وحرر مساحة التخزين.";
 
 // MARK: - Settings: Clear Data
 "settings.security.cleardata" = "مسح كل البيانات";

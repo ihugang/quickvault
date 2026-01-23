@@ -343,6 +343,10 @@
 "promo.photopc.description" = "Eszközök közötti fotóátviteli eszköz. Gyors képátvitel Mac és iPhone között hálózat nélkül.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Alakítsa iPhone-ját biztonságos hordozható meghajtóvá";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Fénykép időbélyegző eszköz. Adjon hozzá stílusos időbélyegzőket tömegesen és örökítse meg az értékes pillanatokat.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Tárhely elemző. Gyorsan megtalálja a legnagyobb fájlokat és alkalmazásokat és felszabadít helyet.";
 
 // MARK: - Settings: Clear Data
 "settings.security.cleardata" = "Összes adat törlése";

@@ -343,6 +343,10 @@
 "promo.photopc.description" = "Værktøj til at overføre fotos på tværs af enheder. Flyt billeder mellem Mac og iPhone uden netværk.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Forvandl din iPhone til et sikkert, bærbart drev";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Foto-tidsstempel værktøj. Tilføj stilfulde tidsvandmærker i batch og fang værdifulde øjeblikke.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Lageranalyse værktøj. Find hurtigt de største filer og apps og frigør lagerplads.";
 
 // MARK: - Settings: Clear Data
 "settings.security.cleardata" = "Slet alle data";

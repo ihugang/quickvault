@@ -233,13 +233,29 @@ struct SettingsView: View {
                 description: localizationManager.localizedString("promo.photopc.description"),
                 url: "https://apps.apple.com/cn/app/photopc/id1667798896?l=en-GB"
             )
-            
+
+            // ChronoTrace Promo Card
+            PromoCard(
+                iconName: "chronotrace_icon",
+                title: localizationManager.localizedString("promo.chronotrace.title"),
+                description: localizationManager.localizedString("promo.chronotrace.description"),
+                url: "https://apps.apple.com/us/app/chronotrace/id6753780589"
+            )
+
             // FoxVault Promo Card
             PromoCard(
                 iconName: "foxvault_icon",
                 title: localizationManager.localizedString("promo.foxvault.title"),
                 description: localizationManager.localizedString("promo.foxvault.description"),
                 url: "https://apps.apple.com/us/app/foxvault/id6755353875"
+            )
+
+            // ScanBig Promo Card
+            PromoCard(
+                iconName: "scanbig_icon",
+                title: localizationManager.localizedString("promo.scanbig.title"),
+                description: localizationManager.localizedString("promo.scanbig.description"),
+                url: "https://apps.apple.com/us/app/scanbig/id6739180761"
             )
         } header: {
             Text(localizationManager.localizedString("settings.more.products"))

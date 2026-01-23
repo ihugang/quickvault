@@ -387,6 +387,10 @@
 "promo.photopc.description" = "Herramienta de transferencia de fotos multiplataforma. Transfiere fotos rápidamente entre Mac e iPhone sin red.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Convierte tu iPhone en una unidad móvil segura";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Herramienta de marca de tiempo para fotos. Añade marcas de agua temporales elegantes por lotes y captura momentos preciosos.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Analizador de almacenamiento. Encuentra rápidamente los archivos y aplicaciones más grandes y libera espacio.";
 
 // MARK: - Introduction
 "intro.feature.local.title" = "Almacenamiento Local, Confiable y Seguro";

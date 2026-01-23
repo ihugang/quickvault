@@ -431,6 +431,10 @@
 "promo.photopc.description" = "跨平台照片傳輸工具，無需網路，Mac和iPhone之間快速傳輸照片。";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "iPhone做隨身碟，私密檔案保險箱，安全加密儲存您的隱私檔案和照片。";
+"promo.chronotrace.title" = "ChronoTrace - 時印";
+"promo.chronotrace.description" = "照片時間戳工具，批量給照片添加樣式豐富的時間水印，記錄美好瞬間。";
+"promo.scanbig.title" = "ScanBig - 找出大家伙";
+"promo.scanbig.description" = "儲存空間分析工具，快速找出手機中佔用空間最大的檔案和應用，釋放儲存空間。";
 
 // Login mode
 "auth.login.subtitle" = "輸入密碼登入";

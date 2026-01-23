@@ -378,6 +378,10 @@
 "promo.photopc.description" = "Інструмент для передачі фото на кількох платформах. Швидко передавайте фото між Mac і iPhone без мережі.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Перетворіть iPhone на захищений мобільний диск";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Інструмент часових міток для фото. Додавайте стильні часові водяні знаки пакетно та зберігайте цінні моменти.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Аналізатор сховища. Швидко знаходьте найбільші файли та додатки та звільняйте місце.";
 
 // MARK: - Introduction
 "intro.feature.local.title" = "Локальне Сховище, Надійно та Безпечно";

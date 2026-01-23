@@ -420,6 +420,10 @@
 "promo.photopc.description" = "Cross-platform photo transfer tool. Transfer photos quickly between Mac and iPhone without network.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Turn your iPhone into a secure mobile drive";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Photo timestamp tool. Batch add stylish time watermarks to photos and capture precious moments.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Storage analyzer. Quickly find the largest files and apps on your phone and free up storage space.";
 
 // MARK: - Introduction
 "intro.feature.local.title" = "Local Storage, Trustworthy & Reliable";

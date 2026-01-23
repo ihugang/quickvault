@@ -343,6 +343,10 @@
 "promo.photopc.description" = "Työkalu valokuvien siirtämiseen laitteiden välillä. Siirrä kuvat nopeasti Macin ja iPhonen välillä ilman verkkoa.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Muuta iPhone turvalliseksi kannettavaksi asemaksi";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Valokuvan aikaleima-työkalu. Lisää tyylikäs aikaleimat eräajona ja tallenna arvokkaita hetkiä.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Tallennustilan analysaattori. Löydä nopeasti suurimmat tiedostot ja sovellukset ja vapauta tallennustilaa.";
 
 // MARK: - Settings: Clear Data
 "settings.security.cleardata" = "Poista kaikki tiedot";

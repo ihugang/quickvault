@@ -235,6 +235,10 @@
 "promo.photopc.description" = "Plattformübergreifendes Fotoübertragungstool. Übertragen Sie Fotos schnell zwischen Mac und iPhone ohne Netzwerk.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Verwandeln Sie Ihr iPhone in ein sicheres mobiles Laufwerk";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Foto-Zeitstempel-Tool. Fügen Sie Ihren Fotos stapelweise stilvolle Zeitstempel hinzu und halten Sie kostbare Momente fest.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Speicheranalyse-Tool. Finden Sie schnell die größten Dateien und Apps auf Ihrem Telefon und geben Sie Speicherplatz frei.";
 "field.license.scope" = "Geschäftsumfang";
 
 // MARK: - Passport Fields

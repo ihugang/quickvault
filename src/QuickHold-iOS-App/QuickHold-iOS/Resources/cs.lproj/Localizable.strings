@@ -343,6 +343,10 @@
 "promo.photopc.description" = "Nástroj pro přenos fotografií mezi zařízeními. Rychlý přenos mezi Macem a iPhonem bez sítě.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Proměňte iPhone na bezpečný přenosný disk";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Nástroj pro časové razítko fotografií. Přidávejte stylová časová vodoznaky hromadně a zachyťte cenné okamžiky.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Analyzátor úložiště. Rychle najděte největší soubory a aplikace a uvolněte místo.";
 
 // MARK: - Settings: Clear Data
 "settings.security.cleardata" = "Vymazat všechna data";

@@ -343,6 +343,10 @@
 "promo.photopc.description" = "Εργαλείο μεταφοράς φωτογραφιών μεταξύ συσκευών. Μεταφέρετε εικόνες μεταξύ Mac και iPhone χωρίς δίκτυο.";
 "promo.foxvault.title" = "FoxVault";
 "promo.foxvault.description" = "Μετατρέψτε το iPhone σε ασφαλές φορητό δίσκο";
+"promo.chronotrace.title" = "ChronoTrace";
+"promo.chronotrace.description" = "Εργαλείο χρονοσήμανσης φωτογραφιών. Προσθέστε κομψά υδατογραφήματα χρόνου σε παρτίδες και καταγράψτε πολύτιμες στιγμές.";
+"promo.scanbig.title" = "ScanBig";
+"promo.scanbig.description" = "Αναλυτής αποθήκευσης. Βρείτε γρήγορα τα μεγαλύτερα αρχεία και εφαρμογές και ελευθερώστε χώρο αποθήκευσης.";
 
 // MARK: - Settings: Clear Data
 "settings.security.cleardata" = "Διαγραφή όλων των δεδομένων";
