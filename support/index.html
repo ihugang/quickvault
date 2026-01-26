@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="QuickVault (随取) - 安全的本地信息管理工具 | Secure Local Information Manager"
+        />
+        <title>QuickVault Support | 随取支持</title>
+        <link rel="icon" type="image/png" href="app-icon-180.png" />
+        <link rel="apple-touch-icon" href="app-icon-180.png" />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            :root {
+                --primary-color: #007aff;
+                --secondary-color: #5856d6;
+                --text-color: #1d1d1f;
+                --text-secondary: #6e6e73;
+                --bg-color: #ffffff;
+                --bg-secondary: #f5f5f7;
+                --border-color: #d2d2d7;
+                --success-color: #34c759;
+                --shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --primary-color: #0a84ff;
+                    --secondary-color: #5e5ce6;
+                    --text-color: #f5f5f7;
+                    --text-secondary: #a1a1a6;
+                    --bg-color: #000000;
+                    --bg-secondary: #1c1c1e;
+                    --border-color: #38383a;
+                    --shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+                }
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+                    sans-serif;
+                line-height: 1.6;
+                color: var(--text-color);
+                background: var(--bg-color);
+            }
+
+            .container {
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+
+            header {
+                background: var(--bg-secondary);
+                border-bottom: 1px solid var(--border-color);
+                padding: 24px 0;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                -webkit-backdrop-filter: blur(20px);
+                backdrop-filter: blur(20px);
+                background: rgba(245, 245, 247, 0.8);
+            }
+
+            @media (prefers-color-scheme: dark) {
+                header {
+                    background: rgba(28, 28, 30, 0.8);
+                }
+            }
+
+            .header-content {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .logo {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .logo-icon {
+                width: 48px;
+                height: 48px;
+            }
+
+            .logo-icon img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+
+            .logo-text h1 {
+                font-size: 24px;
+                font-weight: 600;
+                color: var(--text-color);
+            }
+
+            .logo-text p {
+                font-size: 14px;
+                color: var(--text-secondary);
+            }
+
+            .lang-switch {
+                background: var(--bg-color);
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                padding: 6px 12px;
+                font-size: 14px;
+                color: var(--text-color);
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .lang-switch:hover {
+                border-color: var(--primary-color);
+                color: var(--primary-color);
+            }
+
+            main {
+                padding: 60px 0;
+            }
+
+            section {
+                margin-bottom: 80px;
+            }
+
+            h2 {
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 16px;
+                color: var(--text-color);
+            }
+
+            h3 {
+                font-size: 24px;
+                font-weight: 600;
+                margin-bottom: 12px;
+                color: var(--text-color);
+            }
+
+            .subtitle {
+                font-size: 18px;
+                color: var(--text-secondary);
+                margin-bottom: 40px;
+            }
+
+            .hero {
+                text-align: center;
+                padding: 40px 0;
+            }
+
+            .hero h2 {
+                font-size: 48px;
+                margin-bottom: 20px;
+            }
+
+            .hero .subtitle {
+                font-size: 21px;
+            }
+
+            .features-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 24px;
+                margin-top: 40px;
+            }
+
+            .feature-card {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-color);
+                border-radius: 16px;
+                padding: 32px;
+                transition: all 0.3s;
+            }
+
+            .feature-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow);
+            }
+
+            .feature-icon {
+                font-size: 40px;
+                margin-bottom: 16px;
+            }
+
+            .feature-card h3 {
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+
+            .feature-card p {
+                color: var(--text-secondary);
+                font-size: 15px;
+                line-height: 1.5;
+            }
+
+            .faq-item {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                padding: 24px;
+                margin-bottom: 16px;
+            }
+
+            .faq-question {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--text-color);
+                margin-bottom: 12px;
+            }
+
+            .faq-answer {
+                color: var(--text-secondary);
+                font-size: 15px;
+                line-height: 1.6;
+            }
+
+            .info-box {
+                background: linear-gradient(
+                    135deg,
+                    rgba(0, 122, 255, 0.1),
+                    rgba(88, 86, 214, 0.1)
+                );
+                border: 1px solid var(--primary-color);
+                border-radius: 12px;
+                padding: 24px;
+                margin: 24px 0;
+            }
+
+            .info-box h3 {
+                color: var(--primary-color);
+                margin-bottom: 12px;
+            }
+
+            .info-box ul {
+                list-style: none;
+                padding-left: 0;
+            }
+
+            .info-box li {
+                padding: 8px 0 8px 28px;
+                position: relative;
+                color: var(--text-color);
+            }
+
+            .info-box li::before {
+                content: "✓";
+                position: absolute;
+                left: 0;
+                color: var(--success-color);
+                font-weight: bold;
+            }
+
+            .contact-section {
+                text-align: center;
+                background: var(--bg-secondary);
+                border-radius: 16px;
+                padding: 48px 32px;
+            }
+
+            .contact-email {
+                display: inline-block;
+                background: var(--primary-color);
+                color: white;
+                padding: 14px 32px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-size: 16px;
+                font-weight: 500;
+                margin-top: 24px;
+                transition: all 0.2s;
+            }
+
+            .contact-email:hover {
+                background: var(--secondary-color);
+                transform: scale(1.05);
+            }
+
+            footer {
+                background: var(--bg-secondary);
+                border-top: 1px solid var(--border-color);
+                padding: 32px 0;
+                text-align: center;
+                color: var(--text-secondary);
+                font-size: 14px;
+            }
+
+            .platform-badge {
+                display: inline-block;
+                background: var(--bg-color);
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                padding: 6px 12px;
+                margin: 4px;
+                font-size: 13px;
+                font-weight: 500;
+            }
+
+            @media (max-width: 768px) {
+                .hero h2 {
+                    font-size: 36px;
+                }
+
+                .hero .subtitle {
+                    font-size: 18px;
+                }
+
+                h2 {
+                    font-size: 28px;
+                }
+
+                .features-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .header-content {
+                    flex-direction: column;
+                    gap: 16px;
+                }
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .contact-email-note {
+                margin-top: 16px;
+                color: var(--text-secondary);
+                font-size: 14px;
+            }
+
+            .footer-love {
+                margin-top: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <img src="center-logo.png" alt="QuickVault Logo" />
+                        </div>
+                        <div class="logo-text">
+                            <h1>QuickVault</h1>
+                            <p>随取</p>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="lang-switch"
+                        onclick="toggleLanguage()"
+                    >
+                        <span id="lang-btn-text">English</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h2 class="lang-zh">安全的本地信息管理工具</h2>
+                <h2 class="lang-en hidden">Secure Local Information Manager</h2>
+                <p class="subtitle lang-zh">
+                    所有数据本地存储，AES-256-GCM 加密，支持 Touch ID / Face ID
+                </p>
+                <p class="subtitle lang-en hidden">
+                    All data stored locally, AES-256-GCM encryption, Touch ID /
+                    Face ID support
+                </p>
+                <div>
+                    <span class="platform-badge">📱 iOS 17.0+</span>
+                    <span class="platform-badge lang-zh"
+                        >🖥️ macOS（即将推出）</span
+                    >
+                    <span class="platform-badge lang-en hidden"
+                        >🖥️ macOS (Coming Soon)</span
+                    >
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features">
+                <h2 class="lang-zh">核心功能</h2>
+                <h2 class="lang-en hidden">Core Features</h2>
+                <p class="subtitle lang-zh">强大而简洁的信息管理</p>
+                <p class="subtitle lang-en hidden">
+                    Powerful yet simple information management
+                </p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3 class="lang-zh">AES-256 加密</h3>
+                        <h3 class="lang-en hidden">AES-256 Encryption</h3>
+                        <p class="lang-zh">
+                            所有敏感数据使用 AES-256-GCM 加密算法保护，密钥使用
+                            PBKDF2 派生（100,000 次迭代），安全存储在系统
+                            Keychain 中
+                        </p>
+                        <p class="lang-en hidden">
+                            All sensitive data protected with AES-256-GCM
+                            encryption. Keys derived using PBKDF2 (100,000
+                            iterations), securely stored in system Keychain
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🖼️</div>
+                        <h3 class="lang-zh">图片自定义水印</h3>
+                        <h3 class="lang-en hidden">Custom Image Watermark</h3>
+                        <p class="lang-zh">
+                            导出图片前可添加自定义文字水印（iOS
+                            版），保护您的图片版权。支持文本、图片、文件三种卡片类型，所有数据加密存储
+                        </p>
+                        <p class="lang-en hidden">
+                            Add custom text watermark before exporting images
+                            (iOS). Supports text, image, and file card types
+                            with encrypted storage
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">👆</div>
+                        <h3 class="lang-zh">生物识别认证</h3>
+                        <h3 class="lang-en hidden">Biometric Authentication</h3>
+                        <p class="lang-zh">
+                            支持 Touch ID（macOS）和 Face ID / Touch
+                            ID（iOS），快速安全解锁。主密码作为备选方案
+                        </p>
+                        <p class="lang-en hidden">
+                            Touch ID (macOS) and Face ID / Touch ID (iOS)
+                            support for quick, secure unlock. Master password as
+                            fallback
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💾</div>
+                        <h3 class="lang-zh">本地优先</h3>
+                        <h3 class="lang-en hidden">Local-First</h3>
+                        <p class="lang-zh">
+                            所有数据完全存储在本地，无任何网络通信。你的数据，完全由你掌控
+                        </p>
+                        <p class="lang-en hidden">
+                            All data stored locally with zero network
+                            communication. Your data, your control
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3 class="lang-zh">自动锁定</h3>
+                        <h3 class="lang-en hidden">Auto-Lock</h3>
+                        <p class="lang-zh">
+                            空闲时自动锁定，系统休眠或用户切换时立即锁定。支持自定义锁定时间，保护您的隐私安全
+                        </p>
+                        <p class="lang-en hidden">
+                            Auto-lock when idle, instant lock on system sleep or
+                            user switch. Customizable lock timeout to protect
+                            your privacy
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3 class="lang-zh">快速搜索</h3>
+                        <h3 class="lang-en hidden">Fast Search</h3>
+                        <p class="lang-zh">
+                            即时搜索卡片标题和内容，支持标签分组和置顶功能。即使有数千张卡片也能快速定位
+                        </p>
+                        <p class="lang-en hidden">
+                            Instant search across card titles and content. Tag
+                            grouping and pinning supported. Fast even with
+                            thousands of cards
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section id="faq">
+                <h2 class="lang-zh">常见问题</h2>
+                <h2 class="lang-en hidden">Frequently Asked Questions</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question lang-zh">❓ 我的数据安全吗？</div>
+                    <div class="faq-question lang-en hidden">
+                        ❓ Is my data safe?
+                    </div>
+                    <div class="faq-answer lang-zh">
+                        QuickVault 使用 AES-256-GCM
+                        加密算法（业界广泛使用的高强度加密标准）保护所有敏感数据。加密密钥通过
+                        PBKDF2 算法从您的主密码派生，经过 100,000
+                        次迭代增强安全性。密钥存储在 macOS/iOS 系统 Keychain
+                        中，受系统级保护。
+                    </div>
+                    <div class="faq-answer lang-en hidden">
+                        QuickVault uses AES-256-GCM encryption (an
+                        industry-standard high-security encryption algorithm) to
+                        protect all sensitive data. Encryption keys are derived
+                        from your master password using PBKDF2 with 100,000
+                        iterations. Keys are stored in the macOS/iOS system
+                        Keychain with system-level protection.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question lang-zh">❓ 数据存储在哪里？</div>
+                    <div class="faq-question lang-en hidden">
+                        ❓ Where is my data stored?
+                    </div>
+                    <div class="faq-answer lang-zh">
+                        所有数据完全存储在您的设备本地，使用 CoreData
+                        数据库。应用不会进行任何网络通信，不会上传您的数据到云端或任何服务器。您可以随时查看应用的网络权限配置，我们不请求网络访问权限。
+                    </div>
+                    <div class="faq-answer lang-en hidden">
+                        All data is stored locally on your device using CoreData
+                        database. The app makes zero network requests and never
+                        uploads your data to the cloud or any server. You can
+                        verify this by checking the app's network permissions -
+                        we don't request network access.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question lang-zh">
+                        ❓ 忘记主密码怎么办？
+                    </div>
+                    <div class="faq-question lang-en hidden">
+                        ❓ What if I forget my master password?
+                    </div>
+                    <div class="faq-answer lang-zh">
+                        由于采用本地加密设计，如果忘记主密码，我们无法帮您找回数据（这也正是安全性的体现
+                        - 即使开发者也无法访问您的数据）。强烈建议：<br />
+                        • 使用您能记住的强密码<br />
+                        • 将主密码记录在安全的地方（如纸质备份）<br />
+                        • 定期备份应用数据库文件
+                    </div>
+                    <div class="faq-answer lang-en hidden">
+                        Due to the local encryption design, if you forget your
+                        master password, we cannot recover your data (this is
+                        actually a security feature - even developers cannot
+                        access your data). Strong recommendations:<br />
+                        • Use a strong password you can remember<br />
+                        • Write down your master password in a secure location
+                        (like paper backup)<br />
+                        • Regularly backup your app database file
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question lang-zh">❓ 支持数据同步吗？</div>
+                    <div class="faq-question lang-en hidden">
+                        ❓ Does it support data sync?
+                    </div>
+                    <div class="faq-answer lang-zh">
+                        <strong>iOS 设备之间：</strong>支持 iCloud 同步。您的
+                        iPhone 和 iPad 可以通过 iCloud
+                        自动共享所有卡片数据，包括文本、图片和文件。<br />
+                        <strong>macOS 版本：</strong>我们正在开发 macOS
+                        版本，届时将支持与 iOS 设备通过 iCloud
+                        同步共享数据，实现跨平台无缝使用。
+                    </div>
+                    <div class="faq-answer lang-en hidden">
+                        <strong>Between iOS devices:</strong> iCloud sync is
+                        supported. Your iPhone and iPad can automatically share
+                        all card data including text, images, and files via
+                        iCloud.<br />
+                        <strong>macOS version:</strong> We're developing a macOS
+                        version that will support iCloud sync with iOS devices
+                        for seamless cross-platform experience.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question lang-zh">
+                        ❓ 图片水印功能如何使用？
+                    </div>
+                    <div class="faq-question lang-en hidden">
+                        ❓ How does the image watermark feature work?
+                    </div>
+                    <div class="faq-answer lang-zh">
+                        图片水印功能仅在 iOS
+                        版本中提供。当您保存图片卡片时，可以选择添加自定义文字水印再导出。您可以自定义水印文字内容、位置、颜色和透明度等参数，有效保护图片版权。水印添加过程完全在本地进行，不涉及任何网络上传。
+                    </div>
+                    <div class="faq-answer lang-en hidden">
+                        The image watermark feature is available in the iOS
+                        version only. When saving image cards, you can choose to
+                        add a custom text watermark before exporting. You can
+                        customize watermark text, position, color, and opacity
+                        to protect your image copyright. The watermarking
+                        process is completely local with no network upload.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question lang-zh">
+                        ❓ 如何备份我的数据？
+                    </div>
+                    <div class="faq-question lang-en hidden">
+                        ❓ How do I backup my data?
+                    </div>
+                    <div class="faq-answer lang-zh">
+                        <strong>iOS:</strong> 应用数据会包含在 iTunes/Finder
+                        备份和 iCloud 备份中<br />
+                    </div>
+                    <div class="faq-answer lang-en hidden">
+                        <strong>iOS:</strong> App data is included in
+                        iTunes/Finder backups and iCloud backups<br />
+                        Recommended to regularly backup the entire app data
+                        directory to external storage.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question lang-zh">❓ 应用是开源的吗？</div>
+                    <div class="faq-question lang-en hidden">
+                        ❓ Is the app open source?
+                    </div>
+                    <div class="faq-answer lang-zh">
+                        目前 QuickVault
+                        不是开源项目。但我们承诺保持透明的安全设计，并接受独立安全审计。如果您对加密实现有疑问，欢迎联系我们获取技术细节。
+                    </div>
+                    <div class="faq-answer lang-en hidden">
+                        QuickVault is currently not open source. However, we
+                        commit to transparent security design and accept
+                        independent security audits. If you have questions about
+                        our encryption implementation, feel free to contact us
+                        for technical details.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Privacy Section -->
+            <section id="privacy">
+                <h2 class="lang-zh">隐私与安全</h2>
+                <h2 class="lang-en hidden">Privacy & Security</h2>
+
+                <div class="info-box">
+                    <h3 class="lang-zh">🛡️ 我们的承诺</h3>
+                    <h3 class="lang-en hidden">🛡️ Our Commitment</h3>
+                    <ul class="lang-zh">
+                        <li>零第三方追踪 - 不集成任何第三方分析或广告 SDK</li>
+                        <li>本地优先 - 所有数据存储和处理完全在本地进行</li>
+                        <li>开发者无法访问 - 即使是开发者也无法访问您的数据</li>
+                    </ul>
+                    <ul class="lang-en hidden">
+                        <li>
+                            Zero third-party tracking - no analytics or ad SDKs
+                            integrated
+                        </li>
+                        <li>
+                            Local-first - all data storage and processing
+                            happens locally
+                        </li>
+                        <li>
+                            Developer cannot access - even developers cannot
+                            access your data
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3 class="lang-zh">🔒 加密技术细节</h3>
+                    <h3 class="lang-en hidden">
+                        🔒 Encryption Technical Details
+                    </h3>
+                    <ul class="lang-zh">
+                        <li>加密算法：AES-256-GCM (使用 Apple CryptoKit)</li>
+                        <li>密钥派生：PBKDF2-HMAC-SHA256，100,000 次迭代</li>
+                        <li>盐值：32 字节随机盐，安全存储在 Keychain</li>
+                        <li>
+                            密钥存储：macOS/iOS Keychain
+                            (kSecClassGenericPassword)
+                        </li>
+                        <li>加密范围：所有卡片字段值、文件附件、缩略图</li>
+                    </ul>
+                    <ul class="lang-en hidden">
+                        <li>Encryption: AES-256-GCM (using Apple CryptoKit)</li>
+                        <li>
+                            Key derivation: PBKDF2-HMAC-SHA256, 100,000
+                            iterations
+                        </li>
+                        <li>
+                            Salt: 32-byte random salt, securely stored in
+                            Keychain
+                        </li>
+                        <li>
+                            Key storage: macOS/iOS Keychain
+                            (kSecClassGenericPassword)
+                        </li>
+                        <li>
+                            Encryption scope: All card field values, file
+                            attachments, thumbnails
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="contact-section">
+                <h2 class="lang-zh">需要帮助？</h2>
+                <h2 class="lang-en hidden">Need Help?</h2>
+                <p class="subtitle lang-zh">
+                    如果您有任何问题、建议或反馈，请随时联系我们
+                </p>
+                <p class="subtitle lang-en hidden">
+                    If you have any questions, suggestions, or feedback, feel
+                    free to contact us
+                </p>
+                <a href="mailto:codyardev@gmail.com" class="contact-email">
+                    <span class="lang-zh">📧 发送邮件</span>
+                    <span class="lang-en hidden">📧 Send Email</span>
+                </a>
+                <p class="contact-email-note">codyardev@gmail.com</p>
+            </section>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p class="lang-zh">© 2026-2027 代码后院. 保留所有权利。</p>
+                <p class="lang-en hidden">
+                    © 2026-2027 Codyard Studio. All rights reserved.
+                </p>
+            </div>
+        </footer>
+
+        <script>
+            let currentLang = "zh";
+
+            function toggleLanguage() {
+                currentLang = currentLang === "zh" ? "en" : "zh";
+                updateLanguage();
+            }
+
+            function updateLanguage() {
+                // Hide all language elements
+                document
+                    .querySelectorAll(".lang-zh, .lang-en")
+                    .forEach((el) => {
+                        el.classList.add("hidden");
+                    });
+
+                // Show current language elements
+                const className =
+                    currentLang === "zh" ? ".lang-zh" : ".lang-en";
+                document.querySelectorAll(className).forEach((el) => {
+                    el.classList.remove("hidden");
+                });
+
+                // Update button text
+                document.getElementById("lang-btn-text").textContent =
+                    currentLang === "zh" ? "English" : "中文";
+            }
+
+            // Initialize
+            updateLanguage();
+        </script>
+    </body>
+</html>
